@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="at.newsagg.model.Comment"
+        table="COMMENTS"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="id"
+            column="COMMENT_ID"
+            type="int"
+            unsaved-value="-1"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <property
+            name="addedDate"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="ADDEDDATE"
+        />
+
+        <many-to-one
+            name="channel"
+            class="at.newsagg.model.parser.hibernate.Channel"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="CHANNEL_ID"
+            not-null="true"
+        />
+
+        <property
+            name="stars"
+            type="byte"
+            update="true"
+            insert="true"
+            column="STARS"
+            not-null="false"
+        />
+
+        <property
+            name="text"
+            type="text"
+            update="true"
+            insert="true"
+            column="TEXT"
+            not-null="true"
+        />
+
+        <property
+            name="title"
+            type="text"
+            update="true"
+            insert="true"
+            column="TITLE"
+            not-null="true"
+        />
+
+        <many-to-one
+            name="user"
+            class="at.newsagg.model.User"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="USER_ID"
+            not-null="true"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-Comment.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

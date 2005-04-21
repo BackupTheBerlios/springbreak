@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!-- <property name="driverClassName"><value>org.hsqldb.jdbcDriver</value></property>
+        <property name="url"><value>jdbc:hsqldb:db/appfuse</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value></value></property>-->
+        
+        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+        <property name="url"><value>jdbc:postgresql://localhost/newsagg</value></property>
+        <property name="username"><value>pgadmin</value></property>
+        <property name="password"><value>zwergnase</value></property>
+    </bean>
+
+    <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="dataSource"/></property>
+        <property name="mappingResources">
+            <list>
+                <value>at/newsagg/model/User.hbm.xml</value>
+                <value>at/newsagg/model/Category.hbm.xml</value>
+ 				<value>at/newsagg/model/Comment.hbm.xml</value>
+                <value>at/newsagg/model/FeedSubscriber.hbm.xml</value>
+				<value>at/newsagg/model/parser/hibernate/Channel.hbm.xml</value>
+				<value>at/newsagg/model/parser/hibernate/Image.hbm.xml</value>
+				<value>at/newsagg/model/parser/hibernate/Item.hbm.xml</value>
+				<value>at/newsagg/model/parser/hibernate/ItemGuid.hbm.xml</value>
+				<value>at/newsagg/model/parser/hibernate/ItemMetadata.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+        <props>
+            <!-- <prop key="hibernate.dialect">net.sf.hibernate.dialect.HSQLDialect</prop>-->
+            <prop key="hibernate.dialect">net.sf.hibernate.dialect.PostgreSQLDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+        </props>
+        </property>
+    </bean>
+
+    <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate.HibernateTransactionManager">
+        <property name="sessionFactory"><ref local="sessionFactory"/></property>
+    </bean>
+    
+    <!-- Add DAOs here -->
+    <bean id="userDAOTarget" class="at.newsagg.dao.hibernate.UserDAOHibernate"> 
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+    </bean>
+
+<!-- just a try; nachdenken ob man das braucht. Roland Vecera 31.3.2005 -->
+    <bean id="userDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+         <ref local="transactionManager" /> 
+      </property> 
+      <property name="target"> 
+         <ref local="userDAOTarget" /> 
+      </property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="*">PROPAGATION_REQUIRED</prop> 
+         </props> 
+      </property>
+    </bean>
+
+
+    <!-- Feed DAOs
+         Roland Vecera 20.3.2005 -->
+    <bean id="channelDAO" class="at.newsagg.dao.hibernate.ChannelDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactory"/> 
+    	</property> 
+    </bean>
+    <bean id="itemDAO" class="at.newsagg.dao.hibernate.ItemDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactory"/> 
+    	</property> 
+    </bean>
+<!-- Roland Vecera 18. April Transaktion für die saveFunktion des feedSubscriber eingefügt-->
+   <bean id="feedSubscriberDAOTarget" class="at.newsagg.dao.hibernate.FeedSubscriberDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactory"/> 
+    	</property> 
+    </bean>
+
+	<bean id="feedSubscriberDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+         <ref local="transactionManager" /> 
+      </property> 
+      <property name="target"> 
+         <ref local="feedSubscriberDAOTarget" /> 
+      </property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+
+
+
+
+   <bean id="categoryDAO" class="at.newsagg.dao.hibernate.CategoryDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactory"/> 
+    	</property> 
+    </bean>
+
+   <bean id="commentDAOTarget" class="at.newsagg.dao.hibernate.CommentDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactory"/> 
+    	</property> 
+   </bean>
+
+
+  <bean id="commentDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    		<property name="transactionManager"> <ref local="transactionManager"/></property> 
+    		<property name="target"> <ref local="commentDAOTarget"/> </property> 
+    		<property name="transactionAttributes"> 
+    			<props> 
+    				<prop key="save*">PROPAGATION_REQUIRED</prop>
+                    <prop key="update*">PROPAGATION_REQUIRED</prop>  
+    				<prop key="remove*">PROPAGATION_REQUIRED</prop> 
+    				<prop key="*">PROPAGATION_REQUIRED</prop> 
+    			</props> 
+    		</property>
+           
+
+    </bean>
+
+
+
+    <!-- Add Managers here -->
+     <bean id="userManagerTarget" class="at.newsagg.service.impl.UserManagerImpl"> 
+    	<property name="userDAO"><ref local="userDAO"/></property> 
+    </bean>
+    
+      <bean id="userManager" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    		<property name="transactionManager"> <ref local="transactionManager"/></property> 
+    		<property name="target"> <ref local="userManagerTarget"/> </property> 
+    		<property name="transactionAttributes"> 
+    			<props> 
+    				<prop key="save*">PROPAGATION_REQUIRED</prop> 
+    				<prop key="remove*">PROPAGATION_REQUIRED</prop> 
+    				<prop key="*">PROPAGATION_REQUIRED</prop> 
+    			</props> 
+    		</property>
+           
+
+    </bean>
+
+<!-- ParserCronjob Service
+ Roland Vecera 26.3.2005 
+
+ TODO: TRANSAKKTIONEN!!!
+-->
+
+	<bean id="parserCronJobServiceTarget" class="at.newsagg.service.impl.ParserCronJobServiceImpl">
+		<property name="channelDao"><ref local="channelDAO"/></property>
+		<property name="itemDao"><ref local="itemDAO"/></property>
+		<property name="parser"><ref local="feedParser"/></property>	
+	</bean>
+
+
+
+   <bean id="parserCronJobService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    		<property name="transactionManager"> <ref local="transactionManager"/></property> 
+            <property name="target"> <ref local="parserCronJobServiceTarget"/> </property> 
+    		<property name="transactionAttributes"> 
+    			<props>  
+    				<prop key="*">PROPAGATION_REQUIRED</prop> 
+    			</props> 
+    		</property>
+    </bean>
+
+
+
+
+
+<!-- Definitions for RSS Parsers 
+		Roland Vecera
+		20.3.2005
+-->
+
+ <bean id="feedParser" class="at.newsagg.parser.FeedParser"> 
+    		<property name="rss091"> <ref local="rss091Parser"/></property> 
+    		<property name="rss10"> <ref local="rss10Parser"/> </property> 
+			<property name="rss20"> <ref local="rss20Parser"/> </property> 
+			<property name="atom03"> <ref local="atom03Parser"/> </property> 
+    		
+  </bean>
+
+ <bean id="rss091Parser" class="at.newsagg.parser.RSS_0_91_Parser" /> 
+ <bean id="rss10Parser" class="at.newsagg.parser.RSS_1_0_Parser" />
+ <bean id="rss20Parser" class="at.newsagg.parser.RSS_2_0_Parser" />
+ <bean id="atom03Parser" class="at.newsagg.parser.Atom_0_3_Parser" />
+
+<!-- Ende RSS Parser Definitions -->
+
+
+
+
+
+
+</beans>

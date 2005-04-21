@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<configs>
+		<config>web/WEB-INF/applicationContext.xml</config>
+		<config>web/WEB-INF/applicationContext-timers.xml</config>
+		<config>web/WEB-INF/action-servlet.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>
