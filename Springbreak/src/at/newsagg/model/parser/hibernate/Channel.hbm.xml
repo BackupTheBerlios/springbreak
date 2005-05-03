@@ -29,7 +29,7 @@
             insert="true"
             column="TITLE"
             not-null="true"
-        />
+       />
 
         <property
             name="description"
@@ -54,7 +54,7 @@
             update="true"
             insert="true"
             column="SITE"
-        />
+        /> 
 
         <property
             name="creator"
@@ -86,7 +86,7 @@
             update="true"
             insert="true"
             column="FORMAT"
-        />
+        /> 
 
         <bag
             name="items"
@@ -104,7 +104,7 @@
               <one-to-many
                   class="at.newsagg.model.parser.hibernate.Item"
               />
-        </bag>
+        </bag> 
 
         <many-to-one
             name="image"
@@ -203,7 +203,7 @@
             update="true"
             insert="true"
             column="UPDATE_BASE"
-        />
+        /> 
 
         <bag
             name="comments"
@@ -220,7 +220,40 @@
               <one-to-many
                   class="at.newsagg.model.Comment"
               />
-        </bag>
+        </bag> 
+
+        <bag
+            name="logPostings"
+            table="LOG_POSTINGS"
+            lazy="true"
+            inverse="true"
+            cascade="none"
+        >
+
+              <key
+                  column="CHANNEL_ID"
+              />
+
+              <one-to-many
+                  class="at.newsagg.model.logstatistics.LogPostings"
+              />
+        </bag> 
+        <bag
+            name="logSubscribers"
+            table="LOG_SUBSCRIBERS"
+            lazy="true"
+            inverse="true"
+            cascade="none"
+        >
+
+              <key
+                  column="CHANNEL_ID"
+              />
+
+              <one-to-many
+                  class="at.newsagg.model.logstatistics.LogSubscribers"
+              />
+        </bag> 
 
         <!--
             To add non XDoclet property mappings, create a file named

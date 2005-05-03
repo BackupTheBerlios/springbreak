@@ -24,7 +24,7 @@
 //
 
 
-// $Id: Channel.java,v 1.1 2005/04/21 19:41:11 vecego Exp $
+// $Id: Channel.java,v 1.2 2005/05/03 19:28:57 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 /*
@@ -43,11 +43,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import at.newsagg.model.BaseObject;
-import at.newsagg.model.parser.*;
-
 import org.jdom.Element;
 
+import at.newsagg.model.BaseObject;
+import at.newsagg.model.parser.ChannelFormat;
+import at.newsagg.model.parser.ImageIF;
+import at.newsagg.model.parser.ItemIF;
 import at.newsagg.utils.XmlPathUtils;
 
 /**
@@ -80,6 +81,12 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
   private Date lastUpdated;
   private Date lastBuild;
   private Date pubDate;
+  
+  //Roland Vecera
+  //Log_* Classes for statistics
+  private Collection logPostings;
+  private Collection logSubscribers;
+  
 
   private String rating;
   private String generator;
@@ -88,7 +95,7 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
   private Element channelElement;
 
   // RSS 1.0 Syndication Module values
-  private String updatePeriod = UPDATE_DAILY;
+  private String updatePeriod = "daily";
   private int updateFrequency = 1;
   private Date updateBase;
 
@@ -283,20 +290,27 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
 
   public void setFormatString(String strFormat) {
     // TODO: this could be improved by a format resolver
+    if (strFormat != null)
+    {    
     if (strFormat.equals(ChannelFormat.RSS_0_90.toString())) {
-      format = ChannelFormat.RSS_0_90;
+      this.format = ChannelFormat.RSS_0_90;
     } else if (strFormat.equals(ChannelFormat.RSS_0_91.toString())) {
-      format = ChannelFormat.RSS_0_91;
+        this.format = ChannelFormat.RSS_0_91;
     } else if (strFormat.equals(ChannelFormat.RSS_0_92.toString())) {
-      format = ChannelFormat.RSS_0_92;
+        this.format = ChannelFormat.RSS_0_92;
     } else if (strFormat.equals(ChannelFormat.RSS_0_93.toString())) {
-      format = ChannelFormat.RSS_0_93;
+        this.format = ChannelFormat.RSS_0_93;
     } else if (strFormat.equals(ChannelFormat.RSS_0_94.toString())) {
-      format = ChannelFormat.RSS_0_94;
+        this.format = ChannelFormat.RSS_0_94;
     } else if (strFormat.equals(ChannelFormat.RSS_1_0.toString())) {
-      format = ChannelFormat.RSS_1_0;
+        this.format = ChannelFormat.RSS_1_0;
     } else if (strFormat.equals(ChannelFormat.RSS_2_0.toString())) {
-      format = ChannelFormat.RSS_2_0;
+        this.format = ChannelFormat.RSS_2_0;
+    }
+    }
+    else
+    {
+    this. format = ChannelFormat.UNKNOWN_CHANNEL_FORMAT;    
     }
   }
 
@@ -597,4 +611,52 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
 
 
 
+/**
+ * @hibernate.bag
+ *  table="LOG_POSTINGS"
+ *  cascade="none"
+ *  inverse="true"
+ *  orderby="date DESC"
+ *  lazy="true"
+ * @hibernate.collection-key
+ *  column="CHANNEL_ID"
+ * @hibernate.collection-one-to-many
+ *  class="at.newsagg.model.logstatistics.LogPostings"
+ *  
+ * @return Returns the logPostings.
+ */
+public Collection getLogPostings() {
+    return logPostings;
+}
+
+/**
+ * @param logPostings The logPostings to set.
+ */
+public void setLogPostings(Collection logPostings) {
+    this.logPostings = logPostings;
+}
+
+
+/**
+ * @hibernate.bag
+ *  table="LOG_SUBSCRIBERS"
+ *  cascade="none"
+ *  inverse="true"
+ *  orderby="date DESC"
+ *  lazy="true"
+ * @hibernate.collection-key
+ *  column="CHANNEL_ID"
+ * @hibernate.collection-one-to-many
+ *  class="at.newsagg.model.logstatistics.LogSubscribers"
+ * @return Returns the logSubscribers.
+ */
+public Collection getLogSubscribers() {
+    return logSubscribers;
+}
+/**
+ * @param logSubscribers The logSubscribers to set.
+ */
+public void setLogSubscribers(Collection logSubscribers) {
+    this.logSubscribers = logSubscribers;
+}
 }

@@ -1,207 +1,334 @@
-//
-// Informa -- RSS Library for Java
-// Copyright (c) 2002 by Niko Schmuck
-//
-// Niko Schmuck
-// http://sourceforge.net/projects/informa
-// mailto:niko_schmuck@users.sourceforge.net
-//
-// This library is free software.
-//
-// You may redistribute it and/or modify it under the terms of the GNU
-// Lesser General Public License as published by the Free Software Foundation.
-//
-// Version 2.1 of the license should be included with this distribution in
-// the file LICENSE. If the license is not included with this distribution,
-// you may find a copy at the FSF web site at 'www.gnu.org' or 'www.fsf.org',
-// or you may write to the Free Software Foundation, 675 Mass Ave, Cambridge,
-// MA 02139 USA.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied waranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-
-
-// $Id: ChannelIF.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
-
+/*
+ * Created on 01.05.2005
+ * king
+ * 
+ */
 package at.newsagg.model.parser;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 
+import at.newsagg.model.logstatistics.LogPostings;
+import at.newsagg.model.logstatistics.LogSubscribers;
+
 /**
- * This interface is implemented by objects representing channels in the
- * news channel object model.</p>
+ * @author king
+ * @version
+ * created on 01.05.2005 21:34:24
  *
- * @author Niko Schmuck (niko@nava.de)
  */
-public interface ChannelIF extends WithIdMIF, WithTitleMIF, WithElementsAndAttributesMIF, 
-                                   WithLocationMIF, WithCreatorMIF,  
-                                   WithDescriptionMIF, WithSiteMIF {
+public interface ChannelIF {
+    
+    // ----- Valid update period values
 
-  // ----- Valid update period values
+    /** Update of channel expected to be specified in number of hours */
+    public static final String UPDATE_HOURLY = "hourly";
 
-  /** Update of channel expected to be specified in number of hours */
-  public static final String UPDATE_HOURLY = "hourly";
+    /** Update of channel expected to be specified in number of days */
+    public static final String UPDATE_DAILY = "daily";
 
-  /** Update of channel expected to be specified in number of days */
-  public static final String UPDATE_DAILY = "daily";
+    /** Update of channel expected to be specified in number of weeks */
+    public static final String UPDATE_WEEKLY = "weekly";
 
-  /** Update of channel expected to be specified in number of weeks */
-  public static final String UPDATE_WEEKLY = "weekly";
+    /** Update of channel expected to be specified in number of months */
+    public static final String UPDATE_MONTHLY = "monthly";
 
-  /** Update of channel expected to be specified in number of months */
-  public static final String UPDATE_MONTHLY = "monthly";
+    /** Update of channel expected to be specified in number of years */
+    public static final String UPDATE_YEARLY = "yearly";
+    
+    // --------------------------------------------------------------
+    public int getIntId();
 
-  /** Update of channel expected to be specified in number of years */
-  public static final String UPDATE_YEARLY = "yearly";
+    public void setIntId(int anId);
 
-  // ----- accessors and mutators
+    public long getId();
 
-  /* Dublin Core Metadata, like Creator and Subject  */
+    public void setId(long longid);
 
-  String getLanguage();
+    /**
+     * @hibernate.property
+     *  column="TITLE"
+     *  not-null="true"
+     *  type="text"
+     *
+     * @return title.
+     */
+    public String getTitle();
 
-  void setLanguage(String language);
+    public void setTitle(String aTitle);
 
-  String getPublisher();
+    /**
+     * @hibernate.property
+     *  column="DESCRIPTION"
+     *  type="text"
+     *
+     * @return description.
+     */
+    public String getDescription();
 
-  void setPublisher(String publisher);
+    public void setDescription(String aDescription);
 
-  String getRating();
+    // We store the Location as a text string in the database, but as a URL in the memory based object.
+    public String getLocationString();
 
-  void setRating(String rating);
+    public void setLocationString(String loc) throws MalformedURLException;
 
-  String getGenerator();
+    public URL getLocation();
 
-  void setGenerator(String generator);
+    public void setLocation(URL location);
 
-  String getDocs();
+    /**
+     * @hibernate.property
+     *  column="SITE"
+     *
+     * @return URL of the site.
+     */
+    public URL getSite();
 
-  void setDocs(String docs);
+    public void setSite(URL siteUrl);
 
-  int getTtl();
+    /**
+     * @hibernate.property
+     *  column="CREATOR"
+     *  type="text"
+     * @return name of creator.
+     */
+    public String getCreator();
 
-  void setTtl(int ttl);
+    public void setCreator(String aCreator);
 
-  /**
-   * Gets the syntax format used by the channel.
-   *
-   * @return The format of the channel as specified by
-   *         the constants in {@link ChannelFormat}.
-   */
-  ChannelFormat getFormat();
+    /**
+     * @hibernate.property
+     *  column="PUBLISHER"
+     *  type="text"
+     * @return publisher.
+     */
+    public String getPublisher();
 
-  void setFormat(ChannelFormat format);
+    public void setPublisher(String aPublisher);
 
-  /**
-   * @return A collection of {@link ItemIF} objects.
-   */
-  Collection getItems();
-  void setItems(Collection anItems);
+    /**
+     * @hibernate.property
+     *  column="LANGUAGE"
+     *
+     * @return language of channel.
+     */
+    public String getLanguage();
 
-  void addItem(ItemIF item);
+    public void setLanguage(String aLanguage);
 
-  void removeItem(ItemIF item);
+    /**
+     * @hibernate.property
+     *  column="FORMAT"
+     *  type="string"
+     *
+     * @return format string.
+     */
+    public String getFormatString();
 
-  /**
-   * Returns the news item as specified by the item identifier
-   * ({@link ItemIF#getId()}).
-   * @param id the Item's id.
-   * @return the Item
-   */
-  ItemIF getItem(long id);
+    public void setFormatString(String strFormat);
 
-  /**
-   * Retrieves the Image associated with this feed. Optional
-   * @return An ImageIF representing the image associated with this feed
-   */
-  ImageIF getImage();
+    public ChannelFormat getFormat();
 
-  /**
-   * Sets the image for this feed
-   * @param image The image
-   */
-  void setImage(ImageIF image);
+    public void setFormat(ChannelFormat aFormat);
 
-  Date getLastUpdated();
+    /**
+     * @hibernate.bag
+     *  table="ITEMS"
+     *  cascade="all"
+     *  inverse="true"
+     *  lazy="true"
+     *  order-by="date DESC"
+     * @hibernate.collection-key
+     *  column="CHANNEL_ID"
+     * @hibernate.collection-one-to-many
+     *  class="at.newsagg.model.parser.hibernate.Item"
+     *
+     * @return items of channel.
+     */
+    public Collection getItems();
 
-  void setLastUpdated(Date lastUpdated);
+    public void setItems(Collection anItems);
 
-  Date getLastBuildDate();
+    public void addItem(ItemIF item);
 
-  void setLastBuildDate(Date lastBuild);
+    public void removeItem(ItemIF item);
 
-  Date getPubDate();
+    public ItemIF getItem(long itemId);
 
-  void setPubDate(Date pubDate);
+    /**
+     * @hibernate.many-to-one
+     *  column="IMAGE_ID"
+     *  class="at.newsagg.model.parser.hibernate.Image"
+     *  not-null="false"
+     *
+     * @return image.
+     */
+    public ImageIF getImage();
 
+    public void setImage(ImageIF anImage);
 
-  // RSS 1.0 Syndication Module methods
+    /**
+     * @hibernate.property
+     *  column="COPYRIGHT"
+     *
+     * @return copyright note.
+     */
+    public String getCopyright();
 
-  /**
-   * Accesses data provided by the Syndication module (will apply only
-   * to RSS 1.0+). The return type will be one of:
-   * <ul>
-   * <li>UPDATE_HOURLY</li>
-   * <li>UPDATE_DAILY</li>
-   * <li>UPDATE_WEEKLY</li>
-   * <li>UPDATE_MONTHLY</li>
-   * <li>UPDATE_YEARLY</li>
-   * <li>Null if tag not present in the RSS file</li>
-   * </ul>
-   * @return see above
-   */
-  String getUpdatePeriod();
+    public void setCopyright(String aCopyright);
 
-  /**
-   * Sets the update frequency for the feed. This information will be stored
-   * according to the Syndication Module tags. <code>updateFrequency</code>
-   * should be one of:
-   * <ul>
-   * <li>UPDATE_HOURLY</li>
-   * <li>UPDATE_DAILY</li>
-   * <li>UPDATE_WEEKLY</li>
-   * <li>UPDATE_MONTHLY</li>
-   * <li>UPDATE_YEARLY</li>
-   * <li>Null if tag not present in the RSS file</li>
-   * </ul>
-   * @param updatePeriod See above
-   */
-  void setUpdatePeriod(String updatePeriod);
+    /**
+     * @hibernate.property
+     *  column="RATING"
+     *
+     * @return rating.
+     */
+    public String getRating();
 
-  /**
-   * Accesses data provided by the Syndication module (will apply only
-   * to RSS 1.0+). Returns the number of times during the
-   * <code>updatePeriod</code> that a feed should be updated
-   * @return The number of times during <code>updatePeriod</code> to update the
-   * feed
-   * @see #setUpdatePeriod
-   * @see #getUpdatePeriod
-   */
-  int getUpdateFrequency();
+    public void setRating(String aRating);
 
-  /**
-   * Sets the number of times during <code>updatePeriod</code> that the feed
-   * should be updated
-   * @param updateFrequency number of times during <code>updatePeriod</code> to
-   * update the feed
-   */
-  void setUpdateFrequency(int updateFrequency);
+    /**
+     * @hibernate.property
+     *  column="GENERATOR"
+     *
+     * @return generator.
+     */
+    public String getGenerator();
 
-  /**
-   * Accesses data provided by the Syndication module (will apply only
-   * to RSS 1.0+). Provides the base date against which to determine the next
-   * time to update the feed.
-   * @return The date from which the next update times should be calculated
-   */
-  Date getUpdateBase();
+    public void setGenerator(String aGenerator);
 
-  /**
-   * Sets the base time against which update times should be calculated
-   * @param updateBase The base date for updates
-   */
-  void setUpdateBase(Date updateBase);
+    /**
+     * @hibernate.property
+     *  column="DOCS"
+     *
+     * @return docs.
+     */
+    public String getDocs();
+
+    public void setDocs(String aDocs);
+
+    /**
+     * @hibernate.property
+     *  column="TTL"
+     *
+     * @return TTL value.
+     */
+    public int getTtl();
+
+    public void setTtl(int aTtl);
+
+    /**
+     * @hibernate.property
+     *  column="LAST_UPDATED"
+     *
+     * @return date of last update.
+     */
+    public Date getLastUpdated();
+
+    public void setLastUpdated(Date date);
+
+    /**
+     * @hibernate.property
+     *  column="LAST_BUILD_DATE"
+     *
+     * @return date of last builing.
+     */
+    public Date getLastBuildDate();
+
+    public void setLastBuildDate(Date date);
+
+    /**
+     * @hibernate.property
+     *  column="PUB_DATE"
+     *
+     * @return publication date.
+     */
+    public Date getPubDate();
+
+    public void setPubDate(Date date);
+
+    // RSS 1.0 Syndication Module methods
+    public String getUpdatePeriod();
+
+    public void setUpdatePeriod(String anUpdatePeriod);
+
+    /**
+     * @hibernate.property
+     *  column="UPDATE_FREQUENCY"
+     *
+     * @return update frequency.
+     */
+    public int getUpdateFrequency();
+
+    public void setUpdateFrequency(int anUpdateFrequency);
+
+    /**
+     * @hibernate.property
+     *  column="UPDATE_BASE"
+     *
+     * @return update base.
+     */
+    public Date getUpdateBase();
+
+    public void setUpdateBase(Date date);
+
+    public String getElementValue(final String path);
+
+    public String[] getElementValues(final String path, final String[] elements);
+
+    public String getAttributeValue(final String path, final String attribute);
+
+    public String[] getAttributeValues(final String path,
+            final String[] attributes);
+
+    /**
+     * @hibernate.bag
+     *  table="COMMENTS"
+     *  cascade="none"
+     *  inverse="true"
+     *  orderby="addedDate DESC"
+     *  lazy="true"
+     * @hibernate.collection-key
+     *  column="CHANNEL_ID"
+     * @hibernate.collection-one-to-many
+     *  class="at.newsagg.model.Comment"
+     *
+     * @return the comments.
+     */
+    public Collection getComments();
+
+    /**
+     * @param comments The comments to set.
+     */
+    public void setComments(Collection comments);
+
+    //overwriting equals and hashCode!
+    public boolean equals(Object other);
+
+    public int hashCode();
+
+    /**
+     *  
+     * @return Returns the logPostings.
+     */
+    public Collection getLogPostings();
+
+    /**
+     * @param logPostings The logPostings to set.
+     */
+    public void setLogPostings(Collection logPostings);
+
+    /**
+     * 
+     * @return Returns the logSubscribers.
+     */
+    public Collection getLogSubscribers();
+
+    /**
+     * @param logSubscribers The logSubscribers to set.
+     */
+    public void setLogSubscribers(Collection logSubscribers);
 }
