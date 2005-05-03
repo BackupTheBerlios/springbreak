@@ -10,6 +10,7 @@ import java.util.Date;
 
 import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.FeedSubscriberIF;
+import at.newsagg.dao.DAO;
 
 /**
  * @author king

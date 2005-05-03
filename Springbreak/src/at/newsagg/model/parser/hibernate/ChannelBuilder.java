@@ -23,11 +23,12 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: ChannelBuilder.java,v 1.1 2005/04/21 19:41:11 vecego Exp $
+// $Id: ChannelBuilder.java,v 1.2 2005/05/03 19:31:54 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 
 import at.newsagg.model.parser.*;
+
 import java.net.URL;
 import java.util.Properties;
 
