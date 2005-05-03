@@ -88,7 +88,7 @@ public class CommentDAOHibernate extends HibernateDaoSupport implements CommentD
      */
     public Collection getCommentsToChannel (int channel_id)
     {
-        return getHibernateTemplate().find("from Comment c where c.channel.id like ? ordered by c.addedDate DESC",new Integer (channel_id),Hibernate.INTEGER); 
+        return getHibernateTemplate().find("from Comment c where c.channel.id like ? order by c.addedDate DESC",new Integer (channel_id),Hibernate.INTEGER); 
     }
     
     /**
@@ -120,7 +120,7 @@ public class CommentDAOHibernate extends HibernateDaoSupport implements CommentD
      */
     public Collection getCommentsByUser (int user_id)
     {
-        return getHibernateTemplate().find("from Comment c where c.user.id like ? ordered by c.addedDate DESC",new Integer (user_id),Hibernate.INTEGER); 
+        return getHibernateTemplate().find("from Comment c where c.user.id like ? order by c.addedDate DESC",new Integer (user_id),Hibernate.INTEGER); 
     }
     
 }
