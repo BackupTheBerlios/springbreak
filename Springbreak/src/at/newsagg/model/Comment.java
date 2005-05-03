@@ -10,6 +10,8 @@ import at.newsagg.model.parser.hibernate.Channel;
 /**
  * A Comment is an opinion given by a User to a Channel.
  * 
+ * 
+ * 
  * @author Roland Vecera
  * @version
  * created on 29.03.2005 16:55:07
@@ -166,4 +168,19 @@ public class Comment extends BaseObject{
     public void setUser(User user) {
         this.user = user;
     }
+    
+
+    public boolean equals(Object other) {
+        if (this==other) return true;
+        if ( !(other instanceof Comment) ) return false;
+        final Comment that = (Comment) other;
+        return this.getAddedDate().equals( that.getAddedDate()) && (this.getUser().getUsername() == that.getUser().getUsername()) && (this.getChannel().getId() == that.getChannel().getId());
+        }
+    
+    
+    
+    public int hashCode() {
+        return (this.getAddedDate().toString()+this.getUser().getUsername()+this.getChannel().getId()).hashCode();
+        
+        }
 }
