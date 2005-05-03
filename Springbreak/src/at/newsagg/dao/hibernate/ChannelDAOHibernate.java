@@ -14,8 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate.support.HibernateDaoSupport;
 
-import at.newsagg.model.parser.hibernate.Channel;
 import at.newsagg.dao.ChannelDAO;
+import at.newsagg.model.parser.hibernate.Channel;
 /**
  * Channel DAO.
  * 
@@ -41,10 +41,12 @@ public class ChannelDAOHibernate extends HibernateDaoSupport implements ChannelD
     
     public void saveOrUpdateChannel(Channel channel)
     {
+        
         getHibernateTemplate().saveOrUpdateCopy(channel);
             
         if (log.isDebugEnabled()) {
             log.debug("Channel " + channel.getLocation() + " stored!");
+            log.debug("channelid: "+channel.getId());
         } 
     }
 
