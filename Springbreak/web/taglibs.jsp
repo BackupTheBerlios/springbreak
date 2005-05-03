@@ -10,4 +10,6 @@
 <!-- Display Taglib -->
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@ taglib uri="http://springbreak.berlios.de/taglib" prefix="springbreak"%>
+<%@ taglib uri="/WEB-INF/cewolf.tld" prefix="cewolf"%>
+
 
