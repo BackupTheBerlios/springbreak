@@ -29,6 +29,8 @@
 				<value>at/newsagg/model/parser/hibernate/Item.hbm.xml</value>
 				<value>at/newsagg/model/parser/hibernate/ItemGuid.hbm.xml</value>
 				<value>at/newsagg/model/parser/hibernate/ItemMetadata.hbm.xml</value>
+				<value>at/newsagg/model/logstatistics/LogPostings.hbm.xml</value>
+				<value>at/newsagg/model/logstatistics/LogSubscribers.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -132,6 +134,27 @@
 
     </bean>
 
+<!-- Log Statistics DAO -->
+
+    <bean id="logDAOTarget" class="at.newsagg.dao.hibernate.LogDAOHibernate"> 
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+    </bean>
+
+    <bean id="logDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+         <ref local="transactionManager" /> 
+      </property> 
+      <property name="target"> 
+         <ref local="logDAOTarget" /> 
+      </property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+
 
 
     <!-- Add Managers here -->
@@ -174,6 +197,14 @@
     			<props>  
     				<prop key="*">PROPAGATION_REQUIRED</prop> 
     			</props> 
+    		</property>
+    </bean>
+
+<!-- Data Producer for Subcribers stats -->
+<bean id="subscriberStatisticData" class="at.newsagg.web.statistics.SubscriberStatisticData"> 
+    		
+    		<property name="logDAO"> 
+    			<ref local="logDAO"/>
     		</property>
     </bean>
 

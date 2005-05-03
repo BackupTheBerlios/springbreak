@@ -18,7 +18,7 @@
 		</property>
 		<property name="period">
 			<!-- time in ms -->
-			<value>300000</value>
+			<value>3000000</value>
 		</property>
 	</bean>
 
@@ -34,5 +34,53 @@
 			</list>
 		</property>
 	</bean>
+
+<!--  Alternative QUARZ-Timers; 
+Sollte mächtiger und einfacher in der Definition sein
+
+-->
+<!-- Quartz Scheduler, with pre-registered triggers --> 
+   <!-- Will automatically start scheduling on context startup --> 
+   <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+      <property name="triggers"> 
+         <list> 
+            <ref local="logTrigger"/> 
+         </list> 
+      </property> 
+   </bean>
+
+<bean id="logTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+      <property name="jobDetail"> 
+         <ref local="courseServiceInvokingJobDetail"/> 
+      </property> 
+      <property name="cronExpression">
+            <value>0 40 10 ? * MON</value>
+      </property> 
+   </bean>
+
+
+
+<bean id="courseServiceInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+<property name="targetObject">
+<ref bean="LogStatisticsCronJobService"/>
+</property>
+<property name="targetMethod">
+<value>runLogSubscribers</value>
+</property>
+</bean>
+
+
+
+
+
+<bean id="LogStatisticsCronJobService"
+		class="at.newsagg.service.impl.LogStatisticsCronJobServiceImpl">
+		<property name="channelDAO"><ref bean="channelDAO"/></property>
+		<property name="feedSubscriberDAO"><ref bean="feedSubscriberDAO"/></property>
+		<property name="logDAO"><ref bean="logDAO"/></property>
+	</bean>
 	
+
+
+
 	</beans>

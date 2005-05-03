@@ -121,6 +121,7 @@
 			<prop key="/showUser.html">userController</prop> 
 			<prop key="/showAddUser.html">userFormController</prop>
             <prop key="/showChannels.html">viewChannelsController</prop> 
+            <prop key="/showSubscribersStatistic.html">SubscribersStatisticController</prop>
 		</props>
 	   </property>
   </bean>
@@ -164,6 +165,15 @@
 			<ref bean="beanValidator"/>
 		</property-->
 	</bean>
+<!-- Roland Vecera
+30.4.2005
+Statistic Controller -->
+<bean id="SubscribersStatisticController" class="at.newsagg.web.statistics.SubscribersStatisticController">
+ <property name="subscriberStatisticData">
+			<ref bean="subscriberStatisticData"/>
+		</property> 
+
+</bean>
 
 
 <!-- Roland Vecera
