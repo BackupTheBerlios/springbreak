@@ -25,7 +25,7 @@ import at.newsagg.model.Category;
  */
 public class FeedSubscriber extends BaseObject implements FeedSubscriberIF{
     
-    private int id;
+    private int id = -1;
     
     private User user;
     private Channel channel;
