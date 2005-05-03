@@ -1,0 +1,12 @@
+Libs für CEWOLF:
+
+jfreechart-*-demo.jar
+jfreechart-*.jar
+jcommon-*.jar
+commons-logging.jar
+cewolf.jar
+batik-xml.jar
+batik-util.jar
+batik-svggen.jar
+batik-dom.jar
+batik-awt-util.jar
