@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="at.newsagg.model.logstatistics.LogSubscribers"
+        table="LOG_SUBSCRIBERS"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="id"
+            column="ID"
+            type="integer"
+            unsaved-value="-1"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <property
+            name="date"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="DATE"
+        />
+
+        <many-to-one
+            name="channel"
+            class="at.newsagg.model.parser.hibernate.Channel"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="CHANNEL_ID"
+            not-null="true"
+        />
+
+        <property
+            name="num_subscribers"
+            type="integer"
+            update="true"
+            insert="true"
+            column="NUM_SUBSCRIBERS"
+        /> 
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-LogSubscribers.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

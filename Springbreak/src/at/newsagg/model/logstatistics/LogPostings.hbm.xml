@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="at.newsagg.model.logstatistics.LogPostings"
+        table="LOG_POSTINGS"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="id"
+            column="ID"
+            type="integer"
+            unsaved-value="-1"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <many-to-one
+            name="channel"
+            class="at.newsagg.model.parser.hibernate.Channel"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="CHANNEL_ID"
+            not-null="true"
+        />
+
+        <property
+            name="date"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="DATE"
+        />
+
+        <property
+            name="num_postings"
+            type="int"
+            update="true"
+            insert="true"
+            column="NUM_POSTINGS"
+        />
+
+        <property
+            name="timespan"
+            type="int"
+            update="true"
+            insert="true"
+            column="TIMESPAN"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-LogPostings.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>
