@@ -70,7 +70,7 @@
 		<tr> 
 			<th><fmt:message key="user.secondPassword"/>: </th> 
 			<td> 
-				<spring:bind path="user.user.password"> 
+				<spring:bind path="user.secondPassword"> 
 					<input type="password" name="${status.expression}" value="${status.value}"/> 
 					<span class="fieldError">${status.errorMessage}</span> 
 				</spring:bind>

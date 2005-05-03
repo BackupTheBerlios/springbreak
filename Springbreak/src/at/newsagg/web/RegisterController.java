@@ -50,7 +50,7 @@ public class RegisterController extends SimpleFormController {
 	throws Exception { 
 		RegisterCommand userFormCmd = (RegisterCommand) command;
 		User registerData = userFormCmd.getUser();
-	
+		
 		// check if username exists
 		User user =  mgr.checkUser(registerData.getUsername());
 		if (user != null) {
@@ -72,4 +72,4 @@ public class RegisterController extends SimpleFormController {
 		cmd.setUser(new User());
 		return cmd;
 	} 
-}
+} 
