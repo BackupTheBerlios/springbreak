@@ -128,7 +128,12 @@
 
 	<bean id="loginInterceptor" class="at.newsagg.web.LoginInterceptor"/>
 	
-	<bean id="mainController" class="at.newsagg.web.MainController"/>
+	<bean id="mainController" class="at.newsagg.web.MainController">
+			<property name="feedSubscriberDAO">
+				<ref bean="feedSubscriberDAO"/>
+			</property>	
+
+	</bean>
 	
 	<bean id="showAddController" class="at.newsagg.web.ShowAddController"/>
 	
