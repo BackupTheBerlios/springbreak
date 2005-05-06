@@ -5,6 +5,8 @@
  */
 package at.newsagg.dao.hibernate;
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate.support.HibernateDaoSupport;
@@ -64,4 +66,8 @@ public class CategoryDAOHibernate extends HibernateDaoSupport implements Categor
         // u.id = ?", new Integer(id)).get(0);
 
     }
+
+
+   
+    
 }
