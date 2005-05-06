@@ -15,8 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import de.laures.cewolf.DatasetProduceException;
-
 
 
 /**
@@ -37,17 +35,27 @@ public class SubscribersStatisticController implements Controller{
     
     {
         
-     
+     /**
+      * TODO: validation if this values are available
+      * is "implements Controller" what I want?!
+      * 
+      * Roland Vecera
+      * 06.Mai 2005
+      */
            HashMap h = new HashMap();
-           h.put("channel_id", new Integer(7));
-           h.put("numberWeeks", new Integer(15));
+           log.debug(request.getParameter("channel_id"));
+           
+           h.put("channel_id", Integer.valueOf(request.getParameter("channel_id")));
+           h.put("numberWeeks", Integer.valueOf(request.getParameter("numberWeeks")));
+           /**
+            * TODO: internationalisiere:
+            */
            h.put("seriesName", "Number of Subcribers of feed");
            log.debug("ID: "+h.get("channel_id")+" WEEKS:"+h.get("numberWeeks"));
            //set parameters which should produce data
            this.subscriberStatisticData.setMap(h);
            
-           //dont call that: obviously the produceDataset-Method is called by jsp-tags
-           //subscriberStatisticData.produceDataset(h);
+          
     
         
     
