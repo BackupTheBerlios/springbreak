@@ -93,14 +93,14 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
     }
 
     /**
-     * Returns all FeedSubscriber to a given User.
+     * Returns all FeedSubscriber to a given User order by category title.
      * 
      * @param username
      * @return
      */
     public Collection getFeedSubscriberByUser(String username) {
         return getHibernateTemplate().find(
-                "from FeedSubscriber f where f.user.username like ?", username,
+                "from FeedSubscriber f where f.user.username like ? order by f.category.title", username,
                 Hibernate.STRING);
     }
 
@@ -240,7 +240,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
             if (i < fs.length - 1)
                 query = query + " or";
         }
-        query = query + " order by i.found DESC limit " + numberHottest;
+        query = query + " order by i.date DESC limit " + numberHottest;
         logger.info(query);
 
         return (Collection) getHibernateTemplate().find(query);
@@ -267,7 +267,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         logger.info("channels found " + c.size());
         Object[] fs = c.toArray();
 
-        String query = " from Item i where i.found >= ?  and (";
+        String query = " from Item i where i.date >= ?  and (";
         for (int i = 0; i < fs.length; i++) {
             logger.info("Channel: "
                     + ((FeedSubscriber) fs[i]).getChannel().getId());
@@ -276,7 +276,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
             if (i < fs.length - 1)
                 query = query + " or";
         }
-        query = query + ") order by i.found DESC";
+        query = query + ") order by i.date DESC";
         logger.info(query);
 
         //set since in query!
@@ -311,7 +311,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         }
 
         String query = " from Item i where" + " i.channel = ? "
-                + " order by i.found DESC limit " + numberHottest;
+                + " order by i.date DESC limit " + numberHottest;
         logger.info(query);
 
         return (Collection) getHibernateTemplate().find(query,
@@ -343,7 +343,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
             if (i < fs.length - 1)
                 query = query + " or";
         }
-        query = query + ") order by i.found DESC limit " + numberHottest;
+        query = query + ") order by i.date DESC limit " + numberHottest;
         logger.info(query);
 
         return (Collection) getHibernateTemplate().find(query);
@@ -370,8 +370,8 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
                     + " on Channel " + channel_id);
             return null;
         }
-        String query = " from Item i where i.found >= ?  and ("
-                + " i.channel = ? " + " order by i.found DESC";
+        String query = " from Item i where i.date >= ?  and ("
+                + " i.channel = ? " + " order by i.date DESC";
         logger.info(query);
 
         Object[] o = { since, new Integer(channel_id) };
@@ -397,7 +397,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         logger.info("channels found " + c.size());
         Object[] fs = c.toArray();
 
-        String query = " from Item i where i.found >= ?  and (";
+        String query = " from Item i where i.date >= ?  and (";
         for (int i = 0; i < fs.length; i++) {
             logger.info("Channel: "
                     + ((FeedSubscriber) fs[i]).getChannel().getId());
@@ -406,7 +406,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
             if (i < fs.length - 1)
                 query = query + " or";
         }
-        query = query + ") order by i.found DESC";
+        query = query + ") order by i.date DESC";
         logger.info(query);
 
         //set since in query!
