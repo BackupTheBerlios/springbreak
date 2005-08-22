@@ -93,14 +93,14 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
     }
 
     /**
-     * Returns all FeedSubscriber to a given User order by category title.
+     * Returns all FeedSubscriber to a given User order by category.title, channel.title.
      * 
      * @param username
      * @return
      */
     public Collection getFeedSubscriberByUser(String username) {
         return getHibernateTemplate().find(
-                "from FeedSubscriber f where f.user.username like ? order by f.category.title", username,
+                "from FeedSubscriber f where f.user.username like ? order by f.category.title, f.channel.title", username,
                 Hibernate.STRING);
     }
 
@@ -295,27 +295,31 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
      * Returns null if user not subscribed on Channel.
      * 
      * @param username
-     * @param numberHottest
      * @param channel_id
+     * @param numberHottest
      * @return
      */
-    public Collection getHottestItemsForUserByChannel(String username,
-            int numberHottest, int channel_id) {
+    public Collection getHottestItemsForUserByChannel(String username, int channel_id,
+            int numberHottest) {
         FeedSubscriber f = null;
-        try {
+        logger.info("getHottestItemsForUserByChannel");
+        /*
+         * TODO: warum hole ich mir eigentlich das ganze channelobject? unnötig?
+         */
+       /* try {
             f = this.getFeedSubscriberForUserOnChannel(username, channel_id);
         } catch (IndexOutOfBoundsException e) {
             logger.warn("no FeedSubscribe found for User " + username
                     + " on Channel " + channel_id);
             return null;
-        }
+        }*/
 
         String query = " from Item i where" + " i.channel = ? "
                 + " order by i.date DESC limit " + numberHottest;
         logger.info(query);
 
         return (Collection) getHibernateTemplate().find(query,
-                new Long(f.getChannel().getIntId()), Hibernate.INTEGER);
+                new Integer(channel_id), Hibernate.INTEGER);
     }
 
     /**
@@ -334,7 +338,7 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         logger.info("channels found " + c.size());
         Object[] fs = c.toArray();
 
-        String query = " from Item i  (";
+        String query = " from Item i  where (";
         for (int i = 0; i < fs.length; i++) {
             logger.info("Channel: "
                     + ((FeedSubscriber) fs[i]).getChannel().getId());

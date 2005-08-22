@@ -32,9 +32,22 @@ public class StarsTEI extends TagExtraInfo {
         /*
          * value must be a Float >= 0
          */
-       Object o = data.getAttribute("value");
-       float value = Float.parseFloat((String)o);
-       if ((o == null) ||  (value < 0))
+      
+       float value;
+    try {
+        
+        
+        
+        
+        
+        
+        value = Float.valueOf((String)data.getAttribute("value")).floatValue();
+    } catch (NumberFormatException e) {
+        value = 0;
+        e.printStackTrace();
+        return true;
+    }
+    if (value < 0)
        {
            return false;
        }
@@ -42,6 +55,7 @@ public class StarsTEI extends TagExtraInfo {
        /*
         *numberOfStars must be 1 at least! 
         */
+    Object o;
        o = data.getAttribute("numberOfStars");
        byte numberStars = Byte.parseByte((String)o);
        if ((o == null) || (numberStars < 1))

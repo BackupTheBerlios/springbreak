@@ -142,12 +142,12 @@ public interface FeedSubscriberDAO extends DAO{
      * Returns null if user not subscribed on Channel.
      * 
      * @param username
-     * @param numberHottest
      * @param channel_id
+     * @param numberHottest
      * @return
      */
-    public Collection getHottestItemsForUserByChannel(String username,
-            int numberHottest, int channel_id);
+    public Collection getHottestItemsForUserByChannel(String username, int channel_id ,
+            int numberHottest);
 
     /**
      * Returns a number=numberhottest Items for a given User in his/her

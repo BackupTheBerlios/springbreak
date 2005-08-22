@@ -17,6 +17,7 @@ import at.newsagg.model.User;
 public class MainController implements Controller { 
 	private static Log log = LogFactory.getLog(MainController.class);
 	private FeedSubscriberDAO feedSubscriberDAO;
+	private short HOTTEST;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 		UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -26,8 +27,17 @@ public class MainController implements Controller {
 		 
 		//add all feedSubscribes to output in View
 		mv.addObject("feedSubscribes",feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
-		//add 50 hottest items to output in View
-		mv.addObject("items",feedSubscriberDAO.getHottestItemsForUser(user.getUsername(),50));
+		
+		//hottest items to given channel
+		if (request.getParameter("channel_id") != null)
+		    mv.addObject("items",this.feedSubscriberDAO.getHottestItemsForUserByChannel(user.getUsername(),Integer.parseInt(request.getParameter("channel_id")),this.HOTTEST));
+		//hottest items to given category
+		else
+		    if (request.getParameter("category_id") != null)
+		        mv.addObject("items",feedSubscriberDAO.getHottestItemsForUserByCategory(user.getUsername(),Integer.parseInt(request.getParameter("category_id")),this.HOTTEST));
+		//add HOTTEST items to output in View (in any subscribed feed)
+		else
+		    mv.addObject("items",feedSubscriberDAO.getHottestItemsForUser(user.getUsername(),50));
 		
 		return mv;
 		
@@ -44,5 +54,17 @@ public class MainController implements Controller {
      */
     public void setFeedSubscriberDAO(FeedSubscriberDAO feedSubscriberDAO) {
         this.feedSubscriberDAO = feedSubscriberDAO;
+    }
+    /**
+     * @return Returns the hOTTEST.
+     */
+    public short getHOTTEST() {
+        return HOTTEST;
+    }
+    /**
+     * @param hottest The hOTTEST to set.
+     */
+    public void setHOTTEST(short hottest) {
+        HOTTEST = hottest;
     }
 }

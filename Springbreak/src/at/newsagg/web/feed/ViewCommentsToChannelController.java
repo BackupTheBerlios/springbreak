@@ -43,8 +43,11 @@ public class ViewCommentsToChannelController implements Controller {
      if (countReviews > 0)
      {    
       float avgReview = commentDAO.getAVGRatingToChannel(channel.getIntId()); 
-     mv.addObject("avgRating", new Float (avgReview));
+      log.debug("AvgRating for Channel "+channel.getTitle()+": "+avgReview);
+      mv.addObject("avgRating", new Float (avgReview));
      }
+     else
+         mv.addObject("avgRating", new Float(0));  
      return     mv;
     }
     
