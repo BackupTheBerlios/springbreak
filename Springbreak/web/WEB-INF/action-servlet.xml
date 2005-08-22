@@ -116,11 +116,13 @@
             <prop key="/subscribeChannel.html">SubscribeChannel</prop>
 			<prop key="/addChannel.html">AddChannel</prop>
             <prop key="/addComment.html">AddComment</prop>
+<!-- http://localhost:8080/springbreak//showCommentsToChannel.html?id=7 -->
             <prop key="/showCommentsToChannel.html">ShowCommentsToChannel</prop>
 			<prop key="/main.html">mainController</prop> 
 			<prop key="/showUser.html">userController</prop> 
 			<prop key="/showAddUser.html">userFormController</prop>
             <prop key="/showChannels.html">viewChannelsController</prop> 
+<!-- so: http://localhost:8080/springbreak/showSubscribersStatistic.html?channel_id=7&numberWeeks=30 -->
             <prop key="/showSubscribersStatistic.html">SubscribersStatisticController</prop>
 		</props>
 	   </property>
@@ -131,6 +133,9 @@
 	<bean id="mainController" class="at.newsagg.web.MainController">
 			<property name="feedSubscriberDAO">
 				<ref bean="feedSubscriberDAO"/>
+			</property>
+			<property name="HOTTEST">
+				<value>50</value>
 			</property>	
 
 	</bean>
