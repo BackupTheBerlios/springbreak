@@ -70,11 +70,31 @@
 
     <!-- Feed DAOs
          Roland Vecera 20.3.2005 -->
-    <bean id="channelDAO" class="at.newsagg.dao.hibernate.ChannelDAOHibernate"> 
+    <bean id="channelDAOTarget" class="at.newsagg.dao.hibernate.ChannelDAOHibernate"> 
     	<property name="sessionFactory"> 
     		<ref local="sessionFactory"/> 
     	</property> 
     </bean>
+
+	<bean id="channelDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+         <ref local="transactionManager" /> 
+      </property> 
+      <property name="target"> 
+         <ref local="channelDAOTarget" /> 
+      </property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop> 
+         </props> 
+      </property>
+    </bean>
+
+
+
     <bean id="itemDAO" class="at.newsagg.dao.hibernate.ItemDAOHibernate"> 
     	<property name="sessionFactory"> 
     		<ref local="sessionFactory"/> 
@@ -106,11 +126,24 @@
 
 
 
-   <bean id="categoryDAO" class="at.newsagg.dao.hibernate.CategoryDAOHibernate"> 
+   <bean id="categoryDAOTarget" class="at.newsagg.dao.hibernate.CategoryDAOHibernate"> 
     	<property name="sessionFactory"> 
     		<ref local="sessionFactory"/> 
     	</property> 
     </bean>
+
+   <bean id="categoryDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    		<property name="transactionManager"> <ref local="transactionManager"/></property> 
+    		<property name="target"> <ref local="categoryDAOTarget"/> </property> 
+    		<property name="transactionAttributes"> 
+    			<props> 
+    				<prop key="save*">PROPAGATION_REQUIRED</prop>
+                    <prop key="update*">PROPAGATION_REQUIRED</prop>  
+    				<prop key="remove*">PROPAGATION_REQUIRED</prop> 
+    				<prop key="*">PROPAGATION_REQUIRED</prop> 
+    			</props> 
+    		</property>
+   </bean>
 
    <bean id="commentDAOTarget" class="at.newsagg.dao.hibernate.CommentDAOHibernate"> 
     	<property name="sessionFactory"> 
