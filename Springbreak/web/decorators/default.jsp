@@ -9,6 +9,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link href="${ctx}/styles/global.css" type="text/css" rel="stylesheet"/>
+    
+    <link href="${ctx}/styles/ajaxtags-sample.css" type="text/css" rel="stylesheet"/>
     <link href="${ctx}/images/favicon.ico" rel="SHORTCUT ICON"/>
     <decorator:head/>
 </head>
