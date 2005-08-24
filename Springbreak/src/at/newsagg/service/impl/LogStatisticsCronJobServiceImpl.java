@@ -24,7 +24,7 @@ import at.newsagg.model.parser.hibernate.Channel;
  *
  */
 public class LogStatisticsCronJobServiceImpl {
-    
+     
     private ChannelDAO channelDAO;
     private FeedSubscriberDAO feedSubscriberDAO;
     private LogDAO logDAO;

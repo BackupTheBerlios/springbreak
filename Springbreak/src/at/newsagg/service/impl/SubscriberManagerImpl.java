@@ -28,7 +28,7 @@ import at.newsagg.service.SubscriberManager;
  *
  */
 public class SubscriberManagerImpl implements SubscriberManager {
-    
+     
     private static Log log = LogFactory.getLog(SubscriberManagerImpl.class); 
 	private FeedSubscriberDAO feedDAO;
 	private UserDAO userDAO;

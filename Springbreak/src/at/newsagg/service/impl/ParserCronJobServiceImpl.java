@@ -31,7 +31,7 @@ import at.newsagg.service.ParserCronJobService;
 public class ParserCronJobServiceImpl extends TimerTask implements
         ParserCronJobService {
     private static Log log = LogFactory.getLog(ParserCronJobServiceImpl.class);
-
+ 
     private ChannelDAO channelDao;
 
     private ItemDAO itemDao;
