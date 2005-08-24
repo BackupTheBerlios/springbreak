@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: RSS_1_0_Parser.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+// $Id: RSS_1_0_Parser.java,v 1.2 2005/08/24 08:39:39 vecego Exp $
 
 //Simplified for use in Springbreak
 // comment out: <source> and <textinput> is not longer parsed
@@ -345,6 +345,7 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 		}//End While = END <items>
 
 		// image element
+		/*
 		Element image = root.getChild("image", defNS);
 		if (image != null) {
 			ImageIF rssImage = ChannelBuilder.createImage(image.getChildTextTrim(
@@ -374,7 +375,7 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 			}
 			chnl.setImage(rssImage);
 		}
-
+*/
 		/*
 		 * This Element not currently set/used in or Application For Simplicity
 		 * we do not persist this Information in DB

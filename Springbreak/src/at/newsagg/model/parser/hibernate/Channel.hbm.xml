@@ -106,16 +106,7 @@
               />
         </bag> 
 
-        <many-to-one
-            name="image"
-            class="at.newsagg.model.parser.hibernate.Image"
-            cascade="none"
-            outer-join="auto"
-            update="true"
-            insert="true"
-            column="IMAGE_ID"
-            not-null="false"
-        />
+       
 
         <property
             name="copyright"

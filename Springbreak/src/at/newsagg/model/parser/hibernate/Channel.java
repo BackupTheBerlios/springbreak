@@ -24,7 +24,7 @@
 //
 
 
-// $Id: Channel.java,v 1.2 2005/05/03 19:28:57 vecego Exp $
+// $Id: Channel.java,v 1.3 2005/08/24 08:38:59 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 /*
@@ -371,11 +371,11 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
     return theItem;
   }
 
-  /**
-   * @hibernate.many-to-one
+  /*
+   * vec@hibernate.many-to-one
    *  column="IMAGE_ID"
    *  class="at.newsagg.model.parser.hibernate.Image"
-   *  not-null="false"
+   *  not-null="true"
    *
    * @return image.
    */

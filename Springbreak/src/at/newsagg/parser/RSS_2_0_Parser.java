@@ -344,7 +344,7 @@ class RSS_2_0_Parser implements RSS_2_0_ParserIF {
     }//end while
     
     //END parsing <item>-tags
-    
+    /*
 
     // 0..1 image element
     Element image = channel.getChild("image", defNS);
@@ -375,7 +375,7 @@ class RSS_2_0_Parser implements RSS_2_0_ParserIF {
         rssImage.setDescription(imgDescr.getTextTrim());
       }
       chnl.setImage(rssImage);
-    }
+    }*/
 /*
  * This Element not currently set/used in or Application For
 			 * Simplicity we do not persist this Information in DB
