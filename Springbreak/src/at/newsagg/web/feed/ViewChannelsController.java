@@ -28,7 +28,7 @@ public class ViewChannelsController implements Controller {
     	private ChannelDAO channelDAO;
     	
     	
-    	
+    	 
     	
         /**
          * @return Returns the channelDAO.

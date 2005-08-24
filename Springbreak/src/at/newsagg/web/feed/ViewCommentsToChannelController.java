@@ -29,7 +29,7 @@ public class ViewCommentsToChannelController implements Controller {
     
     private ChannelDAO channelDAO;
     private CommentDAO commentDAO;
-    
+     
     
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response)

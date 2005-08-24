@@ -38,7 +38,7 @@ public class SubscribeChannelController extends SimpleFormController {
     private FeedSubscriberDAO feedSubscriberDAO;
 
     private CategoryDAO categoryDAO;
-
+ 
     private ChannelDAO channelDAO;
 
     private UserDAO userDAO;

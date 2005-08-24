@@ -33,7 +33,7 @@ public class AddChannelController extends SimpleFormController {
     private ParserCronJobService parserService;
     private UserManager userManager;
     private UserDAO userDAO;
-
+ 
     /**
      * @return Returns the userDAO.
      */
