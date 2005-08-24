@@ -68,6 +68,13 @@ public interface ChannelDAO {
     public abstract List getChannels();
     
     /**
+     * Get all Channels where locationString LIKE startswith% order by titlel limit by limit.
+     * 
+     * @return
+     */
+    public List getChannels(String startswith, int limit);
+    
+    /**
      * Free Object from Hibernate Session cache.
      * @param o
      */

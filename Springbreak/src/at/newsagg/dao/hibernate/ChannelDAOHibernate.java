@@ -112,6 +112,17 @@ public class ChannelDAOHibernate extends HibernateDaoSupport implements ChannelD
     public List getChannels() {
         return getHibernateTemplate().find("from Channel order by title");
     }
+    
+    /**
+     * Get all Channels where locationString LIKE startswith% order by locationString LIMIT limit.
+     * 
+     * @return
+     */
+    public List getChannels(String startswith, int limit) {
+        String query = "from Channel as c where c.locationString like '"+startswith+"%' order by c.locationString limit "+limit;
+        log.debug(query);
+        return getHibernateTemplate().find(query);
+    }
 
     /**
      * Free Object from Hibernate Session cache.
