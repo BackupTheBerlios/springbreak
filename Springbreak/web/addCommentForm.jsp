@@ -34,7 +34,7 @@ TODO: was macht onsubmit="return validateChannel(this)
 		</tr> 
 		<tr> 
 			<td>
-				Title 
+				Text
 			</td> 
 			<td> 
 				

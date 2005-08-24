@@ -1,4 +1,7 @@
 <%@ include file="/taglibs.jsp"%> 
+<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
+<script type="text/javascript" src="./ajaxcore.js"></script>
+
 <title>Springbreak AddFeed</title> 
 <p>Fill in Channel Info: </p> 
 
@@ -21,8 +24,8 @@ TODO: was macht onsubmit="return validateChannel(this)
 			<td> 
 				
 				<spring:bind path="channel.locationString">
-	               <input type="text" name="locationString" value="URL here"/>
-	              
+	               <input id="url" type="text" name="locationString" autocomplete="off" value="URL here"/>
+	               
 	            </spring:bind>
 			</td>
 			
@@ -33,6 +36,14 @@ TODO: was macht onsubmit="return validateChannel(this)
 			
 	</table> 
 </form> 
+<ajax:autocomplete
+  fieldId="url"
+  popupId="url-popup"
+  targetId="url"
+  paramName ="input"
+  baseUrl="./autocompleteFeed.html"
+  className="autocomplete"
+  progressStyle="throbbing" />
 <content tag="underground">
 
 <strong><fmt:message key="common.newsagg"/></strong>
