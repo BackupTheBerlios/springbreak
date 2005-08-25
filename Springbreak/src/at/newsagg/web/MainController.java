@@ -10,13 +10,27 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.util.WebUtils;
 
 import at.newsagg.dao.FeedSubscriberDAO;
-import at.newsagg.dao.hibernate.FeedSubscriberDAOHibernate;
+import at.newsagg.dao.ItemDAO;
 import at.newsagg.model.User;
 
 
 public class MainController implements Controller { 
 	private static Log log = LogFactory.getLog(MainController.class);
 	private FeedSubscriberDAO feedSubscriberDAO;
+	private ItemDAO itemDAO;
+	
+    /**
+     * @return Returns the itemDAO.
+     */
+    public ItemDAO getItemDAO() {
+        return itemDAO;
+    }
+    /**
+     * @param itemDAO The itemDAO to set.
+     */
+    public void setItemDAO(ItemDAO itemDAO) {
+        this.itemDAO = itemDAO;
+    }
 	private short HOTTEST;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
@@ -26,6 +40,8 @@ public class MainController implements Controller {
 		ModelAndView mv =  new ModelAndView("main", "user", user);
 		 
 		//add all feedSubscribes to output in View
+		
+		//
 		mv.addObject("feedSubscribes",feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
 		
 		//hottest items to given channel
@@ -37,8 +53,10 @@ public class MainController implements Controller {
 		        mv.addObject("items",feedSubscriberDAO.getHottestItemsForUserByCategory(user.getUsername(),Integer.parseInt(request.getParameter("category_id")),this.HOTTEST));
 		//add HOTTEST items to output in View (in any subscribed feed)
 		else
-		    mv.addObject("items",feedSubscriberDAO.getHottestItemsForUser(user.getUsername(),50));
-		
+		{
+		    log.info("richtig?");
+		    mv.addObject("items",itemDAO.getItemsForUser(user.getUsername(),(int)this.HOTTEST));
+		}
 		return mv;
 		
 		
