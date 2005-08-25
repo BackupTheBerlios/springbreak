@@ -5,8 +5,9 @@
  */
 package at.newsagg.dao;
 
-import net.sf.hibernate.Hibernate;
-import at.newsagg.model.parser.hibernate.Channel;
+import java.util.Collection;
+
+import at.newsagg.model.UserReadItem;
 import at.newsagg.model.parser.hibernate.Item;
 
 /**
@@ -46,4 +47,8 @@ public interface ItemDAO {
      * @return
      */
     public long getIDfromItemwithURL (String url);
+    
+    public void saveUserReadItem(UserReadItem i);
+    public Collection getItemsForUser(String username, int limit) throws IndexOutOfBoundsException;
+    public int removeUserReadItem (String username, long itemid);
 }

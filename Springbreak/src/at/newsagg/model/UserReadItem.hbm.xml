@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+
+<hibernate-mapping>
+    <class
+        name="at.newsagg.model.UserReadItem"
+        table="USERSREADITEMS"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="id"
+            column="ID"
+            type="long"
+            unsaved-value="-1"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <many-to-one
+            name="item"
+            class="at.newsagg.model.parser.hibernate.Item"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="ITEM_ID"
+            not-null="true"
+        />
+ 		<many-to-one
+            name="user"
+            class="at.newsagg.model.User"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            column="username"
+            not-null="true"
+        />
+
+        <property
+            name="read"
+            type="boolean"
+            update="true"
+            insert="true"
+            column="read"
+            not-null="true"
+        />
+
+       
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-Item.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

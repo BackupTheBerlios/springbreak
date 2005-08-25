@@ -108,6 +108,23 @@
             column="COMMENTS"
         />
 
+	<bag
+            name="usersReadItem"
+            table="USERSREADITEMS"
+            lazy="true"
+            inverse="true"
+            cascade="none"     
+        >
+
+              <key
+                  column="ITEM_ID"
+              />
+
+              <one-to-many
+                  class="at.newsagg.model.UserReadItem"
+              />
+        </bag>
+
         <!--
             To add non XDoclet property mappings, create a file named
                 hibernate-properties-Item.xml

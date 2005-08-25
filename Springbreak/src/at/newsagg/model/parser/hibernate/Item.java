@@ -24,12 +24,13 @@
 //
 
 
-// $Id: Item.java,v 1.1 2005/04/21 19:41:11 vecego Exp $
+// $Id: Item.java,v 1.2 2005/08/25 19:40:44 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -37,7 +38,10 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 
 import at.newsagg.model.BaseObject;
-import at.newsagg.model.parser.*;
+import at.newsagg.model.UserReadItem;
+import at.newsagg.model.parser.ChannelIF;
+import at.newsagg.model.parser.ItemGuidIF;
+import at.newsagg.model.parser.ItemIF;
 import at.newsagg.utils.XmlPathUtils;
 
 //Roland Vecera
@@ -71,11 +75,29 @@ public class Item  extends BaseObject implements ItemIF, java.io.Serializable {
   private URL comments;
   private ChannelIF channel;
   private Element itemElement;
-
+  private Collection usersReadItem;
+  //not persisted; is true, if a User has already read the article
+  //set in ItemDAO!
+  private boolean read = false;
   
-  public Item ()
+  public Item()
   {
-      }
+      read=false;
+  }
+
+/**
+ * @return Returns the read.
+ */
+public boolean getRead() {
+    return read;
+}
+/**
+ * @param read The read to set.
+ */
+public void setRead(boolean read) {
+    this.read = read;
+}
+
 
   public Item(String title, String description, URL link) {
     this(null, null, title, description, link);
@@ -320,4 +342,16 @@ public class Item  extends BaseObject implements ItemIF, java.io.Serializable {
       }
 
 
+/**
+ * @return Returns the usersReadItem.
+ */
+public Collection getUsersReadItem() {
+    return usersReadItem;
+}
+/**
+ * @param usersReadItem The usersReadItem to set.
+ */
+public void setUsersReadItem(Collection usersReadItem) {
+    this.usersReadItem = usersReadItem;
+}
 }
