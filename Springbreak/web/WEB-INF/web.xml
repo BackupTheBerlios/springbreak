@@ -5,15 +5,17 @@
     java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
 
     <display-name>Springbreak Newsagg</display-name>
+
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>
-    
+   
     <context-param> 
     	<param-name>contextConfigLocation</param-name> 
+<!-- /WEB-INF/applicationContext-timers.xml -->
     	<param-value> 
-    		/WEB-INF/applicationContext.xml /WEB-INF/applicationContext-timers.xml /WEB-INF/action-servlet.xml 
+    		/WEB-INF/applicationContext.xml /WEB-INF/action-servlet.xml 
     	</param-value> 
     </context-param>
     
@@ -24,7 +26,7 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping> 
- 
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -55,12 +57,21 @@
 	<servlet>
 		<servlet-name>CewolfServlet</servlet-name>
 		<servlet-class>de.laures.cewolf.CewolfRenderer</servlet-class>
-
 	<init-param>
         <param-name>overliburl</param-name>
         <param-value>overlib.js</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+  		<servlet-name>dwr-invoker</servlet-name>
+ 		 <display-name>DWR Servlet</display-name>
+  		<servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+  		<init-param>
+     		<param-name>debug</param-name>
+     		<param-value>true</param-value>
+  		</init-param>
 	</servlet>
 
     <servlet>
@@ -79,7 +90,12 @@
     	<servlet-name>CewolfServlet</servlet-name>
     	<url-pattern>/cewolf/*</url-pattern>
 	</servlet-mapping>
-
+	
+	<servlet-mapping>
+  		<servlet-name>dwr-invoker</servlet-name>
+  		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	
     <error-page>
         <error-code>404</error-code>
         <location>/404.jsp</location>  
