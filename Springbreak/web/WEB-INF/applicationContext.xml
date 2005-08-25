@@ -17,10 +17,12 @@
 
     <!-- Hibernate SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean">
-        <property name="dataSource"><ref local="dataSource"/></property>
+       
+		<property name="dataSource"><ref local="dataSource"/></property>
         <property name="mappingResources">
             <list>
                 <value>at/newsagg/model/User.hbm.xml</value>
+				<value>at/newsagg/model/UserReadItem.hbm.xml</value>
                 <value>at/newsagg/model/Category.hbm.xml</value>
  				<value>at/newsagg/model/Comment.hbm.xml</value>
                 <value>at/newsagg/model/FeedSubscriber.hbm.xml</value>
@@ -38,6 +40,7 @@
             <!-- <prop key="hibernate.dialect">net.sf.hibernate.dialect.HSQLDialect</prop>-->
             <prop key="hibernate.dialect">net.sf.hibernate.dialect.PostgreSQLDialect</prop>
             <prop key="hibernate.hbm2ddl.auto">update</prop>
+			<prop key="hibernate.show_sql">true</prop>
         </props>
         </property>
     </bean>
@@ -93,9 +96,26 @@
       </property>
     </bean>
 
+	<bean id="itemDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+         <ref local="transactionManager" /> 
+      </property> 
+      <property name="target"> 
+         <ref local="itemDAOTarget" /> 
+      </property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
 
 
-    <bean id="itemDAO" class="at.newsagg.dao.hibernate.ItemDAOHibernate"> 
+
+    <bean id="itemDAOTarget" class="at.newsagg.dao.hibernate.ItemDAOHibernate"> 
     	<property name="sessionFactory"> 
     		<ref local="sessionFactory"/> 
     	</property> 

@@ -265,8 +265,9 @@ function autocomplete(id, popupId, targetId, uri, paramName, postFunc, progressS
   var items = new Array();
   var current = 0;
   var originalPopupTop = popup.offsetTop;
-  
+ 
   function constructUri() {
+  
     var separator = "?";
     if (uri.indexOf("?") >= 0)
         separator = "&";
@@ -539,6 +540,7 @@ function populateSelect(id, targetId, uri, paramName, postFunc, emptyFunc, error
 // ON/OFF TOGGLE
 //
 function toggle(imgId, targetId, stateId, uri, paramName, imageOn, imageOff, postFunc, emptyFunc, errorFunc) {
+  //alert("here");
   var imageElem = document.getElementById(imgId);
   var targetElem = document.getElementById(targetId);
   var stateIdElem = document.getElementById(stateId);
@@ -550,6 +552,7 @@ function toggle(imgId, targetId, stateId, uri, paramName, imageOn, imageOff, pos
     var separator = "?";
     if (uri.indexOf("?") >= 0)
         separator = "&";
+   // alert (uri);
     return uri
       + separator
       + paramName
@@ -558,7 +561,7 @@ function toggle(imgId, targetId, stateId, uri, paramName, imageOn, imageOff, pos
   }
 
   function handleClick(e) {
-   
+   // alert ("click");
     var updater = liveUpdater(constructUri, handlerFunc, null, emptyFunc, errorFunc);
     var timeout = window.setTimeout(updater, 0);
   }

@@ -124,13 +124,14 @@
 				Interceptor, sodaß auf alle diese Seiten nur eingeloggte User dürfen!
 				Roland Vecera; August 2005
 			-->
-              <ref bean="loginInterceptor"/>
+              <ref bean="loginInterceptor"/> 
          </list>
        </property>
        <property name="mappings">
 		<props>
 			<prop key="/ajaxtest.html">AjaxTest</prop>
 			<prop key="/autocompleteFeed.html">AutoCompleteURL</prop>
+			<prop key="/readFeedItem.html">ReadFeedItem</prop>
             <prop key="/subscribeChannel.html">SubscribeChannel</prop>
 			<prop key="/addChannel.html">AddChannel</prop>
 			<prop key="/addCategory.html">AddCategory</prop>
@@ -143,6 +144,7 @@
             <prop key="/showChannels.html">viewChannelsController</prop> 
 			<!-- so: http://localhost:8080/springbreak/showSubscribersStatistic.html?channel_id=7&numberWeeks=30 -->
             <prop key="/showSubscribersStatistic.html">SubscribersStatisticController</prop>
+		
 		</props>
 	   </property>
   </bean>
@@ -153,6 +155,11 @@
 			<property name="feedSubscriberDAO">
 				<ref bean="feedSubscriberDAO"/>
 			</property>
+			<property name="itemDAO">
+				<ref bean="itemDAO"/>
+			</property>
+
+
 			<property name="HOTTEST">
 				<value>50</value>
 			</property>	
@@ -178,6 +185,20 @@
    </property>
 	 <property name="channelDAO">
 			<ref bean="channelDAO"/>
+	</property> 
+ </bean>
+
+
+
+<bean id="ReadFeedItem" class="at.newsagg.web.ajax.ReadFeedItemServletWrapper">
+   <property name="servletClass">
+     <value>at.newsagg.web.ajax.ReadFeedItem</value>
+   </property>
+   <property name="servletName">
+     <value>ReadFeedItem</value>
+   </property> 
+ 	<property name="itemDAO">
+			<ref bean="itemDAO"/>
 	</property> 
  </bean>
 
@@ -389,5 +410,8 @@ Statistic Controller -->
 				</props> 
 			</property> 
 	</bean>
+
+
+
 	
 </beans>

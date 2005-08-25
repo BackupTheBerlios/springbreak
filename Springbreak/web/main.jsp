@@ -38,7 +38,11 @@
 
 
 <br/>
+<div class="manage">
 <fmt:message key="main.manageRssFeeds"/><br/>
+<a href="addCategory.html">Add Category</a>
+</div>
+
 
  
 
