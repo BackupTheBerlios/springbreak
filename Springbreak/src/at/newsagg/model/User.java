@@ -1,8 +1,7 @@
 package at.newsagg.model;
 
 import java.util.Collection;
-
-import at.newsagg.model.parser.hibernate.Channel;
+import java.util.Date;
 
 
 /**
@@ -25,7 +24,34 @@ public class User extends BaseObject {
 	private boolean isAdmin;
 	private Collection categories;
 	
+	private Date currentLogin;
+	private Date lastLogin;
 	
+	
+    /**
+     * @return Returns the currentLogin.
+     */
+    public Date getCurrentLogin() {
+        return currentLogin;
+    }
+    /**
+     * @param currentLogin The currentLogin to set.
+     */
+    public void setCurrentLogin(Date currentLogin) {
+        this.currentLogin = currentLogin;
+    }
+    /**
+     * @return Returns the lastLogin.
+     */
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+    /**
+     * @param lastLogin The lastLogin to set.
+     */
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
 	/**
 	 * @hibernate.property
 	 * @return Returns the firstName.

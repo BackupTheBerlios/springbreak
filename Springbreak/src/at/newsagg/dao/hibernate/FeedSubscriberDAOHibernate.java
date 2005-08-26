@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.sf.hibernate.Hibernate;
+import net.sf.hibernate.type.Type;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -144,6 +145,15 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
                         "from FeedSubscriber f where f.category.id = ? and f.user.username like ?",
                         o, p);
 
+    }
+    
+    public Collection getChannelsForUserByCategory(String username, int category_id)
+    {
+        Object[] o = { new Integer(category_id), username };
+        net.sf.hibernate.type.Type[] p = { Hibernate.INTEGER, Hibernate.STRING };
+        return getHibernateTemplate().find("select f.channel from FeedSubscriber f where f.category.id = ? and f.user.username like ?",
+                        o, p);
+    
     }
 
     /**
@@ -417,6 +427,11 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         return (Collection) getHibernateTemplate().find(query, since,
                 Hibernate.DATE);
 
+    }
+    
+    public Collection getChannelsByCategoryForUser(int cat_id, String username)
+    {
+        return getHibernateTemplate().find("f.channel from FeedSubscriber f where f.channel.cat_id = ? and f.user.username = ?",new Object[] {new Integer(cat_id),username},new Type[] {Hibernate.INTEGER, Hibernate.STRING});
     }
 
 }

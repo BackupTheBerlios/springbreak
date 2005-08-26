@@ -5,6 +5,8 @@
  */
 package at.newsagg.dao;
 
+import java.util.Collection;
+
 import at.newsagg.model.Category;
 import at.newsagg.model.CategoryIF;
 
@@ -36,6 +38,8 @@ public interface CategoryDAO {
      * @return
      */
     public Category getCategory(int id);
+    
+    public Collection getCategoriesByUser (String username);
     
     
   

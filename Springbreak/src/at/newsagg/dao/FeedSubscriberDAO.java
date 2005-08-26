@@ -190,4 +190,5 @@ public interface FeedSubscriberDAO extends DAO{
      * @return
      */
     public FeedSubscriberIF getFeedSubscriber (int feedsubscriber_id);
+    public Collection getChannelsForUserByCategory(String username, int category_id);
 }

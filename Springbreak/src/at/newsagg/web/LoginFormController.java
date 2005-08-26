@@ -1,6 +1,7 @@
 package at.newsagg.web;
 
-import javax.servlet.ServletException;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,17 +11,15 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.web.servlet.mvc.*;
 
 import at.newsagg.model.User;
 import at.newsagg.service.UserManager;
-import at.newsagg.web.commandObj.UserFormCommand;
  
 
 
 /**
  * @author Szabolcs Rozsnyai
- * $Id: LoginFormController.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+ * $Id: LoginFormController.java,v 1.2 2005/08/26 17:59:42 vecego Exp $
  */
 public class LoginFormController extends SimpleFormController { 
 		private static Log log = LogFactory.getLog(LoginFormController.class);
@@ -43,6 +42,13 @@ public class LoginFormController extends SimpleFormController {
 				//user = mgr.checkUser(request.getParameter("loginUsername")); 
 				User user = mgr.checkUser(loginData.getUsername());
 				if (user != null) {
+				    //Roland Vecera
+				    //always store currentLogin Date
+				    //and move older one to lastLogin
+				    user.setLastLogin(user.getCurrentLogin());
+				    user.setCurrentLogin(new Date());
+				    user = mgr.updateUser(user);
+				    
 					//if (user.getUsername().equals(request.getParameter("loginUsername")) && user.getPassword().equals(request.getParameter("loginPassword"))) {
 					if (user.getUsername().equals(loginData.getUsername()) && user.getPassword().equals(loginData.getPassword())) {
 						// create session for user

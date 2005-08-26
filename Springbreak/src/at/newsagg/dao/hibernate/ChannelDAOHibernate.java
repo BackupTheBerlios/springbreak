@@ -132,4 +132,6 @@ public class ChannelDAOHibernate extends HibernateDaoSupport implements ChannelD
     {
         getHibernateTemplate().evict(o);
     }
+    
+    
 }

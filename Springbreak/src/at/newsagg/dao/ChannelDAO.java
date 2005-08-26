@@ -79,4 +79,5 @@ public interface ChannelDAO {
      * @param o
      */
     public void freeObject (Object o);
+   
 }

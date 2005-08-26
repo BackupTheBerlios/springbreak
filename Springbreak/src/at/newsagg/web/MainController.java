@@ -37,25 +37,35 @@ public class MainController implements Controller {
 		UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
 		User user = userSession.getUserData();
 		
+		short hottestHelper = this.HOTTEST;
 		ModelAndView mv =  new ModelAndView("main", "user", user);
 		 
 		//add all feedSubscribes to output in View
-		
-		//
 		mv.addObject("feedSubscribes",feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
+		short view = 0;
+		if (request.getParameter("view") != null)
+		{    
+		 view = Integer.valueOf(request.getParameter("view")).shortValue();
+		if (view > 0)
+		{
+		    hottestHelper = view;
+		}
+		}
 		
 		//hottest items to given channel
 		if (request.getParameter("channel_id") != null)
-		    mv.addObject("items",this.feedSubscriberDAO.getHottestItemsForUserByChannel(user.getUsername(),Integer.parseInt(request.getParameter("channel_id")),this.HOTTEST));
+		    mv.addObject("items",this.feedSubscriberDAO.getHottestItemsForUserByChannel(user.getUsername(),Integer.parseInt(request.getParameter("channel_id")),hottestHelper));
 		//hottest items to given category
 		else
 		    if (request.getParameter("category_id") != null)
-		        mv.addObject("items",feedSubscriberDAO.getHottestItemsForUserByCategory(user.getUsername(),Integer.parseInt(request.getParameter("category_id")),this.HOTTEST));
+		        mv.addObject("items",feedSubscriberDAO.getHottestItemsForUserByCategory(user.getUsername(),Integer.parseInt(request.getParameter("category_id")),hottestHelper));
 		//add HOTTEST items to output in View (in any subscribed feed)
 		else
 		{
-		    log.info("richtig?");
-		    mv.addObject("items",itemDAO.getItemsForUser(user.getUsername(),(int)this.HOTTEST));
+		 if (view == 0)
+		  mv.addObject("item",itemDAO.getItemsForUser(user.getUsername(),user.getLastLogin()));
+		 else    
+		    mv.addObject("items",itemDAO.getItemsForUser(user.getUsername(),(int)hottestHelper));
 		}
 		return mv;
 		

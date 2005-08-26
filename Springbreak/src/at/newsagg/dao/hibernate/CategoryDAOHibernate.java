@@ -7,6 +7,8 @@ package at.newsagg.dao.hibernate;
 
 import java.util.Collection;
 
+import net.sf.hibernate.Hibernate;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate.support.HibernateDaoSupport;
@@ -65,6 +67,11 @@ public class CategoryDAOHibernate extends HibernateDaoSupport implements Categor
         //return (Channel)getHibernateTemplate().find("from Channel u where
         // u.id = ?", new Integer(id)).get(0);
 
+    }
+    
+    public Collection getCategoriesByUser (String username)
+    {
+        return getHibernateTemplate().find("from Category as c where c.user.username like ? order by c.title",username,Hibernate.STRING);
     }
 
 

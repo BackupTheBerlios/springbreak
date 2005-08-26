@@ -80,6 +80,22 @@
               />
         </bag>
 
+		<property
+            name="currentLogin"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="currentLogin"
+        />
+
+		<property
+            name="lastLogin"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="lastLogin"
+        />
+
         <!--
             To add non XDoclet property mappings, create a file named
                 hibernate-properties-User.xml
