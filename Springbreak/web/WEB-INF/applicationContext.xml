@@ -118,8 +118,12 @@
     <bean id="itemDAOTarget" class="at.newsagg.dao.hibernate.ItemDAOHibernate"> 
     	<property name="sessionFactory"> 
     		<ref local="sessionFactory"/> 
-    	</property> 
+    	</property>  
+		<property name="upperLimit">
+			<value>70</value>
+		</property> 
     </bean>
+
 <!-- Roland Vecera 18. April Transaktion für die saveFunktion des feedSubscriber eingefügt-->
    <bean id="feedSubscriberDAOTarget" class="at.newsagg.dao.hibernate.FeedSubscriberDAOHibernate"> 
     	<property name="sessionFactory"> 

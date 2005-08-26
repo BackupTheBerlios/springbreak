@@ -33,6 +33,16 @@
 			<value>messages</value>
 		</property> 
 	</bean>
+
+	<!-- To handle Multiple Methods in one Controller
+		 Roland 26. August 2005
+		http://…/dostuff.htm?action=methodname
+	-->
+	<bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName">
+			<value>action</value>
+		</property>
+	</bean>
 	
 	<bean id="validatorFactory" class="org.springframework.validation.commons.DefaultValidatorFactory" init-method="init"> 
 		<property name="resources"> 
@@ -132,6 +142,11 @@
 			<prop key="/ajaxtest.html">AjaxTest</prop>
 			<prop key="/autocompleteFeed.html">AutoCompleteURL</prop>
 			<prop key="/readFeedItem.html">ReadFeedItem</prop>
+			
+			
+			<prop key="/moveFeedAjax.html">MoveFeedAjax</prop>
+			<prop key="/moveFeed.html">MoveFeed</prop>
+
             <prop key="/subscribeChannel.html">SubscribeChannel</prop>
 			<prop key="/addChannel.html">AddChannel</prop>
 			<prop key="/addCategory.html">AddCategory</prop>
@@ -176,6 +191,18 @@
    </property>
  </bean>
 
+<bean id="MoveFeedAjax" class="at.newsagg.web.ajax.MoveFeedServletWrapper">
+   <property name="servletClass">
+     <value>at.newsagg.web.ajax.MoveFeed</value>
+   </property>
+   <property name="servletName">
+     <value>moveFeed</value>
+   </property>
+    <property name="feedSubscriberDAO">
+			<ref bean="feedSubscriberDAO"/>
+	</property> 
+ </bean>
+
 <bean id="AutoCompleteURL" class="at.newsagg.web.ajax.AutoCompleteURLServletWrappingController">
    <property name="servletClass">
      <value>at.newsagg.web.ajax.AutoCompleteURL</value>
@@ -187,6 +214,9 @@
 			<ref bean="channelDAO"/>
 	</property> 
  </bean>
+
+
+
 
 
 
@@ -285,6 +315,39 @@ Statistic Controller -->
 			<ref bean="beanValidator"/>
 		</property-->
 </bean>
+
+<bean name="MoveFeed" class="at.newsagg.web.feed.MoveFeedController"> 
+		<!--  optional - if you don't define it then the default name is command -->
+	<!--	<property name="commandName">
+			<value>command</value>
+		</property> 
+		<property name="commandClass"> 
+			<value>at.newsagg.model.parser.hibernate.Channel</value> 
+		</property> 
+		<property name="formView">
+			<value>addFeedForm</value>
+		</property> 
+		<property name="successView">
+			<value>feedAdded</value>
+		</property> -->
+		<property name="methodNameResolver">
+			<ref bean="methodNameResolver"/>
+		</property>
+		<property name="feedSubscriberDAO">
+			<ref bean ="feedSubscriberDAO" />
+		</property>
+		<property name="categoryDAO">
+			<ref bean ="categoryDAO" />
+		</property>
+		
+		
+		<!-- property name="validator">
+			<ref bean="beanValidator"/>
+		</property-->
+</bean>
+
+
+
 
 
 <bean name="SubscribeChannel" class="at.newsagg.web.feed.SubscribeChannelController"> 
