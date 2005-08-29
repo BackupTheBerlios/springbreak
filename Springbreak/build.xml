@@ -164,7 +164,7 @@
         </copy>
     </target>
 
-    <target name="clean" description="Clean output directories">
+    <target name="clean" depends="remove" description="Clean output directories, undeploy .war in Tomcat">
         <delete dir="build"/>
         <delete dir="${dist.dir}"/>
     </target>
