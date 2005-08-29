@@ -14,12 +14,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
 
 import at.newsagg.dao.CategoryDAO;
 import at.newsagg.dao.FeedSubscriberDAO;
+import at.newsagg.model.Category;
+import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.User;
 import at.newsagg.web.UserSession;
+
+
 
 /**
  * @author king
@@ -31,7 +36,7 @@ public class MoveFeedController extends MultiActionController {
 	private static Log log = LogFactory.getLog(MultiActionController.class);
     private FeedSubscriberDAO feedSubscriberDAO;
     private CategoryDAO categoryDAO;
-    
+       
     
     
     public ModelAndView input (HttpServletRequest request,
@@ -42,6 +47,32 @@ public class MoveFeedController extends MultiActionController {
 		Collection cc = categoryDAO.getCategoriesByUser(user.getUsername());
 		log.info("Resultset:"+cc.size());
         return new ModelAndView("openmovefeed", "categories", cc);
+   }
+    
+    public ModelAndView store (HttpServletRequest request,
+            HttpServletResponse response) {
+            
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+		User user = userSession.getUserData();
+		
+		//log.info(request.getParameter("category"));
+		int category = new Integer(request.getParameter("hcategory")).intValue();
+		int feed = new Integer(request.getParameter("feed")).intValue();
+		int newcategory = new Integer(request.getParameter("newcat")).intValue();
+		
+		FeedSubscriber f = feedSubscriberDAO.getFeedSubscriberForUserOnChannelinCategory(user.getUsername(),feed,category);
+		log.info("feedid modified: "+ f.getId()); 
+		
+		Category c = new Category();
+		c.setId(newcategory);
+		f.setCategory(c);
+		feedSubscriberDAO.updateFeedSubscriber(f);
+		
+		//Invalidate Menu to display Changes
+		request.getSession().removeAttribute("feedSubscriberSession");
+		
+		return new ModelAndView("redirect:main.html");
+      
    }
     
     

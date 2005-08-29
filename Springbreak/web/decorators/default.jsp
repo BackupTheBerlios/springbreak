@@ -20,7 +20,12 @@
 		Springbreak - RSS AGGREGATOR
 	</div>
     <div id="menuleft">
+    	<div id="menufeeds">
+    		<%@ include file="/menu.jsp" %>
+    	</div>
+    	<div id="menuoptions">
          <decorator:getProperty property="page.menubar"/>
+        </div>
 	</div>
      <div id="content">
             <!-- %@ include file="/messages.jsp"% -->

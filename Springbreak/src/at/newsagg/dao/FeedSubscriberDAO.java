@@ -6,11 +6,9 @@
 package at.newsagg.dao;
 
 import java.util.Collection;
-import java.util.Date;
 
 import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.FeedSubscriberIF;
-import at.newsagg.dao.DAO;
 
 /**
  * @author king
@@ -85,8 +83,8 @@ public interface FeedSubscriberDAO extends DAO{
      * @param category_id
      * @return
      */
-    public FeedSubscriber getFeedSubscriberForUserOnChannel(String username,
-            int channel_id) throws IndexOutOfBoundsException;
+    public FeedSubscriber getFeedSubscriberForUserOnChannelinCategory(String username,
+            int channel_id, int cat_id) throws IndexOutOfBoundsException;
 
     /**
      * Counts number of Channels a User has subscribed in total.

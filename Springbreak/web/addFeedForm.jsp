@@ -13,6 +13,16 @@ Input für FeedSubscribtion
 
 TODO: was macht onsubmit="return validateChannel(this)
 -->
+<div class="error">
+<spring:bind path="channel.*">
+	<c:forEach items="${status.errorMessages}"
+		var="errorMessage">
+		<font class="error">
+			<c:out value="${errorMessage}"/><br>
+		</font>
+	</c:forEach>
+</spring:bind>
+</div>
 
 <form name="channel" method="post" action="<c:url value="/addChannel.html"/>" > 
 	<table> 
@@ -25,7 +35,7 @@ TODO: was macht onsubmit="return validateChannel(this)
 				
 				<spring:bind path="channel.locationString">
 	               <input id="url" type="text" name="locationString" autocomplete="off" value="URL here"/>
-	               
+	           
 	            </spring:bind>
 			</td>
 			

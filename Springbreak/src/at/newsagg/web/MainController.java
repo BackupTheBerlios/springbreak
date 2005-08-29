@@ -11,6 +11,7 @@ import org.springframework.web.util.WebUtils;
 
 import at.newsagg.dao.FeedSubscriberDAO;
 import at.newsagg.dao.ItemDAO;
+import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.User;
 
 
@@ -39,9 +40,25 @@ public class MainController implements Controller {
 		
 		short hottestHelper = this.HOTTEST;
 		ModelAndView mv =  new ModelAndView("main", "user", user);
-		 
-		//add all feedSubscribes to output in View
-		mv.addObject("feedSubscribes",feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
+
+		
+		//Moved to MenuLoadInterceptor:
+		
+//		//add all feedSubscribes to output in View
+//		//mv.addObject("feedSubscribes",feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
+////		if ((FeedSubscriber) WebUtils.getSessionAttribute(request, "feedSubscriberSession") == null)
+////		{    
+//			FeedSubscriberSession fss = new FeedSubscriberSession ();
+//			fss.setFeedSubscribers(feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername()));
+//		    log.info("size: "+fss.getFeedSubscribers().size());
+//			log.info("setsession");
+////			ArrayList a = new ArrayList();
+////			a.
+//			request.getSession().setAttribute("feedSubscriberSession", fss);
+//			log.info("setsession2");
+//			
+//		//	}
+		
 		short view = 0;
 		if (request.getParameter("view") != null)
 		{    

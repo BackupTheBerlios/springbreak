@@ -6,7 +6,7 @@
 
 
 
-<form name="carForm">
+<form name="moveForm" method="post" action="<c:url value="/moveFeed.html?action=store"/>">
   <fieldset>
     <legend>Move Feed Channel</legend>
 
@@ -18,6 +18,8 @@
       		<option value="${cat.id}">${cat.title}</option>
       </c:forEach>
     </select>
+    <input name="hcategory" id="hcategory" type="hidden" value="xxx"/>
+    
 
 	<div id="dfeed">
     <label id="lfeed" for="feed">Feed:</label>
@@ -41,6 +43,9 @@
 
 <script type="text/javascript">
 function postSelCat() {
+ 
+  document.getElementById("hcategory").value = document.getElementById("category").value;
+
   document.getElementById("category").disabled = true;
   Fat.fade_element("dfeed",5, 5000, false, false);
 }

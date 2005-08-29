@@ -135,6 +135,7 @@
 				Roland Vecera; August 2005
 			-->
               <ref bean="loginInterceptor"/> 
+			  <ref bean="menuLoadInterceptor"/>
          </list>
        </property>
        <property name="mappings">
@@ -164,8 +165,15 @@
 	   </property>
   </bean>
 
-	<bean id="loginInterceptor" class="at.newsagg.web.LoginInterceptor"/>
+<!-- ************* INTERCEPTORS *********************** -->
+	<bean id="loginInterceptor" class="at.newsagg.web.interceptor.LoginInterceptor"/>
 	
+	<bean id="menuLoadInterceptor" class="at.newsagg.web.interceptor.MenuLoadInterceptor">
+		<property name="feedSubscriberDAO">
+			<ref bean="feedSubscriberDAO" />
+		</property>
+	</bean>
+<!-- ************* /INTERCEPTORS ********************** -->	
 	<bean id="mainController" class="at.newsagg.web.MainController">
 			<property name="feedSubscriberDAO">
 				<ref bean="feedSubscriberDAO"/>
@@ -200,6 +208,9 @@
    </property>
     <property name="feedSubscriberDAO">
 			<ref bean="feedSubscriberDAO"/>
+	</property> 
+	<property name="categoryDAO">
+			<ref bean="categoryDAO"/>
 	</property> 
  </bean>
 
@@ -311,9 +322,9 @@ Statistic Controller -->
         <property name="userDAO">
 			<ref bean="userDAO"/>
 		</property>
-		<!-- property name="validator">
-			<ref bean="beanValidator"/>
-		</property-->
+		 <property name="validator">
+			<ref bean="AddChannelValidator"/>
+		</property>
 </bean>
 
 <bean name="MoveFeed" class="at.newsagg.web.feed.MoveFeedController"> 
@@ -339,6 +350,7 @@ Statistic Controller -->
 		<property name="categoryDAO">
 			<ref bean ="categoryDAO" />
 		</property>
+
 		
 		
 		<!-- property name="validator">
@@ -465,6 +477,10 @@ Statistic Controller -->
   </bean>
 	
 		<!-- ========================= EXCEPTION HANDLING ========================= -->
+	<bean id="AddChannelValidator" class="at.newsagg.web.validator.AddChannelValidator" />
+	
+
+
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
 			<property name="exceptionMappings"> 
 				<props> 

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+import at.newsagg.dao.CategoryDAO;
 import at.newsagg.dao.FeedSubscriberDAO;
 
 /**
@@ -31,6 +32,7 @@ public class MoveFeedServletWrapper extends AbstractController implements
         BeanNameAware, InitializingBean, DisposableBean {
 
     private FeedSubscriberDAO feedSubscriberDAO;
+    private CategoryDAO categoryDAO;
 
     private Class servletClass;
 
@@ -93,9 +95,11 @@ public class MoveFeedServletWrapper extends AbstractController implements
             logger.debug("MoveFeed found");
             ((MoveFeed) this.servletInstance).setFeedSubscriberDAO(this
                     .getFeedSubscriberDAO());
+            ((MoveFeed) this.servletInstance).setCategoryDAO(this
+                    .getCategoryDAO());
         } else
             logger
-                    .warn("VecServletWrappingController should be used with at.newsagg.web.ajax.AutoComplete");
+                    .warn("should be used with at.newsagg.web.ajax.MoveFeed");
         this.servletInstance.init(new DelegatingServletConfig());
     }
 
@@ -146,5 +150,17 @@ public class MoveFeedServletWrapper extends AbstractController implements
      */
     public void setFeedSubscriberDAO(FeedSubscriberDAO feedSubscriberDAO) {
         this.feedSubscriberDAO = feedSubscriberDAO;
+    }
+    /**
+     * @return Returns the categoryDAO.
+     */
+    public CategoryDAO getCategoryDAO() {
+        return categoryDAO;
+    }
+    /**
+     * @param categoryDAO The categoryDAO to set.
+     */
+    public void setCategoryDAO(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
     }
 }

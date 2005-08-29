@@ -1,4 +1,4 @@
-package at.newsagg.web;
+package at.newsagg.web.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +10,12 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
 
+import at.newsagg.web.UserSession;
+
 
 /**
  * @author Szabolcs Rozsnyai
- * $Id: LoginInterceptor.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+ * $Id: LoginInterceptor.java,v 1.1 2005/08/29 15:56:31 vecego Exp $
  */
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {

@@ -159,20 +159,36 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
     /**
      * Returns the FeedSubscriber of a given User and a given Channel.
      * 
+     * Returns 1st Instance of FeedSubscriber matching the query, even there could
+     * be multiple returns (
      * @param username
      * @param category_id
-     * @return
+     * @param cat_id
+     * @return 
      */
-    public FeedSubscriber getFeedSubscriberForUserOnChannel(String username,
+    public FeedSubscriber getFeedSubscriberForUserOnChannelinCategory(String username,
+            int channel_id, int cat_id) throws IndexOutOfBoundsException {
+        Object[] o = {new Integer(cat_id), new Integer(channel_id), username };
+        net.sf.hibernate.type.Type[] p = { Hibernate.INTEGER, Hibernate.INTEGER, Hibernate.STRING };
+        return (FeedSubscriber) (getHibernateTemplate()
+                .find(
+                        "from FeedSubscriber f where f.category.id = ? and f.channel.id = ? and f.user.username like ?",
+                        o, p).get(0));
+
+    }
+    
+    
+    private FeedSubscriber getFeedSubscriberForUserOnChannel(String username,
             int channel_id) throws IndexOutOfBoundsException {
         Object[] o = { new Integer(channel_id), username };
-        net.sf.hibernate.type.Type[] p = { Hibernate.INTEGER, Hibernate.STRING };
+        net.sf.hibernate.type.Type[] p = {  Hibernate.INTEGER, Hibernate.STRING };
         return (FeedSubscriber) (getHibernateTemplate()
                 .find(
                         "from FeedSubscriber f where f.channel.id = ? and f.user.username like ?",
                         o, p).get(0));
 
     }
+    
 
     /**
      * Counts number of Channels a User has subscribed in total.
