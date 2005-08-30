@@ -38,7 +38,7 @@ Use this .jsp to display a collection of Items
 	<img onmouseover="this.style.cursor='pointer'" align="top" id="watched${i.id}" src="./images/watched_n.gif" />
 </c:otherwise>
 </c:choose>	
-  Toggle Me
+  ReadStatus
 </div>
 
 <div id="watchedResponseContainer${i.id}">

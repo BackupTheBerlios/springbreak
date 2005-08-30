@@ -5,6 +5,10 @@
  */
 package at.newsagg.web.feed;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.util.WebUtils;
 
+import at.newsagg.dao.ChannelDAO;
 import at.newsagg.dao.UserDAO;
 import at.newsagg.model.User;
+import at.newsagg.model.parser.ParseException;
 import at.newsagg.model.parser.hibernate.Channel;
 import at.newsagg.service.ParserCronJobService;
 import at.newsagg.service.UserManager;
@@ -31,31 +37,52 @@ public class AddChannelController extends SimpleFormController {
     private static Log log = LogFactory.getLog(AddChannelController.class);
 
     private ParserCronJobService parserService;
+
     private UserManager userManager;
+
     private UserDAO userDAO;
- 
+
+    private ChannelDAO channelDAO;
+
+    /**
+     * @return Returns the channelDAO.
+     */
+    public ChannelDAO getChannelDAO() {
+        return channelDAO;
+    }
+
+    /**
+     * @param channelDAO
+     *            The channelDAO to set.
+     */
+    public void setChannelDAO(ChannelDAO channelDAO) {
+        this.channelDAO = channelDAO;
+    }
+
     /**
      * @return Returns the userDAO.
      */
     public UserDAO getUserDAO() {
         return userDAO;
     }
+
     /**
-     * @param userDAO The userDAO to set.
+     * @param userDAO
+     *            The userDAO to set.
      */
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+
     /**
      * Set up a custom property editor for converting Longs
      */
-//    protected void initBinder(HttpServletRequest request,
-//            ServletRequestDataBinder binder) {
-//        NumberFormat nf = NumberFormat.getNumberInstance();
-//        binder.registerCustomEditor(Long.class, null, new CustomNumberEditor(
-//                Long.class, nf, true));
-//    }
-
+    //    protected void initBinder(HttpServletRequest request,
+    //            ServletRequestDataBinder binder) {
+    //        NumberFormat nf = NumberFormat.getNumberInstance();
+    //        binder.registerCustomEditor(Long.class, null, new CustomNumberEditor(
+    //                Long.class, nf, true));
+    //    }
     /**
      * Takes the user input on a Channel (at least an URL), parses and persists
      * the channel.
@@ -66,24 +93,31 @@ public class AddChannelController extends SimpleFormController {
             HttpServletResponse response, Object command, BindException errors)
             throws Exception {
 
-        
-        Channel channel = (Channel) command;
-        /**
-         * TODO: hier sollte validiert sein, daﬂ channel.getLocation() ein valid
-         * URL ist!
-         */
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(
+                request, "userSession");
 
-        channel = (Channel)parserService.runNewChannel(channel);
-        log.info("Channel " + channel.getLocation().toString()
-                + " stored as channel_id " + channel.getId());
+        Channel channel = (Channel) command;
+        log.info("Last try: " + channel.getLocationString());
+
+        try {
+            channel.setId(channelDAO.getChannel(channel.getLocation()).getId());
+        } catch (IndexOutOfBoundsException e) {
+            //nothing wrong: this channel is just some new one!
+        } 
         
-        ModelAndView mav = new ModelAndView(getSuccessView(),"channel",channel);
-        //Add User's categories to model!
-        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        channel.setItems(new ArrayList());
+
+       
+            channel = (Channel) parserService.runUpdateOnChannel(channel);
+        
+        channelDAO.saveOrUpdateChannel(channel);
+
+        ModelAndView mav = new ModelAndView(getSuccessView(), "channel",
+                channel);
         
         User user = userDAO.getUser(userSession.getUserData().getUsername());
         mav.addObject("user", user);
-        
+
         return mav;
 
     }
@@ -102,14 +136,17 @@ public class AddChannelController extends SimpleFormController {
     public void setParserService(ParserCronJobService parserService) {
         this.parserService = parserService;
     }
+
     /**
      * @return Returns the userManager.
      */
     public UserManager getUserManager() {
         return userManager;
     }
+
     /**
-     * @param userManager The userManager to set.
+     * @param userManager
+     *            The userManager to set.
      */
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;

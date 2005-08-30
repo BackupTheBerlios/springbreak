@@ -41,7 +41,7 @@ public class ChannelDAOHibernate extends HibernateDaoSupport implements ChannelD
     
     public void saveOrUpdateChannel(Channel channel)
     {
-        
+        log.info("channelid: "+channel.getId());
         getHibernateTemplate().saveOrUpdateCopy(channel);
             
         if (log.isDebugEnabled()) {

@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: ParserUtils.java,v 1.1 2005/04/21 19:41:11 vecego Exp $
+// $Id: ParserUtils.java,v 1.2 2005/08/30 17:16:12 vecego Exp $
 
 package at.newsagg.utils;
 
@@ -88,7 +88,7 @@ public final class ParserUtils {
         "yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:sszzzz",
         "yyyy-MM-dd'T'HH:mm:ss z", "yyyy-MM-dd'T'HH:mm:ssz", //ISO_8601
         "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HHmmss.SSSz",
-
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
         "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"};
 
     dateFormats = new SimpleDateFormat[possibleDateFormats.length];
@@ -117,7 +117,7 @@ public final class ParserUtils {
   private static SimpleDateFormat dfD = new SimpleDateFormat("yyyy-MM-dd");
 
   public static Date getDate(String strdate) {
-    Date result = null;
+    Date result = new Date();
     strdate = strdate.trim();
     if (strdate.length() > 10) {
 

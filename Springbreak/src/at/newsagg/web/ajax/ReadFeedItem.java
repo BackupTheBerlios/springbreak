@@ -84,8 +84,8 @@ public class ReadFeedItem extends BaseAjaxServlet {
                 .append(state)
                 .append("\">")
                 .append(
-                        state ? "<![CDATA[This is a <b>test</b> of the emergency broadcast system.]]>"
-                                : "Test is over").append("</item>").append(
+                        state ? "<![CDATA[Item Read]]>"
+                                : "Item Unread").append("</item>").append(
                         "</list>");
 
         return xml.toString();

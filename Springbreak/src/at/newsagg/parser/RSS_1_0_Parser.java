@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: RSS_1_0_Parser.java,v 1.2 2005/08/24 08:39:39 vecego Exp $
+// $Id: RSS_1_0_Parser.java,v 1.3 2005/08/30 17:16:12 vecego Exp $
 
 //Simplified for use in Springbreak
 // comment out: <source> and <textinput> is not longer parsed
@@ -276,7 +276,7 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 			}
 
 			// generate new RSS item (link to article)
-			ItemIF rssItem = ChannelBuilder.createItem(item, chnl, strTitle, strDesc,
+			ItemIF rssItem = ChannelBuilder.createItem(item, null, strTitle, strDesc,
 					ParserUtils.getURL(strLink));
 			rssItem.setFound(dateParsed);
 
@@ -339,7 +339,7 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 					}
 				}
 			}
-			
+			logger.info("geeeeeeeeeeeeeeeh");
 			chnl.addItem(rssItem);
 
 		}//End While = END <items>

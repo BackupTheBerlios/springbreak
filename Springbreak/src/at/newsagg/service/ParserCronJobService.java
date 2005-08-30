@@ -77,4 +77,7 @@ public interface ParserCronJobService {
      * @throws ParseException
      */
     public ChannelIF runNewChannel (ChannelIF channel) throws IOException, ParseException;
+    
+    public ChannelIF runUpdateOnChannel(ChannelIF channel) throws IOException,
+    ParseException;
 }

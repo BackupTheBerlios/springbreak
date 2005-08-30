@@ -8,6 +8,7 @@ package at.newsagg.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +19,7 @@ import at.newsagg.model.parser.ChannelIF;
 import at.newsagg.model.parser.ItemIF;
 import at.newsagg.model.parser.ParseException;
 import at.newsagg.model.parser.hibernate.Channel;
+import at.newsagg.model.parser.hibernate.Item;
 import at.newsagg.parser.FeedParser;
 import at.newsagg.service.ParserCronJobService;
 
@@ -31,7 +33,7 @@ import at.newsagg.service.ParserCronJobService;
 public class ParserCronJobServiceImpl extends TimerTask implements
         ParserCronJobService {
     private static Log log = LogFactory.getLog(ParserCronJobServiceImpl.class);
- 
+
     private ChannelDAO channelDao;
 
     private ItemDAO itemDao;
@@ -107,13 +109,14 @@ public class ParserCronJobServiceImpl extends TimerTask implements
         try {
             Channel c = (Channel) channelDao.getChannel(channel.getLocation());
             log.info("Channel already in DB: " + c.getId());
-            channel.setId(c.getId());
+            channel = c;
 
         } catch (IndexOutOfBoundsException e) {
             //it's a new channel
         }
         //initialize empty Items!
-        channel.setItems(new ArrayList());
+        channel.setItems(new Vector());
+        log.info("ID set to: " + channel.getId());
         return runUpdateOnChannel(channel);
 
     }
@@ -124,16 +127,18 @@ public class ParserCronJobServiceImpl extends TimerTask implements
      * 
      * @return
      */
-    private ChannelIF runUpdateOnChannel(ChannelIF channel) throws IOException,
+    public ChannelIF runUpdateOnChannel(ChannelIF channel) throws IOException,
             ParseException {
 
         //Take channel and parse it!
         channel = (Channel) parser.parse(channel, channel.getLocation());
 
-        this.checkForNewItems(channel);
+        channel = this.checkForNewItems(channel);
 
+        log.info("ID by now ist still: " + channel.getId());
         //persist in DB
         //saveOrUpdateCopy!
+
         channelDao.saveOrUpdateChannel((Channel) channel);
 
         return channel;
@@ -156,22 +161,33 @@ public class ParserCronJobServiceImpl extends TimerTask implements
 
         //      For every item check, wheter its new, or not!
         j = channelresult.getItems().iterator();
+        ArrayList remove = new ArrayList(channelresult.getItems().size());
+
         while (j.hasNext()) {
             itemnew = (ItemIF) j.next();
+            if (itemnew.getId() != -1) {
+                log.info("Found Item has Id: " + itemnew.getId());
+                ItemIF currItem;
+                try {
+                    currItem = itemDao.getItemByLink(itemnew.getLink());
+                } catch (IndexOutOfBoundsException e) {
 
-            ItemIF currItem;
-            try {
-                currItem = itemDao.getItemByLink(itemnew.getLink());
-            } catch (IndexOutOfBoundsException e) {
-
-                currItem = null;
-            }
-            //set this itemnew.id to the already stored currItem.id
-            if (itemnew.equals(currItem)) {
-                itemnew.setId(currItem.getId());
+                    currItem = null;
+                }
+                //remove, because already stored
+                if (itemnew.equals(currItem)) {
+                    remove.add(itemnew);
+                }
             }
 
         }
+        log.info("Already in DB found: " + remove.size() + " Items");
+        j = remove.iterator();
+        while (j.hasNext()) {
+            channelresult.removeItem((ItemIF) j.next());
+        }
+        log.info("New Items found for DB: " + channelresult.getItems().size());
+
         return channelresult;
 
     }

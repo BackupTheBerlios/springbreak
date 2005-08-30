@@ -322,6 +322,9 @@ Statistic Controller -->
         <property name="userDAO">
 			<ref bean="userDAO"/>
 		</property>
+		<property name="channelDAO">
+			<ref bean="channelDAO"/>
+		</property>
 		 <property name="validator">
 			<ref bean="AddChannelValidator"/>
 		</property>
@@ -427,9 +430,9 @@ Statistic Controller -->
         <property name="commentDAO">
 			<ref bean="commentDAO"/>
 		</property>
-		<!-- property name="validator">
-			<ref bean="beanValidator"/>
-		</property-->
+		<property name="validator">
+			<ref bean="AddCommentValidator"/>
+		</property>
 </bean>
 
 
@@ -450,9 +453,9 @@ Statistic Controller -->
         <property name="categoryDAO">
 			<ref bean="categoryDAO"/>
 		</property>
-		<!-- property name="validator">
-			<ref bean="beanValidator"/>
-		</property-->
+		<property name="validator">
+			<ref bean="AddCategoryValidator"/>
+		</property>
 </bean>
 
 
@@ -478,7 +481,8 @@ Statistic Controller -->
 	
 		<!-- ========================= EXCEPTION HANDLING ========================= -->
 	<bean id="AddChannelValidator" class="at.newsagg.web.validator.AddChannelValidator" />
-	
+	<bean id="AddCategoryValidator" class="at.newsagg.web.validator.AddCategoryValidator" />
+	<bean id="AddCommentValidator" class="at.newsagg.web.validator.AddCommentValidator" />
 
 
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 

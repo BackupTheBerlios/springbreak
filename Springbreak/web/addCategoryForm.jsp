@@ -48,10 +48,26 @@ function callback() {
 <!--
 Roland Vecera
 Input für AddCategoryController
-
-
-TODO: was macht onsubmit="return validateChannel(this)
 -->
+
+
+
+
+<spring:bind path="category.*">
+<c:if test="${not empty status.errorMessages}"> 
+<div class="error">
+	<c:forEach items="${status.errorMessages}"
+		var="errorMessage">
+		<font class="error">
+			<c:out value="${errorMessage}"/><br>
+		</font>
+	</c:forEach>
+	</div>
+</c:if>
+</spring:bind>
+
+
+
 
 <form name="category" method="post" action="<c:url value="/addCategory.html"/>" > 
 	<table> 

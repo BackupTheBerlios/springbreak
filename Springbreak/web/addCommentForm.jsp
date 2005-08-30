@@ -16,6 +16,21 @@ Input für AddCommentController
 TODO: was macht onsubmit="return validateChannel(this)
 -->
 
+
+<spring:bind path="comment.*">
+<c:if test="${not empty status.errorMessages}"> 
+<div class="error">
+	<c:forEach items="${status.errorMessages}"
+		var="errorMessage">
+		<font class="error">
+			<c:out value="${errorMessage}"/><br>
+		</font>
+	</c:forEach>
+</div>
+</c:if>
+</spring:bind>
+
+
 <form name="comment" method="post" action="<c:url value="/addComment.html"/>" > 
 	<table> 
 		
@@ -26,7 +41,7 @@ TODO: was macht onsubmit="return validateChannel(this)
 			<td> 
 				
 				<spring:bind path="comment.title">
-	               <input maxlength="100" type="text" name="title" value=""/>
+	               <input maxlength="100" type="text" name="${status.expression}" value="${status.value}"/>
 	              
 	            </spring:bind>
 			</td>
@@ -39,7 +54,9 @@ TODO: was macht onsubmit="return validateChannel(this)
 			<td> 
 				
 				<spring:bind path="comment.text">
-	               <textarea name="text" value=""/>
+	               <textarea name="${status.expression}" >
+	              ${status.value}
+	               </textarea>
 	              
 	            </spring:bind>
 			</td>

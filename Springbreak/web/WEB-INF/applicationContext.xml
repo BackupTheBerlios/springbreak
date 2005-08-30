@@ -143,6 +143,7 @@
             <prop key="save*">PROPAGATION_REQUIRED</prop>
             <prop key="update*">PROPAGATION_REQUIRED</prop> 
             <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
          </props> 
       </property>
     </bean>

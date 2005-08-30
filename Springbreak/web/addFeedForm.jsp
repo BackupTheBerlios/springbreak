@@ -13,16 +13,20 @@ Input für FeedSubscribtion
 
 TODO: was macht onsubmit="return validateChannel(this)
 -->
-<div class="error">
+
 <spring:bind path="channel.*">
+<c:if test="${not empty status.errorMessages}"> 
+<div class="error">
 	<c:forEach items="${status.errorMessages}"
 		var="errorMessage">
 		<font class="error">
 			<c:out value="${errorMessage}"/><br>
 		</font>
 	</c:forEach>
-</spring:bind>
 </div>
+</c:if>
+</spring:bind>
+
 
 <form name="channel" method="post" action="<c:url value="/addChannel.html"/>" > 
 	<table> 

@@ -76,6 +76,9 @@ public class AddCategoryController extends SimpleFormController {
        
          //store
          categoryDAO.saveCategory(category);
+         
+//       Invalidate Menu to display Changes
+ 		request.getSession().removeAttribute("feedSubscriberSession");
         
          return new ModelAndView ("main");
          
