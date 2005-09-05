@@ -80,10 +80,10 @@ public class AddCategoryController extends SimpleFormController {
 //       Invalidate Menu to display Changes
  		request.getSession().removeAttribute("feedSubscriberSession");
         
-         return new ModelAndView ("main");
+         return new ModelAndView ("redirect:main.html");
          
          
-         
+          
      
         
        }

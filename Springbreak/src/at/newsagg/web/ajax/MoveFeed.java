@@ -43,8 +43,9 @@ public class MoveFeed extends BaseAjaxServlet {
         log.info("here");
         StringBuffer xml = new StringBuffer().append("<?xml version=\"1.0\"?>");
         xml.append("<list>");
+       
         if (cat_id != null) {
-
+            xml.append("<item value=''>Select Feed</item>");
             for (Iterator iter = feedSubscriberDAO
                     .getChannelsForUserByCategory(user.getUsername(),
                             Integer.valueOf(cat_id).intValue()).iterator(); iter
@@ -59,6 +60,7 @@ public class MoveFeed extends BaseAjaxServlet {
             }
 
         } else if (request.getParameter("make2") != null) {
+            xml.append("<item value=''>Select New Category</item>");
 
             //            xml.append("<item value='234'>");
             //            xml.append("23423</item>");

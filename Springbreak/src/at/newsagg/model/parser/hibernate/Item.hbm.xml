@@ -90,7 +90,11 @@
             column="FOUND"
         />
 
-        <many-to-one
+    <!--    
+		Roland Vecera
+		5. September;
+		weg damit, für was?
+		<many-to-one
             name="guid"
             class="at.newsagg.model.parser.hibernate.ItemGuid"
             cascade="none"
@@ -98,7 +102,7 @@
             update="true"
             insert="true"
             column="GUID"
-        />
+        /> -->
 
         <property
             name="comments"

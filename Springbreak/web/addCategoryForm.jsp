@@ -42,7 +42,7 @@ function callback() {
 
 <%@ include file="/taglibs.jsp"%> 
 <title>Springbreak Add Category</title> 
-<p>Fill in Category </p> 
+
 
 
 <!--
@@ -62,60 +62,88 @@ Input für AddCategoryController
 			<c:out value="${errorMessage}"/><br>
 		</font>
 	</c:forEach>
-	</div>
+</div>
 </c:if>
 </spring:bind>
 
+<p>
+<b>Add a new category to your menu!</b><br/><br/>
 
+Choose a title and a color for your category. 
+<br/>Note: Category doesn't show up, until
+you add a channel to this category!
+</p>
 
 
 <form name="category" method="post" action="<c:url value="/addCategory.html"/>" > 
+	<fieldset style="width: 70%">
+    <legend>Add new Category</legend>
+    
 	<table> 
 		
 		<tr> 
 			<td>
-				Title 
+				Title: 
 			</td> 
-			<td> 
+			<td colspan="2" > 
 				
 				<spring:bind path="category.title">
-	               <input maxlength="100" type="text" name="title" value=""/>
+	               <input size="25" maxlength="100" type="text" name="title" value=""/>
 	              
 	            </spring:bind>
+	            <br/>
 			</td>
 			
 		</tr> 
 		<tr> 
 			<td>
-				Color
+				Color:
 			</td> 
 			<td> 
-				
-				<spring:bind path="category.red">
-	               <input maxlength="3" type="text" name="red" id="red" value="0" onblur="validate();"/>
-	            </spring:bind>
-	            <spring:bind path="category.green">
-	               <input maxlength="3" type="text" name="green" id="green" value="0" onblur="validate();"/>
-	            </spring:bind>
-	            <spring:bind path="category.blue">
-	               <input maxlength="3" type="text" name="blue" id="blue" value="0" onblur="validate();"/>
-	            </spring:bind>
+				<table>
+				<tr>
+					<td>
+						<spring:bind path="category.red">
+	               		<input size="3" maxlength="3" type="text" name="red" id="red" value="0" onblur="validate();"/>
+	            		</spring:bind>
+	            	</td>
+	            	<td>R</td>
+	            </tr>
+	            <tr>
+	            	<td>
+	            		<spring:bind path="category.green">
+	               		<input  size="3" maxlength="3" type="text" name="green" id="green" value="0" onblur="validate();"/>
+	            	</spring:bind>
+	            	</td>
+	            	<td>G</td>
+	            </tr>
+	            <tr>
+	            <td>
+	            	<spring:bind path="category.blue">
+	               	<input  size="3"  maxlength="3" type="text" name="blue" id="blue" value="0" onblur="validate();"/>
+	            	</spring:bind>
+	            </td>
+	            <td>B</td>
+	            </tr>
+	            </table>
 			</td>
-			
-		</tr>
-		<tr> 
-		<td id="color" bgcolor="WHITE">
+			<td id="color" align="center" bgcolor="WHITE">
 			Click for color-preview!
 		</td>
+			
 		</tr>
 		
 		
+		
 		<tr> 
-		<td><input type="submit" class="button" name="save" value="Save"/></td>
+		<td><br/><input type="submit" class="button" name="save" value="Save"/></td>
 		</tr>
 			
 	</table> 
+	</fieldset>
+    
 </form> 
+
 <content tag="underground">
 
 <strong><fmt:message key="common.newsagg"/></strong>

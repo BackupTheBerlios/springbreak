@@ -277,9 +277,9 @@ class RSS_2_0_Parser implements RSS_2_0_ParserIF {
           }
           ItemGuidIF itemGuid =
            ChannelBuilder.createItemGuid(rssItem, guidUrl, permaLink);
-          rssItem.setGuid(itemGuid);
-          
-          
+          //rssItem.setGuid(itemGuid);
+            
+           
         }
         
       }

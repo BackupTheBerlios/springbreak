@@ -23,10 +23,10 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: ParserUtils.java,v 1.2 2005/08/30 17:16:12 vecego Exp $
+// $Id: ParserUtils.java,v 1.3 2005/09/05 17:54:53 vecego Exp $
 
 package at.newsagg.utils;
-
+ 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

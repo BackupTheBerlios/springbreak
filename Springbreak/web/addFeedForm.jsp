@@ -3,7 +3,12 @@
 <script type="text/javascript" src="./ajaxcore.js"></script>
 
 <title>Springbreak AddFeed</title> 
-<p>Fill in Channel Info: </p> 
+<p>
+<b>Add a new RSS-channel to your menu!</b><br/><br/>
+
+Insert a valid URL to the input field. 
+<br/>Note: Don't forget to add a valid protocol like 'http://'
+</p>
 
 
 <!--
@@ -29,6 +34,8 @@ TODO: was macht onsubmit="return validateChannel(this)
 
 
 <form name="channel" method="post" action="<c:url value="/addChannel.html"/>" > 
+	<fieldset style="width: 70%">
+    <legend>Add new Channel</legend>
 	<table> 
 		
 		<tr> 
@@ -38,21 +45,28 @@ TODO: was macht onsubmit="return validateChannel(this)
 			<td> 
 				
 				<spring:bind path="channel.locationString">
-	               <input id="url" type="text" name="locationString" autocomplete="off" value="URL here"/>
+	               <input size="50" id="url" type="text" name="locationString" autocomplete="off" value="URL here"/>
 	           
 	            </spring:bind>
+	            <div id="urlpopup" class="autocomplete"/>
 			</td>
 			
 		</tr> 
+		<tr>
+			<td>
+				
+	         </td>
+		</tr>
 		<tr> 
-		<td><input type="submit" class="button" name="save" value="Save"/></td>
+		<td><br/><input type="submit" class="button" name="save" value="Save"/></td>
 		</tr>
 			
 	</table> 
+	</fieldset>
 </form> 
 <ajax:autocomplete
   fieldId="url"
-  popupId="url-popup"
+  popupId="urlpopup"
   targetId="url"
   paramName ="input"
   baseUrl="./autocompleteFeed.html"

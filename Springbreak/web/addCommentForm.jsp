@@ -4,17 +4,11 @@
 
 
 <%@ include file="/taglibs.jsp"%> 
-<title>Springbreak Add Comment</title> 
-<p>Fill in Comment </p> 
 
+<p>
+<b>Add a new comment to the RSS-channel !</b><br/>
+</p>
 
-<!--
-Roland Vecera
-Input für AddCommentController
-
-
-TODO: was macht onsubmit="return validateChannel(this)
--->
 
 
 <spring:bind path="comment.*">
@@ -32,16 +26,18 @@ TODO: was macht onsubmit="return validateChannel(this)
 
 
 <form name="comment" method="post" action="<c:url value="/addComment.html"/>" > 
+	<fieldset style="width: 70%">
+    <legend>Add new Comment</legend>
 	<table> 
 		
 		<tr> 
 			<td>
-				Title 
+				Title: 
 			</td> 
 			<td> 
 				
 				<spring:bind path="comment.title">
-	               <input maxlength="100" type="text" name="${status.expression}" value="${status.value}"/>
+	               <input size="50" maxlength="100" type="text" name="${status.expression}" value="${status.value}"/>
 	              
 	            </spring:bind>
 			</td>
@@ -49,12 +45,12 @@ TODO: was macht onsubmit="return validateChannel(this)
 		</tr> 
 		<tr> 
 			<td>
-				Text
+				Text:
 			</td> 
 			<td> 
 				
 				<spring:bind path="comment.text">
-	               <textarea name="${status.expression}" >
+	               <textarea cols="35" rows="10" name="${status.expression}" >
 	              ${status.value}
 	               </textarea>
 	              
@@ -64,7 +60,7 @@ TODO: was macht onsubmit="return validateChannel(this)
 		</tr>
 		<tr> 
 			<td>
-				stars 
+				Stars: 
 			</td> 
 			<td> 
 				
@@ -92,6 +88,7 @@ TODO: was macht onsubmit="return validateChannel(this)
 		</tr>
 			
 	</table> 
+	</fieldset>
 </form> 
 <content tag="underground">
 

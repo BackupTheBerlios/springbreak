@@ -62,7 +62,10 @@ public class MoveFeedController extends MultiActionController {
 		
 		FeedSubscriber f = feedSubscriberDAO.getFeedSubscriberForUserOnChannelinCategory(user.getUsername(),feed,category);
 		log.info("feedid modified: "+ f.getId()); 
-		
+		 /*
+		  * 
+		  * TODO: Feedid, Category, newCategory could be empty! Have to catch this in validator!
+		  */
 		Category c = new Category();
 		c.setId(newcategory);
 		f.setCategory(c);

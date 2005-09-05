@@ -34,12 +34,21 @@ a:link {
 a:visited {
     font-weight: bold;
     text-decoration: underline;
-    color: #999999;
+    color: #8f9e28;
 }
 
 a:hover, a:active {
     text-decoration: underline overline;
     color: #b8c271;
+}
+a.menu_channel {
+	font: 9px Verdana, sans-serif;
+	text-decoration: none;
+	color: WHITE;
+
+}
+a.itemtitle {
+	font-size: 14px;
 }
 
 /* Roland Vecera
@@ -118,6 +127,49 @@ div.error, div.message {
 div.error {
     border: 2px solid red;
 }
+
+/* For Feed-Items to display */
+div.item0
+{
+ background: #C2C2C2;
+ margin-bottom: 3px;
+}
+
+div.item1
+{
+ background: #E0E0E0;
+ margin-bottom: 3px;
+}
+
+div.item1 table, div.item0 table
+{
+ border: 1px solid #C8C8C8;
+ border-bottom: 3px dashed #8f9e28;
+ 
+ 
+}
+
+div.description
+{
+ border-top: 1px solid white;
+ border-bottom: 1px solid white;
+}
+/*
+Anzeige von Sternen zur Bewertung
+*/
+div.stars
+{
+ width: 95px;
+}
+
+div.menu_category
+{
+ margin-top: 5px;
+ background: RED;
+}
+
+
+
 
 span.fieldError {
     color: maroon !important;

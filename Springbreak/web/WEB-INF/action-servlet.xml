@@ -377,7 +377,7 @@ Statistic Controller -->
 			<value>feedAdded</value>
 		</property> 
 		<property name="successView">
-			<value>successSubscribe</value>
+			<value>redirect:successSubscribe</value>
 		</property> 
         <property name="userDAO">
 			<ref bean="userDAO"/>

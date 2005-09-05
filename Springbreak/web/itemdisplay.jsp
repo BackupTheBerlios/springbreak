@@ -17,10 +17,13 @@ Use this .jsp to display a collection of Items
       <div class="item<c:out value='${status.count % 2}'/>">
       <table>
       	<tr>
-      		<td><c:out value="${i.title}"/> </td> <td><c:out value="${i.date}"/></td>
+      		<td><a href="${i.link}" target="blank">${i.title}</a> </td> 
       	</tr>
       	<tr>
-      		<td colspan="2"><c:out value="${i.description}"/></td>
+      		<td>Posted on: ${i.date} by ${i.creator} on <a class="itemtitle" href="${i.channel.locationString}" target="blank">${i.channel.title}</a></td>
+      	</tr>
+      	<tr>
+      		<td colspan="2"><div class="description"> <c:out value="${i.description}"/></div></td>
       	</tr>
       	
       	<tr>
@@ -28,42 +31,42 @@ Use this .jsp to display a collection of Items
       			
 
 
-  <c:choose>
-<c:when test='${i.read == true}'>
-<div>
-<img onmouseover="this.style.cursor='pointer'" align="top" id="watched${i.id}" src="./images/watched_y.gif" />
-</c:when>
-<c:otherwise>
-<div <c:if test='${status.count < 10}'>id="paragraph${i.id}" class="fade" </c:if> >
-	<img onmouseover="this.style.cursor='pointer'" align="top" id="watched${i.id}" src="./images/watched_n.gif" />
-</c:otherwise>
-</c:choose>	
-  ReadStatus
-</div>
+				<c:choose>
+					<c:when test='${i.read == true}'>
+						<div>
+							Read:
+							<img onmouseover="this.style.cursor='pointer'"  id="watched${i.id}" src="./images/watched_y.gif" />
+					</c:when>
+					<c:otherwise>
+						<div <c:if test='${status.count < 10}'>id="paragraph${i.id}" class="fade" </c:if> >
+							<img onmouseover="this.style.cursor='pointer'"  id="watched${i.id}" src="./images/watched_n.gif" />
+					</c:otherwise>
+				</c:choose>	
+  				<span id="watchedResponse${i.id}"> </span>
+						</div>
 
-<div id="watchedResponseContainer${i.id}">
-  Response
-  <div id="watchedResponse${i.id}"><br/></span>
-</div>
-<form>
-<c:choose>
-<c:when test='${i.read == true}'>
-	<input type="hidden" id="watchedStatus${i.id}" name="watchedStatus" value="true"/>
-</c:when>
-<c:otherwise>
-	<input type="hidden" id="watchedStatus${i.id}" name="watchedStatus" value="false"/>
-</c:otherwise>
-</c:choose>	
-</form>
- <ajax:toggle
- 		 imageId="watched${i.id}"
- 		 targetId="watchedResponse${i.id}"
-  		 stateId="watchedStatus${i.id}"
- 		 baseUrl="./readFeedItem.html?id=${i.id}"
-  		 paramName="state"
-  		 imageOn="./images/watched_y.gif"
-  		 imageOff="./images/watched_n.gif"
-  		  />     		
+				
+  				
+				
+				<form>
+					<c:choose>
+						<c:when test='${i.read == true}'>
+							<input type="hidden" id="watchedStatus${i.id}" name="watchedStatus" value="true"/>
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" id="watchedStatus${i.id}" name="watchedStatus" value="false"/>
+						</c:otherwise>
+					</c:choose>	
+				</form>
+ 				<ajax:toggle
+ 					 imageId="watched${i.id}"
+ 					 targetId="watchedResponse${i.id}"
+  					 stateId="watchedStatus${i.id}"
+ 					 baseUrl="./readFeedItem.html?id=${i.id}"
+  					 paramName="state"
+  					 imageOn="./images/watched_y.gif"
+  					 imageOff="./images/watched_n.gif"
+  		  		/>     		
     		
       		
       		

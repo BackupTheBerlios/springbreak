@@ -59,11 +59,7 @@ public class AddCommentController extends SimpleFormController {
          commentDAO.savecomment(comment);
          
          return new ModelAndView (getSuccessView(),"comment",comment);
-         
-         
-         
-     
-        
+
        }
     
     

@@ -24,7 +24,7 @@
 //
 
 
-// $Id: ItemIF.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+// $Id: ItemIF.java,v 1.2 2005/09/05 17:54:53 vecego Exp $
 
 //Roland Vecera
 //11.02.2005
@@ -46,8 +46,8 @@ public interface ItemIF extends WithIdMIF, WithTitleMIF, WithElementsAndAttribut
                                 WithCreatorMIF, WithDescriptionMIF,
                                 WithLinkMIF, WithChannelMIF{
 
-  ItemGuidIF getGuid();
-  void setGuid(ItemGuidIF guid);
+  //ItemGuidIF getGuid();
+  //void setGuid(ItemGuidIF guid);
 
   URL getComments();
   void setComments(URL comments);

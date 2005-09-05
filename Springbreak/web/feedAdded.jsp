@@ -1,14 +1,19 @@
 <%@ include file="/taglibs.jsp"%> 
-<title>Feed added</title> 
-<p>	<h3>Subscribe Feed?</h3></p> 
+<p>
+<b>RSS-channel was parsed successfully!</b><br/>
+Please select the category this RSS-Channel should be added!
 
-<table> 
+</p>
+
+
 
 <form name="channel" method="post" action="<c:url value="/subscribeChannel.html"/>" >
+	<fieldset style="width: 70%">
+    <legend>Subscribe RSS-channel to category!</legend>
 	<table> 
 		 
 		<tr> 
-			<th>TITLE </th> 
+			<th>Title: </th> 
 			<td> 
 				<spring:bind path="channel.title"> 
 					${status.value}
@@ -17,11 +22,11 @@
 		</tr> 
 		<tr>
 			<th>
-				URL
+				URL:
 			</th> 
 			<td> 
 			    <spring:bind path="channel.locationString">
-	               <input type="text" name="locationString" value="${status.value}" readonly="readonly" />
+	               <input size="50" type="text" name="locationString" value="${status.value}" readonly="readonly" />
 	              
 	            </spring:bind>
 			
@@ -33,7 +38,7 @@
 		</tr> 
 		<tr> 
 			<th>
-				ID
+				Category:
 			</th> 
 			<td>               
           		<select name="category">  
@@ -46,8 +51,8 @@
 			
 		</tr> 
 		<tr> 
-		<td><input type="submit" class="button" name="save" value="Save"/></td>
+		<td><br/><input type="submit" class="button" name="save" value="Save"/></td>
 		</tr>
 	</table>
+	</fieldset>
 </form> 
-</table>

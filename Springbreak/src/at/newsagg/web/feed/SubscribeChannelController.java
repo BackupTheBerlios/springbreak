@@ -68,8 +68,10 @@ public class SubscribeChannelController extends SimpleFormController {
         //persist in DB!
         feedSubscriber = feedSubscriberDAO.saveFeedSubscriber(feedSubscriber);
 
-        ModelAndView mav = new ModelAndView(getSuccessView(), "feedSubscriber",
-                feedSubscriber);
+        //force menu reload!
+        request.getSession().removeAttribute("feedSubscriberSession");
+        
+        ModelAndView mav = new ModelAndView("redirect:main.html");
         return mav;
 
     }

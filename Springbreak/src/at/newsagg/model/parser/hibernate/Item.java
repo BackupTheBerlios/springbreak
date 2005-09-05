@@ -24,7 +24,7 @@
 //
 
 
-// $Id: Item.java,v 1.2 2005/08/25 19:40:44 vecego Exp $
+// $Id: Item.java,v 1.3 2005/09/05 17:54:53 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 
@@ -71,7 +71,7 @@ public class Item  extends BaseObject implements ItemIF, java.io.Serializable {
   private String subject;
   private Date date;
   private Date found;
-  private ItemGuidIF guid;
+  //private ItemGuidIF guid;
   private URL comments;
   private ChannelIF channel;
   private Element itemElement;
@@ -282,13 +282,17 @@ public void setRead(boolean read) {
    *
    * @return guid.
    */
-  public ItemGuidIF getGuid() {
-    return guid;
-  }
-
-  public void setGuid(ItemGuidIF guid) {
-    this.guid = guid;
-  }
+  
+//Roland Vecera
+//	5. September;
+//	weg damit, für was?
+//  public ItemGuidIF getGuid() {
+//    return guid;
+//  }
+//
+//  public void setGuid(ItemGuidIF guid) {
+//    this.guid = guid;
+//  }
 
   /**
    * @hibernate.property

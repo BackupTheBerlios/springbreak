@@ -75,7 +75,7 @@ public class ParserCronJobServiceImpl extends TimerTask implements
         while (i.hasNext()) {
             ChannelIF channel = (ChannelIF) i.next();
             //          initialize empty Items!
-            channel.setItems(new ArrayList());
+            channel.setItems(new Vector());
             try {
                 this.runUpdateOnChannel(channel);
 
@@ -165,7 +165,7 @@ public class ParserCronJobServiceImpl extends TimerTask implements
 
         while (j.hasNext()) {
             itemnew = (ItemIF) j.next();
-            if (itemnew.getId() != -1) {
+           // if (itemnew.getId() == -1) {
                 log.info("Found Item has Id: " + itemnew.getId());
                 ItemIF currItem;
                 try {
@@ -178,7 +178,7 @@ public class ParserCronJobServiceImpl extends TimerTask implements
                 if (itemnew.equals(currItem)) {
                     remove.add(itemnew);
                 }
-            }
+         //   }
 
         }
         log.info("Already in DB found: " + remove.size() + " Items");

@@ -80,7 +80,7 @@ public class MainController implements Controller {
 		else
 		{
 		 if (view == 0)
-		  mv.addObject("item",itemDAO.getItemsForUser(user.getUsername(),user.getLastLogin()));
+		  mv.addObject("items",itemDAO.getItemsForUser(user.getUsername(),user.getLastLogin()));
 		 else    
 		    mv.addObject("items",itemDAO.getItemsForUser(user.getUsername(),(int)hottestHelper));
 		}

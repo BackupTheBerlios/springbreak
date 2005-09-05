@@ -29,7 +29,13 @@
 				<value>at/newsagg/model/parser/hibernate/Channel.hbm.xml</value>
 				<value>at/newsagg/model/parser/hibernate/Image.hbm.xml</value>
 				<value>at/newsagg/model/parser/hibernate/Item.hbm.xml</value>
+			<!--
+				//Roland Vecera
+				//5. September
+				//keine Ahnung für was ItemGuid gut sein soll..
 				<value>at/newsagg/model/parser/hibernate/ItemGuid.hbm.xml</value>
+				-->
+
 				<value>at/newsagg/model/parser/hibernate/ItemMetadata.hbm.xml</value>
 				<value>at/newsagg/model/logstatistics/LogPostings.hbm.xml</value>
 				<value>at/newsagg/model/logstatistics/LogSubscribers.hbm.xml</value>
