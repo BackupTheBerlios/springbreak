@@ -1,12 +1,4 @@
-/* css Zen Garden submission 083 - 'Springtime', by Boér Attila */
-/* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
-/* All associated graphics copyright 2004, Boér Attila */
-/* Added: March 4th, 2004 */
 
-/* IMPORTANT */
-/* This design is not a template. You may not reproduce it elsewhere without the 
-   designer's written permission. However, feel free to study the CSS and use 
-   techniques you learn from it elsewhere. */
 
 /* basic elements */
 body {
@@ -92,33 +84,47 @@ a.manage {
 }
 
 #head {
- font-size: 16px;
+ font-size: 20px;
  font-weight: bold;
  padding-top: 5px;
  padding-left: 3px;
  position: absolute;
+ color: WHITE;
+ text-decoration: underline;
  top:  0px;
  left: 0px;
- border-bottom: 1px solid #C8C8C8;
+ border-bottom: 5px dashed WHITE;
  height: 70px;
- width: 768px;
- background-color: #BDCF84;
+ width: 2000px;
+ overflow: hidden;
+ background-color: #45A8CC;
  
 
 }
 
 #menuleft {
   /*  background: transparent url(../images/springtime/green.gif) no-repeat top left; */
-    overflow: auto;
+    overflow: hidden;
     width: 168px;
     padding-top: 20px;
     padding-left: 5px;
-    height: 700px;
+    min-height: 700px; /*nix IE6 */
+    height: 700px; 
     position: absolute;
     top:  90px;
     left: 0px;
 
     background-color: #C5C5C5;
+}
+
+#menufeeds 
+{
+ position:relative;
+}
+
+#menuoptions
+{
+  position:relative;
 }
 
 #content {
@@ -127,8 +133,9 @@ a.manage {
   /*  background: transparent url(../images/springtime/whitebg.gif) no-repeat 0 0 !important; */
     position: absolute;
     top: 90px;
-    left: 172px;
-    height: 708px; /*seltsam */
+    left: 175px;
+    min-height: 700px; /*nix IE6 */
+    height: 700px; 
     width: 592px; /*seltsam */
     padding-top: 10px;
     padding-left: 7px;
@@ -199,15 +206,16 @@ div.manage
 {
  margin-top: 15px;
  border: 1px solid WHITE;
- background-color:WHITE;
+ background-color: WHITE;
  padding: 3px;
 }
 
 div.manage div
 {
-	font-size: 14 px;
+	
 	text-decoration: underline;
 	font-weight: bold;
+	font: 14px;
 	
 }
 div.manage span
@@ -231,4 +239,6 @@ input.button {
 select {
 border: 1px solid BLACK;
 }
+
+img { border: 0; }
 
