@@ -1,12 +1,13 @@
+<head>
+<title>RSS-channel added</title>
 <%@ include file="/taglibs.jsp"%> 
+</head>
+
+<body>
 <p>
 <b>RSS-channel was parsed successfully!</b><br/>
 Please select the category this RSS-Channel should be added!
-
 </p>
-
-
-
 <form name="channel" method="post" action="<c:url value="/subscribeChannel.html"/>" >
 	<fieldset style="width: 70%">
     <legend>Subscribe RSS-channel to category!</legend>
@@ -56,3 +57,4 @@ Please select the category this RSS-Channel should be added!
 	</table>
 	</fieldset>
 </form> 
+</body>

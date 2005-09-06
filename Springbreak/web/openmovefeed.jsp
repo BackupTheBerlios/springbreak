@@ -1,9 +1,12 @@
-
+<head>
+<title>Move RSS-channel</title>
 <%@ include file="/taglibs.jsp"%>
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax"%>
 <script type="text/javascript" src="./ajaxcore.js"></script>
 <script type="text/javascript" src="./fat.js"></script>
+</head>
 
+<body>
 <p>
 <b>Move a RSS-channel to another category!</b><br/><br/>
 
@@ -161,5 +164,5 @@ function handleEmpty() {
   paramName="make2"
   postFunc="postSelFeed"
    />
-
+</body>
 

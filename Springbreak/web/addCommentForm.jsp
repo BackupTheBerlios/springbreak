@@ -1,15 +1,13 @@
-
-
-
-
-
+<head>
+<title>Add Comment</title>
 <%@ include file="/taglibs.jsp"%> 
+</head>
+
+<body>
 
 <p>
 <b>Add a new comment to the RSS-channel !</b><br/>
 </p>
-
-
 
 <spring:bind path="comment.*">
 <c:if test="${not empty status.errorMessages}"> 
@@ -23,7 +21,6 @@
 </div>
 </c:if>
 </spring:bind>
-
 
 <form name="comment" method="post" action="<c:url value="/addComment.html"/>" > 
 	<fieldset style="width: 70%">
@@ -89,7 +86,8 @@
 			
 	</table> 
 	</fieldset>
-</form> 
+</form>
+</body> 
 <content tag="underground">
 
 <strong><fmt:message key="common.newsagg"/></strong>

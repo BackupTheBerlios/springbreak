@@ -1,7 +1,9 @@
+<head>
 <%@ include file="/taglibs.jsp"%>
 
 <title>News Aggregator</title>
-
+</head>
+<body>
 
 <h3>Welcome to the News Aggregator!</h3>
 <p>
@@ -59,6 +61,7 @@
 	</table> 
    </form>
 </p>
+</body>
 
 <content tag="underground">
 <h3><fmt:message key="login.someinfoabout"/></h3>

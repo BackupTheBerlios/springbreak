@@ -3,8 +3,9 @@
 <title>Main</title>
 </head>
 
-<h3><fmt:message key="main.welcome"/> <c:out value="${user.firstName}"/>!</h3>
+<b><fmt:message key="main.welcome"/> <c:out value="${user.firstName}"/>!</b><br/>
 LastLogin:<c:out value="${sessionScope.userSession.userData.lastLogin}" />
+<br/>
 <%@ include file="/itemdisplay.jsp"%>
 
 

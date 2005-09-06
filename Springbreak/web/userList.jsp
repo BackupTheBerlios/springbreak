@@ -1,6 +1,8 @@
+<head>
 <%@ include file="/taglibs.jsp"%> 
-<title>News Aggregator</title>
-
+<title>User List</title>
+</head>
+<body>
 <h3><fmt:message key="user.userlist"/></h3>
 
 <table class="list"> 
@@ -40,7 +42,7 @@
 		</c:forEach> 
 	</tbody> 
 </table>
-
+</body>
 <content tag="menubar">
 <a href="showAddUser.html"><fmt:message key="user.addUser"/></a><br/>
 <a href="main.html"><fmt:message key="user.back"/></a><br/>

@@ -1,15 +1,8 @@
-<!-- 
-Roland Vecera
-22. August 2005
 
-Use this .jsp to display a collection of Items
+	<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
+	<script type="text/javascript" src="./fat.js"></script>
+	<script type="text/javascript" src="./ajaxcore.js"></script>
 
-
--->
-<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
-<script type="text/javascript" src="./fat.js"></script>
-<script type="text/javascript" src="./ajaxcore.js"></script>
- 
 
 
 
@@ -19,10 +12,10 @@ Use this .jsp to display a collection of Items
      
 			
       	<tr <c:if test='${(i.read != true) && (status.count < 10)}'> id="tr${i.id}" class="fade" </c:if> >
-      		<td><a href="${i.link}" target="blank">${i.title}</a> </td> 
+      		<td><a class="itemtitle" href="${i.link}" target="blank">${i.title}</a> </td> 
       	</tr>
       	<tr>
-      		<td>Posted on: ${i.date} by ${i.creator} on <a class="itemtitle" href="${i.channel.locationString}" target="blank">${i.channel.title}</a></td>
+      		<td>Posted on: ${i.date} by ${i.creator} on <a class="channellocation" href="${i.channel.siteString}" target="blank">${i.channel.title}</a></td>
       	</tr>
       	<tr>
       		<td colspan="2"><div class="description"> <c:out value="${i.description}"/></div></td>
@@ -36,11 +29,12 @@ Use this .jsp to display a collection of Items
 				<c:choose>
 					<c:when test='${i.read == true}'>
 						<div>
-							Read:
+							Read Status:
 							<img onmouseover="this.style.cursor='pointer'"  id="watched${i.id}" src="./images/watched_y.gif" />
 					</c:when>
 					<c:otherwise>
-						<div <c:if test='${status.count < 10}'>id="paragraph${i.id}" class="fade" </c:if> >
+						<div>
+							Read Status:
 							<img onmouseover="this.style.cursor='pointer'"  id="watched${i.id}" src="./images/watched_n.gif" />
 					</c:otherwise>
 				</c:choose>	

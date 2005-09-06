@@ -1,8 +1,12 @@
+<head>
 <%@ include file="/taglibs.jsp"%> 
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <script type="text/javascript" src="./ajaxcore.js"></script>
 
-<title>Springbreak AddFeed</title> 
+<title>Add RSS-channel</title> 
+</head>
+<body>
+
 <p>
 <b>Add a new RSS-channel to your menu!</b><br/><br/>
 
@@ -10,14 +14,6 @@ Insert a valid URL to the input field.
 <br/>Note: Don't forget to add a valid protocol like 'http://'
 </p>
 
-
-<!--
-Roland Vecera
-Input für FeedSubscribtion
-
-
-TODO: was macht onsubmit="return validateChannel(this)
--->
 
 <spring:bind path="channel.*">
 <c:if test="${not empty status.errorMessages}"> 
@@ -72,6 +68,9 @@ TODO: was macht onsubmit="return validateChannel(this)
   baseUrl="./autocompleteFeed.html"
   className="autocomplete"
   progressStyle="throbbing" />
+
+</body>  
+  
 <content tag="underground">
 
 <strong><fmt:message key="common.newsagg"/></strong>

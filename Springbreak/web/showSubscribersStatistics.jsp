@@ -1,5 +1,8 @@
+<head>
+<title>Stats</title>
 <%@ include file="/taglibs.jsp"%> 
-
+</head>
+<body>
 <cewolf:chart 
     id="line" 
     type="line" 
@@ -34,4 +37,4 @@
 </cewolf:chart> 
 <cewolf:img chartid="line" renderer="cewolf" width="500" height="340"> 
 </cewolf:img>
-
+</body>

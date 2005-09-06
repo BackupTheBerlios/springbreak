@@ -1,6 +1,7 @@
 <div class="manage">
-<fmt:message key="main.manageRssFeeds"/><br/>
-<a href="addCategory.html">Add Category</a><br/>
-<a href="addChannel.html">Add new Channel</a><br/>
-<a href="moveFeed.html?action=input">Move Channel</a>
+ <div><fmt:message key="main.manageRssFeeds"/></div>
+ 	<span><a class="manage" href="addCategory.html">&gt;Add Category</a><br/></span>
+	<span><a class="manage"href="addChannel.html">&gt;Add new Channel</a><br/></span>
+	<span><a class="manage" href="moveFeed.html?action=input">&gt;Move Channel</a></span>
+ </span>
 </div>

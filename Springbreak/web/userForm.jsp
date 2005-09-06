@@ -1,5 +1,8 @@
+<head>
 <%@ include file="/taglibs.jsp"%> 
-<title>MyUsers ~ User Details</title> 
+<title>User Details</title> 
+</head>
+<body>
 <p>Please fill in user's information below:</p> 
 
 <spring:bind path="user.*"> 
@@ -115,6 +118,7 @@
 			</td> 
 	</table> 
 </form> 
+</body>
 <content tag="menubar">
 <a href="showUser.html"><fmt:message key="user.back"/></a><br/>
 </content>

@@ -24,7 +24,7 @@
 //
 
 
-// $Id: Channel.java,v 1.3 2005/08/24 08:38:59 vecego Exp $
+// $Id: Channel.java,v 1.4 2005/09/06 20:58:16 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 /*
@@ -234,6 +234,22 @@ public class Channel  extends BaseObject implements at.newsagg.model.parser.Chan
   public void setSite(URL siteUrl) {
     this.site = siteUrl;
   }
+  
+  public String getSiteString() {
+      return site.toString();
+    }
+
+    public void setSiteString(String siteUrl) throws MalformedURLException{
+            
+      if (siteUrl == null || siteUrl.trim().length() == 0) {
+          this.site = null;
+          return;
+        } else {
+         
+            this.site = new URL(siteUrl);
+          
+        }
+    }
 
   /**
    * @hibernate.property

@@ -1,9 +1,14 @@
-<%@ include file="/taglibs.jsp"%> 
+<head>
+	<title>Show Information</title>
+	<%@ include file="/taglibs.jsp"%> 
+</head>
+<body>
+
 <p><b>Further Information</b><br>
 This page gives you some further information about the RSS-Channel.
 </p> 
 
-Information about <a href="${channel.locationString}" target="blank">${channel.title}</a>
+Information about <a class="channellocation" href="${channel.locationString}" target="blank">${channel.title}</a>
 
 <table style="width: 70%; background:#E0E0E0; margin: 5px;">
 	<tr>
@@ -12,6 +17,22 @@ Information about <a href="${channel.locationString}" target="blank">${channel.t
 		</td>
 		<td>
 			${channel.title}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Website:
+		</td>
+		<td>
+			<a class="channellocation" href="${channel.siteString}" target="blank">${channel.siteString}</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			RSS-Channel:
+		</td>
+		<td>
+			<a class="channellocation" href="${channel.locationString}" target="blank">${channel.locationString}</a>
 		</td>
 	</tr>
 	<tr>
@@ -64,7 +85,7 @@ Information about <a href="${channel.locationString}" target="blank">${channel.t
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><a href="showSubscribersStatistic.html?channel_id=${channel.id}&numberWeeks=30">Show statistics to RSS-Channel '${channel.title}'</a> </td>
+		<td colspan="2"><a class="channellocation" href="showSubscribersStatistic.html?channel_id=${channel.id}&numberWeeks=30">Show statistics to RSS-Channel '${channel.title}'</a> </td>
 	</tr>
 </table>
 <br/>
@@ -102,10 +123,7 @@ Total number of Reviews: <c:out value="${countReviews}"/>
 		
 </c:forEach> 
                  
-<!-- list Commments to a Channel
-    +output number of Comments
-    +output AVGReview
-  -->
+</body>
   
   
     

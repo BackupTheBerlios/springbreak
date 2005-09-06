@@ -87,7 +87,7 @@ function callback() {
    java.util.HashMap openElements = (java.util.HashMap)request.getSession().getValue("openElements");
    %>
 
-
+<span>Show me </span>
 <select id="sview" name="sview" size="1" onchange="validate();">
 <option id="sviewOpt0" value="0" <c:if test="${sessionScope.view == 0}">selected</c:if>>Since last visit</option>
 <option id="sviewOpt10" value="10" <c:if test="${sessionScope.view == 10}">selected</c:if>>10 Items</option>
@@ -98,7 +98,7 @@ function callback() {
 <c:set var="lastcategory" value=""/>
 <br/>
 <br/>
-<a class="menu_channel" href="main.html">All Channels</a>
+<a class="category" class="menu_channel" href="main.html">All Channels</a>
 <c:forEach var="fs" items="${sessionScope.feedSubscriberSession.feedSubscribers}"> 
       
       <c:set var="temp" scope="page" value="${fs.category.id}"/>
@@ -110,7 +110,7 @@ function callback() {
       	</c:if>
       		
       		<div style="position: relative; margin-top: 5px; padding: 3px; background:${fs.category.htmlColor}" >
-      		   <a href="main.html?category_id=${fs.category.id}">${fs.category.title}</a>
+      		   <a class="category" href="main.html?category_id=${fs.category.id}">${fs.category.title}</a>
       		   
 <% //This is the solution for the KLAPPBAR Menu to remember state
 	//in openElements, the open parts are stored;
@@ -136,8 +136,8 @@ function callback() {
       		<div style="margin-left: 7px;" id="menu_channel${fs.channel.id}">
       		
       			<a class="menu_channel" href="main.html?channel_id=${fs.channel.id}">${fs.channel.title}</a>
-      			<a href="showCommentsToChannel.html?id=<c:out value='${fs.channel.id}'/>">#</a>
-      			<a href="addComment.html?id=<c:out value='${fs.channel.id}'/>">*</a>
+      			<a class="menu_channel" href="showCommentsToChannel.html?id=<c:out value='${fs.channel.id}'/>"><img src="./images/menu/info.gif" alt="I" /></a>
+      			<a class="menu_channel" href="addComment.html?id=<c:out value='${fs.channel.id}'/>"><img src="./images/menu/comment.gif" alt="C" /></a>
             	   
       		</div>
     <c:set var="lastcategory" value="${fs.category.title}"/>  

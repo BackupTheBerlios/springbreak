@@ -1,5 +1,8 @@
+<head>
 <%@ include file="/taglibs.jsp"%> 
-<title>MyUsers ~ User Details</title> 
+<title>User Details</title> 
+</head>
+<body>
 <p>	<h3><fmt:message key="register.userHasBeenAdded"/></h3></p> 
 
 <table> 
@@ -63,3 +66,4 @@
 		</tr>
 	</table> 
 </table>
+</body>

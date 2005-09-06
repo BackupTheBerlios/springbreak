@@ -331,4 +331,8 @@ public interface ChannelIF {
      * @param logSubscribers The logSubscribers to set.
      */
     public void setLogSubscribers(Collection logSubscribers);
+    
+    public String getSiteString();
+    
+    public void setSiteString(String siteUrl) throws MalformedURLException;
 }
