@@ -93,7 +93,7 @@
             table="ITEMS"
             lazy="true"
             inverse="true"
-            cascade="all"
+            cascade="save-update"
             order-by="date DESC"
         >
 

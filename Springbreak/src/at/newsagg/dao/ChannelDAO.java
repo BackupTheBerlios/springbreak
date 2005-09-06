@@ -6,6 +6,7 @@
 package at.newsagg.dao;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 import at.newsagg.model.parser.hibernate.Channel;
@@ -79,5 +80,7 @@ public interface ChannelDAO {
      * @param o
      */
     public void freeObject (Object o);
+    
+    public int countItemsOnChannelSince(int channel_id, Date date);
    
 }

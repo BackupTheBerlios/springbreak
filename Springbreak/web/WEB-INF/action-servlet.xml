@@ -141,6 +141,8 @@
        <property name="mappings">
 		<props>
 			<prop key="/ajaxtest.html">AjaxTest</prop>
+			<prop key="/storeViewInSession.html">StoreViewInSession</prop>
+			<prop key="/storeOpenElements.html">StoreOpenElementsInSession</prop>
 			<prop key="/autocompleteFeed.html">AutoCompleteURL</prop>
 			<prop key="/readFeedItem.html">ReadFeedItem</prop>
 			
@@ -198,6 +200,26 @@
      <value>ajaxTest</value>
    </property>
  </bean>
+
+<bean id="StoreOpenElementsInSession" class="org.springframework.web.servlet.mvc.ServletWrappingController">
+   <property name="servletClass">
+     <value>at.newsagg.web.ajax.StoreOpenElementsInSession</value>
+   </property>
+   <property name="servletName">
+     <value>storeOpenElementsInSession</value>
+   </property>
+ </bean>
+
+<bean id="StoreViewInSession" class="org.springframework.web.servlet.mvc.ServletWrappingController">
+   <property name="servletClass">
+     <value>at.newsagg.web.ajax.StoreViewInSession</value>
+   </property>
+   <property name="servletName">
+     <value>storeViewInSession</value>
+   </property>
+ </bean>
+
+
 
 <bean id="MoveFeedAjax" class="at.newsagg.web.ajax.MoveFeedServletWrapper">
    <property name="servletClass">
@@ -289,7 +311,12 @@ Statistic Controller -->
  <property name="subscriberStatisticData">
 			<ref bean="subscriberStatisticData"/>
 		</property> 
-
+ <property name="postingsStatisticData">
+			<ref bean="postingsStatisticData"/>
+		</property> 
+ <property name="channelDAO">
+	<ref bean="channelDAO" />
+ </property>
 </bean>
 
 

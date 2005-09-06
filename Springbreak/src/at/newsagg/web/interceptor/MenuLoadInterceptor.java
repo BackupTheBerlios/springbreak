@@ -5,6 +5,9 @@
  */
 package at.newsagg.web.interceptor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +44,9 @@ public class MenuLoadInterceptor extends HandlerInterceptorAdapter {
 			   
 				log.info("Forced Menureload in Session!");
 				request.getSession().setAttribute("feedSubscriberSession", fss);
+				
+		
+				
 		}
 		return true;
 		

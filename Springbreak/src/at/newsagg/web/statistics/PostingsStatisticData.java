@@ -1,5 +1,5 @@
 /*
- * Created on 30.04.2005
+ * Created on 06.09.2005
  * king
  * 
  */
@@ -17,28 +17,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import at.newsagg.dao.LogDAO;
-import at.newsagg.model.logstatistics.LogSubscribersIF;
+import at.newsagg.model.logstatistics.LogPostingsIF;
 import de.laures.cewolf.ChartPostProcessor;
 import de.laures.cewolf.DatasetProduceException;
 import de.laures.cewolf.DatasetProducer;
 
 /**
- * Sample DatasetProducer whioh creates random XYDatasets.
- * 
- * @author Guido Laures
+ * @author king
+ * @version created on 06.09.2005 10:43:48
+ *  
  */
-public class SubscriberStatisticData implements DatasetProducer,
-        ChartPostProcessor, Serializable, StatisticDataIF {
+public class PostingsStatisticData implements DatasetProducer,
+        ChartPostProcessor, Serializable, StatisticDataIF
+
+{
 
     private static final Log log = LogFactory
-            .getLog(SubscriberStatisticData.class);
+            .getLog(PostingsStatisticData.class);
 
     private LogDAO logDAO;
 
@@ -93,12 +94,10 @@ public class SubscriberStatisticData implements DatasetProducer,
             throw new NullPointerException("numberWeeks not set!");
         }
         if (((String) map.get("seriesName")) != null) {
-        seriesName = (String)map.get("seriesName");
+            seriesName = (String) map.get("seriesName");
+        } else {
+            seriesName = "Postings";
         }
-        else {
-             seriesName="Subscribers";
-        }
-        
 
         log.debug("ID: " + map.get("channel_id") + " WEEKS:"
                 + map.get("numberWeeks"));
@@ -108,23 +107,24 @@ public class SubscriberStatisticData implements DatasetProducer,
 
     }
 
-    private CategoryDataset createDataset(int channel_id, int numberWeeks, String seriesName) {
+    private CategoryDataset createDataset(int channel_id, int numberWeeks,
+            String seriesName) {
         log.debug("ID " + channel_id);
         log.debug("weeks " + numberWeeks);
-        Iterator i = logDAO.getLogSubscribers(channel_id).iterator();
+        Iterator i = logDAO.getLogPostings(channel_id).iterator();
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        LogSubscribersIF logSubscriber;
+        LogPostingsIF logPostings;
         Calendar cal = new GregorianCalendar();
         int max = 0;
         while (i.hasNext() && (max < numberWeeks)) {
-            logSubscriber = (LogSubscribersIF) i.next();
-            cal.setTime(logSubscriber.getDate());
+            logPostings = (LogPostingsIF) i.next();
+            cal.setTime(logPostings.getDate());
             log.debug("Tick: " + cal.get(Calendar.WEEK_OF_YEAR) + "/"
                     + cal.get(Calendar.YEAR));
-            dataset.addValue(logSubscriber.getNum_subscribers(), seriesName,
-                    cal.get(Calendar.WEEK_OF_YEAR) + "/"
-                            + cal.get(Calendar.YEAR));
+            dataset.addValue(logPostings.getNum_postings(), seriesName, cal
+                    .get(Calendar.WEEK_OF_YEAR)
+                    + "/" + cal.get(Calendar.YEAR));
             max++;
 
         }
@@ -144,7 +144,7 @@ public class SubscriberStatisticData implements DatasetProducer,
     }
 
     public String getProducerId() {
-        return "LogSubscribers DatsetProducer " + Math.random();
+        return "LogPostings DatsetProducer " + Math.random();
     }
 
     /*
@@ -156,13 +156,11 @@ public class SubscriberStatisticData implements DatasetProducer,
     public void processChart(Object chartobj, Map arg1) {
         JFreeChart chart = (JFreeChart) chartobj;
         log.info("***" + chartobj.getClass());
-        
+
         CategoryPlot plot = chart.getCategoryPlot();
-        
 
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
 
         LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot
                 .getRenderer();
@@ -172,5 +170,4 @@ public class SubscriberStatisticData implements DatasetProducer,
                 new float[] { 10.0f, 6.0f }, 0.0f));
 
     }
-
 }

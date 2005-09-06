@@ -5,7 +5,11 @@
  */
 package at.newsagg.service.impl;
 
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import at.newsagg.dao.ChannelDAO;
 import at.newsagg.dao.FeedSubscriberDAO;
 import at.newsagg.dao.LogDAO;
+import at.newsagg.model.logstatistics.LogPostings;
 import at.newsagg.model.logstatistics.LogSubscribers;
 import at.newsagg.model.parser.hibernate.Channel;
 /**
@@ -31,14 +36,47 @@ public class LogStatisticsCronJobServiceImpl {
     
     private Log log = LogFactory.getLog(LogStatisticsCronJobServiceImpl.class);
     
+    
+    public void runStatistics()
+    {
+        java.util.Collection c = channelDAO.getChannels();
+        runLogPostings(c);
+        runLogSubscribers(c);
+        
+    }
+    
+    public void runLogPostings(Collection c)
+    {
+        log.info("run Log Postings!");
+        Iterator i = c.iterator();
+        LogPostings logPostings;
+        Channel channel;
+        while (i.hasNext())
+        {
+            logPostings= new LogPostings();
+            GregorianCalendar cal = new GregorianCalendar ();
+            
+            log.debug("**-"+cal.toString());
+            logPostings.setDate(cal.getTime()); //set actual time
+            
+            cal.add(Calendar.DATE, -7); //set to last week
+            channel = (Channel)i.next();
+            logPostings.setChannel(channel);
+            //get number of postings since last week
+            logPostings.setNum_postings(channelDAO.countItemsOnChannelSince(channel.getIntId(),cal.getTime()));
+            logPostings.setTimespan(7);
+            logDAO.save(logPostings);
+        }
+    }
+    
     /**
      * Log for all Channels how many Subscribers they have got.
      *
      */
-    public void runLogSubscribers ()
+    public void runLogSubscribers (Collection c)
     {
        log.info("run Log Subscribers!");
-       java.util.Collection c = channelDAO.getChannels();
+       
        java.util.Iterator i = c.iterator();
        LogSubscribers logsub; 
        Channel channel;

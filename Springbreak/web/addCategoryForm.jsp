@@ -1,3 +1,5 @@
+<head>
+<title>Add Category</title> 
 
 <script type="text/javascript">
 <!--
@@ -41,9 +43,16 @@ function callback() {
 
 
 <%@ include file="/taglibs.jsp"%> 
-<title>Springbreak Add Category</title> 
 
 
+<link type="text/css" rel="StyleSheet" href="./styles/rgbsliders/rgbsliders.css" />
+
+<script type="text/javascript" src="./slider_js/range.js"></script>
+<script type="text/javascript" src="./slider_js/timer.js"></script>
+<script type="text/javascript" src="./slider_js/slider.js"></script>
+
+</head>
+<body>
 
 <!--
 Roland Vecera
@@ -85,7 +94,7 @@ you add a channel to this category!
 			<td>
 				Title: 
 			</td> 
-			<td colspan="2" > 
+			<td > 
 				
 				<spring:bind path="category.title">
 	               <input size="25" maxlength="100" type="text" name="title" value=""/>
@@ -100,36 +109,49 @@ you add a channel to this category!
 				Color:
 			</td> 
 			<td> 
-				<table>
-				<tr>
-					<td>
-						<spring:bind path="category.red">
-	               		<input size="3" maxlength="3" type="text" name="red" id="red" value="0" onblur="validate();"/>
-	            		</spring:bind>
-	            	</td>
-	            	<td>R</td>
-	            </tr>
-	            <tr>
-	            	<td>
-	            		<spring:bind path="category.green">
-	               		<input  size="3" maxlength="3" type="text" name="green" id="green" value="0" onblur="validate();"/>
-	            	</spring:bind>
-	            	</td>
-	            	<td>G</td>
-	            </tr>
-	            <tr>
-	            <td>
-	            	<spring:bind path="category.blue">
-	               	<input  size="3"  maxlength="3" type="text" name="blue" id="blue" value="0" onblur="validate();"/>
-	            	</spring:bind>
-	            </td>
-	            <td>B</td>
-	            </tr>
-	            </table>
+				<div style="width: 300px; height: 100px">
+				   <table class="color-picker" cellspacing="2" cellpadding="0" border="0">
+						<col style="width: 40px" />
+						<col style="" />
+						<col style="width: 10px" />
+						<col style="width: 50px" />
+						<tr>
+							<td><label for="red-slider">Red:</label></td>
+							<td>
+								<div class="slider" id="red-slider" tabIndex="1">
+									<spring:bind path="category.red">
+										<input class="slider-input" name="${status.expression}" value="${status.value}" id="red-slider-input" />
+									</spring:bind>
+								</div>
+							</td>
+							<td><input id="red-input" maxlength="3" tabIndex="2" /></td>
+							<td rowspan="3" id="color-result"></td>
+						</tr>
+						<tr>
+							<td><label for="green-slider">Green:</label></td>
+							<td>
+								<div class="slider" id="green-slider" tabIndex="3">
+									<spring:bind path="category.green">
+										<input class="slider-input" name="${status.expression}" value="${status.value}" id="green-slider-input" />
+									</spring:bind>
+								</div>
+							</td>
+							<td><input id="green-input" maxlength="3" tabIndex="4" /></td>
+						</tr>
+						<tr>
+							<td><label for="blue-slider">Blue:</label></td>
+							<td>
+								<div class="slider" id="blue-slider" tabIndex="5">
+									<spring:bind path="category.blue">
+										<input class="slider-input" name="${status.expression}" value="${status.value}" id="blue-slider-input" />
+									</spring:bind>
+								</div>
+							</td>
+							<td><input id="blue-input" maxlength="3" tabIndex="6" /></td>
+						</tr>
+					</table>
+				</div>
 			</td>
-			<td id="color" align="center" bgcolor="WHITE">
-			Click for color-preview!
-		</td>
 			
 		</tr>
 		
@@ -144,7 +166,98 @@ you add a channel to this category!
     
 </form> 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+// init code
+var r = new Slider(document.getElementById("red-slider"), document.getElementById("red-slider-input"));
+r.setMaximum(255);
+var g = new Slider(document.getElementById("green-slider"), document.getElementById("green-slider-input"));
+g.setMaximum(255);
+var b = new Slider(document.getElementById("blue-slider"), document.getElementById("blue-slider-input"));
+b.setMaximum(255);
+
+var ri = document.getElementById("red-input");
+ri.onchange = function () {
+	r.setValue(parseInt(this.value));
+};
+
+var gi = document.getElementById("green-input");
+gi.onchange = function () {
+	g.setValue(parseInt(this.value));
+};
+
+var bi = document.getElementById("blue-input");
+bi.onchange = function () {
+	b.setValue(parseInt(this.value));
+};
+
+r.onchange = g.onchange = b.onchange = function () {
+	var cr = document.getElementById("color-result");
+	cr.style.backgroundColor = "rgb(" + r.getValue() + "," + 
+								g.getValue() + "," + 
+								b.getValue() + ")";
+	ri.value = r.getValue();
+	gi.value = g.getValue();
+	bi.value = b.getValue();
+	
+	if (typeof window.onchange == "function")
+		window.onchange();
+};
+
+r.setValue(128);
+g.setValue(128);
+b.setValue(128);
+
+// end init
+
+function setRgb(r, g, b) {
+	r.setValue(r);
+	g.setValue(g);
+	b.setValue(b);
+}
+
+function getRgb() {
+	return {
+		r:	r.getValue(),
+		g:	g.getValue(),
+		b:	b.getValue()
+	};
+}
+
+function fixSize() {
+	r.recalculate();
+	g.recalculate();
+	b.recalculate();
+}
+
+window.onresize = fixSize;
+
+fixSize();
+
+
+</script>
+
+
+
+
+</body>
 <content tag="underground">
 
 <strong><fmt:message key="common.newsagg"/></strong>
 </content>
+

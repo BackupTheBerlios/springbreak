@@ -1,7 +1,7 @@
 <%@ include file="/taglibs.jsp"%>
-
-<title>News Aggregator</title>
-
+<head>
+<title>Main</title>
+</head>
 
 <h3><fmt:message key="main.welcome"/> <c:out value="${user.firstName}"/>!</h3>
 LastLogin:<c:out value="${sessionScope.userSession.userData.lastLogin}" />

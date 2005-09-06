@@ -63,6 +63,9 @@ Information about <a href="${channel.locationString}" target="blank">${channel.t
 			${channel.language}
 		</td>
 	</tr>
+	<tr>
+		<td colspan="2"><a href="showSubscribersStatistic.html?channel_id=${channel.id}&numberWeeks=30">Show statistics to RSS-Channel '${channel.title}'</a> </td>
+	</tr>
 </table>
 <br/>
 <p><b>Following comments where done by our users:</b></p>

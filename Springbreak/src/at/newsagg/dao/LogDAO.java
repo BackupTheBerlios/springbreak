@@ -22,17 +22,26 @@ public interface LogDAO {
     public void save(Object o);
 
     /**
-     * Returns all entries of a channel in LogSubscribers order by date DESC.
+     * Returns entries of a channel in LogSubscribers order by date DESC.
      * 
      * @param channel_id id of a given Channel.
      * @return
      */
-    public java.util.Collection getAllLogSubscribers(int channel_id);
+    public java.util.Collection getLogSubscribers(int channel_id);
 
     /**
-     * Returns all entries of a channel in LogPostings order by date DESC
+     * Returns entries of a channel in LogPostings order by date DESC
      * @param channel_id
      * @return
      */
     public Collection getLogPostings(int channel_id);
+    
+    /**
+     * @return Returns the upperLimit.
+     */
+    public int getUpperLimit();
+    /**
+     * @param upperLimit The upperLimit to set.
+     */
+    public void setUpperLimit(int upperLimit);
 }

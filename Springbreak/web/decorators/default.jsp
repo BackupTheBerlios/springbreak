@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title><decorator:title default="Equinox"/></title>
+    <title>Springbreak Newsagg - <decorator:title default=""/></title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link href="${ctx}/styles/global.css" type="text/css" rel="stylesheet"/>

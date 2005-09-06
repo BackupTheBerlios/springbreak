@@ -147,7 +147,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + username
                 + "') "
                 + "where i.item_id in "
-                + "(select i.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
+                + "(select items4_.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
                 + "where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID and "
                 + "(feedsubscr2_.username like '"
                 + username
@@ -194,7 +194,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + username
                 + "') "
                 + "where i.item_id in "
-                + "(select i.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
+                + "(select items4_.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
                 + "where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID and "
                 + "(feedsubscr2_.username like '"
                 + username
@@ -238,7 +238,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + username
                 + "') "
                 + "where i.item_id in "
-                + "(select i.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
+                + "(select items4_.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ "
                 + "where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID and "
                 + "(feedsubscr2_.username like '"
                 + username

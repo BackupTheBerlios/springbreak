@@ -15,8 +15,10 @@ Use this .jsp to display a collection of Items
 
 <c:forEach var="i" items="${items}" varStatus="status"> 
       <div class="item<c:out value='${status.count % 2}'/>">
-      <table>
-      	<tr>
+      <table style="width:100%">
+     
+			
+      	<tr <c:if test='${(i.read != true) && (status.count < 10)}'> id="tr${i.id}" class="fade" </c:if> >
       		<td><a href="${i.link}" target="blank">${i.title}</a> </td> 
       	</tr>
       	<tr>

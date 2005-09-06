@@ -94,9 +94,10 @@
       </property> 
       <property name="transactionAttributes"> 
          <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="save*">PROPAGATION_REQUIRES_NEW</prop>
             <prop key="update*">PROPAGATION_REQUIRED</prop> 
             <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="count*">PROPAGATION_REQUIRED</prop>
 			<prop key="*">PROPAGATION_REQUIRED</prop> 
          </props> 
       </property>
@@ -149,6 +150,7 @@
             <prop key="save*">PROPAGATION_REQUIRED</prop>
             <prop key="update*">PROPAGATION_REQUIRED</prop> 
             <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="count*">PROPAGATION_REQUIRED</prop>
 			<prop key="*">PROPAGATION_REQUIRED</prop>
          </props> 
       </property>
@@ -202,12 +204,16 @@
 
     <bean id="logDAOTarget" class="at.newsagg.dao.hibernate.LogDAOHibernate"> 
     	<property name="sessionFactory"><ref local="sessionFactory"/></property>
-    </bean>
+    	<property name="upperLimit">
+			<value>60</value>
+		</property>
+	</bean>
 
     <bean id="logDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
     	<property name="transactionManager"> 
          <ref local="transactionManager" /> 
       </property> 
+		
       <property name="target"> 
          <ref local="logDAOTarget" /> 
       </property> 
@@ -266,6 +272,13 @@
 
 <!-- Data Producer for Subcribers stats -->
 <bean id="subscriberStatisticData" class="at.newsagg.web.statistics.SubscriberStatisticData"> 
+    		
+    		<property name="logDAO"> 
+    			<ref local="logDAO"/>
+    		</property>
+    </bean>
+
+<bean id="postingsStatisticData" class="at.newsagg.web.statistics.PostingsStatisticData"> 
     		
     		<property name="logDAO"> 
     			<ref local="logDAO"/>
