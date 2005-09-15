@@ -85,7 +85,11 @@ Information about <a class="channellocation" href="${channel.locationString}" ta
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><a class="channellocation" href="showSubscribersStatistic.html?channel_id=${channel.id}&numberWeeks=30">Show statistics to RSS-Channel '${channel.title}'</a> </td>
+	<c:url var="showSubURL" value="/showSubscribersStatistic.html">
+	  <c:param name="channel_id" value="${channel.id}" />
+	  <c:param name="numberWeeks" value="30" />
+	</c:url>
+		<td colspan="2"><a class="channellocation" href="${showSubURL}">Show statistics to RSS-Channel '${channel.title}'</a> </td>
 	</tr>
 </table>
 <br/>

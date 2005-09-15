@@ -15,9 +15,11 @@ This wizard will help you to move a RSS-channel from one category to another one
 </p>
 
 
+<c:url var="moveFeedURL" value="/moveFeed.html">
+	<c:param name="action" value="store" />
+</c:url>
 
-
-<form name="moveForm" method="post" action="<c:url value="/moveFeed.html?action=store"/>">
+<form name="moveForm" method="post" action="${moveFeedURL}">
   <fieldset style="width: 90%">
     <legend>Move RSS-channel</legend>
 
@@ -145,12 +147,15 @@ function handleEmpty() {
 }
 </script>
 
+<c:url var="moveURL" value="./moveFeedAjax.html">
+					
+</c:url>
 
 
 <ajax:select
   fieldId="category"
   targetId="feed"
-  baseUrl="./moveFeedAjax.html"
+  baseUrl="${moveURL}"
   paramName="make"
    postFunc="postSelCat"
   emptyFunc="handleEmpty"
@@ -160,7 +165,7 @@ function handleEmpty() {
  <ajax:select
   fieldId="feed"
   targetId="newcat"
-  baseUrl="./moveFeedAjax.html"
+  baseUrl="${moveURL}"
   paramName="make2"
   postFunc="postSelFeed"
    />
