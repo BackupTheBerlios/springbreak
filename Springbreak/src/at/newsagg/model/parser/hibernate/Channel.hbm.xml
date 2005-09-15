@@ -10,7 +10,9 @@
         table="CHANNELS"
         dynamic-update="false"
         dynamic-insert="false"
+
     >
+	<cache usage="read-write"/>
 
         <id
             name="intId"
@@ -96,6 +98,7 @@
             cascade="save-update"
             order-by="date DESC"
         >
+			<cache usage="read-write"/>
 
               <key
                   column="CHANNEL_ID"
