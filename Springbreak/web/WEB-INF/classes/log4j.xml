@@ -14,6 +14,10 @@
    <logger name="at.newsagg">
         <level value="DEBUG"/>
     </logger>
+	
+	<logger name="net.sf.ehcache">
+		<level value="DEBUG"/>
+	</logger>
 
 
 
