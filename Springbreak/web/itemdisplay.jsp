@@ -54,11 +54,14 @@
 						</c:otherwise>
 					</c:choose>	
 				</form>
+				<c:url var="readURL" value="./readFeedItem.html">
+					<c:param name="id" value="${i.id}" />
+				</c:url>
  				<ajax:toggle
  					 imageId="watched${i.id}"
  					 targetId="watchedResponse${i.id}"
   					 stateId="watchedStatus${i.id}"
- 					 baseUrl="./readFeedItem.html?id=${i.id}"
+ 					 baseUrl="${readURL}"
   					 paramName="state"
   					 imageOn="./images/watched_y.gif"
   					 imageOff="./images/watched_n.gif"

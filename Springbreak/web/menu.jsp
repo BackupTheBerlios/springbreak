@@ -11,8 +11,9 @@ function manage(val) {
   document.getElementById("menu_category"+val).style.display ='inline';
   document.getElementById("menu_category"+val).style.visibility ='visible';
   }
-  
-  var url = "./storeOpenElements.html?cat_id=" + escape(val);
+  <c:url var="storeOpenElementsURL" value="./storeOpenElements.html">
+  </c:url>
+  var url = "${storeOpenElementsURL}?cat_id=" + escape(val);
     if (window.XMLHttpRequest) {
         req = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
@@ -51,7 +52,9 @@ var req;
 function validate() {
     var view = document.getElementById("sview");
    // alert(view.value);
-    var url = "./storeViewInSession.html?view=" + escape(view.value);
+   <c:url var="storeViewURL" value="./storeViewInSession.html">
+	</c:url>
+    var url = "${storeViewURL}?view=" + escape(view.value);
     //alert (url);
     if (window.XMLHttpRequest) {
         req = new XMLHttpRequest();
@@ -98,7 +101,10 @@ function callback() {
 <c:set var="lastcategory" value=""/>
 <br/>
 <br/>
-<a class="category" class="menu_channel" href="main.html">All Channels</a>
+<c:url var="allChannels" value="/main.html">
+</c:url>
+
+<a class="category" class="menu_channel" href="${allChannels}">All Channels</a>
 <c:forEach var="fs" items="${sessionScope.feedSubscriberSession.feedSubscribers}"> 
       
       <c:set var="temp" scope="page" value="${fs.category.id}"/>
@@ -110,7 +116,10 @@ function callback() {
       	</c:if>
       		
       		<div style="position: relative; margin-top: 5px; padding: 3px; background:${fs.category.htmlColor}" >
-      		   <a class="category" href="main.html?category_id=${fs.category.id}">${fs.category.title}</a>
+      		   <c:url var="categoryurl" value="/main.html">
+      				<c:param name="cateogry_id" value="${fs.category.id}" />
+      			</c:url>
+      		   <a class="category" href="${categoryurl}">${fs.category.title}</a>
       		   
 <% //This is the solution for the KLAPPBAR Menu to remember state
 	//in openElements, the open parts are stored;
@@ -134,10 +143,18 @@ function callback() {
       </c:if>
       
       		<div style="margin-left: 7px;" id="menu_channel${fs.channel.id}">
-      		
-      			<a class="menu_channel" href="main.html?channel_id=${fs.channel.id}">${fs.channel.title}</a>
-      			<a class="menu_channel" href="showCommentsToChannel.html?id=<c:out value='${fs.channel.id}'/>"><img src="./images/menu/info.gif" alt="I" /></a>
-      			<a class="menu_channel" href="addComment.html?id=<c:out value='${fs.channel.id}'/>"><img src="./images/menu/comment.gif" alt="C" /></a>
+      			<c:url var="channelurl" value="/main.html">
+      				<c:param name="channel_id" value="${fs.channel.id}" />
+      			</c:url>
+      			<a class="menu_channel" href="${channelurl}">${fs.channel.title}</a>
+      			<c:url var="commentsurl" value="/showCommentsToChannel.html">
+      				<c:param name="id" value="${fs.channel.id}" />
+      			</c:url>
+      			<a class="menu_channel" href="${commentsurl}"><img src="./images/menu/info.gif" alt="I" /></a>
+      			<c:url var="addcommenturl" value="/addComment.html">
+      				<c:param name="id" value="${fs.channel.id}" />
+      			</c:url>
+      			<a class="menu_channel" href="${addcommenturl}'"><img src="./images/menu/comment.gif" alt="C" /></a>
             	   
       		</div>
     <c:set var="lastcategory" value="${fs.category.title}"/>  

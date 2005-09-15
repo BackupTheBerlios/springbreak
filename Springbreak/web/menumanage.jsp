@@ -1,7 +1,14 @@
 <div class="manage">
  <div><fmt:message key="main.manageRssFeeds"/></div>
- 	<span><a class="manage" href="addCategory.html">&gt;Add Category</a><br/></span>
-	<span><a class="manage"href="addChannel.html">&gt;Add new Channel</a><br/></span>
-	<span><a class="manage" href="moveFeed.html?action=input">&gt;Move Channel</a></span>
+ 	<c:url var="addCatURL" value="addCategory.html">
+  </c:url>
+ 	<span><a class="manage" href="${addCatURL}">&gt;Add Category</a><br/></span>
+	<c:url var="newChannelURL" value="addChannel.html">
+  </c:url>
+	<span><a class="manage" href="${newChannelURL}">&gt;Add new Channel</a><br/></span>
+	<c:url var="moveFeedURL" value="moveFeed.html">
+		<c:param name="action" value="input" />
+  </c:url>
+	<span><a class="manage" href="${moveFeedURL}">&gt;Move Channel</a></span>
  </span>
 </div>
