@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: Atom_0_3_Parser.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+// $Id: Atom_0_3_Parser.java,v 1.2 2005/09/16 13:05:51 vecego Exp $
 
 //Roland Vecera
 //11.02.2005
@@ -221,8 +221,13 @@ class Atom_0_3_Parser implements Atom_0_3_ParserIF {
 
       // get issued element (required)
       Element elIssued = item.getChild("issued", defNS);
-      curItem.setDate(ParserUtils.getDate(elIssued.getTextTrim()));
-
+      if (elIssued != null)
+          curItem.setDate(ParserUtils.getDate(elIssued.getTextTrim()));
+      else
+      //    set to found-date
+	    //weil sonst, scheint ja das Item bei DATE sortierung gar nicht auf!
+	    curItem.setDate(dateParsed);
+      
       // get subject element
       Element elSubject = item.getChild("subject", dcNS);
       if (elSubject != null) {

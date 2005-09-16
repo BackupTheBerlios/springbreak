@@ -5,10 +5,10 @@ import at.newsagg.model.User;
 
 /**
  * @author Szabolcs Rozsnyai
- * @$Id: UserSession.java,v 1.1 2005/04/21 19:41:09 vecego Exp $
+ * @$Id: UserSession.java,v 1.2 2005/09/16 13:05:51 vecego Exp $
  */
 public class UserSession {
-
+ 
 	private User userData;
 	
 	public UserSession (User user) {

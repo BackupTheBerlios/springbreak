@@ -242,6 +242,9 @@ class RSS_2_0_Parser implements RSS_2_0_ParserIF {
       if (elDate != null) {
         rssItem.setDate(ParserUtils.getDate(elDate.getTextTrim()));
       }
+      //    set to found-date
+	    //weil sonst, scheint ja das Item bei DATE sortierung gar nicht auf!
+	    rssItem.setDate(dateParsed);
 
       rssItem.setFound(dateParsed);
 

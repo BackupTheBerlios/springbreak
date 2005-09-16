@@ -36,6 +36,15 @@ Information about <a class="channellocation" href="${channel.locationString}" ta
 		</td>
 	</tr>
 	<tr>
+	<tr>
+		<td>
+			Last Updated by us:
+		</td>
+		<td>
+			${channel.lastUpdated}
+		</td>
+	</tr>
+	<tr>
 		<td>
 			Publisher:
 		</td>

@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: RSS_1_0_Parser.java,v 1.3 2005/08/30 17:16:12 vecego Exp $
+// $Id: RSS_1_0_Parser.java,v 1.4 2005/09/16 13:05:51 vecego Exp $
 
 //Simplified for use in Springbreak
 // comment out: <source> and <textinput> is not longer parsed
@@ -298,6 +298,10 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 			if (elDate != null) {
 				rssItem.setDate(ParserUtils.getDate(elDate.getTextTrim()));
 			}
+			else
+			    //set to found-date
+			    //weil sonst, scheint ja das Item bei DATE sortierung gar nicht auf!
+			    rssItem.setDate(dateParsed);
 			/*
 			 * This Element not currently set/used in or Application For
 			 * Simplicity we do not persist this Information in DB
@@ -339,7 +343,7 @@ class RSS_1_0_Parser implements RSS_1_0_ParserIF {
 					}
 				}
 			}
-			logger.info("geeeeeeeeeeeeeeeh");
+			logger.debug("geeeeeeeeeeeeeeeh");
 			chnl.addItem(rssItem);
 
 		}//End While = END <items>

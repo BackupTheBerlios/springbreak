@@ -15,7 +15,7 @@ import at.newsagg.model.parser.hibernate.Item;
  * @author king
  * @version created on 26.03.2005 11:14:09
  *  
- */
+ */ 
 public interface ItemDAO {
     /**
      * Returns count of persistent Items with given url.
@@ -78,5 +78,8 @@ public interface ItemDAO {
     public short getUpperLimit();
 
     public void setUpperLimit(short upperlimit);
+    
+    public Integer countNewItemsForUser(String username, Date since)
+    throws IndexOutOfBoundsException;
 
 }

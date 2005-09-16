@@ -45,6 +45,8 @@ public class MainController implements Controller {
 
         short hottestHelper = this.HOTTEST;
         ModelAndView mv = new ModelAndView("main", "user", user);
+        
+        mv.addObject("countItems", itemDAO.countNewItemsForUser(user.getUsername(), user.getLastLogin()));
 
         //user gives something other than predefined hottest
         short view = 0;

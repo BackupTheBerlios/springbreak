@@ -19,7 +19,7 @@ import at.newsagg.model.parser.hibernate.Item;
  */
 public class UserReadItem extends BaseObject {
     
-    private long id = -1;
+    private long id = -1; 
     private Item item;
     private User user;
     private boolean read;

@@ -92,7 +92,7 @@ This wizard will help you to move a RSS-channel from one category to another one
     			</tr>
     			<tr>
     			 <td>
-    			 	<input type="submit" id="submit" name="submit" value"OK" disabled />
+    			 	<input type="submit" id="submit" name="submit" value="OK" disabled />
     			 </td>
     			</tr>
     		</table>
@@ -120,20 +120,20 @@ function postSelCat() {
  
   document.getElementById("hcategory").value = document.getElementById("category").value;
   document.getElementById("dfeed").style.visibility='visible';
-  document.getElementById("category").disabled = true;
-  Fat.fade_element("dfeed",5, 7000, false, false);
+  //document.getElementById("category").disabled = true;
+  Fat.fade_element("dfeed",5, 7000, false, "#FFFFFF");
 }
 function postSelFeed() {
   
    document.getElementById("dnewcat").style.visibility='visible';
-  Fat.fade_element("dnewcat",5, 7000, false, false);
+  Fat.fade_element("dnewcat",5, 7000, false, "#FFFFFF");
 }
 
 function postSelNewCat() {
   
    document.getElementById("dsubmit").style.visibility='visible';
    document.getElementById("submit").disabled=false;
-  Fat.fade_element("dsubmit",5, 7000, false, false);
+  Fat.fade_element("dsubmit",5, 7000, false, "#FFFFFF");
 }
 
 function handleHttpException() {

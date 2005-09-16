@@ -5,9 +5,14 @@
  */
 package at.newsagg.dao.hibernate;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import net.sf.hibernate.Hibernate;
@@ -23,14 +28,14 @@ import org.springframework.orm.hibernate.support.HibernateDaoSupport;
 import at.newsagg.dao.ItemDAO;
 import at.newsagg.model.UserReadItem;
 import at.newsagg.model.parser.hibernate.Item;
-
+  
 /**
- * Hibernate DAO for Item.
+ * Hibernate DAO for Item. 
  * 
  * @author Roland Vecera
  * @version created on 26.03.2005 11:00:05
  *  
- */ 
+ */
 public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
     private Log log = LogFactory.getLog(ItemDAOHibernate.class);
 
@@ -225,7 +230,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
 
     public Collection getItemsForUserByCategory(String username, int limit,
             int cat_id) throws IndexOutOfBoundsException {
-
+        log.info("+++++++++++++++++++ here");
         if (limit > this.upperLimit) {
             log
                     .warn("Someone want more see more Items than specified in this.upperLimit!");
@@ -288,7 +293,11 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new Class[] { Item.class, UserReadItem.class });
 
             q.setParameter(0, since, Hibernate.DATE);
-            q.setParameter(1, new Date(), Hibernate.DATE);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 1);
+            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
+
             java.util.Collection c = q.list();
             log.debug("Resultset: " + c.size());
             return this.simplifyCollection(c);
@@ -305,9 +314,60 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
         }
         return null;
     }
+ 
+    /**
+     * Count all unread Items since Date of a given User.
+     * 
+     * Counts items in all subscribed channels.
+     * */
+    public Integer countNewItemsForUser(String username, Date since)
+            throws IndexOutOfBoundsException {
+        	
+        	String query2 ="select count(i.item_id) from Items i where i.item_id in "
+                + "(select items4_.ITEM_ID from FEEDSUBSCRIBERS feedsubscr2_, CHANNELS channel3_, ITEMS items4_ where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID "
+                + "and(feedsubscr2_.username like '"
+                + username
+                + "') and i.date BETWEEN ? AND ? )"
+                + " and i.item_id not in (select uri.item_id from usersReadItems uri where (uri.username='"
+                + username
+                + "'))";
+        try {
+            
+            logger.info(query2);
+            
+            //Must be done via JDBC, because it's not possible with Hibernate
+            
+            PreparedStatement ps = this.getSession().connection().prepareStatement(query2);
+            
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 1);
+            
+            ps.setDate(1,new java.sql.Date(since.getTime()));
+            
+            ps.setDate(2,new java.sql.Date(calendar.getTime().getTime()));
+            
+            ResultSet rs = ps.executeQuery();
+           if (!rs.next()) {
+              throw new SQLException("SELECT COUNT(*): no result");
+              }
+            return new Integer(rs.getInt(1));
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (HibernateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Collection getItemsForUserByCategory(String username, Date since,
             int cat_id) throws IndexOutOfBoundsException {
+        	log.info("+++++++++++++++++++ here");
+        
         String query = "select {i.*}, {uri.*} from Items as i LEFT OUTER JOIN usersReadItems as uri "
                 + "on (i.item_id=uri.item_id and uri.username='"
                 + username
@@ -331,7 +391,10 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new Class[] { Item.class, UserReadItem.class });
 
             q.setParameter(0, since, Hibernate.DATE);
-            q.setParameter(1, new Date(), Hibernate.DATE);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 1);
+            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
             java.util.Collection c = q.list();
             log.debug("Resultset: " + c.size());
             return this.simplifyCollection(c);
@@ -376,8 +439,13 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new Class[] { Item.class, UserReadItem.class });
 
             q.setParameter(0, since, Hibernate.DATE);
-            q.setParameter(1, new Date(), Hibernate.DATE);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, 1);
+            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
+            log.debug(q.toString());
             java.util.Collection c = q.list();
+            log.debug(q.toString());
             log.debug("Resultset: " + c.size());
             return this.simplifyCollection(c);
 

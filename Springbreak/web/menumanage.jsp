@@ -1,3 +1,7 @@
+<c:url var="logoutURL" value="logout.html">
+</c:url>
+<div style="width: 100%; text-align:center"><a class="menu_channel" href="${logoutURL}">logout</a></div>
+
 <div class="manage">
  <div><fmt:message key="main.manageRssFeeds"/></div>
  	<c:url var="addCatURL" value="addCategory.html">

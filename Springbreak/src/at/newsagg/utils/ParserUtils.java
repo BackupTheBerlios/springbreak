@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: ParserUtils.java,v 1.3 2005/09/05 17:54:53 vecego Exp $
+// $Id: ParserUtils.java,v 1.4 2005/09/16 13:05:51 vecego Exp $
 
 package at.newsagg.utils;
  
@@ -258,6 +258,14 @@ public final class ParserUtils {
     return Base64Decoder.decode(s);
   }
 
+  
+  public static String escapeTags(String s) {
+      String value = s;
+      value = value.replaceAll("<", "&lt;");
+      value = value.replaceAll(">", "&gt;");
+      return value;
+    }
+  
   public static String unEscape(String s) {
     String value = s;
     value = value.replaceAll("&lt;", "<");

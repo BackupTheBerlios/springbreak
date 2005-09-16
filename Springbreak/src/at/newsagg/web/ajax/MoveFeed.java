@@ -18,6 +18,7 @@ import at.newsagg.dao.FeedSubscriberDAO;
 import at.newsagg.model.Category;
 import at.newsagg.model.User;
 import at.newsagg.model.parser.hibernate.Channel;
+import at.newsagg.utils.ParserUtils;
 import at.newsagg.web.UserSession;
 
 /**
@@ -40,7 +41,7 @@ public class MoveFeed extends BaseAjaxServlet {
         User user = userSession.getUserData();
 
         String cat_id = request.getParameter("make");
-        log.info("here");
+        log.debug("here");
         StringBuffer xml = new StringBuffer().append("<?xml version=\"1.0\"?>");
         xml.append("<list>");
        
@@ -54,7 +55,7 @@ public class MoveFeed extends BaseAjaxServlet {
             {
                 Channel chan = (Channel) iter.next();
                 xml.append("<item value='").append(chan.getId()).append("'>")
-                        .append(chan.getTitle()).append("</item>");
+                        .append(ParserUtils.escapeTags(chan.getTitle())).append("</item>");
 
                 //}
             }
@@ -74,7 +75,7 @@ public class MoveFeed extends BaseAjaxServlet {
                 Category cat = (Category) iter.next();
                 //            log.info(xml);
                 xml.append("<item value='").append(cat.getId()).append("'>")
-                        .append(cat.getTitle()).append("</item>");
+                        .append(ParserUtils.escapeTags(cat.getTitle())).append("</item>");
 
                 //}
             }

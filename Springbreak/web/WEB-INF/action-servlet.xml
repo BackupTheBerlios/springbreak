@@ -146,14 +146,16 @@
 			<prop key="/autocompleteFeed.html">AutoCompleteURL</prop>
 			<prop key="/readFeedItem.html">ReadFeedItem</prop>
 			
-			
+			<prop key="/logout.html">Logout</prop>			
+
 			<prop key="/moveFeedAjax.html">MoveFeedAjax</prop>
 			<prop key="/moveFeed.html">MoveFeed</prop>
 
             <prop key="/subscribeChannel.html">SubscribeChannel</prop>
 			<prop key="/addChannel.html">AddChannel</prop>
 			<prop key="/addCategory.html">AddCategory</prop>
-            <prop key="/addComment.html">AddComment</prop>
+			<prop key="/addComment.html">AddCommentView</prop>
+            <prop key="/addCommentStore.html">AddComment</prop>
 			<!-- http://localhost:8080/springbreak//showCommentsToChannel.html?id=7 -->
             <prop key="/showCommentsToChannel.html">ShowCommentsToChannel</prop>
 			<prop key="/main.html">mainController</prop> 
@@ -462,6 +464,9 @@ Statistic Controller -->
 		</property>
 </bean>
 
+<bean name="AddCommentView" class="at.newsagg.web.feed.AddCommentViewController"> 
+</bean>
+
 
 <bean name="AddCategory" class="at.newsagg.web.feed.AddCategoryController"> 
 		<!--  optional - if you don't define it then the default name is command -->
@@ -484,6 +489,8 @@ Statistic Controller -->
 			<ref bean="AddCategoryValidator"/>
 		</property>
 </bean>
+
+<bean name="Logout" class="at.newsagg.web.IndexViewController"/>
 
 
 <!-- =========================== For Hibernate "Open Session in View" ===================================== -->	

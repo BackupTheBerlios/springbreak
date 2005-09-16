@@ -117,7 +117,7 @@ function callback() {
       		
       		<div style="position: relative; margin-top: 5px; padding: 3px; background:${fs.category.htmlColor}" >
       		   <c:url var="categoryurl" value="/main.html">
-      				<c:param name="cateogry_id" value="${fs.category.id}" />
+      				<c:param name="category_id" value="${fs.category.id}" />
       			</c:url>
       		   <a class="category" href="${categoryurl}">${fs.category.title}</a>
       		   
@@ -128,14 +128,14 @@ function callback() {
 	if ((openElements != null) && (openElements.containsKey(((Integer)pageContext.getAttribute("temp")).toString())))
    {
 %>
-<span style="position:absolute; top: 3px; right: 3px;"><image src="./images/menu/close.gif" alt="X" onclick="manage(${fs.category.id});swap(this)"/></span>
+<span style="position:absolute; top: 3px; right: 3px; z-index:${fs.category.id} "><image src="./images/menu/close.gif" alt="X" onclick="manage(${fs.category.id});swap(this)"/></span>
 <div style="display:inline; visibility: visible;" id="menu_category${fs.category.id}">
 <%    
   } 
   else
   {   
 %>
-<span style="position:absolute; top: 3px; right: 3px;"><image src="./images/menu/open.gif" alt="O" onclick="manage(${fs.category.id});swap(this)"/></span>
+<span style="position:absolute; top: 3px; right: 3px; z-index:${fs.category.id}"><image src="./images/menu/open.gif" alt="O" onclick="manage(${fs.category.id});swap(this)"/></span>
 <div style="display:none; visibility: hidden;" id="menu_category${fs.category.id}">
 <%} %>
 
@@ -154,7 +154,7 @@ function callback() {
       			<c:url var="addcommenturl" value="/addComment.html">
       				<c:param name="id" value="${fs.channel.id}" />
       			</c:url>
-      			<a class="menu_channel" href="${addcommenturl}'"><img src="./images/menu/comment.gif" alt="C" /></a>
+      			<a class="menu_channel" href="${addcommenturl}"><img src="./images/menu/comment.gif" alt="C" /></a>
             	   
       		</div>
     <c:set var="lastcategory" value="${fs.category.title}"/>  

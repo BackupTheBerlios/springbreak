@@ -25,7 +25,7 @@ import at.newsagg.web.commandObj.feed.AddCategoryCommand;
  * @version
  * created on 23.08.2005 10:04:51
  *
- */
+ */ 
 public class AddCategoryController extends SimpleFormController {
     
     private static Log log = LogFactory.getLog(AddCategoryController.class);

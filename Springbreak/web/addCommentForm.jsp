@@ -22,7 +22,7 @@
 </c:if>
 </spring:bind>
 
-<form name="comment" method="post" action="<c:url value="/addComment.html"/>" > 
+<form name="comment" method="post" action="<c:url value="/addCommentStore.html"/>" > 
 	<fieldset style="width: 70%">
     <legend>Add new Comment</legend>
 	<table> 
@@ -47,9 +47,7 @@
 			<td> 
 				
 				<spring:bind path="comment.text">
-	               <textarea cols="35" rows="10" name="${status.expression}" >
-	              ${status.value}
-	               </textarea>
+	               <textarea cols="35" rows="10" name="${status.expression}" >${status.value}</textarea>
 	              
 	            </spring:bind>
 			</td>
@@ -74,7 +72,7 @@
 	            </spring:bind>
 	            
 	           <spring:bind path="comment.channel_id">
-	            <input name="channel_id" type="hidden" value="<c:out value="${param.id}"/>"/>
+	            <input name="${status.expression}" type="hidden" value="${status.value}"/>
 	           </spring:bind>
 			</td>
 			

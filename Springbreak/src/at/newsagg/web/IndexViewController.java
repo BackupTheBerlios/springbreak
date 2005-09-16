@@ -18,8 +18,9 @@ public class IndexViewController implements Controller {
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 		
-	    HttpSession session = request.getSession();
-	    session = null;
+	    request.getSession().invalidate();
+	 
+
 		return new ModelAndView("index", "login", new User()); 
 	}
 }

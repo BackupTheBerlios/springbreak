@@ -18,6 +18,7 @@
 <div id="container">
 	<div id="head">
 		Springbreak - RSS AGGREGATOR
+		<decorator:getProperty property="page.logininfo"/>
 	</div>
     <div id="menuleft">
     	<div id="menufeeds">

@@ -90,7 +90,6 @@ a.manage {
  padding-left: 3px;
  position: absolute;
  color: WHITE;
- text-decoration: underline;
  top:  0px;
  left: 0px;
  border-bottom: 5px dashed WHITE;
@@ -98,8 +97,15 @@ a.manage {
  width: 2000px;
  overflow: hidden;
  background-color: #45A8CC;
- 
+}
 
+#welcomeMessage
+{
+ font: 10px Verdana, sans-serif;
+ font-weight: normal;
+ position: absolute;
+ bottom: 4px;
+ left: 0px;
 }
 
 #menuleft {

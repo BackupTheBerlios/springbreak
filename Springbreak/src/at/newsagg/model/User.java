@@ -20,7 +20,7 @@ public class User extends BaseObject {
 	private String firstName; 
 	private String lastName;
 	private String password;
-	private String email;
+	private String email; 
 	private boolean isAdmin;
 	private Collection categories;
 	

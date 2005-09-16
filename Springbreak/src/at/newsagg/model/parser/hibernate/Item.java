@@ -24,7 +24,7 @@
 //
 
 
-// $Id: Item.java,v 1.3 2005/09/05 17:54:53 vecego Exp $
+// $Id: Item.java,v 1.4 2005/09/16 13:05:51 vecego Exp $
 
 package at.newsagg.model.parser.hibernate;
 
@@ -245,9 +245,9 @@ public void setRead(boolean read) {
 
   public void setSubject(String aSubject) {
     this.subject = aSubject;
-  }
+  } 
 
-  /**
+  /**  
    * @hibernate.property
    *  column="DATE"
    *
