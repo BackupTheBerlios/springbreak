@@ -150,10 +150,15 @@
 
 			<prop key="/moveFeedAjax.html">MoveFeedAjax</prop>
 			<prop key="/moveFeed.html">MoveFeed</prop>
+			
+			<prop key="/deleteFeed.html">DeleteFeed</prop>
 
             <prop key="/subscribeChannel.html">SubscribeChannel</prop>
 			<prop key="/addChannel.html">AddChannel</prop>
+
 			<prop key="/addCategory.html">AddCategory</prop>
+			<prop key="/removeCategory.html">RemoveCategory</prop>
+			
 			<prop key="/addComment.html">AddCommentView</prop>
             <prop key="/addCommentStore.html">AddComment</prop>
 			<!-- http://localhost:8080/springbreak//showCommentsToChannel.html?id=7 -->
@@ -360,19 +365,6 @@ Statistic Controller -->
 </bean>
 
 <bean name="MoveFeed" class="at.newsagg.web.feed.MoveFeedController"> 
-		<!--  optional - if you don't define it then the default name is command -->
-	<!--	<property name="commandName">
-			<value>command</value>
-		</property> 
-		<property name="commandClass"> 
-			<value>at.newsagg.model.parser.hibernate.Channel</value> 
-		</property> 
-		<property name="formView">
-			<value>addFeedForm</value>
-		</property> 
-		<property name="successView">
-			<value>feedAdded</value>
-		</property> -->
 		<property name="methodNameResolver">
 			<ref bean="methodNameResolver"/>
 		</property>
@@ -382,9 +374,36 @@ Statistic Controller -->
 		<property name="categoryDAO">
 			<ref bean ="categoryDAO" />
 		</property>
+		<!-- property name="validator">
+			<ref bean="beanValidator"/>
+		</property-->
+</bean>
+ 
 
-		
-		
+<bean name="DeleteFeed" class="at.newsagg.web.feed.DeleteFeedController"> 
+		<property name="methodNameResolver">
+			<ref bean="methodNameResolver"/>
+		</property>
+		<property name="feedSubscriberDAO">
+			<ref bean ="feedSubscriberDAO" />
+		</property>
+		<property name="categoryDAO">
+			<ref bean ="categoryDAO" />
+		</property>
+		<!-- property name="validator">
+			<ref bean="beanValidator"/>
+		</property-->
+</bean>
+
+
+
+<bean name="RemoveCategory" class="at.newsagg.web.feed.DeleteCategoryController"> 
+		<property name="methodNameResolver">
+			<ref bean="methodNameResolver"/>
+		</property>
+		<property name="categoryDAO">
+			<ref bean ="categoryDAO" />
+		</property>
 		<!-- property name="validator">
 			<ref bean="beanValidator"/>
 		</property-->

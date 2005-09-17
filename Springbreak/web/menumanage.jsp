@@ -4,15 +4,38 @@
 
 <div class="manage">
  <div><fmt:message key="main.manageRssFeeds"/></div>
- 	<c:url var="addCatURL" value="addCategory.html">
-  </c:url>
- 	<span><a class="manage" href="${addCatURL}">&gt;Add Category</a><br/></span>
-	<c:url var="newChannelURL" value="addChannel.html">
-  </c:url>
-	<span><a class="manage" href="${newChannelURL}">&gt;Add new Channel</a><br/></span>
-	<c:url var="moveFeedURL" value="moveFeed.html">
+ 	
+ 	<table>
+ 	<tr><td>
+ 	<c:url var="newChannelURL" value="addChannel.html" />
+	<a class="manage" href="${newChannelURL}">&gt;Add new Channel</a><br/>
+	</td></tr>
+ 	<tr><td>
+ 	<c:url var="moveFeedURL" value="moveFeed.html">
 		<c:param name="action" value="input" />
-  </c:url>
-	<span><a class="manage" href="${moveFeedURL}">&gt;Move Channel</a></span>
- </span>
+ 	</c:url>
+ 	<a class="manage" href="${moveFeedURL}">&gt;Move Channel</a>
+ 	</td></tr>
+ 	<tr><td>
+ 		<c:url var="deleteFeedURL" value="deleteFeed.html">
+			<c:param name="action" value="input" />
+ 		</c:url>
+		<a class="manage" href="${deleteFeedURL}">&gt;Remove Channel</a>
+	</td></tr>
+ 	</table>
+ 	
+ 	<table style="margin-top: 7px">
+ 	
+	<tr><td>
+	<c:url var="addCatURL" value="addCategory.html" />
+ 	<a class="manage" href="${addCatURL}">&gt;Add Category</a>
+ 	</td></tr>
+ 	<tr><td>
+ 	<c:url var="remCatURL" value="removeCategory.html">
+ 		<c:param name="action" value="input" />
+ 	</c:url>
+ 	<a class="manage" href="${remCatURL}">&gt;Remove Category</a><br/>
+ 	</td></tr>
+ 	</table>
+ 	
 </div>

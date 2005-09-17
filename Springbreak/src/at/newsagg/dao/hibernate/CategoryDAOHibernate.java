@@ -8,6 +8,7 @@ package at.newsagg.dao.hibernate;
 import java.util.Collection;
 
 import net.sf.hibernate.Hibernate;
+import net.sf.hibernate.type.Type;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,6 +73,27 @@ public class CategoryDAOHibernate extends HibernateDaoSupport implements Categor
     public Collection getCategoriesByUser (String username)
     {
         return getHibernateTemplate().find("from Category as c where c.user.username like ? order by c.title",username,Hibernate.STRING);
+    }
+    
+    /**
+     * returns all Category, that have no entry in FeedSubscriber.
+     * 
+     * == all Categories with no Channels in it! 
+     */
+    public Collection getEmptyCategoriesByUser (String username)
+    {
+        return getHibernateTemplate().find("from Category c where c.user.username like ? and c.id not in (select fee.category.id from FeedSubscriber fee where fee.user.username like ?) order by c.title"
+              ,new Object[] {username, username},new Type[] {Hibernate.STRING,Hibernate.STRING});
+    }
+    
+    /**
+     * Delete a Category.
+     * @param cat_id
+     */
+    public void removeFeedSubscriber(int cat_id) {
+        Object c = getHibernateTemplate().load(Category.class,
+                new Integer(cat_id));
+        getHibernateTemplate().delete(c);
     }
 
 

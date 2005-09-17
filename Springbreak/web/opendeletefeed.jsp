@@ -1,5 +1,5 @@
 <head>
-<title>Move RSS-channel</title>
+<title>Remove RSS-channel</title>
 <%@ include file="/taglibs.jsp"%>
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax"%>
 <script type="text/javascript" src="./ajaxcore.js"></script>
@@ -8,20 +8,20 @@
 
 <body>
 <p>
-<b>Move a RSS-channel to another category!</b><br/><br/>
+<b>Remove a RSS-channel</b><br/><br/>
 
-This wizard will help you to move a RSS-channel from one category to another one!
+This wizard will help you to remove a RSS-channel from your subscribtion!
 <br/>
 </p>
 
 
-<c:url var="moveFeedURL" value="/moveFeed.html">
+<c:url var="deleteFeedURL" value="/deleteFeed.html">
 	<c:param name="action" value="store" />
 </c:url>
 
-<form name="moveForm" method="post" action="${moveFeedURL}">
+<form name="moveForm" method="post" action="${deleteFeedURL}">
   <fieldset style="width: 90%">
-    <legend>Move RSS-channel</legend>
+    <legend>Remove RSS-channel</legend>
 
     <table style="width: 100%">
     <tr>
@@ -54,7 +54,7 @@ This wizard will help you to move a RSS-channel from one category to another one
     			<tr>
     			 <td>RSS-Channel</td>
     			 <td>  					
-    				 <select id="feed" name="feed" disabled>
+    				 <select id="feed" name="feed" disabled onChange="postSelFeed();">
       					<option value="">Select Feed</option>
     				</select> 
     			 </td>
@@ -64,31 +64,11 @@ This wizard will help you to move a RSS-channel from one category to another one
     	
     	</td>
    		</tr>
-   		<tr>
-    	<td>
-    	
-    		<table id="dnewcat" style="visibility: hidden;">
-    			<tr>
-    				<td colspan="2">Step 3: Select new category</td>
-    			</tr>
-    			<tr>
-    			 <td>New category</td>
-    			 <td>  					
-    				 <select id="newcat" name="newcat" disabled onChange='postSelNewCat()'>
-      							<option value="">New Category</option>
-    				</select> 
-    			 </td>
-    			</tr>
-    		</table>
-    		
-    		
-    	</td>
-    	<tr/>
     	<tr>
     	<td>
     		<table id="dsubmit" style="visibility: hidden;">
     			<tr>
-    				<td>Step 4: Commit in database</td>
+    				<td>Step 3: Comfirm action</td>
     			</tr>
     			<tr>
     			 <td>
@@ -125,13 +105,7 @@ function postSelCat() {
 }
 function postSelFeed() {
   
-   document.getElementById("dnewcat").style.visibility='visible';
-  Fat.fade_element("dnewcat",5, 7000, false, "#FFFFFF");
-}
-
-function postSelNewCat() {
-  
-   document.getElementById("dsubmit").style.visibility='visible';
+  document.getElementById("dsubmit").style.visibility='visible';
    document.getElementById("submit").disabled=false;
   Fat.fade_element("dsubmit",5, 7000, false, "#FFFFFF");
 }
@@ -141,15 +115,14 @@ function handleHttpException() {
 }
 
 function handleEmpty() {
- document.getElementById("category").options.length = 0;
+  document.getElementById("category").options.length = 0;
   document.getElementById("category").options[0] = new Option("None", "");
   document.getElementById("category").disabled = true;
 }
 </script>
 
-<c:url var="moveURL" value="./moveFeedAjax.html">
-					
-</c:url>
+<c:url var="moveURL" value="./moveFeedAjax.html" />
+
 
 
 <ajax:select
@@ -161,13 +134,6 @@ function handleEmpty() {
   emptyFunc="handleEmpty"
   errorFunc="handleHttpException"
  />
- 
- <ajax:select
-  fieldId="feed"
-  targetId="newcat"
-  baseUrl="${moveURL}"
-  paramName="make2"
-  postFunc="postSelFeed"
-   />
+
 </body>
 

@@ -1,5 +1,5 @@
 /*
- * Created on 26.08.2005
+ * Created on 17.09.2005
  * king
  * 
  */
@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
 
 import at.newsagg.dao.CategoryDAO;
@@ -24,20 +23,18 @@ import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.User;
 import at.newsagg.web.UserSession;
 
-
-
 /**
  * @author king
  * @version
- * created on 26.08.2005 18:08:06
+ * created on 17.09.2005 16:25:23
  *
  */
-public class MoveFeedController extends MultiActionController {
-	private static Log log = LogFactory.getLog(MoveFeedController.class);
-    private FeedSubscriberDAO feedSubscriberDAO;
-    private CategoryDAO categoryDAO;
-       
+public class DeleteFeedController extends MultiActionController {
     
+    CategoryDAO categoryDAO;
+    FeedSubscriberDAO feedSubscriberDAO;
+    
+    private static Log log = LogFactory.getLog(DeleteFeedController .class);
     
     public ModelAndView input (HttpServletRequest request,
             HttpServletResponse response) {
@@ -46,9 +43,9 @@ public class MoveFeedController extends MultiActionController {
 		User user = userSession.getUserData();
 		Collection cc = categoryDAO.getCategoriesByUser(user.getUsername());
 		log.info("Resultset:"+cc.size());
-        return new ModelAndView("openmovefeed", "categories", cc);
+        return new ModelAndView("opendeletefeed", "categories", cc);
    }
-    
+   
     public ModelAndView store (HttpServletRequest request,
             HttpServletResponse response) {
             
@@ -58,18 +55,15 @@ public class MoveFeedController extends MultiActionController {
 		//log.info(request.getParameter("category"));
 		int category = new Integer(request.getParameter("hcategory")).intValue();
 		int feed = new Integer(request.getParameter("feed")).intValue();
-		int newcategory = new Integer(request.getParameter("newcat")).intValue();
 		
 		FeedSubscriber f = feedSubscriberDAO.getFeedSubscriberForUserOnChannelinCategory(user.getUsername(),feed,category);
-		log.info("feedid modified: "+ f.getId()); 
+		feedSubscriberDAO.removeFeedSubscriber(f.getId());
+		log.info("feedid removed: "+ f.getId()); 
 		 /*
 		  * 
-		  * TODO: Feedid, Category, newCategory could be empty! Have to catch this in validator!
+		  * TODO: Feedid, Category  could be empty! Have to catch this in validator!
 		  */
-		Category c = new Category();
-		c.setId(newcategory);
-		f.setCategory(c);
-		feedSubscriberDAO.updateFeedSubscriber(f);
+		
 		
 		//Invalidate Menu to display Changes
 		request.getSession().removeAttribute("feedSubscriberSession");
@@ -78,7 +72,7 @@ public class MoveFeedController extends MultiActionController {
       
    }
     
-    
+
     /**
      * @return Returns the categoryDAO.
      */
@@ -100,7 +94,6 @@ public class MoveFeedController extends MultiActionController {
     /**
      * @param feedSubscriberDAO The feedSubscriberDAO to set.
      */
-
     public void setFeedSubscriberDAO(FeedSubscriberDAO feedSubscriberDAO) {
         this.feedSubscriberDAO = feedSubscriberDAO;
     }

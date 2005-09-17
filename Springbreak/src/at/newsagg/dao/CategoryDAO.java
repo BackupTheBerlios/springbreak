@@ -41,6 +41,9 @@ public interface CategoryDAO {
     
     public Collection getCategoriesByUser (String username);
     
+    public Collection getEmptyCategoriesByUser (String username);
+    
+    public void removeFeedSubscriber(int cat_id);
     
   
     
