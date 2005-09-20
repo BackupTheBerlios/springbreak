@@ -57,5 +57,17 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/postgresql-8.0.309.jdbc3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/hibernate2.1.8.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/ajaxtags-1.0.1.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/batik-util.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/batik-xml.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/cewolf.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/displaytag-1.0.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/dwr-1.0RC3.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/jcommon-0.9.6.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/jfreechart-0.9.21.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/quartz.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
