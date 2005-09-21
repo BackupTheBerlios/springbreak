@@ -11,8 +11,8 @@
         
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/newsagg</value></property>
-        <property name="username"><value>pgadmin</value></property>
-        <property name="password"><value>zwergnase</value></property>
+        <property name="username"><value>postgres</value></property>
+        <property name="password"><value>admin</value></property>
     </bean>
 
     <!-- Hibernate SessionFactory -->
@@ -230,23 +230,15 @@
 
 
     <!-- Add Managers here -->
-     <bean id="userManagerTarget" class="at.newsagg.service.impl.UserManagerImpl"> 
+     <bean id="userManager" class="at.newsagg.service.impl.UserManagerImpl"> 
     	<property name="userDAO"><ref local="userDAO"/></property> 
+    	<property name="catDAO"><ref local="categoryDAO"/></property> 
+    	<property name="channelDAO"><ref local="channelDAO"/></property> 
+    	<property name="parserService"><ref local="parserCronJobService"/></property> 
+    	<property name="feedSubscriberDAO"><ref local="feedSubscriberDAO"/></property> 
     </bean>
     
-      <bean id="userManager" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    		<property name="transactionManager"> <ref local="transactionManager"/></property> 
-    		<property name="target"> <ref local="userManagerTarget"/> </property> 
-    		<property name="transactionAttributes"> 
-    			<props> 
-    				<prop key="save*">PROPAGATION_REQUIRED</prop> 
-    				<prop key="remove*">PROPAGATION_REQUIRED</prop> 
-    				<prop key="*">PROPAGATION_REQUIRED</prop> 
-    			</props> 
-    		</property>
-           
-
-    </bean>
+     
 
 <!-- ParserCronjob Service
  Roland Vecera 26.3.2005 

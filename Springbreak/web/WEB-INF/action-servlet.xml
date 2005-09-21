@@ -78,7 +78,8 @@
 		</property> 
 		<property name="successView">
 			<value>main.html</value>
-		</property> 
+		</property>
+		
 		<property name="userManager">
 			<ref bean="userManager"/>
 		</property> 		
@@ -100,9 +101,23 @@
 		<property name="successView">
 			<value>userHasBeenAdded</value>
 		</property> 
+		
 		<property name="userManager">
 			<ref bean="userManager"/>
 		</property> 
+		<property name="standardCategoryTitle">
+			<value>My Category</value>
+		</property>
+		<property name="standardCategoryHTMLColor">
+			<value>#ae3080</value>
+		</property>
+		<property name="standardFeeds">
+			<list>
+				<value>http://feeds.feedburner.com/boingboing/iBag</value>
+				<value>http://rss.slashdot.org/Slashdot/slashdot</value>
+				<value>http://vecego.0wnz.at/newdesign/rss.php</value>
+			</list>
+		</property>
 		<!-- property name="validator">
 			<ref bean="beanValidator"/>
 		</property-->
@@ -159,23 +174,44 @@
 			<prop key="/addCategory.html">AddCategory</prop>
 			<prop key="/removeCategory.html">RemoveCategory</prop>
 			
+			<prop key="/removeFirstLogin.html">RemoveFirstLogin</prop>
+			
 			<prop key="/addComment.html">AddCommentView</prop>
             <prop key="/addCommentStore.html">AddComment</prop>
 			<!-- http://localhost:8080/springbreak//showCommentsToChannel.html?id=7 -->
             <prop key="/showCommentsToChannel.html">ShowCommentsToChannel</prop>
 			<prop key="/main.html">mainController</prop> 
-			<prop key="/showUser.html">userController</prop> 
+			
 			<prop key="/showAddUser.html">userFormController</prop>
-            <prop key="/showChannels.html">viewChannelsController</prop> 
+            
 			<!-- so: http://localhost:8080/springbreak/showSubscribersStatistic.html?channel_id=7&numberWeeks=30 -->
             <prop key="/showSubscribersStatistic.html">SubscribersStatisticController</prop>
 		
 		</props>
 	   </property>
   </bean>
+  
+  <bean id="adminURLMapper" 
+  		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+  	<property name="interceptors">
+         <list>
+              <ref bean="openSessionInViewInterceptor"/>
+              <ref bean="loginInterceptor"/> 
+			  <ref bean="menuLoadInterceptor"/>
+			  <ref bean="adminInterceptor"/>
+         </list>
+       </property>
+	  <property name="mappings">
+		<props>
+			<prop key="/showChannels.html">viewChannelsController</prop> 
+			<prop key="/showUser.html">userController</prop> 
+		</props>
+	  </property>
+  </bean>
 
 <!-- ************* INTERCEPTORS *********************** -->
 	<bean id="loginInterceptor" class="at.newsagg.web.interceptor.LoginInterceptor"/>
+	<bean id="adminInterceptor" class="at.newsagg.web.interceptor.AdminInterceptor"/>
 	
 	<bean id="menuLoadInterceptor" class="at.newsagg.web.interceptor.MenuLoadInterceptor">
 		<property name="feedSubscriberDAO">
@@ -190,8 +226,10 @@
 			<property name="itemDAO">
 				<ref bean="itemDAO"/>
 			</property>
-
-
+			
+			<property name="firstLoginView">
+				<value>firstlogin</value>
+			</property>	
 			<property name="HOTTEST">
 				<value>50</value>
 			</property>	
@@ -407,6 +445,9 @@ Statistic Controller -->
 		<!-- property name="validator">
 			<ref bean="beanValidator"/>
 		</property-->
+</bean>
+
+<bean name="RemoveFirstLogin" class="at.newsagg.web.RemoveFirstLoginController"> 
 </bean>
 
 

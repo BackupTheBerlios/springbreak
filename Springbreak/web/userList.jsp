@@ -1,11 +1,11 @@
 <head>
 <%@ include file="/taglibs.jsp"%> 
-<title>User List</title>
+<title>User List</title>    
 </head>
 <body>
 <h3><fmt:message key="user.userlist"/></h3>
 
-<table class="list"> 
+<table class="adminstyle"> 
 	<thead> 
 		<tr> 
 			<th><fmt:message key="user.username"/></th>
@@ -43,7 +43,3 @@
 	</tbody> 
 </table>
 </body>
-<content tag="menubar">
-<a href="showAddUser.html"><fmt:message key="user.addUser"/></a><br/>
-<a href="main.html"><fmt:message key="user.back"/></a><br/>
-</content>

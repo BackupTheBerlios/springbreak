@@ -131,6 +131,7 @@ a.manage {
 #menuoptions
 {
   position:relative;
+  z-index: 2;
 }
 
 #content {
@@ -247,4 +248,19 @@ border: 1px solid BLACK;
 }
 
 img { border: 0; }
+
+table.adminstyle {
+     border: 1px solid black;
+     border-collapse: collapse;
+    }
+    
+table.adminstyle    tr.odd {
+     background-color: #E9E9E9;
+     
+    }
+table.adminstyle    th
+    {
+    background-color: #024588;
+    color: WHITE; 
+    }
 

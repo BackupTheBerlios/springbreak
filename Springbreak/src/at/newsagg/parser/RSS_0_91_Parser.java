@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-// $Id: RSS_0_91_Parser.java,v 1.3 2005/09/16 13:05:51 vecego Exp $
+// $Id: RSS_0_91_Parser.java,v 1.4 2005/09/21 15:20:56 vecego Exp $
 
 //Simplified for use in Springbreak
 //comment out: <source>,<enclosure>, <cloud> and <textinput> is not longer parsed
@@ -124,14 +124,23 @@ class RSS_0_91_Parser implements RSS_0_91_ParserIF {
 			if (elDesc != null) {
 				strDesc = elDesc.getTextTrim();
 			}
+//			 get pubDate element
+			Element itempubDate = item.getChild("pubDate");
+			
 
 			// generate new RSS item (link to article)
 			ItemIF rssItem = ChannelBuilder.createItem(item, chnl, strTitle, strDesc,
 					ParserUtils.getURL(strLink));
 			rssItem.setFound(dateParsed);
+			
+			if (itempubDate != null)
+				rssItem.setDate(ParserUtils.getDate(itempubDate.getTextTrim()));
+			else
+				rssItem.setDate(dateParsed);
+				
 //			set to found-date
 		    //weil sonst, scheint ja das Item bei DATE sortierung gar nicht auf!
-		    rssItem.setDate(dateParsed);
+		    
 
 			// End Basic RSS 0.91
 			/*

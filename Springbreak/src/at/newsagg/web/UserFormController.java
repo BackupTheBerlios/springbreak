@@ -87,7 +87,7 @@ public class UserFormController extends SimpleFormController {
 							new Object[] {user.getFirstName() + ' ' + user.getLastName()})); 
 		} 
 		
-		return new ModelAndView(getSuccessView()); 
+		return new ModelAndView(new RedirectView(getSuccessView())); 
 	} 
 	
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException { 

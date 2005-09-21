@@ -23,7 +23,7 @@ public class BaseObject implements Serializable {
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }  
- 
+  
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }

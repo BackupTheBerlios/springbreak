@@ -25,8 +25,8 @@
     		<%@ include file="/menu.jsp" %>
     	</div>
     	<div id="menuoptions">
-         <decorator:getProperty property="page.menubar"/>
-         <%@ include file="/menumanage.jsp" %>
+          <%@ include file="/menuadmin.jsp" %>
+          <%@ include file="/menumanage.jsp" %>
         </div>
 	</div>
      <div id="content">

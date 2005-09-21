@@ -14,57 +14,68 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import at.newsagg.model.User;
 import at.newsagg.service.UserManager;
- 
-
 
 /**
- * @author Szabolcs Rozsnyai
- * $Id: LoginFormController.java,v 1.2 2005/08/26 17:59:42 vecego Exp $
+ * @author Szabolcs Rozsnyai $Id: LoginFormController.java,v 1.2 2005/08/26
+ *         17:59:42 vecego Exp $
  */
-public class LoginFormController extends SimpleFormController { 
-		private static Log log = LogFactory.getLog(LoginFormController.class);
-		private UserManager mgr = null; 
-		
-		public void setUserManager(UserManager userManager) { 
-			this.mgr = userManager; 
-		} 
-		
-		public UserManager getUserManager() { 
-			return this.mgr; 
+public class LoginFormController extends SimpleFormController {
+	private static Log log = LogFactory.getLog(LoginFormController.class);
+
+
+	private UserManager mgr = null;
+
+	public void setUserManager(UserManager userManager) {
+		this.mgr = userManager;
+	}
+
+	public UserManager getUserManager() {
+		return this.mgr;
+	}
+
+	public ModelAndView onSubmit(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors)
+			throws Exception {
+		User loginData = (User) command;
+		// if (request.getParameter("loginUsername") != null &&
+		// request.getParameter("loginPassword") != null) {
+		// user = mgr.checkUser(request.getParameter("loginUsername"));
+		User user = mgr.checkUser(loginData.getUsername());
+		if (user != null) {
+			// Roland Vecera
+			// always store currentLogin Date
+			// and move older one to lastLogin
+			user.setLastLogin(user.getCurrentLogin());
+			user.setCurrentLogin(new Date());
+			user = mgr.updateUser(user);
+
+			// if
+			// (user.getUsername().equals(request.getParameter("loginUsername"))
+			// &&
+			// user.getPassword().equals(request.getParameter("loginPassword")))
+			// {
+			if (user.getUsername().equals(loginData.getUsername())
+					&& user.getPassword().equals(loginData.getPassword())) {
+				// create session for user
+				UserSession userSession = new UserSession(user);
+				request.getSession().setAttribute("userSession", userSession);
+
+				
+
+					return new ModelAndView(new RedirectView(getSuccessView()));
+			}
 		}
+		// }
+
+		errors.rejectValue("username", "login failed", null,
+				getMessageSourceAccessor().getMessage("login.datanotok"));
+		return showForm(request, response, errors);
+		// return new ModelAndView(new RedirectView(getFormView()),
+		// "messageLogin",
+		// getMessageSourceAccessor().getMessage("login.datanotok"));
+
+	}
+
 	
-		public ModelAndView onSubmit(HttpServletRequest request, 
-					HttpServletResponse response, 
-					Object command, BindException errors) 
-		throws Exception { 
-			User loginData = (User) command;
-			//if (request.getParameter("loginUsername") != null && request.getParameter("loginPassword") != null) { 
-				//user = mgr.checkUser(request.getParameter("loginUsername")); 
-				User user = mgr.checkUser(loginData.getUsername());
-				if (user != null) {
-				    //Roland Vecera
-				    //always store currentLogin Date
-				    //and move older one to lastLogin
-				    user.setLastLogin(user.getCurrentLogin());
-				    user.setCurrentLogin(new Date());
-				    user = mgr.updateUser(user);
-				    
-					//if (user.getUsername().equals(request.getParameter("loginUsername")) && user.getPassword().equals(request.getParameter("loginPassword"))) {
-					if (user.getUsername().equals(loginData.getUsername()) && user.getPassword().equals(loginData.getPassword())) {
-						// create session for user
-						UserSession userSession = new UserSession(user);
-						request.getSession().setAttribute("userSession", userSession);
-						
-						return new ModelAndView(new RedirectView(getSuccessView())); 
-					}
-				}
-			//} 
-			
-				errors.rejectValue("username", "login failed", null, getMessageSourceAccessor().getMessage("login.datanotok")); 
-				return showForm(request, response, errors); 
-			//return new ModelAndView(new RedirectView(getFormView()), "messageLogin",  getMessageSourceAccessor().getMessage("login.datanotok"));
-			
-		}
-		
-		
+
 }

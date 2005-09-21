@@ -44,7 +44,7 @@ public class ViewChannelsController implements Controller {
         }
     	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
     	    ModelAndView mv =  new ModelAndView("allChannels", "channels", channelDAO.getChannels());
-    	    mv.addObject("stars",new Integer(1));
+    	  
     	    return mv;
     	}
     }

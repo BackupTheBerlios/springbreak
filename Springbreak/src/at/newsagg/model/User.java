@@ -18,7 +18,7 @@ import java.util.Date;
 public class User extends BaseObject { 
 	private String username; 
 	private String firstName; 
-	private String lastName;
+	private String lastName; 
 	private String password;
 	private String email; 
 	private boolean isAdmin;

@@ -156,7 +156,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + "where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID and "
                 + "(feedsubscr2_.username like '"
                 + username
-                + "')) order by i.date DESC LIMIT " + limit;
+                + "')) order by i.date DESC, i.item_id ASC LIMIT " + limit;
 
         try {
             java.util.Collection c = this.getSession().createSQLQuery(query,
@@ -205,7 +205,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + username
                 + "') and "
                 + "(feedsubscr2_.channel_id = " //here is the diff!
-                + channel_id + ")) order by i.date DESC LIMIT " + limit;
+                + channel_id + ")) order by i.date DESC, i.item_id ASC LIMIT " + limit;
 
         try {
             java.util.Collection c = this.getSession().createSQLQuery(query,
@@ -249,7 +249,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + username
                 + "') and "
                 + "(feedsubscr2_.category_id = " //here is the diff!
-                + cat_id + ")) order by i.date DESC LIMIT " + limit;
+                + cat_id + ")) order by i.date DESC, i.item_id ASC LIMIT " + limit;
 
         try {
             java.util.Collection c = this.getSession().createSQLQuery(query,
@@ -283,7 +283,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + "where feedsubscr2_.CHANNEL_ID=channel3_.CHANNEL_ID and channel3_.CHANNEL_ID=items4_.CHANNEL_ID and "
                 + "(feedsubscr2_.username like '"
                 + username
-                + "')) and i.date BETWEEN ? AND ? order by i.date DESC LIMIT "
+                + "')) and i.date BETWEEN ? AND ? order by i.date DESC, i.item_id ASC LIMIT "
                 + this.upperLimit;
 
         try {
@@ -381,7 +381,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + "and "
                 + "(feedsubscr2_.category_id = " //here is the diff!
                 + cat_id
-                + ")) and i.date BETWEEN ? AND ? order by i.date DESC LIMIT "
+                + ")) and i.date BETWEEN ? AND ? order by i.date DESC, i.item_id ASC LIMIT "
                 + this.upperLimit;
 
         try {
@@ -429,7 +429,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                 + "and "
                 + "(feedsubscr2_.channel_id = " //here is the diff!
                 + channel_id
-                + ")) and i.date BETWEEN ? AND ? order by i.date DESC LIMIT "
+                + ")) and i.date BETWEEN ? AND ? order by i.date DESC, i.item_id ASC LIMIT "
                 + this.upperLimit;
 
         try {

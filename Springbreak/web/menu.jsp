@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 function manage(val) {
  
@@ -158,6 +159,9 @@ function callback() {
             	   
       		</div>
     <c:set var="lastcategory" value="${fs.category.title}"/>  
-</c:forEach>  
-			</div>
-		</div>
+</c:forEach> 
+ 
+<c:if test="${lastcategory != ''}">
+      			</div>
+      		</div>
+ </c:if>

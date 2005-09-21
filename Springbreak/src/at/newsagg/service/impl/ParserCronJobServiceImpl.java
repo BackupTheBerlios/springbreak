@@ -40,7 +40,7 @@ public class ParserCronJobServiceImpl extends TimerTask implements
 
     private FeedParser parser;
 
-    ParserCronJobServiceImpl() {
+    public ParserCronJobServiceImpl() {
     }
 
     /**

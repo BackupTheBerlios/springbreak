@@ -5,7 +5,7 @@ import at.newsagg.model.User;
 
 /**
  * @author Szabolcs Rozsnyai
- * $Id: RegisterCommand.java,v 1.1 2005/04/21 19:41:12 vecego Exp $
+ * $Id: RegisterCommand.java,v 1.2 2005/09/21 15:20:56 vecego Exp $
  */
 
 public class RegisterCommand {
@@ -16,7 +16,7 @@ public class RegisterCommand {
 	 * @return Returns the user.
 	 */
 	public User getUser() {
-		return user;
+		return user; 
 	}
 	/**
 	 * @param user The user to set.

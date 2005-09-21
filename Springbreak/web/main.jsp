@@ -13,13 +13,7 @@
 </div>
 </content>
 
-<content tag="menubar">
-<c:if test="${user.isAdmin == true}">
-<a href="showUser.html"><fmt:message key="main.admin"/></a><br/>
-</c:if>
-<br/>
-<br/>
-</content>
+
 
 
 

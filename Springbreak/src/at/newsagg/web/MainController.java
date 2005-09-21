@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
 
 import at.newsagg.dao.FeedSubscriberDAO;
@@ -36,6 +37,7 @@ public class MainController implements Controller {
     }
 
     private short HOTTEST; //Number of Items that should be returned from DB
+    private String firstLoginView;
 
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -46,6 +48,10 @@ public class MainController implements Controller {
         short hottestHelper = this.HOTTEST;
         ModelAndView mv = new ModelAndView("main", "user", user);
         
+        // first time login!
+        if (user.getLastLogin() == null)
+			return new ModelAndView(getFirstLoginView(),"user",user);
+       
         mv.addObject("countItems", itemDAO.countNewItemsForUser(user.getUsername(), user.getLastLogin()));
 
         //user gives something other than predefined hottest
@@ -125,4 +131,12 @@ public class MainController implements Controller {
     public void setHOTTEST(short hottest) {
         HOTTEST = hottest;
     }
+
+	public String getFirstLoginView() {
+		return firstLoginView;
+	}
+
+	public void setFirstLoginView(String firstLoginView) {
+		this.firstLoginView = firstLoginView;
+	}
 }
