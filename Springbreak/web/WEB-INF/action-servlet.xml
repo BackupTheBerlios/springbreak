@@ -183,9 +183,13 @@
 			<prop key="/main.html">mainController</prop> 
 			
 			<prop key="/showAddUser.html">userFormController</prop>
+			
+			<prop key="/showIndexerForm.html">indexerFormController</prop>
+            <prop key="/showSearch.html">searchFormController</prop>
             
 			<!-- so: http://localhost:8080/springbreak/showSubscribersStatistic.html?channel_id=7&numberWeeks=30 -->
             <prop key="/showSubscribersStatistic.html">SubscribersStatisticController</prop>
+            
 		
 		</props>
 	   </property>
@@ -551,7 +555,44 @@ Statistic Controller -->
 </bean>
 
 <bean name="Logout" class="at.newsagg.web.IndexViewController"/>
+		
+	<bean id="indexerFormController" class="at.newsagg.web.IndexerFormController">
+				<property name="commandName">
+					<value>indexer</value>
+				</property> 
+				<property name="rssDbIndexer">
+					<ref bean="rssIndexer"/>
+				</property>
+				<property name="commandClass"> 
+					<value>at.newsagg.web.commandObj.IndexerFormCommand</value> 
+				</property> 
+				<property name="formView">
+					<value>indexerMain</value>
+				</property> 
+				<property name="successView">
+					<value>showIndexerForm.html</value>
+				</property> 
+	</bean>
+	
+	
 
+	<bean id="searchFormController" class="at.newsagg.web.SearchFormController">
+				<property name="commandName">
+					<value>search</value>
+				</property> 
+				<property name="rssDbIndexer">
+					<ref bean="rssIndexer"/>
+				</property>
+				<property name="commandClass"> 
+					<value>at.newsagg.web.commandObj.SearchFormCommand</value> 
+				</property> 
+				<property name="formView">
+					<value>searchRssFeeds</value>
+				</property> 
+				<property name="successView">
+					<value>showSearch.html</value>
+				</property> 
+	</bean>
 
 <!-- =========================== For Hibernate "Open Session in View" ===================================== -->	
 <!-- for lazy loading of hibernate in View-Component 

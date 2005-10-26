@@ -81,5 +81,7 @@ public interface ItemDAO {
     
     public Integer countNewItemsForUser(String username, Date since)
     throws IndexOutOfBoundsException;
+    
+    public Collection getAllItems();
 
 }

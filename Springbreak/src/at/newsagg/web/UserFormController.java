@@ -77,7 +77,7 @@ public class UserFormController extends SimpleFormController {
 				if(mgr.checkUser(user.getUsername()) == null)  {
 					mgr.saveUser(user);
 				} else {
-					errors.rejectValue("user.username", "username exists", null, getMessageSourceAccessor().getMessage("user.usernaAlreadyExists")); 
+					errors.rejectValue("user.username", "username exists", null, getMessageSourceAccessor().getMessage("indexer.noIndexLocationPathProvided")); 
 					return showForm(request, response, errors);
 				}
 			}

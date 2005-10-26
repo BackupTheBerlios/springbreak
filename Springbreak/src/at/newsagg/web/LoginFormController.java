@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import at.newsagg.model.User;
 import at.newsagg.service.UserManager;
 
+
 /**
  * @author Szabolcs Rozsnyai $Id: LoginFormController.java,v 1.2 2005/08/26
  *         17:59:42 vecego Exp $
@@ -36,6 +37,8 @@ public class LoginFormController extends SimpleFormController {
 	public ModelAndView onSubmit(HttpServletRequest request,
 			HttpServletResponse response, Object command, BindException errors)
 			throws Exception {
+        
+        
 		User loginData = (User) command;
 		// if (request.getParameter("loginUsername") != null &&
 		// request.getParameter("loginPassword") != null) {

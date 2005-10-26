@@ -513,4 +513,8 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
     public void setUpperLimit(short upperlimit) {
         this.upperLimit = upperlimit;
     }
+    
+    public Collection getAllItems() {
+        return getHibernateTemplate().find("from Item"); 
+    }
 }
