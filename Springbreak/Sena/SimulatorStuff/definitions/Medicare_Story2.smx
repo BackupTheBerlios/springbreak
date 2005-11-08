@@ -90,21 +90,21 @@
 	<ValueGenerator name="VG_Temp_OK_Tosalumn">
 		<Enumeration>
 			<Elements>
-				<Element>-15.3</Element>
-				<Element>-14.7</Element>
-				<Element>-14.2</Element>
-				<Element>-13.8</Element>
-				<Element>-13</Element>
-				<Element>-14</Element>
-				<Element>-14.5</Element>
-				<Element>-15.1</Element>
-				<Element>-14.8</Element>
-				<Element>-15.4</Element>
-				<Element>-14.9</Element>
-				<Element>-14.1</Element>
-				<Element>-13.6</Element>
-				<Element>-14.5</Element>
-				<Element>-15.2</Element>
+				<Element>-5.3</Element>
+				<Element>-4.7</Element>
+				<Element>-4.2</Element>
+				<Element>-3.8</Element>
+				<Element>-3</Element>
+				<Element>-4</Element>
+				<Element>-4.5</Element>
+				<Element>-5.1</Element>
+				<Element>-4.8</Element>
+				<Element>-5.4</Element>
+				<Element>-4.9</Element>
+				<Element>-4.1</Element>
+				<Element>-3.6</Element>
+				<Element>-4.5</Element>
+				<Element>-5.2</Element>
 			</Elements>
 			<DataType>System.String</DataType>
 		</Enumeration>
