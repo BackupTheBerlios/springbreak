@@ -1,6 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0&#xD;&#xA;..\..\xsd\SimulationModel.xsd" name="Medicare Story3" displayName="Medicare Story3" schemaVersion="1.0">
-  <!--
+<?xml version="1.0" encoding="utf-8"?>
+<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0
+..\..\xsd\SimulationModel.xsd" name="MedicareStory3" displayName="MedicareStory3" schemaVersion="1.0">
+ <!--
         *******************************
         **** Value Generators ****
         *******************************
@@ -116,13 +117,15 @@
       </Product>
     </Template>
   </EventObjectGenerator>
+
+
   <!-- Shipment Infos -->
-  <EventObjectGenerator name="EO_ShipmentInfo" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+  <EventObjectGenerator name="EO_ShipmentInfo" >
     <Template>
       <ShipmentInfo>
         <From>Vienna</From>
         <To>Paris</To>
-        <DateTime>2005-10-03T14:33:22</DateTime>
+        <DeliveryDate>2999-11-09T09:09:09</DeliveryDate>
         <TransportType>2Chamber_Truck</TransportType>
         <Price>2000</Price>
         <MinTemp>-10/9</MinTemp>
@@ -130,6 +133,11 @@
       </ShipmentInfo>
     </Template>
   </EventObjectGenerator>
+
+
+  
+  
+  
   <!-- Datalogger Temperatures -->
   <!-- Tosalumn -->
   <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Tosalumn">
@@ -216,19 +224,34 @@
       </OrderConfirmed>
     </Template>
   </EventGenerator>
-  <!-- ShipmentTenderIssued Event -->
-  <EventGenerator name="EG_ShipmentTenderIssued" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+
+
+ <EventGenerator name="EG_ShipmentTenderIssued">
     <Template>
       <ShipmentTenderIssued>
         <OrderId>17001</OrderId>
         <DateTime>2005-10-03T14:33:32</DateTime>
         <DeliveryDate>2005-10-19T16:00:00</DeliveryDate>
-        <FurtherInfo>
-          <EventObjectGenerator name="EO_ShipmentInfo" />
-        </FurtherInfo>
+        <FurtherInfo><EventObjectGenerator name="EO_ShipmentInfo"/></FurtherInfo>
       </ShipmentTenderIssued>
     </Template>
   </EventGenerator>
+
+  <!-- ShipmentTenderIssued Event -->
+  <EventGenerator name="EG_ShipmentTenderIssuedvec">
+		<Template>
+			<ShipmentTenderIssued>
+				<OrderId>17001</OrderId>
+				<DateTime>2005-10-31T14:12:54</DateTime>
+				<FurtherInfo>
+					<EventObjectGenerator name="EO_ShipmentInfovec"/>
+				</FurtherInfo>
+			</ShipmentTenderIssued>
+		</Template>
+	</EventGenerator>
+
+
+
   <!-- ShipmentTenderAccepted Event -->
   <EventGenerator name="EG_ShipmentTenderAccepted">
     <Template>
@@ -433,7 +456,7 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2" >
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -530,6 +553,69 @@
       </ShipmentDelivered>
     </Template>
   </EventGenerator>
+
+   <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1" >
+    <Template>
+      <DataLoggerRead>
+        <OrderId>17001</OrderId>
+        <LoggerId>901</LoggerId>
+        <DateTime>2005-10-20T16:42:43</DateTime>
+        <Staffmember>Jean-Renard</Staffmember>
+        <TempData>
+          <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
+            <Instances>16</Instances>
+          </EventObjectGenerator>
+        </TempData>
+      </DataLoggerRead>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2" >
+    <Template>
+      <DataLoggerRead>
+        <OrderId>17001</OrderId>
+        <LoggerId>902</LoggerId>
+        <DateTime>2005-10-20T16:43:42</DateTime>
+        <Staffmember>Jean-Renard</Staffmember>
+        <TempData>
+          <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
+            <Instances>16</Instances>
+          </EventObjectGenerator>
+        </TempData>
+      </DataLoggerRead>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1" >
+    <Template>
+      <DataLoggerRead>
+        <OrderId>17001</OrderId>
+        <LoggerId>903</LoggerId>
+        <DateTime>2005-10-18T19:35:33</DateTime>
+        <Staffmember>Herbert-Sinnger</Staffmember>
+        <TempData>
+          <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
+            <Instances>16</Instances>
+          </EventObjectGenerator>
+        </TempData>
+      </DataLoggerRead>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2" >
+    <Template>
+      <DataLoggerRead>
+        <OrderId>17001</OrderId>
+        <LoggerId>904</LoggerId>
+        <DateTime>2005-10-18T19:40:44</DateTime>
+        <Staffmember>Herbert-Sinnger</Staffmember>
+        <TempData>
+          <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
+            <Instances>16</Instances>
+          </EventObjectGenerator>
+        </TempData>
+      </DataLoggerRead>
+    </Template>
+  </EventGenerator>
+
+
   <!--
         ***********************
         **** Sequences ****
@@ -538,11 +624,16 @@
   <!--
 	Story3: Lieferung kommt zu spaet an
 	-->
-  <EventSequence name="ES_Story3" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
-    <EventGenerator name="EG_OrderReceived" />
-    <EventGenerator name="EG_OrderConfirmed" />
-    <EventGenerator name="EG_ShipmentTenderIssued" />
-    <!--<EventGenerator name="EG_ShipmentTenderRejected1" />
+  <EventSequence name="ES_Story3" >
+    
+	
+	<EventGenerator name="EG_OrderReceived" />
+    <EventGenerator name="EG_OrderConfirmed" /> 
+    
+	<EventGenerator name="EG_ShipmentTenderIssued" />
+
+    
+	<EventGenerator name="EG_ShipmentTenderRejected1" />
     <EventGenerator name="EG_ShipmentTenderRejected2" />
     <EventGenerator name="EG_ShipmentTenderAccepted" />
     <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken" />
@@ -566,7 +657,7 @@
     <EventGenerator name="EG_DataLoggerReadParis_Gernazilin1" />
     <EventGenerator name="EG_DataLoggerReadParis_Gernazilin2" />
     <EventGenerator name="EG_ShipmentAudit_Paris" />
-    <EventGenerator name="EG_ShipmentDelivered" /> -->
+    <EventGenerator name="EG_ShipmentDelivered" />  
   </EventSequence>
   <!--
     ***************************************
@@ -580,70 +671,11 @@
       <Concurrency>Serialized</Concurrency>
     </EventSequenceSimulation>
   </SimulationRun>
-  <EventReceiver name="Receiver1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+  <EventReceiver name="Receiver1" >
     <MsmqQueue>
       <QueueName>.\Private$\EMQueue</QueueName>
       <Transactional>true</Transactional>
     </MsmqQueue>
   </EventReceiver>
-  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
-    <Template>
-      <DataLoggerRead>
-        <OrderId>17001</OrderId>
-        <LoggerId>901</LoggerId>
-        <DateTime>2005-10-20T16:42:43</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
-        <TempData>
-          <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
-            <Instances>16</Instances>
-          </EventObjectGenerator>
-        </TempData>
-      </DataLoggerRead>
-    </Template>
-  </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
-    <Template>
-      <DataLoggerRead>
-        <OrderId>17001</OrderId>
-        <LoggerId>902</LoggerId>
-        <DateTime>2005-10-20T16:43:42</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
-        <TempData>
-          <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
-            <Instances>16</Instances>
-          </EventObjectGenerator>
-        </TempData>
-      </DataLoggerRead>
-    </Template>
-  </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
-    <Template>
-      <DataLoggerRead>
-        <OrderId>17001</OrderId>
-        <LoggerId>903</LoggerId>
-        <DateTime>2005-10-18T19:35:33</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
-        <TempData>
-          <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
-            <Instances>16</Instances>
-          </EventObjectGenerator>
-        </TempData>
-      </DataLoggerRead>
-    </Template>
-  </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
-    <Template>
-      <DataLoggerRead>
-        <OrderId>17001</OrderId>
-        <LoggerId>904</LoggerId>
-        <DateTime>2005-10-18T19:40:44</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
-        <TempData>
-          <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
-            <Instances>16</Instances>
-          </EventObjectGenerator>
-        </TempData>
-      </DataLoggerRead>
-    </Template>
-  </EventGenerator>
+ 
 </SimulationModel>
