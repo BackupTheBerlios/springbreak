@@ -7,6 +7,7 @@
         *******************************
     -->
 
+    <!-- Value Generator for logentries Datalogger -->
 	<ValueGenerator name="VG_DateTime_Vienna_Munich">
 		<DateRange>
 			<Start>2005-11-07T08:20:00</Start>
@@ -26,37 +27,6 @@
 		</DateRange>
 	</ValueGenerator>
 	
-	<!--
-    Value generator for the StaffMembers
-    -->
-	<ValueGenerator name="VG_Staffmember">
-		<Enumeration>
-			<Elements>
-				<Element>Johannes Stelzmuehler</Element>
-				<Element>Peter Hahn</Element>
-				<Element>Stefanie Stadler</Element>
-				<Element>Jan Prohaska</Element>
-				<Element>Reinhard Messerschmidt</Element>
-			</Elements>
-			<DataType>System.String</DataType>
-		</Enumeration>
-	</ValueGenerator>
-	
-	<ValueGenerator name="VG_StaffmemberDestination">
-		<Enumeration>
-			<Elements>
-				<Element>Maria Cane</Element>
-				<Element>Michael Owen</Element>
-				<Element>Antonio Sanchez</Element>
-				<Element>Roger Fry</Element>
-				<Element>Lucy Smith</Element>
-			</Elements>
-			<DataType>System.String</DataType>
-		</Enumeration>
-	</ValueGenerator>
-	
-	
-	
 	
 	
 	
@@ -71,6 +41,8 @@
 			<ProbabilityTrue>0</ProbabilityTrue>
 		</Booleans>
 	</ValueGenerator>
+	
+	<!-- Temperatures for logentires Datalogger -->
 	
 	<ValueGenerator name="VG_Temp_OK1">
 		<Enumeration>
