@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0
+..\..\xsd\SimulationModel.xsd" name="Medicare Story2" displayName="Medicare Story2" schemaVersion="1.0">
+	<!--
+        *******************************
+        **** Value Generators ****
+        *******************************
+    -->
+
+	<ValueGenerator name="VG_DateTime_Paris_Frankfurt">
+		<DateRange>
+			<Start>2005-11-15T09:30:00</Start>
+			<Stop>2005-11-15T17:00:01</Stop>
+			<Increment>
+				<Minutes>30</Minutes>
+			</Increment>
+		</DateRange>
+	</ValueGenerator>
+	<ValueGenerator name="VG_DateTime_Frankfurt_Munich">
+		<DateRange>
+			<Start>2005-11-15T17:30:00</Start>
+			<Stop>2005-11-16T11:00:01</Stop>
+			<Increment>
+				<Minutes>30</Minutes>
+			</Increment>
+		</DateRange>
+	</ValueGenerator>
+	<ValueGenerator name="VG_DateTime_Munich_Vienna">
+		<DateRange>
+			<Start>2005-11-16T11:30:00</Start>
+			<Stop>2005-11-16T19:30:01</Stop>
+			<Increment>
+				<Minutes>30</Minutes>
+			</Increment>
+		</DateRange>
+	</ValueGenerator>
+	
+	
+	
+	<!-- Value Generator for the shipped products -->
+	<ValueGenerator name="VG_Product">
+		<Enumeration>
+			<Elements>
+				<Element>Tosalumn</Element>
+				<Element>Zatanol</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<!-- Value Generator for the shipped Amount -->
+	<ValueGenerator name="VG_Amount">
+		<Enumeration>
+			<Elements>
+				<Element>400</Element>
+				<Element>1000</Element>
+			</Elements>
+			<DataType>System.Int32</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<!-- Value Generator for the lost Amount -->
+	<ValueGenerator name="VG_Amount_Fault">
+		<Enumeration>
+			<Elements>
+				<Element>297</Element>
+				<Element>1000</Element>
+			</Elements>
+			<DataType>System.Int32</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	
+	<ValueGenerator name="VG_Boolean">
+		<Booleans>
+			<ProbabilityTrue>1</ProbabilityTrue>
+		</Booleans>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_False">
+		<Booleans>
+			<ProbabilityTrue>0</ProbabilityTrue>
+		</Booleans>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_Temp_OK_Tosalumn">
+		<Enumeration>
+			<Elements>
+				<Element>-15.3</Element>
+				<Element>-14.7</Element>
+				<Element>-14.2</Element>
+				<Element>-13.8</Element>
+				<Element>-13</Element>
+				<Element>-14</Element>
+				<Element>-14.5</Element>
+				<Element>-15.1</Element>
+				<Element>-14.8</Element>
+				<Element>-15.4</Element>
+				<Element>-14.9</Element>
+				<Element>-14.1</Element>
+				<Element>-13.6</Element>
+				<Element>-14.5</Element>
+				<Element>-15.2</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_Temp_OK_Zatanol">
+		<Enumeration>
+			<Elements>
+				<Element>6</Element>
+				<Element>6.7</Element>
+				<Element>7.2</Element>
+				<Element>6.5</Element>
+				<Element>7.1</Element>
+				<Element>6.8</Element>
+				<Element>6.3</Element>
+				<Element>5.7</Element>
+				<Element>6.2</Element>
+				<Element>6.4</Element>
+				<Element>7.6</Element>
+				<Element>6.9</Element>
+				<Element>7.1</Element>
+				<Element>6.3</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	<!--
+        *******************************
+        **** Event Object Generators ****
+        *******************************
+        
+        
+    
+    -->
+    <!-- Product to Transport -->
+	<EventObjectGenerator name="EO_ProductCollection">
+    	<Template>	
+			<Product>		
+    			<ProductId> <ValueGenerator name="VG_Product"/> </ProductId>
+				<Amount> <ValueGenerator name="VG_Amount"/> </Amount>
+			</Product>			
+    	</Template>
+    </EventObjectGenerator>
+    
+    <!-- Product to Transport -->
+	<EventObjectGenerator name="EO_ProductCollection_Fault">
+    	<Template>	
+    		<Product>		
+    			<ProductId><ValueGenerator name="VG_Product"/></ProductId>
+				<Amount><ValueGenerator name="VG_Amount_Fault"/></Amount>
+			</Product>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    
+    <!-- Shipment Infos -->
+    
+    <EventObjectGenerator name="EO_ShipmentInfo">
+    	<Template>	
+    		<ShipmentInfo>		
+    			<From>Paris</From>
+				<To>Vienna</To>
+				<DeliveryDate>2005-11-21T07:00:00</DeliveryDate>
+				<TransportType>2Cambers_Truck</TransportType>
+				<Price>2040</Price>
+				<MinTemp>-20/5</MinTemp>
+				<MaxTemp>-10/9</MaxTemp>
+			</ShipmentInfo>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    
+    
+    <!-- Datalogger Temperatures -->
+    
+    <!-- Tosalumn -->
+    
+    <EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Tosalumn">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Paris_Frankfurt"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Tosalumn"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Tosalumn">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Frankfurt_Munich"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Tosalumn"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Tosalumn">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Munich_Vienna"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Tosalumn"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    
+    <!-- Zatanol -->
+    
+    <EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Zatanol">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Paris_Frankfurt"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Zatanol"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Zatanol">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Frankfurt_Munich"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Zatanol"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Zatanol">
+    	<Template>	
+    		<LogEntry>		
+    			<DateTime><ValueGenerator name="VG_DateTime_Munich_Vienna"/></DateTime>
+				<Temp><ValueGenerator name="VG_Temp_OK_Zatanol"/></Temp>
+			</LogEntry>		
+    	</Template>
+    </EventObjectGenerator>
+    
+	
+	
+	<!--
+        *******************************
+        **** Event Generators ****
+        *******************************
+        
+        
+    
+    -->
+    <!--
+        Generator for the OrderReceived Events
+    -->
+    
+    <EventGenerator name="EG_OrderReceived">
+		<Template>
+			<OrderReceived>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-11T11:22:54</DateTime>
+				<DeliveryDate>2005-11-21T07:00:00</DeliveryDate>
+				<Destination>Vienna</Destination>
+				<ProductCollection>
+					<EventObjectGenerator name="EO_ProductCollection">
+						<Instances>2</Instances>
+					</EventObjectGenerator>
+				</ProductCollection>
+				
+			</OrderReceived>
+		</Template>
+	</EventGenerator>
+	
+	<!-- OrderConfirmed Event -->
+	<EventGenerator name="EG_OrderConfirmed">
+		<Template>
+			<OrderConfirmed>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-11T12:17:39</DateTime>
+			</OrderConfirmed>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!-- ShipmentTenderIssued Event -->
+	<EventGenerator name="EG_ShipmentTenderIssued">
+		<Template>
+			<ShipmentTenderIssued>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-11T14:07:11</DateTime>
+				<FurtherInfo>
+					<EventObjectGenerator name="EO_ShipmentInfo"/>
+				</FurtherInfo>
+			</ShipmentTenderIssued>
+		</Template>
+	</EventGenerator>
+	
+	<!-- ShipmentTenderAccepted Event -->
+	<EventGenerator name="EG_ShipmentTenderAccepted">
+		<Template>
+			<ShipmentTenderAccepted> 
+				<OrderId>15328</OrderId>
+				<CarrierId>342</CarrierId>
+				<DateTime>2005-11-14T07:31:21</DateTime>
+			</ShipmentTenderAccepted>
+		</Template>
+	</EventGenerator>
+	
+	<!-- ShipmentTenderRejected Event -->
+	<EventGenerator name="EG_ShipmentTenderRejected1">
+		<Template>
+			<ShipmentTenderRejected> 
+				<OrderId>15328</OrderId>
+				<CarrierId>532</CarrierId>
+				<DateTime>2005-11-11T14:14:51</DateTime>
+			</ShipmentTenderRejected>
+		</Template>
+	</EventGenerator>
+	
+	<!-- ShipmentTenderRejected Event -->
+	<EventGenerator name="EG_ShipmentTenderRejected2">
+		<Template>
+			<ShipmentTenderRejected> 
+				<OrderId>15328</OrderId>
+				<CarrierId>142</CarrierId>
+				<DateTime>2005-11-11T16:00:57</DateTime>
+			</ShipmentTenderRejected>
+		</Template>
+	</EventGenerator>
+	<!-- ShipmentTenderRejected Event -->
+	<EventGenerator name="EG_ShipmentTenderRejected3">
+		<Template>
+			<ShipmentTenderRejected> 
+				<OrderId>15328</OrderId>
+				<CarrierId>142</CarrierId>
+				<DateTime>2005-11-14T06:45:39</DateTime>
+			</ShipmentTenderRejected>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!-- ShipmentCreated Events -->
+	
+	<EventGenerator name="EG_ShipmentCreated_Paris_Frankfurt">
+		<Template>
+			<ShipmentCreated> 
+				<OrderId>15328</OrderId>
+				<TransportId>45003</TransportId>
+				<CarrierId>342</CarrierId>
+				<DateTime>2005-11-14T08:11:36</DateTime>
+				<DatePlannedShipped>2005-11-15T08:30:00</DatePlannedShipped>
+				<DatePlannedDelivered>2005-11-15T16:30:00</DatePlannedDelivered>
+				<DateEarlyBuffered>2005-11-15T08:30:00</DateEarlyBuffered>
+				<DateLateBuffered>2005-11-16T15:00:00</DateLateBuffered>
+				<LocationFrom>Paris</LocationFrom>
+				<LocationTo>Frankfurt</LocationTo>
+				<Miles>362</Miles>
+				<PlannedFreightCosts>780</PlannedFreightCosts>
+				<TransportType>Truck</TransportType>
+			</ShipmentCreated>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_ShipmentCreated_Frankfurt_Munich">
+		<Template>
+			<ShipmentCreated> 
+				<OrderId>15328</OrderId>
+				<TransportId>45004</TransportId>
+				<CarrierId>342</CarrierId>
+				<DateTime>2005-11-14T08:11:43</DateTime>
+				<DatePlannedShipped>2005-11-16T06:00:00</DatePlannedShipped>
+				<DatePlannedDelivered>2005-11-16T12:00:00</DatePlannedDelivered>
+				<DateEarlyBuffered>2005-11-15T17:30:00</DateEarlyBuffered>
+				<DateLateBuffered>2005-11-17T06:00:00</DateLateBuffered>
+				<LocationFrom>Frankfurt</LocationFrom>
+				<LocationTo>Munich</LocationTo>
+				<Miles>259</Miles>
+				<PlannedFreightCosts>590</PlannedFreightCosts>
+				<TransportType>Truck</TransportType>
+			</ShipmentCreated>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_ShipmentCreated_Munich_Vienna">
+		<Template>
+			<ShipmentCreated> 
+				<OrderId>15328</OrderId>
+				<TransportId>45005</TransportId>
+				<CarrierId>342</CarrierId>
+				<DateTime>2005-11-14T08:11:57</DateTime>
+				<DatePlannedShipped>2005-11-16T12:20:00</DatePlannedShipped>
+				<DatePlannedDelivered>2005-11-16T19:30:00</DatePlannedDelivered>
+				<DateEarlyBuffered>2005-11-16T11:30:00</DateEarlyBuffered>
+				<DateLateBuffered>2005-11-21T06:00:00</DateLateBuffered>
+				<LocationFrom>Munich</LocationFrom>
+				<LocationTo>Vienna</LocationTo>
+				<Miles>292</Miles>
+				<PlannedFreightCosts>670</PlannedFreightCosts>
+				<TransportType>Truck</TransportType>
+			</ShipmentCreated>
+		</Template>
+	</EventGenerator>
+
+	
+	
+	
+	<!--
+        Generator for the DataLoggerConfigured Events
+    -->
+    
+    <EventGenerator name="EG_DataLoggerConfigured_Tosalumn1">
+		<Template>
+			<DataLoggerConfigured>
+				<OrderId>15328</OrderId>
+				<LoggerId>755</LoggerId>
+				<DateTime>2005-11-14T10:23:43</DateTime>
+				<Staffmember>Pierre Jeumet</Staffmember>
+				<MinTemp>-20</MinTemp>
+				<MaxTemp>-10</MaxTemp>
+				<SenseInterval>30</SenseInterval>
+				<Destination>Vienna</Destination>
+			</DataLoggerConfigured>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerConfigured_Tosalumn2">
+		<Template>
+			<DataLoggerConfigured>
+				<OrderId>15328</OrderId>
+				<LoggerId>758</LoggerId>
+				<DateTime>2005-11-14T10:34:11</DateTime>
+				<Staffmember>Anna Stern</Staffmember>
+				<MinTemp>-20</MinTemp>
+				<MaxTemp>-10</MaxTemp>
+				<SenseInterval>30</SenseInterval>
+				<Destination>Vienna</Destination>
+			</DataLoggerConfigured>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_DataLoggerConfigured_Zatanol1">
+		<Template>
+			<DataLoggerConfigured>
+				<OrderId>15328</OrderId>
+				<LoggerId>756</LoggerId>
+				<DateTime>2005-11-14T10:36:36</DateTime>
+				<Staffmember>Anna Stern</Staffmember>
+				<MinTemp>5</MinTemp>
+				<MaxTemp>9</MaxTemp>
+				<SenseInterval>30</SenseInterval>
+				<Destination>Vienna</Destination>
+			</DataLoggerConfigured>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerConfigured_Zatanol2">
+		<Template>
+			<DataLoggerConfigured>
+				<OrderId>15328</OrderId>
+				<LoggerId>757</LoggerId>
+				<DateTime>2005-11-14T10:41:02</DateTime>
+				<Staffmember>Pierre Jeumet</Staffmember>
+				<MinTemp>5</MinTemp>
+				<MaxTemp>9</MaxTemp>
+				<SenseInterval>30</SenseInterval>
+				<Destination>Vienna</Destination>
+			</DataLoggerConfigured>
+		</Template>
+	</EventGenerator>
+	
+	<!--
+	 	Generator for ShipmentStart Event
+	 -->
+	 
+	 <EventGenerator name="EG_ShipmentStarted">
+		<Template>
+			<ShipmentStarted>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-15T09:30:11</DateTime>
+			</ShipmentStarted>
+		</Template>
+	</EventGenerator>
+	 
+	<!--
+        Generator for the TransportStart Events
+    -->
+	<EventGenerator name="EG_TransportStart_Paris_Frankfurt">
+		<Template>
+			<TransportStart>
+				<OrderId>15328</OrderId>
+				<TransportId>45003</TransportId>
+				<DateTime>2005-11-15T09:30:25</DateTime>
+				<Location>Paris</Location> 
+				<CarrierId>342</CarrierId>
+			</TransportStart>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_TransportStart_Frankfurt_Munich">
+		<Template>
+			<TransportStart>
+				<OrderId>15328</OrderId>
+				<TransportId>45004</TransportId>
+				<DateTime>2005-11-16T06:03:10</DateTime>
+				<Location>Frankfurt</Location> 
+				<CarrierId>433</CarrierId>
+			</TransportStart>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_TransportStart_Munich_Vienna">
+		<Template>
+			<TransportStart>
+				<OrderId>15328</OrderId>
+				<TransportId>45005</TransportId>
+				<DateTime>2005-11-16T11:49:28</DateTime>
+				<Location>Munich</Location> 
+				<CarrierId>433</CarrierId>
+			</TransportStart>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!--
+        Generator for the TransportEnd Events
+    -->
+    <!-- TODO: ValueGenerator -->
+	<EventGenerator name="EG_TransportEnd_Frankfurt">
+		<Template>
+			<TransportEnd>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-15T17:41:09</DateTime>
+				<Location>Frankfurt</Location> 
+			</TransportEnd>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_TransportEnd_Munich">
+		<Template>
+			<TransportEnd>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-16T11:17:03</DateTime>
+				<Location>Madrid</Location> 
+			</TransportEnd>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_TransportEnd_Vienna">
+		<Template>
+			<TransportEnd>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-16T19:38:55</DateTime>
+				<Location>Vienna</Location> 
+			</TransportEnd>
+		</Template>
+	</EventGenerator>
+	
+	<!-- 
+		Generator DataLoggerRead Event 
+	-->
+	<!-- Frankfurt -->
+	<EventGenerator name="EG_DataLoggerReadFrankfurt_Tosalumn1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>755</LoggerId>
+				<DateTime>2005-11-15T17:59:12</DateTime>
+				<Staffmember>Panner-Ernst</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Tosalumn">
+						<Instances>16</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadFrankfurt_Tosalumn2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>758</LoggerId>
+				<DateTime>2005-11-15T17:57:35</DateTime>
+				<Staffmember>Panner-Ernst</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Tosalumn">
+						<Instances>16</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_DataLoggerReadFrankfurt_Zatanol1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>756</LoggerId>
+				<DateTime>2005-11-15T18:01:43</DateTime>
+				<Staffmember>Panner-Ernst</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Zatanol">
+						<Instances>16</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadFrankfurt_Zatanol2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>757</LoggerId>
+				<DateTime>2005-11-15T18:02:32</DateTime>
+				<Staffmember>Panner-Ernst</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Paris_Frankfurt_Zatanol">
+						<Instances>16</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Munich -->
+	<EventGenerator name="EG_DataLoggerReadMunich_Tosalumn1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>755</LoggerId>
+				<DateTime>2005-11-16T11:23:45</DateTime>
+				<Staffmember>Panner-Zollner</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Tosalumn">
+						<Instances>36</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadMunich_Tosalumn2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>758</LoggerId>
+				<DateTime>2005-11-16T11:24:47</DateTime>
+				<Staffmember>Panner-Zollner</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Tosalumn">
+						<Instances>36</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_DataLoggerReadMunich_Zatanol1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>756</LoggerId>
+				<DateTime>2005-11-16T11:26:51</DateTime>
+				<Staffmember>Panner-Zollner</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Zatanol">
+						<Instances>36</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadMunich_Zatanol2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>757</LoggerId>
+				<DateTime>2005-11-16T11:29:27</DateTime>
+				<Staffmember>Panner-Zollner</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Frankfurt_Munich_Zatanol">
+						<Instances>36</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Vienna -->
+	
+	<EventGenerator name="EG_DataLoggerReadVienna_Tosalumn1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>755</LoggerId>
+				<DateTime>2005-11-16T19:51:06</DateTime>
+				<Staffmember>Michael Johnson</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Tosalumn">
+						<Instances>17</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadVienna_Tosalumn2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>758</LoggerId>
+				<DateTime>2005-11-16T19:55:15</DateTime>
+				<Staffmember>Wolfgang Maier</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Tosalumn">
+						<Instances>17</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_DataLoggerReadVienna_Zatanol1">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>756</LoggerId>
+				<DateTime>2005-11-16T19:53:28</DateTime>
+				<Staffmember>Wolfgang Maier</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Zatanol">
+						<Instances>17</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	<EventGenerator name="EG_DataLoggerReadVienna_Zatanol2">
+		<Template>
+			<DataLoggerRead>
+				<OrderId>15328</OrderId>
+				<LoggerId>757</LoggerId>
+				<DateTime>2005-11-16T19:58:12</DateTime>
+				<Staffmember>Wolfgang Maier</Staffmember>
+				<TempData>
+					<EventObjectGenerator name="EO_TempCollection_Munich_Vienna_Zatanol">
+						<Instances>17</Instances>
+					</EventObjectGenerator>
+				</TempData>
+			</DataLoggerRead>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!--
+        Generator for the ShipmentAudit Events
+    -->
+    <EventGenerator name="EG_ShipmentAudit_Frankfurt">
+		<Template>
+			<ShipmentAudit>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-15T18:06:13</DateTime>
+				<Staffmember>Panner-Ernst</Staffmember>
+				<CheckedProducts>
+					<EventObjectGenerator name="EO_ProductCollection">
+						<Instances>2</Instances>
+					</EventObjectGenerator>
+				</CheckedProducts>
+				<Valid>
+					<ValueGenerator name="VG_Boolean"/>
+				</Valid>
+			</ShipmentAudit>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_ShipmentAudit_Munich">
+		<Template>
+			<ShipmentAudit>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-16T11:36:51</DateTime>
+				<Staffmember>Panner-Zollner</Staffmember>
+				<CheckedProducts>
+						<EventObjectGenerator name="EO_ProductCollection_Fault">
+							<Instances>2</Instances>
+						</EventObjectGenerator> 
+				</CheckedProducts>
+				<Valid>
+					<ValueGenerator name="VG_False"/>
+				</Valid>
+			</ShipmentAudit>
+		</Template>
+	</EventGenerator>
+	
+	<EventGenerator name="EG_ShipmentAudit_Vienna">
+		<Template>
+			<ShipmentAudit>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-16T20:00:02</DateTime>
+				<Staffmember>Andreas Schneider</Staffmember>
+				<CheckedProducts>
+						<EventObjectGenerator name="EO_ProductCollection_Fault">
+							<Instances>2</Instances>
+						</EventObjectGenerator>
+				</CheckedProducts>
+				<Valid>
+					<ValueGenerator name="VG_False"/>
+				</Valid>
+			</ShipmentAudit>
+		</Template>
+	</EventGenerator>
+	
+	<!--
+        Generator for the ShipmentDelivered Events
+    -->
+	<EventGenerator name="EG_ShipmentDelivered">
+		<Template>
+			<ShipmentDelivered>
+				<OrderId>15328</OrderId>
+				<DateTime>2005-11-16T20:03:24</DateTime>
+				<Success>
+					<ValueGenerator name="VG_False"/>
+				</Success>
+			</ShipmentDelivered>
+		</Template>
+	</EventGenerator>
+    
+	<!--
+        ***********************
+        **** Sequences ****
+        ***********************
+    -->
+    
+    
+	
+    
+    
+	<!--
+	Story2: Lieferung nicht komplett
+	-->
+	
+	<EventSequence name="ES_Story2">
+		<EventGenerator name="EG_OrderReceived"/>
+		<EventGenerator name="EG_OrderConfirmed"/>
+		
+		<EventGenerator name="EG_ShipmentTenderIssued"/>
+		<EventGenerator name="EG_ShipmentTenderRejected1"/>
+		<EventGenerator name="EG_ShipmentTenderRejected2"/>
+		<EventGenerator name="EG_ShipmentTenderRejected3"/>
+		<EventGenerator name="EG_ShipmentTenderAccepted"/>
+		
+		
+		<EventGenerator name="EG_ShipmentCreated_Paris_Frankfurt"/>
+		<EventGenerator name="EG_ShipmentCreated_Frankfurt_Munich"/>
+		<EventGenerator name="EG_ShipmentCreated_Munich_Vienna"/>
+		
+		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
+		
+		<EventGenerator name="EG_ShipmentStarted"/>
+		 
+		<EventGenerator name="EG_TransportStart_Paris_Frankfurt"/>
+		<EventGenerator name="EG_TransportEnd_Frankfurt"/>
+		<EventGenerator name="EG_DataLoggerReadFrankfurt_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerReadFrankfurt_Tosalumn2"/>
+		<EventGenerator name="EG_DataLoggerReadFrankfurt_Zatanol1"/>
+		<EventGenerator name="EG_DataLoggerReadFrankfurt_Zatanol2"/>
+		
+		<EventGenerator name="EG_ShipmentAudit_Frankfurt"/>
+		
+		<EventGenerator name="EG_TransportStart_Frankfurt_Munich"/>
+		<EventGenerator name="EG_TransportEnd_Munich"/>
+		<EventGenerator name="EG_DataLoggerReadMunich_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerReadMunich_Tosalumn2"/>
+		<EventGenerator name="EG_DataLoggerReadMunich_Zatanol1"/>
+		<EventGenerator name="EG_DataLoggerReadMunich_Zatanol2"/>
+		<EventGenerator name="EG_ShipmentAudit_Munich"/>
+		
+		<EventGenerator name="EG_TransportStart_Munich_Vienna"/>
+		<EventGenerator name="EG_TransportEnd_Vienna"/>
+		<EventGenerator name="EG_DataLoggerReadVienna_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerReadVienna_Tosalumn2"/>
+		<EventGenerator name="EG_DataLoggerReadVienna_Zatanol1"/>
+		<EventGenerator name="EG_DataLoggerReadVienna_Zatanol2"/>
+		<EventGenerator name="EG_ShipmentAudit_Vienna"/>
+		
+		<EventGenerator name="EG_ShipmentDelivered" /> 
+		 
+		 
+		
+		
+		
+	</EventSequence>
+	
+	<!--
+    ***************************************
+    **** Simulator Run Definitions ****
+    ***************************************
+    -->
+	<SimulationRun name="ES_Story2">
+		<EventSequenceSimulation>
+			<EventSequence name="ES_Story2"/>
+			<Instances>1</Instances>
+			<Concurrency>Serialized</Concurrency>
+		</EventSequenceSimulation>
+	</SimulationRun>
+	
+	
+	<EventReceiver name="Receiver1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+		<MsmqQueue>
+			<QueueName>.\Private$\EMQueue</QueueName>
+			<Transactional>true</Transactional>
+		</MsmqQueue>
+	</EventReceiver>
+</SimulationModel>

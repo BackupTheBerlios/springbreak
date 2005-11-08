@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InTimeApplication name="MedicareSampleApplication" displayName="EM Sample Application" schemaVersion="1.0" xmlns="http://www.senactive.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com ../../xsd/epm.xsd">
+<Description>
+Medicare Sample Application
+v 0.01
+</Description>
+	<ApplicationComponents>  
+		<!--
+            MSMQ Event Adapter
+        -->
+		<EventAdapterComponent name="MSMQSimulationMessageAdapterComponent" implementationClass="Eventis.Components.EventAdapters.Msmq.MsmqEventAdapter">
+			<EventTransformer name="MSMQSimulationMessageTransformer"/>
+		</EventAdapterComponent>
+		<!--
+            Simulation Transformer 
+        -->
+		<EventTransformerComponent name="MSMQSimulationMessageTransformer" implementationClass="Eventis.Components.EventAdapters.Msmq.MsmqSimulationTransformer">
+			<OutputPort>
+				<EventType name="*"/>
+			</OutputPort>
+		</EventTransformerComponent>
+		<!--
+            Component for storing the Tender*-Events
+        -->
+		<EventServiceComponent name="EventReceiverComponent" implementationClass="Eventis.InTimeEM.EventReceiverService">
+			<InputPort>
+				<EventType name="*"/>
+			</InputPort>
+		</EventServiceComponent>
+	</ApplicationComponents>
+	<EventProcessingMaps>
+		<EventProcessingMap name="EMMap">
+			<!--
+                Configuration of the Event Adapter
+            -->
+			<EventAdapter name="MsmqEventAdapter" component="MSMQSimulationMessageAdapterComponent">
+				<InitParameters>
+					<Parameter name="QueueName">
+						<Value>.\Private$\EMQueue</Value>
+					</Parameter>
+					<Parameter name="Mode">
+						<Value>Transactional</Value>
+					</Parameter>
+				</InitParameters>
+			</EventAdapter>
+			<!--
+                Correlating Transport START-END
+            -->
+			<EventService name="Transport" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>Transport</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						<CorrelationData eventType="TransportStart">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="TransportEnd">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>						
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+			<!--
+                Correlating ORDER RECEIVED - TRANSPORT START
+            -->
+			<EventService name="OrderReceivedTriggersTransport" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>OrderReceivedTriggersTransport</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						<CorrelationData eventType="OrderReceived">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="TransportStart">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>						
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+			<!-- 
+			  Correlating all EVENTS with same ORDERID
+			  -->
+			<EventService name="SameOrderID" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>SameOrderID</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						<CorrelationData eventType="OrderReceived">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="OrderConfirmed">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentTenderIssued">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentTenderAccepted">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentTenderRejected">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentCreated">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						
+						<CorrelationData eventType="DataLoggerConfigured">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						
+						<CorrelationData eventType="ShipmentStarted">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						
+						
+						<CorrelationData eventType="TransportStart">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="DataLoggerRead">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						
+						
+						<CorrelationData eventType="TransportEnd">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentAudit">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentDelivered">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>	
+							
+											
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+
+			
+			
+			
+			
+			<!--
+                Connect the event adapter to the correlating event services
+            -->
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="Transport" eventType="*"/>
+				</To>
+			</Connector>
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="OrderReceivedTriggersTransport" eventType="*"/>
+				</To>
+			</Connector>
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="SameOrderID" eventType="*"/>
+				</To>
+			</Connector>
+		
+
+						
+			
+			
+		</EventProcessingMap>
+	</EventProcessingMaps>
+</InTimeApplication>
