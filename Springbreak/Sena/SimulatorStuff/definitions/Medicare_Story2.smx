@@ -7,6 +7,7 @@
         *******************************
     -->
 
+    <!-- Value Generators for logentries Datalogger -->
 	<ValueGenerator name="VG_DateTime_Paris_Frankfurt">
 		<DateRange>
 			<Start>2005-11-15T09:30:00</Start>
@@ -84,6 +85,8 @@
 		</Booleans>
 	</ValueGenerator>
 	
+	<!-- Value Generator for logentries Datalogger -->
+	
 	<ValueGenerator name="VG_Temp_OK_Tosalumn">
 		<Enumeration>
 			<Elements>
@@ -148,7 +151,7 @@
     	</Template>
     </EventObjectGenerator>
     
-    <!-- Product to Transport -->
+    <!-- Product to Transport with wrong Amount-->
 	<EventObjectGenerator name="EO_ProductCollection_Fault">
     	<Template>	
     		<Product>		
@@ -330,7 +333,7 @@
 		<Template>
 			<ShipmentTenderRejected> 
 				<OrderId>15328</OrderId>
-				<CarrierId>142</CarrierId>
+				<CarrierId>433</CarrierId>
 				<DateTime>2005-11-14T06:45:39</DateTime>
 			</ShipmentTenderRejected>
 		</Template>
@@ -424,7 +427,7 @@
 				<OrderId>15328</OrderId>
 				<LoggerId>758</LoggerId>
 				<DateTime>2005-11-14T10:34:11</DateTime>
-				<Staffmember>Anna Stern</Staffmember>
+				<Staffmember>Jaque Gusto</Staffmember>
 				<MinTemp>-20</MinTemp>
 				<MaxTemp>-10</MaxTemp>
 				<SenseInterval>30</SenseInterval>
@@ -439,7 +442,7 @@
 				<OrderId>15328</OrderId>
 				<LoggerId>756</LoggerId>
 				<DateTime>2005-11-14T10:36:36</DateTime>
-				<Staffmember>Anna Stern</Staffmember>
+				<Staffmember>Jaque Gusto</Staffmember>
 				<MinTemp>5</MinTemp>
 				<MaxTemp>9</MaxTemp>
 				<SenseInterval>30</SenseInterval>
@@ -533,7 +536,7 @@
 			<TransportEnd>
 				<OrderId>15328</OrderId>
 				<DateTime>2005-11-16T11:17:03</DateTime>
-				<Location>Madrid</Location> 
+				<Location>Munich</Location> 
 			</TransportEnd>
 		</Template>
 	</EventGenerator>
@@ -763,6 +766,8 @@
 		</Template>
 	</EventGenerator>
 	
+	<!-- wrong Amount in Munich --> 
+	
 	<EventGenerator name="EG_ShipmentAudit_Munich">
 		<Template>
 			<ShipmentAudit>
@@ -780,6 +785,8 @@
 			</ShipmentAudit>
 		</Template>
 	</EventGenerator>
+	
+	<!-- same wrong Amount in Vienna --> 
 	
 	<EventGenerator name="EG_ShipmentAudit_Vienna">
 		<Template>
@@ -845,6 +852,8 @@
 		
 		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
 		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerConfigured_Zatanol1"/>
+		<EventGenerator name="EG_DataLoggerConfigured_Zatanol2"/>
 		
 		<EventGenerator name="EG_ShipmentStarted"/>
 		 
@@ -875,10 +884,7 @@
 		
 		<EventGenerator name="EG_ShipmentDelivered" /> 
 		 
-		 
-		
-		
-		
+
 	</EventSequence>
 	
 	<!--
