@@ -122,6 +122,17 @@
 			<DataType>System.Int32</DataType>
 		</NumRange>
 	</ValueGenerator>
+	<!--
+        TransportId
+    -->
+	<ValueGenerator name="VG_TransportId">
+		<NumRange>
+			<Start>4000</Start>
+			<Stop>600000</Stop>
+			<Increment>1</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
 
 	<ValueGenerator name="VG_DateTimeHour">
 		<DateRange>
@@ -132,6 +143,7 @@
 			</Increment>
 		</DateRange>
 	</ValueGenerator>
+
 
 
 	<!--
@@ -274,7 +286,7 @@
 			<ShipmentInfo>
 				<From><ScopeVariable name="From"/></From>
 				<To><ScopeVariable name="To"/></To>
-				<DeliveryDate>2005-11-12T06:00:00</DeliveryDate>
+				<DeliveryDate><ValueGenerator name="VG_DateTimeHour"/></DeliveryDate>
 				<TransportType>Truck</TransportType>
 				<Price><ValueGenerator name="VG_Price" /></Price>
 				<MinTemp><ScopeVariable name="MinTemp"/></MinTemp>
@@ -301,7 +313,7 @@
 	<EventObjectGenerator name="EO_TempCollection_OK">
 		<Template>
 			<LogEntry>
-				<DateTime>2999-01-01T00:00:00</DateTime>
+				<DateTime><ValueGenerator name="VG_DateTimeHour"/></DateTime>
 				<Temp>
 					<ScopeVariable name="MinTemp"/>
 				</Temp>
@@ -367,12 +379,33 @@
 				<DateTime>
 					<ValueGenerator name="VG_DateTimeHour"/>
 				</DateTime>
+			
 				<FurtherInfo>
 					<EventObjectGenerator name="EO_ShipmentInfo"/>
 				</FurtherInfo>
 			</ShipmentTenderIssued>
 		</Template>
 	</EventGenerator>
+
+
+
+<!-- ShipmentTenderRejected Event -->
+	<EventGenerator name="EG_ShipmentTenderRejected">
+		<Template>
+			<ShipmentTenderRejected>
+				<OrderId>
+					<ValueGenerator name="VG_OrderId"/>
+				</OrderId>
+				<CarrierId>
+					<ValueGenerator name="VG_CarrierId"/>
+				</CarrierId>
+				<DateTime>
+					<ValueGenerator name="VG_DateTimeHour"/>
+				</DateTime>
+			</ShipmentTenderRejected>
+		</Template>
+	</EventGenerator>
+
 
 	<!-- ShipmentTenderAccepted Event -->
 	<EventGenerator name="EG_ShipmentTenderAccepted">
@@ -390,6 +423,66 @@
 			</ShipmentTenderAccepted>
 		</Template>
 	</EventGenerator>
+
+
+		<!-- ShipmentCreated Event
+		   Im Simulator abgespeckte Version;  ich definiere es nicht für jede Etappe, sondern für die Gesamtstrecke
+		 warum?! weil ich nicht auf sinnvolle Dates komme..
+
+		 noch nicht gesetzt:
+		 		<DatePlannedShipped></DatePlannedShipped>
+				<DatePlannedDelivered></DatePlannedDelivered>
+				<DateEarlyBuffered></DateEarlyBuffered>
+				<DateLateBuffered>	</DateLateBuffered>
+
+				<Miles></Miles>
+				<PlannedFreightCosts/>
+
+		 -->
+	<EventGenerator name="EG_ShipmentCreated_Etappe1">
+		<Template>
+			<ShipmentCreated>
+				<OrderId>
+					<ValueGenerator name="VG_OrderId"/>
+				</OrderId>
+				<TransportId >
+					<ScopeVariable name="TransportId1"/>
+				</TransportId>
+				<CarrierId>
+					<ValueGenerator name="VG_CarrierId"/>
+				</CarrierId>
+				<DateTime>
+					<ValueGenerator name="VG_DateTimeHour"/>
+				</DateTime>
+				<LocationFrom><ScopeVariable name="From"/></LocationFrom>
+				<LocationTo><ScopeVariable name="Ueber"/>	</LocationTo>
+				<TransportType>Truck</TransportType>
+			</ShipmentCreated>
+		</Template>
+	</EventGenerator>
+
+	<EventGenerator name="EG_ShipmentCreated_Etappe2">
+		<Template>
+			<ShipmentCreated>
+				<OrderId>
+					<ValueGenerator name="VG_OrderId"/>
+				</OrderId>
+				<TransportId >
+					<ScopeVariable name="TransportId2"/>
+				</TransportId>
+				<CarrierId>
+					<ValueGenerator name="VG_CarrierId"/>
+				</CarrierId>
+				<DateTime>
+					<ValueGenerator name="VG_DateTimeHour"/>
+				</DateTime>
+				<LocationFrom><ScopeVariable name="Ueber"/></LocationFrom>
+				<LocationTo><ScopeVariable name="To"/>	</LocationTo>
+				<TransportType>Truck</TransportType>
+			</ShipmentCreated>
+		</Template>
+	</EventGenerator>
+
 
 
 
@@ -449,6 +542,9 @@
 				<OrderId>
 					<ValueGenerator name="VG_OrderId"/>
 				</OrderId>
+				<TransportId>
+					<ScopeVariable name="TransportId1"/>
+				</TransportId>
 				<DateTime>
 					<ValueGenerator name="VG_DateTimeHour"/>
 				</DateTime>
@@ -468,6 +564,9 @@
 				<OrderId>
 					<ValueGenerator name="VG_OrderId"/>
 				</OrderId>
+				<TransportId>
+					<ScopeVariable name="TransportId2"/>
+				</TransportId>
 				<DateTime>
 					<ValueGenerator name="VG_DateTimeHour"/>
 				</DateTime>
@@ -492,6 +591,9 @@
 				<OrderId>
 					<ValueGenerator name="VG_OrderId"/>
 				</OrderId>
+				<TransportId>
+					<ScopeVariable name="TransportId1"/>
+				</TransportId>
 				<DateTime>
 					<ValueGenerator name="VG_DateTimeHour"/>
 				</DateTime>
@@ -507,6 +609,9 @@
 				<OrderId>
 					<ValueGenerator name="VG_OrderId"/>
 				</OrderId>
+				<TransportId>
+					<ScopeVariable name="TransportId2"/>
+				</TransportId>
 				<DateTime>
 					<ValueGenerator name="VG_DateTimeHour"/>
 				</DateTime>
@@ -735,7 +840,10 @@
 			</Scope>
 			
 			<EventGenerator name="EG_TransportEnd_To"/>
-			<EventGenerator name="EG_DataLoggerRead8"/>
+			<Scope>
+			<!-- hier geht auch nicht, den Abstand auf 1h zu drehen .. -->
+				<EventGenerator name="EG_DataLoggerRead8"/>
+			</Scope>
 			<EventGenerator name="EG_ShipmentAudit"/>
 
 		
@@ -976,7 +1084,49 @@
 	    </Case>
 	   </Switch>
 
-	    <!-- Nach TransportEnd kommt in 2-36min DataloggerRead, ShipmentAudit -->
+<!-- Gib DataloggerRead //LogEntry/DateTime  den Start des Transportes -->
+	    <DateSequence> 
+                <CorrelationData eventType="TransportStart"> 
+                        <XPathSelector> 
+                                <XPathExpression>//DateTime</XPathExpression> 
+                        </XPathSelector> 
+                </CorrelationData> 
+                <CorrelationData eventType="DataLoggerRead"> 
+                        <XPathSelector> 
+                                <XPathExpression>//LogEntry/DateTime</XPathExpression> 
+                        </XPathSelector> 
+                </CorrelationData>
+                
+                <RandomTimeSpans> 
+                        <Min> 
+                                <Seconds>0</Seconds>
+                        </Min> 
+                        <Max> 
+                                <Seconds>0</Seconds>
+                        </Max> 
+                        <Granularity>Seconds</Granularity> 
+                </RandomTimeSpans> 
+            </DateSequence>
+
+ <!--  greift leider nicht 
+					Idee: Zaehle zum Wert von Sequence oberhalb immer 1h dazu
+				
+				<DateSequence> 
+                <CorrelationData eventType="DataLoggerRead"> 
+                        <XPathSelector> 
+                                <XPathExpression>//LogEntry/DateTime</XPathExpression> 
+                        </XPathSelector> 
+                </CorrelationData>
+                <FixedTimeSpans>
+					<Minutes>60</Minutes>
+				</FixedTimeSpans>
+            	</DateSequence>  -->
+
+
+
+
+	    <!-- Nach TransportEnd kommt in 2-25min DataloggerRead, ShipmentAudit -->
+		<!-- DataloggerRead -->
             <DateSequence> 
                 <CorrelationData eventType="TransportEnd"> 
                         <XPathSelector> 
@@ -988,6 +1138,25 @@
                                 <XPathExpression>//DateTime</XPathExpression> 
                         </XPathSelector> 
                 </CorrelationData>
+                
+                <RandomTimeSpans> 
+                        <Min> 
+                                <Minutes>2</Minutes>
+                        </Min> 
+                        <Max> 
+                                <Minutes>25</Minutes>
+                        </Max> 
+                        <Granularity>Seconds</Granularity> 
+                </RandomTimeSpans> 
+            </DateSequence>
+
+		<!-- ShipmentAudit -->
+			<DateSequence> 
+                <CorrelationData eventType="TransportEnd"> 
+                        <XPathSelector> 
+                                <XPathExpression>//DateTime</XPathExpression> 
+                        </XPathSelector> 
+                </CorrelationData> 
                  <CorrelationData eventType="ShipmentAudit"> 
                         <XPathSelector> 
                                 <XPathExpression>//DateTime</XPathExpression> 
@@ -1003,7 +1172,6 @@
                         </Max> 
                         <Granularity>Seconds</Granularity> 
                 </RandomTimeSpans> 
-
             </DateSequence>
 		
 		
@@ -1016,7 +1184,7 @@
 	
 	
 	
-	<EventSequence name="ES_Route">
+	<EventSequence name="ES_Route_2Etappen">
 	
 		<ScopeVariable name="From">
 					<ValueGenerator name="VG_From"/>
@@ -1042,6 +1210,13 @@
 		<ScopeVariable name="MaxTemp">
 					<ValueGenerator name="VG_MaxTemp"/>
 		</ScopeVariable>	
+
+		<ScopeVariable name="TransportId1">
+			<ValueGenerator name="VG_TransportId"/>
+		</ScopeVariable>
+		<ScopeVariable name="TransportId2">
+			<ValueGenerator name="VG_TransportId"/>
+		</ScopeVariable>
 		
 			
 		<EventGenerator name="EG_OrderReceived"/>
@@ -1049,7 +1224,18 @@
 		<EventGenerator name="EG_OrderConfirmed"/>
 		
 		<EventGenerator name="EG_ShipmentTenderIssued"/>
+		
+		<EventGenerator name="EG_ShipmentTenderRejected">
+			<RandomInstances>
+				<Min>0</Min>
+				<Max>3</Max>
+			</RandomInstances>
+		</EventGenerator>
+
 		<EventGenerator name="EG_ShipmentTenderAccepted"/>
+
+		<EventGenerator name="EG_ShipmentCreated_Etappe1"/>
+		<EventGenerator name="EG_ShipmentCreated_Etappe2"/> 
 
 
 		<EventGenerator name="EG_DataLoggerConfigured" />
@@ -1082,7 +1268,17 @@
 					<XPathExpression>//OrderId</XPathExpression>
 				</XPathSelector>
 			</CorrelationData>
+			<CorrelationData eventType="ShipmentTenderRejected">
+				<XPathSelector>
+					<XPathExpression>//OrderId</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
 			<CorrelationData eventType="ShipmentTenderAccepted">
+				<XPathSelector>
+					<XPathExpression>//OrderId</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+				<CorrelationData eventType="ShipmentCreated">
 				<XPathSelector>
 					<XPathExpression>//OrderId</XPathExpression>
 				</XPathSelector>
@@ -1130,9 +1326,14 @@
 		</EventCorrelation>
 
 
-		<!-- TransportStart CarrierId == ShipmentTenderAccepted CarrierId-->
+		<!-- TransportStart CarrierId == ShipmentCreated == ShipmentTenderAccepted CarrierId-->
 		<EventCorrelation>
 			<CorrelationData eventType="ShipmentTenderAccepted">
+				<XPathSelector>
+					<XPathExpression>//CarrierId</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ShipmentCreated">
 				<XPathSelector>
 					<XPathExpression>//CarrierId</XPathExpression>
 				</XPathSelector>
@@ -1171,6 +1372,55 @@
 				</XPathSelector>
 			</CorrelationData>
 		</EventCorrelation>
+
+		
+
+    <!-- DeliveryDate 6 bis 8 Tage nach OrderReceived//DateTime -->
+	<DateSequence>
+			<CorrelationData eventType="OrderReceived">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="OrderReceived">
+				<XPathSelector>
+					<XPathExpression>//DeliveryDate</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Hours>144</Hours>
+				</Min>
+				<Max>
+					<Hours>192</Hours>
+				</Max>
+				<Granularity>Minutes</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+
+		  <!-- Dirty Hack; damit  OrderReceived//DeliveryDate und ShipmentTenderIssued//DeliveryDate gleich sind -->
+	<DateSequence>
+			<CorrelationData eventType="OrderReceived">
+				<XPathSelector>
+					<XPathExpression>//DeliveryDate</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ShipmentTenderIssued">
+				<XPathSelector>
+					<XPathExpression>//DeliveryDate</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>0</Seconds>
+				</Min>
+				<Max>
+					<Seconds>0</Seconds>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+
 
 
 		<!-- 
@@ -1248,6 +1498,57 @@
 			</RandomTimeSpans>
 		</DateSequence>
 
+		<!-- 
+		  	Sequenz vom  ShipmentTenderIssued bis ShipmentRejected
+			 -->
+		<DateSequence>
+			<CorrelationData eventType="ShipmentTenderIssued">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ShipmentTenderRejected">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Minutes>20</Minutes>
+				</Min>
+				<Max>
+					<Hours>24</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+
+		<!-- 
+		  	Sequenz vom  ShipmentTenderAccepted bis ShipmentCreated
+			 -->
+		<DateSequence>
+			<CorrelationData eventType="ShipmentTenderAccepted">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ShipmentCreated">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Minutes>7</Minutes>
+				</Min>
+				<Max>
+					<Hours>20</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+
+
 
 <!-- 
 		  	Sequenz vom  OrderConfirmed bis DataLoggerConfigured
@@ -1324,15 +1625,60 @@
 				<Granularity>Seconds</Granularity>
 			</RandomTimeSpans>
 		</DateSequence>
-			
 
-			
-		
+<!--- letztes TransportEnd und ShipmentDelivered  25min bis 2h auseinander -->
+		<DateSequence>
+			<CorrelationData eventType="TransportEnd">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ShipmentDelivered">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Minutes>25</Minutes>
+				</Min>
+				<Max>
+					<Hours>2</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
 		
 	</EventSequence>
 	
 	
-	
+	<EventSequence name="ES_RunMe">
+		
+		<EventSequence name="ES_Route_2Etappen">
+		 <RandomInstances>
+			<Min>3</Min>
+			<Max>5</Max>
+		 </RandomInstances>
+		</EventSequence>
+		
+	 <DateSequence>
+			<CorrelationData eventType="OrderReceived">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>1</Seconds>
+				</Min>
+				<Max>
+					<Hours>24</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+
+	</EventSequence>
 	
 	
 	
@@ -1345,9 +1691,9 @@
     **** Simulator Run Definitions ****
     ***************************************
     -->
-	<SimulationRun name="ES_RouteVienna_LaPlata">
+	<SimulationRun name="ES_Startme">
 		<EventSequenceSimulation>
-			<EventSequence name="ES_Route"/>
+			<EventSequence name="ES_RunMe"/>
 			<Instances>1</Instances>
 			<Concurrency>Serialized</Concurrency>
 		</EventSequenceSimulation>
