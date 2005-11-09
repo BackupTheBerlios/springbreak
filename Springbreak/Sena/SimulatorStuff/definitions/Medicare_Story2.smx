@@ -526,6 +526,7 @@
 		<Template>
 			<TransportEnd>
 				<OrderId>15328</OrderId>
+				<TransportId>45003</TransportId>
 				<DateTime>2005-11-15T17:41:09</DateTime>
 				<Location>Frankfurt</Location> 
 			</TransportEnd>
@@ -535,6 +536,7 @@
 		<Template>
 			<TransportEnd>
 				<OrderId>15328</OrderId>
+				<TransportId>45004</TransportId>
 				<DateTime>2005-11-16T11:17:03</DateTime>
 				<Location>Munich</Location> 
 			</TransportEnd>
@@ -545,6 +547,7 @@
 		<Template>
 			<TransportEnd>
 				<OrderId>15328</OrderId>
+				<TransportId>45005</TransportId>
 				<DateTime>2005-11-16T19:38:55</DateTime>
 				<Location>Vienna</Location> 
 			</TransportEnd>

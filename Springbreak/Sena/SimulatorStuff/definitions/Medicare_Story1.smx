@@ -478,6 +478,7 @@
 		<Template>
 			<TransportEnd>
 				<OrderId>14765</OrderId>
+				<TransportId>42322</TransportId>
 				<DateTime>2005-11-07T16:07:07</DateTime>
 				<Location>Munich</Location> 
 			</TransportEnd>
@@ -487,6 +488,7 @@
 		<Template>
 			<TransportEnd>
 				<OrderId>14765</OrderId>
+				<TransportId>42323</TransportId>
 				<DateTime>2005-11-09T14:32:06</DateTime>
 				<Location>Madrid</Location> 
 			</TransportEnd>
