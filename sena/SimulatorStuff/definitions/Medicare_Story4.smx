@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0&#xD;&#xA;..\..\xsd\SimulationModel.xsd" name="MedicareStory3" displayName="MedicareStory3" schemaVersion="1.0">
+  <!--
+        *******************************
+        **** Value Generators ****
+        *******************************
+    -->
+  <!-- Value Generators for logentries Datalogger -->
+  <ValueGenerator name="VG_DateTime_Vienna_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <DateRange>
+      <Start>2005-11-09T06:30:00</Start>
+      <Stop>2005-11-10T01:30:00</Stop>
+      <Increment>
+        <Minutes>60</Minutes>
+      </Increment>
+    </DateRange>
+  </ValueGenerator>
+  <!-- Value Generator for the shipped products -->
+  <ValueGenerator name="VG_Product" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Enumeration>
+      <Elements>
+        <Element>Pernazal</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <!-- Value Generator for the shipped Amount -->
+  <ValueGenerator name="VG_Amount" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Enumeration>
+      <Elements>
+        <Element>5000</Element>
+      </Elements>
+      <DataType>System.Int32</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_Boolean">
+    <Booleans>
+      <ProbabilityTrue>1</ProbabilityTrue>
+    </Booleans>
+  </ValueGenerator>
+  <ValueGenerator name="VG_False">
+    <Booleans>
+      <ProbabilityTrue>0</ProbabilityTrue>
+    </Booleans>
+  </ValueGenerator>
+  <!-- Value Generator for logentries Datalogger -->
+  <ValueGenerator name="VG_Temp_OK_Pernazal" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Enumeration>
+      <Elements>
+        <Element>-13.2</Element>
+        <Element>-18.2</Element>
+        <Element>-18.8</Element>
+        <Element>-18.9</Element>
+        <Element>-18.1</Element>
+        <Element>-18.2</Element>
+        <Element>-18.4</Element>
+        <Element>-18.9</Element>
+        <Element>-18.4</Element>
+        <Element>-18.6</Element>
+        <Element>-18.1</Element>
+        <Element>-18.8</Element>
+        <Element>-18.7</Element>
+        <Element>-18.9</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <!--
+        *******************************
+        **** Event Object Generators ****
+        *******************************
+    -->
+  <!-- Product to Transport -->
+  <EventObjectGenerator name="EO_ProductCollection">
+    <Template>
+      <Product>
+        <ProductId>
+          <ValueGenerator name="VG_Product" />
+        </ProductId>
+        <Amount>
+          <ValueGenerator name="VG_Amount" />
+        </Amount>
+      </Product>
+    </Template>
+  </EventObjectGenerator>
+  <!-- Shipment Infos -->
+  <EventObjectGenerator name="EO_ShipmentInfo" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentInfo>
+        <From>Vienna</From>
+        <To>Rotterdam</To>
+        <DeliveryDate>2005-11-09T09:09:09</DeliveryDate>
+        <TransportType>ExtraCoolTruck</TransportType>
+        <Price>4000</Price>
+        <MinTemp>-20</MinTemp>
+        <MaxTemp>-10</MaxTemp>
+      </ShipmentInfo>
+    </Template>
+  </EventObjectGenerator>
+  <!-- Datalogger Temperatures -->
+  <!-- Tosalumn -->
+  <!-- Gernazilin   -->
+  <EventObjectGenerator name="EO_TempCollection_Vienna_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <LogEntry>
+        <DateTime>
+          <ValueGenerator name="VG_DateTime_Vienna_London" />
+        </DateTime>
+        <Temp>
+          <ValueGenerator name="VG_Temp_OK_Pernazal" />
+        </Temp>
+      </LogEntry>
+    </Template>
+  </EventObjectGenerator>
+  <!--
+        *******************************
+        **** Event Generators ****
+        *******************************
+        
+        
+    
+    -->
+  <!--
+        Generator for the OrderReceived Events
+    -->
+  <EventGenerator name="EG_OrderReceived" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <OrderReceived>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-07T08:22:54</DateTime>
+        <DeliveryDate>2005-11-11T16:00:00</DeliveryDate>
+        <Destination>London</Destination>
+        <ProductCollection>
+          <EventObjectGenerator name="EO_ProductCollection">
+            <Instances>2</Instances>
+          </EventObjectGenerator>
+        </ProductCollection>
+      </OrderReceived>
+    </Template>
+  </EventGenerator>
+  <!-- OrderConfirmed Event -->
+  <EventGenerator name="EG_OrderConfirmed" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <OrderConfirmed>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-07T09:02:12</DateTime>
+      </OrderConfirmed>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_ShipmentTenderIssued" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentTenderIssued>
+        <OrderId>17005</OrderId>
+        <DateTime>2005-11-07T10:13:32</DateTime>
+        <DeliveryDate>2005-11-11T16:00:00</DeliveryDate>
+        <FurtherInfo>
+          <EventObjectGenerator name="EO_ShipmentInfo" />
+        </FurtherInfo>
+      </ShipmentTenderIssued>
+    </Template>
+  </EventGenerator>
+  <!-- ShipmentTenderIssued Event -->
+  <!-- ShipmentTenderAccepted Event -->
+  <EventGenerator name="EG_ShipmentTenderAccepted" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentTenderAccepted>
+        <OrderId>17005</OrderId>
+        <CarrierId>532</CarrierId>
+        <DateTime>2005-11-11T12:12:44</DateTime>
+      </ShipmentTenderAccepted>
+    </Template>
+  </EventGenerator>
+  <!-- ShipmentTenderRejected Event -->
+  <EventGenerator name="EG_ShipmentTenderRejected1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentTenderRejected>
+        <OrderId>17005</OrderId>
+        <CarrierId>433</CarrierId>
+        <DateTime>2005-11-07T11:10:30</DateTime>
+      </ShipmentTenderRejected>
+    </Template>
+  </EventGenerator>
+  <!-- ShipmentTenderRejected Event -->
+  <EventGenerator name="EG_ShipmentTenderRejected2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentTenderRejected>
+        <OrderId>17005</OrderId>
+        <CarrierId>142</CarrierId>
+        <DateTime>2005-11-07T11:15:37</DateTime>
+      </ShipmentTenderRejected>
+    </Template>
+  </EventGenerator>
+  <!-- ShipmentCreated Events -->
+  <EventGenerator name="EG_ShipmentCreated_Vienna_Rotterdam" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentCreated>
+        <OrderId>17005</OrderId>
+        <TransportId>48005</TransportId>
+        <CarrierId>532</CarrierId>
+        <DateTime>2005-11-07T13:30:43</DateTime>
+        <DatePlannedShipped>2005-11-08T07:00:00</DatePlannedShipped>
+        <DatePlannedDelivered>2005-11-08T19:00:00</DatePlannedDelivered>
+        <DateEarlyBuffered>2005-11-08T07:00:00</DateEarlyBuffered>
+        <DateLateBuffered>2005-11-08T20:00:00</DateLateBuffered>
+        <LocationFrom>Vienna</LocationFrom>
+        <LocationTo>Rotterdam</LocationTo>
+        <Miles>470</Miles>
+        <PlannedFreightCosts>2200</PlannedFreightCosts>
+        <TransportType>Truck</TransportType>
+      </ShipmentCreated>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_ShipmentCreated_Rotterdam_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentCreated>
+        <OrderId>17005</OrderId>
+        <TransportId>48006</TransportId>
+        <CarrierId>532</CarrierId>
+        <DateTime>2005-11-07T13:32:33</DateTime>
+        <DatePlannedShipped>2005-11-08T21:00:00</DatePlannedShipped>
+        <DatePlannedDelivered>2005-11-09T00:30:00</DatePlannedDelivered>
+        <DateEarlyBuffered>2005-11-08T19:00:00</DateEarlyBuffered>
+        <DateLateBuffered>2005-11-08T20:30:00</DateLateBuffered>
+        <LocationFrom>Rotterdam</LocationFrom>
+        <LocationTo>London</LocationTo>
+        <Miles>250</Miles>
+        <PlannedFreightCosts>1500</PlannedFreightCosts>
+        <TransportType>Truck</TransportType>
+      </ShipmentCreated>
+    </Template>
+  </EventGenerator>
+  <!--
+        Generator for the DataLoggerConfigured Events
+    -->
+  <EventGenerator name="EG_DataLoggerConfigured_Pernazal" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <DataLoggerConfigured>
+        <OrderId>17001</OrderId>
+        <LoggerId>1001</LoggerId>
+        <DateTime>2005-11-08T06:15:17</DateTime>
+        <Staffmember>Anna Stern</Staffmember>
+        <MinTemp>-20</MinTemp>
+        <MaxTemp>-10</MaxTemp>
+        <SenseInterval>60</SenseInterval>
+        <Destination>London</Destination>
+      </DataLoggerConfigured>
+    </Template>
+  </EventGenerator>
+  <!--
+	 	Generator for ShipmentStart Event
+	 -->
+  <EventGenerator name="EG_ShipmentStarted" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentStarted>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-08T07:30:11</DateTime>
+      </ShipmentStarted>
+    </Template>
+  </EventGenerator>
+  <!--
+        Generator for the TransportStart Events
+    -->
+  <EventGenerator name="EG_TransportStart_Vienna_Rotterdam" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportStart>
+        <OrderId>17001</OrderId>
+        <TransportId>48005</TransportId>
+        <DateTime>2005-11-08T07:30:11</DateTime>
+        <Location>Vienna</Location>
+        <CarrierId>532</CarrierId>
+      </TransportStart>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_TransportStart_Rotterdam_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportStart>
+        <OrderId>17001</OrderId>
+        <TransportId>48006</TransportId>
+        <DateTime>2005-10-20T06:50:15</DateTime>
+        <Location>Saarbruecken</Location>
+        <CarrierId>532</CarrierId>
+      </TransportStart>
+    </Template>
+  </EventGenerator>
+  <!--
+        Generator for the TransportEnd Events
+    -->
+  <EventGenerator name="EG_TransportEnd_Munich_LondonHeathrow" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportEnd>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-08T13:40:13</DateTime>
+        <Location>LondonHeathrow</Location>
+      </TransportEnd>
+    </Template>
+  </EventGenerator>
+  <!-- 
+		Generator DataLoggerRead Event 
+	-->
+  <!-- Saarbruecken -->
+  <!--
+        Generator for the ShipmentAudit Events
+    -->
+  <!-- wrong Amount in Munich -->
+  <EventGenerator name="EG_ShipmentAudit_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentAudit>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-08T17:20:54</DateTime>
+        <Staffmember>Sebastian Stern</Staffmember>
+        <CheckedProducts>
+          <EventObjectGenerator name="EO_ProductCollection">
+            <Instances>2</Instances>
+          </EventObjectGenerator>
+        </CheckedProducts>
+        <Valid>
+          <ValueGenerator name="VG_Boolean" />
+        </Valid>
+      </ShipmentAudit>
+    </Template>
+  </EventGenerator>
+  <!--
+        Generator for the ShipmentDelivered Events
+    -->
+  <EventGenerator name="EG_ShipmentDelivered">
+    <Template>
+      <ShipmentDelivered>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-10-20T18:15:33</DateTime>
+        <Success>
+          <ValueGenerator name="VG_Boolean" />
+        </Success>
+      </ShipmentDelivered>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_DataLoggerReadLondon_Pernazal" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <DataLoggerRead>
+        <OrderId>17001</OrderId>
+        <LoggerId>1001</LoggerId>
+        <DateTime>2005-10-20T16:42:43</DateTime>
+        <Staffmember>Sebastian Stern</Staffmember>
+        <TempData>
+          <EventObjectGenerator name="EO_TempCollection_Vienna_London">
+            <Instances>16</Instances>
+          </EventObjectGenerator>
+        </TempData>
+      </DataLoggerRead>
+    </Template>
+  </EventGenerator>
+  <!--
+        ***********************
+        **** Sequences ****
+        ***********************
+    -->
+  <!--
+	Story3: Lieferung kommt zu spaet an
+	-->
+  <EventSequence name="ES_Story4" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <EventGenerator name="EG_OrderReceived" />
+    <EventGenerator name="EG_OrderConfirmed" />
+    <EventGenerator name="EG_ShipmentTenderIssued" />
+    <EventGenerator name="EG_ShipmentTenderRejected1" />
+    <EventGenerator name="EG_ShipmentTenderRejected2" />
+    <EventGenerator name="EG_ShipmentTenderAccepted" />
+    <EventGenerator name="EG_ShipmentCreated_Vienna_Rotterdam" />
+    <EventGenerator name="EG_ShipmentCreated_Rotterdam_London" />
+    <EventGenerator name="EG_DataLoggerConfigured_Pernazal" />
+    <EventGenerator name="EG_ShipmentStarted" />
+    <EventGenerator name="EG_TransportStart_Vienna_Rotterdam" />
+    <EventGenerator name="EG_ShipmentCreated_Munich_London" />
+    <EventGenerator name="EG_TransportStart_Munich_LondonHeathrow" />
+    <EventGenerator name="EG_TransportEnd_Munich_LondonHeathrow" />
+    <EventGenerator name="EG_TransportStart_LondonHeathrow_London" />
+    <EventGenerator name="EG_TransportEnd_LondonHeathrow_London" />
+    <EventGenerator name="EG_DataLoggerReadLondon_Pernazal" />
+    <EventGenerator name="EG_ShipmentAudit_London" />
+    <EventGenerator name="EG_ShipmentDelivered" />
+  </EventSequence>
+  <!--
+    ***************************************
+    **** Simulator Run Definitions ****
+    ***************************************
+    -->
+  <SimulationRun name="ES_Story4" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <EventSequenceSimulation>
+      <EventSequence name="ES_Story4" />
+      <Instances>1</Instances>
+      <Concurrency>Serialized</Concurrency>
+    </EventSequenceSimulation>
+  </SimulationRun>
+  <EventReceiver name="Receiver1">
+    <MsmqQueue>
+      <QueueName>.\Private$\EMQueue</QueueName>
+      <Transactional>true</Transactional>
+    </MsmqQueue>
+  </EventReceiver>
+  <EventGenerator name="EG_ShipmentCreated_Munich_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <ShipmentCreated>
+        <OrderId>17005</OrderId>
+        <TransportId>48007</TransportId>
+        <CarrierId>532</CarrierId>
+        <DateTime>2005-11-08T11:35:43</DateTime>
+        <DatePlannedShipped>2005-11-08T12:00:00</DatePlannedShipped>
+        <DatePlannedDelivered>2005-11-08T13:30:00</DatePlannedDelivered>
+        <DateEarlyBuffered>2005-11-08T12:00:00</DateEarlyBuffered>
+        <DateLateBuffered>2005-11-08T16:00:00</DateLateBuffered>
+        <LocationFrom>Munich</LocationFrom>
+        <LocationTo>London</LocationTo>
+        <Miles>430</Miles>
+        <PlannedFreightCosts>5200</PlannedFreightCosts>
+        <TransportType>Plane</TransportType>
+      </ShipmentCreated>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_TransportStart_Munich_LondonHeathrow" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportStart>
+        <OrderId>17001</OrderId>
+        <TransportId>48007</TransportId>
+        <DateTime>2005-11-08T12:05:31</DateTime>
+        <Location>Munich</Location>
+        <CarrierId>733</CarrierId>
+      </TransportStart>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_TransportStart_LondonHeathrow_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportStart>
+        <OrderId>17001</OrderId>
+        <TransportId>48007</TransportId>
+        <DateTime>2005-11-08T14:02:41</DateTime>
+        <Location>LondonHeathrow</Location>
+        <CarrierId>001</CarrierId>
+      </TransportStart>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_TransportEnd_LondonHeathrow_London" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+    <Template>
+      <TransportEnd>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-11-08T14:36:53</DateTime>
+        <Location>London</Location>
+      </TransportEnd>
+    </Template>
+  </EventGenerator>
+</SimulationModel>
