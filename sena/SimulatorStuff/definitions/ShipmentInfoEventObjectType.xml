@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MultipleDefinitions>
+<EventObjectType catalogName="ShipmentInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="From">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>From</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="To">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>To</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DeliveryDate">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DeliveryDate</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="TransportType">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>TransportType</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="Price">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>Price</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="MinTemp">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>MinTemp</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="MaxTemp">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>MaxTemp</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+	</Attributes>
+</EventObjectType>
+</MultipleDefinitions>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventType catalogName="ShipmentStarted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="OrderId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>OrderId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DateTime">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateTime</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+	</Attributes>
+	<AllowUnknownAttributes>false</AllowUnknownAttributes>
+	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>
+</EventType>

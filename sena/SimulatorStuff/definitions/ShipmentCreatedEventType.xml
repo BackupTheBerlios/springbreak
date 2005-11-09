@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventType catalogName="ShipmentCreated" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="OrderId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>OrderId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="TransportId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>TransportId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="CarrierId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>CarrierId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DateTime">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateTime</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DatePlannedShipped">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DatePlannedShipped</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DatePlannedDelivered">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DatePlannedDelivered</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DateEarlyBuffered">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateEarlyBuffered</Name>
+			<Mandatory>false</Mandatory>
+		</Attribute>
+	
+		<Attribute reuseable="false" catalogName="DateLateBuffered">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateLateBuffered</Name>
+			<Mandatory>false</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="LocationFrom">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>LocationFrom</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="LocationTo">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>LocationTo</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="Miles">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>Miles</Name>
+			<Mandatory>false</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="PlannedFreightCosts">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>PlannedFreightCosts</Name>
+			<Mandatory>false</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="TransportType">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>TransportType</Name>
+			<Mandatory>false</Mandatory>
+		</Attribute>
+	</Attributes>
+	<AllowUnknownAttributes>false</AllowUnknownAttributes>
+	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>
+</EventType>

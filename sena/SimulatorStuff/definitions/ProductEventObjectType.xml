@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MultipleDefinitions>
+<EventObjectType catalogName="Product" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="ProductId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>ProductId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="Amount">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>Amount</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+	</Attributes>
+</EventObjectType>
+</MultipleDefinitions>
