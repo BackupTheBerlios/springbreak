@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0
-..\..\xsd\SimulationModel.xsd" name="MedicareStory3" displayName="MedicareStory3" schemaVersion="1.0">
- <!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0&#xD;&#xA;..\..\xsd\SimulationModel.xsd" name="MedicareStory3" displayName="MedicareStory3" schemaVersion="1.0">
+  <!--
         *******************************
         **** Value Generators ****
         *******************************
@@ -56,24 +55,24 @@
     </Booleans>
   </ValueGenerator>
   <!-- Value Generator for logentries Datalogger -->
-  <ValueGenerator name="VG_Temp_OK_Tosalumn">
+  <ValueGenerator name="VG_Temp_OK_Tosalumn" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Enumeration>
       <Elements>
-        <Element>-15.3</Element>
-        <Element>-14.7</Element>
-        <Element>-14.2</Element>
-        <Element>-13.8</Element>
-        <Element>-13</Element>
-        <Element>-14</Element>
-        <Element>-14.5</Element>
-        <Element>-15.1</Element>
-        <Element>-14.8</Element>
-        <Element>-15.4</Element>
-        <Element>-14.9</Element>
-        <Element>-14.1</Element>
-        <Element>-13.6</Element>
-        <Element>-14.5</Element>
-        <Element>-15.2</Element>
+        <Element>-5.3</Element>
+        <Element>-4.7</Element>
+        <Element>-4.2</Element>
+        <Element>-3.8</Element>
+        <Element>-3</Element>
+        <Element>-4</Element>
+        <Element>-4.5</Element>
+        <Element>-5.1</Element>
+        <Element>-4.8</Element>
+        <Element>-5.4</Element>
+        <Element>-4.9</Element>
+        <Element>-4.1</Element>
+        <Element>-3.6</Element>
+        <Element>-4.5</Element>
+        <Element>-5.2</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
@@ -117,27 +116,20 @@
       </Product>
     </Template>
   </EventObjectGenerator>
-
-
   <!-- Shipment Infos -->
-  <EventObjectGenerator name="EO_ShipmentInfo" >
+  <EventObjectGenerator name="EO_ShipmentInfo" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <ShipmentInfo>
         <From>Vienna</From>
         <To>Paris</To>
-        <DeliveryDate>2999-11-09T09:09:09</DeliveryDate>
+        <DeliveryDate>2005-10-21T16:00:00</DeliveryDate>
         <TransportType>2Chamber_Truck</TransportType>
         <Price>2000</Price>
-        <MinTemp>-10/9</MinTemp>
-        <MaxTemp>0/10</MaxTemp>
+        <MinTemp>-10/0</MinTemp>
+        <MaxTemp>-2/10</MaxTemp>
       </ShipmentInfo>
     </Template>
   </EventObjectGenerator>
-
-
-  
-  
-  
   <!-- Datalogger Temperatures -->
   <!-- Tosalumn -->
   <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Tosalumn">
@@ -200,12 +192,12 @@
   <!--
         Generator for the OrderReceived Events
     -->
-  <EventGenerator name="EG_OrderReceived">
+  <EventGenerator name="EG_OrderReceived" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <OrderReceived>
         <OrderId>17001</OrderId>
         <DateTime>2005-10-03T09:22:54</DateTime>
-        <DeliveryDate>2005-10-19T16:00:00</DeliveryDate>
+        <DeliveryDate>2005-10-24T16:00:00</DeliveryDate>
         <Destination>Paris</Destination>
         <ProductCollection>
           <EventObjectGenerator name="EO_ProductCollection">
@@ -224,34 +216,19 @@
       </OrderConfirmed>
     </Template>
   </EventGenerator>
-
-
- <EventGenerator name="EG_ShipmentTenderIssued">
+  <EventGenerator name="EG_ShipmentTenderIssued">
     <Template>
       <ShipmentTenderIssued>
         <OrderId>17001</OrderId>
         <DateTime>2005-10-03T14:33:32</DateTime>
         <DeliveryDate>2005-10-19T16:00:00</DeliveryDate>
-        <FurtherInfo><EventObjectGenerator name="EO_ShipmentInfo"/></FurtherInfo>
+        <FurtherInfo>
+          <EventObjectGenerator name="EO_ShipmentInfo" />
+        </FurtherInfo>
       </ShipmentTenderIssued>
     </Template>
   </EventGenerator>
-
   <!-- ShipmentTenderIssued Event -->
-  <EventGenerator name="EG_ShipmentTenderIssuedvec">
-		<Template>
-			<ShipmentTenderIssued>
-				<OrderId>17001</OrderId>
-				<DateTime>2005-10-31T14:12:54</DateTime>
-				<FurtherInfo>
-					<EventObjectGenerator name="EO_ShipmentInfovec"/>
-				</FurtherInfo>
-			</ShipmentTenderIssued>
-		</Template>
-	</EventGenerator>
-
-
-
   <!-- ShipmentTenderAccepted Event -->
   <EventGenerator name="EG_ShipmentTenderAccepted">
     <Template>
@@ -283,7 +260,7 @@
     </Template>
   </EventGenerator>
   <!-- ShipmentCreated Events -->
-  <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken">
+  <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <ShipmentCreated>
         <OrderId>17001</OrderId>
@@ -296,7 +273,7 @@
         <DateLateBuffered>2005-10-18T08:00:00</DateLateBuffered>
         <LocationFrom>Vienna</LocationFrom>
         <LocationTo>Saarbruecken</LocationTo>
-        <Miles>510</Miles>
+        <Miles>570</Miles>
         <PlannedFreightCosts>1200</PlannedFreightCosts>
         <TransportType>Truck</TransportType>
       </ShipmentCreated>
@@ -324,29 +301,29 @@
   <!--
         Generator for the DataLoggerConfigured Events
     -->
-  <EventGenerator name="EG_DataLoggerConfigured_Tosalumn1">
+  <EventGenerator name="EG_DataLoggerConfigured_Tosalumn1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerConfigured>
         <OrderId>17001</OrderId>
         <LoggerId>901</LoggerId>
         <DateTime>2005-10-18T06:23:23</DateTime>
         <Staffmember>Michael Johnson</Staffmember>
-        <MinTemp>-20</MinTemp>
-        <MaxTemp>-10</MaxTemp>
+        <MinTemp>-10</MinTemp>
+        <MaxTemp>-2</MaxTemp>
         <SenseInterval>60</SenseInterval>
         <Destination>Paris</Destination>
       </DataLoggerConfigured>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerConfigured_Tosalumn2">
+  <EventGenerator name="EG_DataLoggerConfigured_Tosalumn2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerConfigured>
         <OrderId>17001</OrderId>
         <LoggerId>902</LoggerId>
         <DateTime>2005-10-18T06:30:13</DateTime>
         <Staffmember>Michael Johnson</Staffmember>
-        <MinTemp>-20</MinTemp>
-        <MaxTemp>-10</MaxTemp>
+        <MinTemp>-10</MinTemp>
+        <MaxTemp>-2</MaxTemp>
         <SenseInterval>60</SenseInterval>
         <Destination>Paris</Destination>
       </DataLoggerConfigured>
@@ -383,11 +360,11 @@
   <!--
 	 	Generator for ShipmentStart Event
 	 -->
-  <EventGenerator name="EG_ShipmentStarted">
+  <EventGenerator name="EG_ShipmentStarted" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <ShipmentStarted>
         <OrderId>17001</OrderId>
-        <DateTime>2005-10-18T07:03:11</DateTime>
+        <DateTime>2005-10-18T07:00:11</DateTime>
       </ShipmentStarted>
     </Template>
   </EventGenerator>
@@ -405,12 +382,12 @@
       </TransportStart>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_TransportStart_Saarbruecken_Paris">
+  <EventGenerator name="EG_TransportStart_Saarbruecken_Paris" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <TransportStart>
         <OrderId>17001</OrderId>
         <TransportId>48002</TransportId>
-        <DateTime>2005-10-20T06:50:15</DateTime>
+        <DateTime>2005-10-21T06:50:15</DateTime>
         <Location>Saarbruecken</Location>
         <CarrierId>532</CarrierId>
       </TransportStart>
@@ -419,20 +396,22 @@
   <!--
         Generator for the TransportEnd Events
     -->
-  <EventGenerator name="EG_TransportEnd_Saarbruecken">
+  <EventGenerator name="EG_TransportEnd_Saarbruecken" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <TransportEnd>
         <OrderId>17001</OrderId>
+        <TransportId>48001</TransportId>
         <DateTime>2005-10-18T19:04:33</DateTime>
         <Location>Saarbruecken</Location>
       </TransportEnd>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_TransportEnd_Paris">
+  <EventGenerator name="EG_TransportEnd_Paris" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <TransportEnd>
         <OrderId>17001</OrderId>
-        <DateTime>2005-10-20T16:11:43</DateTime>
+        <TransportId>48002</TransportId>
+        <DateTime>2005-10-21T16:11:43</DateTime>
         <Location>Paris</Location>
       </TransportEnd>
     </Template>
@@ -456,7 +435,7 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2" >
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -553,8 +532,7 @@
       </ShipmentDelivered>
     </Template>
   </EventGenerator>
-
-   <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1" >
+  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -569,7 +547,7 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2" >
+  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -584,7 +562,7 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1" >
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -599,7 +577,7 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2" >
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
@@ -614,8 +592,6 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-
-
   <!--
         ***********************
         **** Sequences ****
@@ -624,16 +600,11 @@
   <!--
 	Story3: Lieferung kommt zu spaet an
 	-->
-  <EventSequence name="ES_Story3" >
-    
-	
-	<EventGenerator name="EG_OrderReceived" />
-    <EventGenerator name="EG_OrderConfirmed" /> 
-    
-	<EventGenerator name="EG_ShipmentTenderIssued" />
-
-    
-	<EventGenerator name="EG_ShipmentTenderRejected1" />
+  <EventSequence name="ES_Story3">
+    <EventGenerator name="EG_OrderReceived" />
+    <EventGenerator name="EG_OrderConfirmed" />
+    <EventGenerator name="EG_ShipmentTenderIssued" />
+    <EventGenerator name="EG_ShipmentTenderRejected1" />
     <EventGenerator name="EG_ShipmentTenderRejected2" />
     <EventGenerator name="EG_ShipmentTenderAccepted" />
     <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken" />
@@ -657,7 +628,7 @@
     <EventGenerator name="EG_DataLoggerReadParis_Gernazilin1" />
     <EventGenerator name="EG_DataLoggerReadParis_Gernazilin2" />
     <EventGenerator name="EG_ShipmentAudit_Paris" />
-    <EventGenerator name="EG_ShipmentDelivered" />  
+    <EventGenerator name="EG_ShipmentDelivered" />
   </EventSequence>
   <!--
     ***************************************
@@ -671,11 +642,10 @@
       <Concurrency>Serialized</Concurrency>
     </EventSequenceSimulation>
   </SimulationRun>
-  <EventReceiver name="Receiver1" >
+  <EventReceiver name="Receiver1">
     <MsmqQueue>
       <QueueName>.\Private$\EMQueue</QueueName>
       <Transactional>true</Transactional>
     </MsmqQueue>
   </EventReceiver>
- 
 </SimulationModel>
