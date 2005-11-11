@@ -420,43 +420,43 @@
 		Generator DataLoggerRead Event 
 	-->
   <!-- Saarbruecken -->
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn1">
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>901</LoggerId>
         <DateTime>2005-10-18T19:24:33</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
+        <Staffmember>Anger-Sinnger</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Tosalumn">
-            <Instances>16</Instances>
+            <Instances>13</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2">
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Tosalumn2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>902</LoggerId>
         <DateTime>2005-10-18T19:28:23</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
+        <Staffmember>Anger-Sinnger</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Tosalumn">
-            <Instances>16</Instances>
+            <Instances>13</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Gernazilin1">
+  <EventGenerator name="EG_DataLoggerReadParis_Gernazilin1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>903</LoggerId>
         <DateTime>2005-10-20T16:40:43</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
+        <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Gernazilin">
             <Instances>16</Instances>
@@ -465,13 +465,13 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Gernazilin2">
+  <EventGenerator name="EG_DataLoggerReadParis_Gernazilin2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>904</LoggerId>
         <DateTime>2005-10-20T16:45:53</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
+        <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Gernazilin">
             <Instances>16</Instances>
@@ -532,13 +532,13 @@
       </ShipmentDelivered>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1">
+  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>901</LoggerId>
         <DateTime>2005-10-20T16:42:43</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
+        <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
             <Instances>16</Instances>
@@ -547,13 +547,13 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2">
+  <EventGenerator name="EG_DataLoggerReadParis_Tosalumn2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>902</LoggerId>
         <DateTime>2005-10-20T16:43:42</DateTime>
-        <Staffmember>Jean-Renard</Staffmember>
+        <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
             <Instances>16</Instances>
@@ -562,31 +562,31 @@
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1">
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>903</LoggerId>
         <DateTime>2005-10-18T19:35:33</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
+        <Staffmember>Anger-Sinnger</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
-            <Instances>16</Instances>
+            <Instances>13</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
     </Template>
   </EventGenerator>
-  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2">
+  <EventGenerator name="EG_DataLoggerReadSaarbruecken_Gernazilin2" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <DataLoggerRead>
         <OrderId>17001</OrderId>
         <LoggerId>904</LoggerId>
         <DateTime>2005-10-18T19:40:44</DateTime>
-        <Staffmember>Herbert-Sinnger</Staffmember>
+        <Staffmember>Anger-Sinnger</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Vienna_Saarbruecken_Gernazilin">
-            <Instances>16</Instances>
+            <Instances>13</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
