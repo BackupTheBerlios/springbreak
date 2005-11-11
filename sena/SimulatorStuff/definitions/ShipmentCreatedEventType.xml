@@ -8,20 +8,6 @@
 			<Name>OrderId</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
-		<Attribute reuseable="false" catalogName="TransportId">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.Int32</RuntimeType>
-			</DataType>
-			<Name>TransportId</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="CarrierId">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>CarrierId</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
 		<Attribute reuseable="false" catalogName="DateTime">
 			<DataType multiValue="false" catalogName="DateTime">
 				<RuntimeType>System.DateTime</RuntimeType>
@@ -29,68 +15,11 @@
 			<Name>DateTime</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
-		<Attribute reuseable="false" catalogName="DatePlannedShipped">
-			<DataType multiValue="false" catalogName="DateTime">
-				<RuntimeType>System.DateTime</RuntimeType>
+		<Attribute reuseable="true" catalogName="Transport">
+			<DataType multiValue="false" catalogName="TransportInfo">
+				<RuntimeType catalogName="TransportInfo"/>
 			</DataType>
-			<Name>DatePlannedShipped</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="DatePlannedDelivered">
-			<DataType multiValue="false" catalogName="DateTime">
-				<RuntimeType>System.DateTime</RuntimeType>
-			</DataType>
-			<Name>DatePlannedDelivered</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="DateEarlyBuffered">
-			<DataType multiValue="false" catalogName="DateTime">
-				<RuntimeType>System.DateTime</RuntimeType>
-			</DataType>
-			<Name>DateEarlyBuffered</Name>
-			<Mandatory>false</Mandatory>
-		</Attribute>
-	
-		<Attribute reuseable="false" catalogName="DateLateBuffered">
-			<DataType multiValue="false" catalogName="DateTime">
-				<RuntimeType>System.DateTime</RuntimeType>
-			</DataType>
-			<Name>DateLateBuffered</Name>
-			<Mandatory>false</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="LocationFrom">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>LocationFrom</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="LocationTo">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>LocationTo</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="Miles">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>Miles</Name>
-			<Mandatory>false</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="PlannedFreightCosts">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>PlannedFreightCosts</Name>
-			<Mandatory>false</Mandatory>
-		</Attribute>
-		<Attribute reuseable="false" catalogName="TransportType">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>TransportType</Name>
+			<Name>Transport</Name>
 			<Mandatory>false</Mandatory>
 		</Attribute>
 	</Attributes>
