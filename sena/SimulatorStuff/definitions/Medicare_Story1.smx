@@ -190,6 +190,94 @@
 			<DataType>System.String</DataType>
 		</Enumeration>
 	</ValueGenerator>
+
+<!-- ValueGenerator needed for ShipmentCreated -->
+	<ValueGenerator name="VG_TransportId">
+		<Enumeration>
+			<Elements>
+				<Element>42322</Element>
+				<Element>42323</Element>
+			</Elements>
+			<DataType>System.Int32</DataType>
+		</Enumeration>
+
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_PlannedShipped">
+		<Enumeration>
+			<Elements>
+				<Element>2005-11-07T08:15:00</Element>
+				<Element>2005-11-08T06:30:00</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_PlannedDelivered">
+		<Enumeration>
+			<Elements>
+				<Element>2005-11-07T17:00:00</Element>
+				<Element>2005-11-10T08:00:00</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_EarlyBuffered">
+		<Enumeration>
+			<Elements>
+				<Element>2005-11-06T16:00:00</Element>
+				<Element>2005-11-08T06:30:00</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_LateBuffered">
+		<Enumeration>
+			<Elements>
+				<Element>2005-11-08T06:00:00</Element>
+				<Element>2005-11-11T08:00:00</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_Route">
+		<Enumeration>
+			<Elements>
+				<Element>Vienna</Element>
+				<Element>Munich</Element>
+				<Element>Munich</Element>
+				<Element>Madrid</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+	<ValueGenerator name="VG_Miles">
+		<Enumeration>
+			<Elements>
+				<Element>292</Element>
+				<Element>1255</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	<ValueGenerator name="VG_PlannedFreightCosts">
+		<Enumeration>
+			<Elements>
+				<Element>690</Element>
+				<Element>1810</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+
+<!-- ENDE ValueGenerators for ShipmentCreated -->
+
+
+
 	
 	
 	<!--
@@ -264,8 +352,30 @@
 			</LogEntry>		
     	</Template>
     </EventObjectGenerator>
-	
-	
+
+
+
+	<EventObjectGenerator name="EO_ShipmentCreated">
+    	<Template>	
+    		<TransportInfo>		
+    			<TransportId><ValueGenerator name="VG_TransportId"/></TransportId>
+				<CarrierId>433</CarrierId>
+				
+				<DatePlannedShipped><ValueGenerator name="VG_PlannedShipped"/></DatePlannedShipped>
+				<DatePlannedDelivered><ValueGenerator name="VG_PlannedDelivered"/></DatePlannedDelivered>
+				<DateEarlyBuffered><ValueGenerator name="VG_EarlyBuffered"/></DateEarlyBuffered>
+				<DateLateBuffered><ValueGenerator name="VG_LateBuffered"/></DateLateBuffered>
+				<LocationFrom><ValueGenerator name="VG_Route"/></LocationFrom>
+				<LocationTo><ValueGenerator name="VG_Route"/></LocationTo>
+				<Miles><ValueGenerator name="VG_Miles"/></Miles>
+				<PlannedFreightCosts><ValueGenerator name="VG_PlannedFreightCosts"/></PlannedFreightCosts>
+				<TransportType>Truck</TransportType>
+
+			</TransportInfo>		
+    	</Template>
+    </EventObjectGenerator>
+
+
 	<!--
         *******************************
         **** Event Generators ****
@@ -351,43 +461,18 @@
 	</EventGenerator>
 	
 	
-	<!-- ShipmentCreated Events -->
+	<!-- ShipmentCreated Event -->
 	
-	<EventGenerator name="EG_ShipmentCreated_Vienna_Munich">
+	<EventGenerator name="EG_ShipmentCreated">
 		<Template>
 			<ShipmentCreated> 
 				<OrderId>14765</OrderId>
-				<TransportId>42322</TransportId>
-				<CarrierId>433</CarrierId>
 				<DateTime>2005-10-31T15:45:25</DateTime>
-				<DatePlannedShipped>2005-11-07T08:15:00</DatePlannedShipped>
-				<DatePlannedDelivered>2005-11-07T17:00:00</DatePlannedDelivered>
-				<DateEarlyBuffered>2005-11-06T16:00:00</DateEarlyBuffered>
-				<DateLateBuffered>2005-11-08T06:00:00</DateLateBuffered>
-				<LocationFrom>Vienna</LocationFrom>
-				<LocationTo>Munich</LocationTo>
-				<Miles>292</Miles>
-				<PlannedFreightCosts>690</PlannedFreightCosts>
-				<TransportType>Truck</TransportType>
-			</ShipmentCreated>
-		</Template>
-	</EventGenerator>
-	<EventGenerator name="EG_ShipmentCreated_Munich_Madrid">
-		<Template>
-			<ShipmentCreated> 
-				<OrderId>14765</OrderId>
-				<TransportId>42323</TransportId>
-				<CarrierId>433</CarrierId>
-				<DateTime>2005-10-31T15:45:39</DateTime>
-				<DatePlannedShipped>2005-11-08T06:30:00</DatePlannedShipped>
-				<DatePlannedDelivered>2005-11-10T08:00:00</DatePlannedDelivered>
-				<DateEarlyBuffered>2005-11-08T06:30:00</DateEarlyBuffered>
-				<DateLateBuffered>2005-11-11T08:00:00</DateLateBuffered>
-				<LocationFrom>Munich</LocationFrom>
-				<LocationTo>Madrid</LocationTo>
-				<Miles>1255</Miles>
-				<PlannedFreightCosts>1810</PlannedFreightCosts>
-				<TransportType>Truck</TransportType>
+				<Transport>
+					<EventObjectGenerator name="EO_ShipmentCreated">
+						<Instances>2</Instances>
+					</EventObjectGenerator>
+				</Transport>
 			</ShipmentCreated>
 		</Template>
 	</EventGenerator>
@@ -635,8 +720,8 @@
 		<EventGenerator name="EG_ShipmentTenderRejected2"/>
 		<EventGenerator name="EG_ShipmentTenderAccepted"/>
 		
-		<EventGenerator name="EG_ShipmentCreated_Vienna_Munich"/>
-		<EventGenerator name="EG_ShipmentCreated_Munich_Madrid"/>
+		<EventGenerator name="EG_ShipmentCreated"/>
+		
 		
 		<EventGenerator name="EG_DataLoggerConfigured1"/>
 		<EventGenerator name="EG_DataLoggerConfigured2"/>
