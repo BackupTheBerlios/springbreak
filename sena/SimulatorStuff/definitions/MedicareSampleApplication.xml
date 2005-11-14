@@ -43,6 +43,64 @@ v 0.01
 					</Parameter>
 				</InitParameters>
 			</EventAdapter>
+			
+			<!--
+                Correlating LoggerId
+                
+                EventService name="LoggerConfiguredHistory" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>LoggerConfiguredHistory</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						<CorrelationData eventType="DataLoggerConfigured">
+							<XPathSelector>
+								<XPathExpression>//LoggerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>					
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+            -->
+			
+			
+			<!--
+                Correlating SuccessfulShipments
+                
+                
+                
+            
+			<EventService name="SuccessfulShipments" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>SuccessfulShipments</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						<CorrelationData eventType="ShipmentStarted">
+							<XPathSelector>
+								<XPathExpression>//OrderId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="ShipmentDelivered">
+							<XPathSelector>
+								<XPathExpression>//OrderId and matches(//Value, "true)</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>						
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+			-->
+			
 			<!--
                 Correlating Transport START-END
             -->
@@ -58,12 +116,12 @@ v 0.01
 						<CheckoutTimeout>100000</CheckoutTimeout>						
 						<CorrelationData eventType="TransportStart">
 							<XPathSelector>
-								<XPathExpression>//OrderId</XPathExpression>
+								<XPathExpression>//TransportId</XPathExpression>
 							</XPathSelector>
 						</CorrelationData>
 						<CorrelationData eventType="TransportEnd">
 							<XPathSelector>
-								<XPathExpression>//OrderId</XPathExpression>
+								<XPathExpression>//TransportId</XPathExpression>
 							</XPathSelector>
 						</CorrelationData>						
 					</CorrelationSet>					
@@ -203,6 +261,30 @@ v 0.01
 					<MapElement name="Transport" eventType="*"/>
 				</To>
 			</Connector>
+			
+			<!-- 
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="LoggerConfiguredHistory" eventType="*"/>
+				</To>
+			</Connector>
+			 -->
+			 
+			<!-- 
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="SuccessfulShipments" eventType="*"/>
+				</To>
+			</Connector> -->
+			
+			
+			
 			<Connector>
 				<From>
 					<MapElement name="MsmqEventAdapter" eventType="*"/>

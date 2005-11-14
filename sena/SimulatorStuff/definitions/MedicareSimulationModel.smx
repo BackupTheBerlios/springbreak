@@ -245,6 +245,66 @@
 		</Enumeration>
 </ValueGenerator>
 
+<!--Ugly, but needed for ShipmentCreated TransportInfo 
+  muss den 3 VG VG_From, VG_Ueber und VG_End entsprechen
+-->
+<ValueGenerator name="VG_ShipmentCreatedLocation">
+	<Enumeration>
+			<Elements>
+				<Element>Vienna</Element>
+					<Element>Munich</Element>
+					<Element>Munich</Element>
+						<Element>Paris</Element>
+
+				<Element>Munich</Element>
+					<Element>Paris</Element>
+					<Element>Paris</Element>
+						<Element>Madrid</Element>
+
+				<Element>Paris</Element>
+					<Element>Munich</Element>
+					<Element>Munich</Element>
+						<Element>Prague</Element>
+
+				<Element>Madrid</Element>
+					<Element>Frankfurt</Element>
+					<Element>Frankfurt</Element>
+						<Element>Amsterdam</Element>
+
+				<Element>Vienna</Element>
+					<Element>Frankfurt</Element>
+					<Element>Frankfurt</Element>
+						<Element>Amsterdam</Element>
+						
+				<Element>Frankfurt</Element>
+					<Element>Amsterdam</Element>
+					<Element>Amsterdam</Element>
+							<Element>London</Element>
+
+				<Element>Prague</Element>
+					<Element>Frankfurt</Element>
+					<Element>Frankfurt</Element>
+						<Element>Paris</Element>
+
+				<Element>Amsterdam</Element>
+					<Element>Munich</Element>
+					<Element>Munich</Element>
+						<Element>Vienna</Element>
+
+				<Element>London</Element>
+					<Element>Amsterdam</Element>
+					<Element>Amsterdam</Element>
+						<Element>Lissabon</Element>
+
+				<Element>Lissabon</Element>
+					<Element>Paris</Element>
+					<Element>Paris</Element>
+						<Element>Frankfurt</Element>		
+		</Elements>
+	<DataType>System.String</DataType>
+ </Enumeration>	
+</ValueGenerator>
+
 	<ValueGenerator name="VG_Price" >
 	<Enumeration>
 		<Elements>
@@ -349,8 +409,8 @@
 				<DatePlannedDelivered><ValueGenerator name="VG_DateTimeHour"/></DatePlannedDelivered>
 				<DateEarlyBuffered><ValueGenerator name="VG_DateTimeHour"/></DateEarlyBuffered>
 				<DateLateBuffered>	<ValueGenerator name="VG_DateTimeHour"/></DateLateBuffered>
-				<LocationFrom><ScopeVariable name="From"/></LocationFrom>
-				<LocationTo><ScopeVariable name="Ueber"/>	</LocationTo>
+				<LocationFrom><ValueGenerator name="VG_ShipmentCreatedLocation"/></LocationFrom>
+				<LocationTo><ValueGenerator name="VG_ShipmentCreatedLocation"/>	</LocationTo>
 				<TransportType>Truck</TransportType>
 			</TransportInfo>
 		</Template>
