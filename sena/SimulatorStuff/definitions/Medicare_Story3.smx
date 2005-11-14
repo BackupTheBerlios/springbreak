@@ -73,11 +73,16 @@
         <Element>-3.6</Element>
         <Element>-4.5</Element>
         <Element>-5.2</Element>
+        <Element>-6.9</Element>
+        <Element>-8.1</Element>
+        <Element>-9.6</Element>
+        <Element>-4.5</Element>
+        <Element>-5.2</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
   </ValueGenerator>
-  <ValueGenerator name="VG_Temp_OK_Gernazilin">
+  <ValueGenerator name="VG_Temp_OK_Gernazilin" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Enumeration>
       <Elements>
         <Element>6</Element>
@@ -94,10 +99,93 @@
         <Element>6.9</Element>
         <Element>7.1</Element>
         <Element>6.3</Element>
+        <Element>7.7</Element>
+        <Element>3.2</Element>
+        <Element>3.4</Element>
+        <Element>4.6</Element>
+        <Element>4.9</Element>
+        <Element>5.1</Element>
+        <Element>6.3</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
   </ValueGenerator>
+  <!-- ValueGenerator needed for ShipmentCreated -->
+  <ValueGenerator name="VG_TransportId">
+    <Enumeration>
+      <Elements>
+        <Element>48001</Element>
+        <Element>48002</Element>
+      </Elements>
+      <DataType>System.Int32</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_PlannedShipped">
+    <Enumeration>
+      <Elements>
+        <Element>2005-10-18T07:00:00</Element>
+        <Element>2005-10-19T07:00:00</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_PlannedDelivered">
+    <Enumeration>
+      <Elements>
+        <Element>2005-10-18T19:00:00</Element>
+        <Element>2005-10-19T15:00:00</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_EarlyBuffered">
+    <Enumeration>
+      <Elements>
+        <Element>2005-10-18T20:00:00</Element>
+        <Element>2005-10-18T20:00:00</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_LateBuffered">
+    <Enumeration>
+      <Elements>
+        <Element>2005-10-18T20:00:00</Element>
+        <Element>2005-10-19T16:00:00</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_Route">
+    <Enumeration>
+      <Elements>
+        <Element>Vienna</Element>
+        <Element>Saarbruecken</Element>
+        <Element>Saarbruecken</Element>
+        <Element>Paris</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_Miles">
+    <Enumeration>
+      <Elements>
+        <Element>570</Element>
+        <Element>230</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <ValueGenerator name="VG_PlannedFreightCosts">
+    <Enumeration>
+      <Elements>
+        <Element>1200</Element>
+        <Element>100</Element>
+      </Elements>
+      <DataType>System.String</DataType>
+    </Enumeration>
+  </ValueGenerator>
+  <!-- ENDE ValueGenerators for ShipmentCreated -->
   <!--
         *******************************
         **** Event Object Generators ****
@@ -181,6 +269,41 @@
       </LogEntry>
     </Template>
   </EventObjectGenerator>
+  <EventObjectGenerator name="EO_ShipmentCreated">
+    <Template>
+      <TransportInfo>
+        <TransportId>
+          <ValueGenerator name="VG_TransportId" />
+        </TransportId>
+        <CarrierId>342</CarrierId>
+        <DatePlannedShipped>
+          <ValueGenerator name="VG_PlannedShipped" />
+        </DatePlannedShipped>
+        <DatePlannedDelivered>
+          <ValueGenerator name="VG_PlannedDelivered" />
+        </DatePlannedDelivered>
+        <DateEarlyBuffered>
+          <ValueGenerator name="VG_EarlyBuffered" />
+        </DateEarlyBuffered>
+        <DateLateBuffered>
+          <ValueGenerator name="VG_LateBuffered" />
+        </DateLateBuffered>
+        <LocationFrom>
+          <ValueGenerator name="VG_Route" />
+        </LocationFrom>
+        <LocationTo>
+          <ValueGenerator name="VG_Route" />
+        </LocationTo>
+        <Miles>
+          <ValueGenerator name="VG_Miles" />
+        </Miles>
+        <PlannedFreightCosts>
+          <ValueGenerator name="VG_PlannedFreightCosts" />
+        </PlannedFreightCosts>
+        <TransportType>Truck</TransportType>
+      </TransportInfo>
+    </Template>
+  </EventObjectGenerator>
   <!--
         *******************************
         **** Event Generators ****
@@ -260,6 +383,19 @@
     </Template>
   </EventGenerator>
   <!-- ShipmentCreated Events -->
+  <EventGenerator name="EG_ShipmentCreated">
+    <Template>
+      <ShipmentCreated>
+        <OrderId>17001</OrderId>
+        <DateTime>2005-10-07T10:11:40</DateTime>
+        <Transport>
+          <EventObjectGenerator name="EO_ShipmentCreated">
+            <Instances>2</Instances>
+          </EventObjectGenerator>
+        </Transport>
+      </ShipmentCreated>
+    </Template>
+  </EventGenerator>
   <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <ShipmentCreated>
@@ -459,7 +595,7 @@
         <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Gernazilin">
-            <Instances>16</Instances>
+            <Instances>21</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
@@ -474,7 +610,7 @@
         <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Gernazilin">
-            <Instances>16</Instances>
+            <Instances>21</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
@@ -541,7 +677,7 @@
         <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
-            <Instances>16</Instances>
+            <Instances>21</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
@@ -556,7 +692,7 @@
         <Staffmember>Jean Renard</Staffmember>
         <TempData>
           <EventObjectGenerator name="EO_TempCollection_Saarbruecken_Paris_Tosalumn">
-            <Instances>16</Instances>
+            <Instances>21</Instances>
           </EventObjectGenerator>
         </TempData>
       </DataLoggerRead>
@@ -607,8 +743,7 @@
     <EventGenerator name="EG_ShipmentTenderRejected1" />
     <EventGenerator name="EG_ShipmentTenderRejected2" />
     <EventGenerator name="EG_ShipmentTenderAccepted" />
-    <EventGenerator name="EG_ShipmentCreated_Vienna_Saarbruecken" />
-    <EventGenerator name="EG_ShipmentCreated_Saarbruecken_Paris" />
+    <EventGenerator name="EG_ShipmentCreated" />
     <EventGenerator name="EG_DataLoggerConfigured_Tosalumn1" />
     <EventGenerator name="EG_DataLoggerConfigured_Tosalumn2" />
     <EventGenerator name="EG_DataLoggerConfigured_Gernazilin1" />
