@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<EventType catalogName="ShipmentDelivered" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+<EventType catalogName="ShipmentExpedited" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
 	<Attributes>
 		<Attribute reuseable="false" catalogName="OrderId">
 			<DataType multiValue="false" catalogName="String">
