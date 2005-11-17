@@ -12,8 +12,8 @@
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.Int32</RuntimeType>
 			</DataType>
-			<Name>TransportId</Name>
-			<Mandatory>false</Mandatory>
+			<Name>TransportIdFailed</Name>
+			<Mandatory>true</Mandatory>
 		</Attribute>
 		<Attribute reuseable="false" catalogName="DateTime">
 			<DataType multiValue="false" catalogName="DateTime">
@@ -21,6 +21,13 @@
 			</DataType>
 			<Name>DateTime</Name>
 			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="true" catalogName="Transport">
+			<DataType multiValue="false" catalogName="TransportInfo">
+				<RuntimeType catalogName="TransportInfo"/>
+			</DataType>
+			<Name>Transport</Name>
+			<Mandatory>false</Mandatory>
 		</Attribute>
 	</Attributes>
 	<AllowUnknownAttributes>false</AllowUnknownAttributes>

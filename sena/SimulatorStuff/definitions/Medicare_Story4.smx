@@ -348,7 +348,7 @@
         <Destination>London</Destination>
         <ProductCollection>
           <EventObjectGenerator name="EO_ProductCollection">
-            <Instances>2</Instances>
+            <Instances>1</Instances>
           </EventObjectGenerator>
         </ProductCollection>
       </OrderReceived>
@@ -612,7 +612,8 @@
     <EventGenerator name="EG_ShipmentStarted" />
     <EventGenerator name="EG_TransportStart_Vienna_Rotterdam" />
     <!-- <EventGenerator name="EG_ShipmentCreated_Munich_London" /> -->
-    <EventGenerator name="EG_ShipmentCreated_BackupPlan" />
+    <!-- EventGenerator name="EG_ShipmentCreated_BackupPlan" /-->
+    <EventGenerator name="EG_ShipmentExpedited" />
     <EventGenerator name="EG_TransportStart_Munich_LondonHeathrow" />
     <EventGenerator name="EG_TransportEnd_Munich_LondonHeathrow" />
     <EventGenerator name="EG_TransportStart_LondonHeathrow_London" />
@@ -687,6 +688,20 @@
         <DateTime>2005-11-08T14:36:53</DateTime>
         <Location>London</Location>
       </TransportEnd>
+    </Template>
+  </EventGenerator>
+  <EventGenerator name="EG_ShipmentExpedited" xmlns="">
+    <Template>
+      <ShipmentExpedited>
+        <OrderId>17010</OrderId>
+        <TransportIdFailed>48005</TransportIdFailed>
+        <DateTime>2005-11-08T07:30:11</DateTime>
+        <Transport>
+          <EventObjectGenerator name="EO_ShipmentCreated_BackupPlan">
+            <Instances>1</Instances>
+          </EventObjectGenerator>
+        </Transport>
+      </ShipmentExpedited>
     </Template>
   </EventGenerator>
 </SimulationModel>
