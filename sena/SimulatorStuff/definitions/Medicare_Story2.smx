@@ -950,7 +950,7 @@
 		<EventGenerator name="EG_ShipmentCreated"/>
 		
 		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
-		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn1"/>
+		<EventGenerator name="EG_DataLoggerConfigured_Tosalumn2"/>
 		<EventGenerator name="EG_DataLoggerConfigured_Zatanol1"/>
 		<EventGenerator name="EG_DataLoggerConfigured_Zatanol2"/>
 		
