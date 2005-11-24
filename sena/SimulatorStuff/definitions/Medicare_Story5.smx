@@ -128,8 +128,6 @@
     </Template>
   </EventObjectGenerator>
   <!-- Datalogger Temperatures -->
-  <!-- Tosalumn -->
-  <!-- Gernazilin   -->
   <EventObjectGenerator name="EO_TempCollection_Vienna_Barcelona" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Template>
       <LogEntry>
