@@ -1,0 +1,73 @@
+/*
+Kunde fordert ein Service, eine Leistung beim Provider an
+*/
+requestsService (UserId, Datetime, Servicename, [Info])
+
+	Servicename = 	Telefonie, Quickinfo, GPRS, UMTS, Video, t-zones/Downloads, SMS, Lotto, m-parking, paybox, mailbox, MMS, WAP,
+					ÖBB-Ticket, Wetten, mäxchen/Kundentreue, Anfrage Kundenbetreuung via Email
+					
+	[Info] = 
+					Location ... von wo wird Service angefragt (zb Ausland, von einem anderen Ort als gewöhnlich zB. Saalbach ...)
+					Partner ... nicht für alle Services; mit wem wird zb telefoniert
+					Duration ... ?ist es sinnvoll diesen Wert mit requestsService-Event zu erfassen?
+
+/*
+Provider erbringt angefordertes Service 
+ist es für jedes Service sinnvoll??? (Telefonie, SMS)
+
+Bsp: ÖBB-Ticket: wurde erfolgreich an Kunden gesandt					
+*/					
+fullfilledService (DateTime, UserId, Servicename, [Info])
+
+	[Info] =
+					Success Yes/No
+					
+/*
+Kunde nimmt von sich aus Kontakt mit Provider auf */					
+contactsProvider (UserId, Datetime,[Info])
+	
+	[Info] = 
+				Type ... CallCenter, in welchem Shop, Email
+				Topic ... Schlagwort, Kategorie worum es ging
+	
+
+/*
+Kundenverhalten auf Homepage mitverfolgen
+*/
+loginWebpage (UserId, DateTime, [Info])
+	
+	[Info] =  //wenn von Interesse
+				Browser ... BrowserType
+				OperatingSystem
+				InternetProvider
+
+/*
+welche Seiten besucht User
+
+zb OnlineShop, OnlineRechnung, SMS-Versand..
+*/				
+visitedWebpage (UserId, DateTime, WebURL, Duration)
+
+/*
+Event besagt, dass der Kunde wechselgefährdet ist.
+Im ersten Schritt koennte man sagen, dass ein Externes System das meldet - kann sicher auch von InTime kommen
+*/
+addedToChurn(UserId)
+
+
+/*
+Events vom Provider-Aktionen
+*/
+
+/* Werbekampagne vom Provider gestartet */
+startCampaign (CampagneId, DateTime, [Info])
+
+	[Info] =
+				Topic ... Schlagworte worum es geht
+				Target ... An wen gerichtet
+				...
+
+/* zb SMS Werbung nur an bestimmte Kunden */
+individualAdvertisement (AdId, UserId)
+
+
