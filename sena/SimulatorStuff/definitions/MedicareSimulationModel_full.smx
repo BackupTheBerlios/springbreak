@@ -196,6 +196,24 @@
 		</Booleans>
 	</ValueGenerator>
 	
+	<ValueGenerator name="VG_PlannedFreightCosts_Etappe" >
+	 <NumRange>
+			<Start>1100</Start>
+			<Stop>1600</Stop>
+			<Increment>20</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_PlannedMiles_Etappe" >
+	 <NumRange>
+			<Start>300</Start>
+			<Stop>700</Stop>
+			<Increment>50</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
 <!-- ******************************************************************** 
      *																	*
      *                ENDE allgemeine Definitionen 						*
@@ -389,7 +407,7 @@
 </ValueGenerator>
 
 	<ValueGenerator name="VG_Price" >
-	<Enumeration>
+	 <Enumeration>
 		<Elements>
 			<Element>2500</Element>
 			<Element>3500</Element>
@@ -405,10 +423,12 @@
 			<Element>2200</Element>
 			<Element>2700</Element>
 			<Element>3300</Element>
-	</Elements>
-	<DataType>System.Int32</DataType>
-</Enumeration>
-</ValueGenerator>
+		</Elements>
+		<DataType>System.Int32</DataType>
+	 </Enumeration>
+	</ValueGenerator>
+	
+	
 
 <!-- ******************************************************************** 
      *																	*
@@ -565,11 +585,9 @@
      *																	*
 	 ********************************************************************
 -->	
-	<!--
- noch nicht gesetzt:
+	
 
-				<Miles></Miles>
-				<PlannedFreightCosts/> -->
+			
 	<EventObjectGenerator name="EO_ShipmentCreated_TransportInfo_1Etappe">
 		<Template>
 			<TransportInfo>
@@ -585,6 +603,8 @@
 				<DateLateBuffered>	<ValueGenerator name="VG_DateTimeHour"/></DateLateBuffered>
 				<LocationFrom><ScopeVariable name="From"/></LocationFrom>
 				<LocationTo><ScopeVariable name="To"/>	</LocationTo>
+				<PlannedFreightCosts><ValueGenerator name="VG_PlannedFreightCosts_Etappe" /></PlannedFreightCosts>
+				<Miles><ValueGenerator name="VG_PlannedMiles_Etappe" /></Miles>
 				<TransportType>Truck</TransportType>
 			</TransportInfo>
 		</Template>
@@ -597,11 +617,7 @@
 	 ********************************************************************
 -->
 
-<!--
- noch nicht gesetzt:
 
-				<Miles></Miles>
-				<PlannedFreightCosts/> -->
 	<EventObjectGenerator name="EO_ShipmentCreated_TransportInfo_2Etappen">
 		<Template>
 			<TransportInfo>
@@ -617,6 +633,8 @@
 				<DateLateBuffered>	<ValueGenerator name="VG_DateTimeHour"/></DateLateBuffered>
 				<LocationFrom><ValueGenerator name="VG_ShipmentCreatedLocation_2Etappen"/></LocationFrom>
 				<LocationTo><ValueGenerator name="VG_ShipmentCreatedLocation_2Etappen"/>	</LocationTo>
+				<PlannedFreightCosts><ValueGenerator name="VG_PlannedFreightCosts_Etappe" /></PlannedFreightCosts>
+				<Miles><ValueGenerator name="VG_PlannedMiles_Etappe" /></Miles>
 				<TransportType>Truck</TransportType>
 			</TransportInfo>
 		</Template>
@@ -644,6 +662,8 @@
 				<DateLateBuffered>	<ValueGenerator name="VG_DateTimeHour"/></DateLateBuffered>
 				<LocationFrom><ValueGenerator name="VG_ShipmentCreatedLocation_3Etappen"/></LocationFrom>
 				<LocationTo><ValueGenerator name="VG_ShipmentCreatedLocation_3Etappen"/>	</LocationTo>
+				<PlannedFreightCosts><ValueGenerator name="VG_PlannedFreightCosts_Etappe" /></PlannedFreightCosts>
+				<Miles><ValueGenerator name="VG_PlannedMiles_Etappe" /></Miles>
 				<TransportType>Truck</TransportType>
 			</TransportInfo>
 		</Template>

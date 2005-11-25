@@ -245,6 +245,24 @@
 		</Enumeration>
 </ValueGenerator>
 
+<ValueGenerator name="VG_PlannedFreightCosts_Etappe" >
+	 <NumRange>
+			<Start>1100</Start>
+			<Stop>1600</Stop>
+			<Increment>20</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_PlannedMiles_Etappe" >
+	 <NumRange>
+			<Start>300</Start>
+			<Stop>700</Stop>
+			<Increment>50</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+
 <!--Ugly, but needed for ShipmentCreated TransportInfo 
   muss den 3 VG VG_From, VG_Ueber und VG_End entsprechen
 -->
@@ -411,6 +429,8 @@
 				<DateLateBuffered>	<ValueGenerator name="VG_DateTimeHour"/></DateLateBuffered>
 				<LocationFrom><ValueGenerator name="VG_ShipmentCreatedLocation"/></LocationFrom>
 				<LocationTo><ValueGenerator name="VG_ShipmentCreatedLocation"/>	</LocationTo>
+				<PlannedFreightCosts><ValueGenerator name="VG_PlannedFreightCosts_Etappe" /></PlannedFreightCosts>
+				<Miles><ValueGenerator name="VG_PlannedMiles_Etappe" /></Miles>
 				<TransportType>Truck</TransportType>
 			</TransportInfo>
 		</Template>
