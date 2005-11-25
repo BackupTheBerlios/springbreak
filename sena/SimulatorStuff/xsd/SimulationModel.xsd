@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Joe Schiefer (Test User) -->
+<!--(c) Josef Schiefer-->
+<xs:schema xmlns:senactive="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.senactive.com/Schemas/SimulationModel/v1_0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="EventProfileType">
+		<xs:sequence>
+			<xs:element name="Template">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="##any" processContents="lax"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GenerateFromDatabase" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DataSource" nillable="true">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SqlStatement" type="xs:string" nillable="true"/>
+						<xs:element name="ColumnMapping" nillable="true">
+							<xs:complexType>
+								<xs:attribute name="columnNumber" type="xs:nonNegativeInteger" use="required"/>
+								<xs:attribute name="attributeSelector" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="EventAttributeSetType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Attribute">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="ValueGenerator">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Value"/>
+					</xs:choice>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventObject" type="senactive:EventObjectGeneratorType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="EventObjectGeneratorType">
+		<xs:annotation>
+			<xs:documentation>Referencing:                              <EventObjectProfile name="xyz">
+					<Instances>1</Instances>
+				</EventObjectProfile>  ...                                            <EventObjectProfile name="xyz">
+					<RandomInstanceRange>
+						<Min>1</Min>
+						<Max>10</Max>
+					</RandomInstanceRange>
+				</EventObjectProfile>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="##any" processContents="lax">
+							<xs:annotation>
+								<xs:documentation>Includes a event object that may include event object generators or value generators</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GenerateFromDatabase" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DataSource" nillable="true">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SqlStatement" type="xs:string" nillable="true"/>
+						<xs:element name="ColumnMapping" nillable="true">
+							<xs:complexType>
+								<xs:attribute name="columnNumber" type="xs:nonNegativeInteger" use="required"/>
+								<xs:attribute name="attributeSelector" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="SimulationRunType">
+		<xs:sequence>
+			<xs:element name="EventSequenceSimulation" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EventSequence" nillable="true">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Instances" type="xs:nonNegativeInteger"/>
+						<xs:element name="Concurrency" default="Parallel">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Serialized"/>
+									<xs:enumeration value="Parallel"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="EventSequenceType">
+		<xs:sequence>
+			<xs:element name="ScopeVariable" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ValueGenerator">
+							<xs:complexType>
+								<xs:attribute name="name" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="name" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice maxOccurs="unbounded">
+				<xs:group ref="senactive:EventSequenceElementsGroup"/>
+			</xs:choice>
+			<xs:element name="EventCorrelation" type="senactive:EventCorrelationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DateSequence" type="senactive:DateSequenceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="SimulationModelType">
+		<xs:sequence>
+			<xs:element name="ValueGenerator" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="senactive:ValueGeneratorType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventObjectGenerator" type="senactive:EventObjectGeneratorType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EventGenerator" type="senactive:EventProfileType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EventSequence" type="senactive:EventSequenceType" maxOccurs="unbounded"/>
+			<xs:element name="SimulationRun" type="senactive:SimulationRunType" maxOccurs="unbounded"/>
+			<xs:element name="EventReceiver" type="senactive:EventReceiverType" maxOccurs="unbounded"/>
+			<xs:element name="DataSource" type="senactive:DataSourceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+		<xs:attribute name="displayName" type="xs:string" use="optional"/>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="DataSourceType">
+		<xs:sequence>
+			<xs:element name="ConnectionString" type="string"/>
+			<xs:element name="User" type="string" minOccurs="0"/>
+			<xs:element name="Password" type="string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+		<xs:attribute name="dbType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="string">
+					<xs:enumeration value="SqlDB"/>
+					<xs:enumeration value="OleDB"/>
+					<xs:enumeration value="OdbcDB"/>
+					<xs:enumeration value="OracleDB"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="SimulationModel" type="senactive:SimulationModelType"/>
+	<xs:complexType name="ValueGeneratorType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Enumeration">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="Elements">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Element" type="xs:string" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="DbLookUp" type="senactive:DbLookUpType"/>
+							</xs:choice>
+							<xs:element name="DataType" default="System.String">
+								<xs:simpleType>
+									<xs:restriction base="xs:NCName">
+										<xs:enumeration value="System.Int16"/>
+										<xs:enumeration value="System.Int32"/>
+										<xs:enumeration value="System.Int64"/>
+										<xs:enumeration value="System.UInt16"/>
+										<xs:enumeration value="System.UInt32"/>
+										<xs:enumeration value="System.UInt64"/>
+										<xs:enumeration value="System.Double"/>
+										<xs:enumeration value="System.Decimal"/>
+										<xs:enumeration value="System.Char"/>
+										<xs:enumeration value="System.SByte"/>
+										<xs:enumeration value="System.Single"/>
+										<xs:enumeration value="System.String"/>
+										<xs:enumeration value="System.DateTime"/>
+										<xs:enumeration value="System.TimeSpan"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Booleans" nillable="true">
+					<xs:complexType>
+						<xs:sequence minOccurs="0">
+							<xs:element name="ProbabilityTrue" type="xs:double"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NumRange">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:sequence>
+									<xs:element name="Start" type="xs:double"/>
+									<xs:element name="Stop" type="xs:double"/>
+									<xs:element name="Increment" type="xs:double"/>
+								</xs:sequence>
+								<xs:element name="DbLookUp" type="senactive:DbLookUpType"/>
+							</xs:choice>
+							<xs:element name="DataType" default="System.Int32">
+								<xs:simpleType>
+									<xs:restriction base="xs:NCName">
+										<xs:enumeration value="System.Int16"/>
+										<xs:enumeration value="System.Int32"/>
+										<xs:enumeration value="System.Int64"/>
+										<xs:enumeration value="System.UInt16"/>
+										<xs:enumeration value="System.UInt32"/>
+										<xs:enumeration value="System.UInt64"/>
+										<xs:enumeration value="System.Double"/>
+										<xs:enumeration value="System.Decimal"/>
+										<xs:enumeration value="System.Char"/>
+										<xs:enumeration value="System.SByte"/>
+										<xs:enumeration value="System.Single"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DateRange">
+					<xs:complexType>
+						<xs:choice>
+							<xs:sequence>
+								<xs:element name="Start" type="xs:dateTime"/>
+								<xs:element name="Stop" type="xs:dateTime"/>
+								<xs:element name="Increment" type="senactive:TimeIntervalType"/>
+							</xs:sequence>
+							<xs:element name="DbLookUp" type="senactive:DbLookUpType"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TimeRange">
+					<xs:complexType>
+						<xs:choice>
+							<xs:sequence>
+								<xs:element name="Start" type="xs:time"/>
+								<xs:element name="Stop" type="xs:time"/>
+								<xs:element name="Increment" type="senactive:TimeIntervalType"/>
+								<xs:choice>
+									<xs:element name="TimeSpanDataType" default="System.TimeSpan" nillable="true"/>
+									<xs:sequence>
+										<xs:element name="DataType" default="System.Int32">
+											<xs:simpleType>
+												<xs:restriction base="xs:NCName">
+													<xs:enumeration value="System.Int32"/>
+													<xs:enumeration value="System.Int64"/>
+													<xs:enumeration value="System.Int16"/>
+													<xs:enumeration value="System.UInt16"/>
+													<xs:enumeration value="System.UInt32"/>
+													<xs:enumeration value="System.UInt64"/>
+													<xs:enumeration value="System.Int16"/>
+													<xs:enumeration value="System.Double"/>
+													<xs:enumeration value="System.Decimal"/>
+													<xs:enumeration value="System.Char"/>
+													<xs:enumeration value="System.SByte"/>
+													<xs:enumeration value="System.Single"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Granularity">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="Milliseconds"/>
+													<xs:enumeration value="Seconds"/>
+													<xs:enumeration value="Minutes"/>
+													<xs:enumeration value="Hours"/>
+													<xs:enumeration value="Days"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:choice>
+							</xs:sequence>
+							<xs:element name="DbLookUp" type="senactive:DbLookUpType"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Guids" nillable="true"/>
+			</xs:choice>
+			<xs:element name="Format" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="TimeIntervalType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Milliseconds" type="xs:nonNegativeInteger"/>
+			<xs:element name="Seconds" type="xs:nonNegativeInteger"/>
+			<xs:element name="Minutes" type="xs:nonNegativeInteger"/>
+			<xs:element name="Hours" type="xs:nonNegativeInteger"/>
+			<xs:element name="Days" type="xs:nonNegativeInteger"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="EventAttributeType">
+		<xs:choice>
+			<xs:element name="Value"/>
+			<xs:element name="ValueGenerator">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventObjectGenerator">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EventReceiverType">
+		<xs:choice>
+			<xs:element name="MsmqQueue">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="QueueName" type="xs:string"/>
+						<xs:element name="Transactional" type="xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attributeGroup ref="senactive:NameAttributeGroup"/>
+	</xs:complexType>
+	<xs:attributeGroup name="NameAttributeGroup">
+		<xs:attribute name="name" type="NMTOKEN" use="required"/>
+		<xs:attribute name="displayName" type="string" use="optional"/>
+	</xs:attributeGroup>
+	<xs:complexType name="DbLookUpType">
+		<xs:sequence>
+			<xs:element name="DataSource">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SqlStatement" type="xs:string"/>
+			<xs:element name="Column" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="EventSequenceElementsGroup">
+		<xs:choice>
+			<xs:element name="EventInstance">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="##any" processContents="lax"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventGenerator" nillable="true">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="Instances"/>
+						<xs:element name="RandomInstances">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Min" type="xs:nonNegativeInteger"/>
+									<xs:element name="Max" type="xs:nonNegativeInteger"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+					<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventSequence" nillable="true">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="Instances"/>
+						<xs:element name="RandomInstances">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Min" type="xs:nonNegativeInteger"/>
+									<xs:element name="Max" type="xs:nonNegativeInteger"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+					<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Switch">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Case" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:choice maxOccurs="unbounded">
+									<xs:group ref="senactive:EventSequenceElementsGroup"/>
+								</xs:choice>
+								<xs:attribute name="probability" type="xs:double" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Wait" type="senactive:TimeIntervalType"/>
+			<xs:element name="Scope">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ScopeVariable" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ValueGenerator">
+										<xs:complexType>
+											<xs:attribute name="name" use="required"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="name" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:choice maxOccurs="unbounded">
+							<xs:group ref="senactive:EventSequenceElementsGroup"/>
+						</xs:choice>
+						<xs:element name="EventCorrelation" type="senactive:EventCorrelationType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="DateSequence" type="senactive:DateSequenceType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:choice minOccurs="0">
+							<xs:element name="Instances"/>
+							<xs:element name="RandomInstances">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Min" type="xs:nonNegativeInteger"/>
+										<xs:element name="Max" type="xs:nonNegativeInteger"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="XPathSelectorType">
+		<xs:sequence>
+			<xs:element name="XPathExpression" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventAttributeSelectorType">
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="EventAttributeValue" nillable="true">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="string">
+								<xs:attribute name="name" type="NMTOKEN" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EventAttribute">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="senactive:EventAttributeSelectorType">
+								<xs:attribute name="name" type="NMTOKEN" use="required"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomSelectorType">
+		<xs:sequence>
+			<xs:any namespace="##any" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="NMTOKEN" use="required"/>
+		<xs:attribute name="implementationClass" type="NCName" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="EventTypeType">
+		<xs:restriction base="string">
+			<xs:pattern value="[\?]|[\*]|[a-zA-Z0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="EventCorrelationType">
+		<xs:sequence>
+			<xs:element name="CorrelationData" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="XPathSelector" type="senactive:XPathSelectorType"/>
+						<xs:element name="EventAttributeSelector" type="senactive:EventAttributeSelectorType"/>
+						<xs:element name="CustomSelector" type="senactive:CustomSelectorType"/>
+					</xs:choice>
+					<xs:attribute name="eventType" type="senactive:EventTypeType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateSequenceType">
+		<xs:sequence>
+			<xs:element name="CorrelationData" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="XPathSelector" type="senactive:XPathSelectorType"/>
+						<xs:element name="EventAttributeSelector" type="senactive:EventAttributeSelectorType"/>
+						<xs:element name="CustomSelector" type="senactive:CustomSelectorType"/>
+					</xs:choice>
+					<xs:attribute name="eventType" type="senactive:EventTypeType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="FixedTimeSpans">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="senactive:TimeIntervalType">
+								<xs:attribute name="backward" type="xs:boolean" default="false"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RandomTimeSpans">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Min" type="senactive:TimeIntervalType"/>
+							<xs:element name="Max" type="senactive:TimeIntervalType"/>
+							<xs:element name="Granularity">
+								<xs:annotation>
+									<xs:documentation>Currently NOT supported</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Milliseconds"/>
+										<xs:enumeration value="Seconds"/>
+										<xs:enumeration value="Minutes"/>
+										<xs:enumeration value="Hours"/>
+										<xs:enumeration value="Days"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="backward" type="xs:boolean" default="false"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PredefinedTimeSpans">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TimeSpan" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="senactive:TimeIntervalType">
+											<xs:attribute name="backward" type="xs:boolean" default="false"/>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 sp1 U (http://www.xmlspy.com) by - (Ru-Board) -->
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by - (-) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:senactive="http://www.senactive.com" targetNamespace="http://www.senactive.com" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<complexType name="ParameterType">
+		<sequence>
+			<element name="Description" minOccurs="0"/>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="ParameterSet" type="senactive:ParameterSetType" maxOccurs="unbounded"/>
+				<element name="Value" type="string"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+	</complexType>
+	<complexType name="CorrelationSettingsComponentType">
+		<sequence>
+			<element name="CorrelationSet">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:CorrelationSetType"/>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="SessionTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="SessionDataTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="Recoverable" type="xs:boolean" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="CorrelationSettingsElementType">
+		<sequence>
+			<choice>
+				<element name="CorrelationSet" type="senactive:CorrelationSetType"/>
+				<element name="CorrelationSetRef" nillable="true">
+					<complexType>
+						<attribute name="name" type="NMTOKENS" use="required"/>
+					</complexType>
+				</element>
+			</choice>
+			<element name="SessionTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="SessionDataTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="Recoverable" type="xs:boolean" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="ManagedComponentType">
+		<sequence>
+			<element name="Description" type="string" minOccurs="0"/>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+		<attribute name="implementationClass" type="NCName" use="required"/>
+	</complexType>
+	<complexType name="IntervalType">
+		<sequence>
+			<element name="Days" type="integer" minOccurs="0"/>
+			<element name="Hours" type="integer" minOccurs="0"/>
+			<element name="Minutes" type="integer" minOccurs="0"/>
+			<element name="Seconds" type="integer" minOccurs="0"/>
+			<element name="Milliseconds" type="integer" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="PeriodType">
+		<choice>
+			<sequence>
+				<element name="Start" type="dateTime"/>
+				<element name="End" type="dateTime" minOccurs="0"/>
+			</sequence>
+			<element name="End" type="dateTime"/>
+		</choice>
+	</complexType>
+	<complexType name="SchedulerMapElementType">
+		<sequence>
+			<element name="Schedule" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<sequence>
+						<element name="ContextData" type="string" minOccurs="0"/>
+						<element name="NotificationType" default="AnyCast" minOccurs="0">
+							<simpleType>
+								<restriction base="string">
+									<enumeration value="MultiCast"/>
+									<enumeration value="AnyCast"/>
+								</restriction>
+							</simpleType>
+						</element>
+						<element name="Period" type="senactive:PeriodType" minOccurs="0"/>
+						<choice>
+							<element name="Interval" type="senactive:IntervalType"/>
+							<element name="RunOnce">
+								<complexType>
+									<sequence>
+										<element name="DateTime" type="dateTime"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="Daily">
+								<complexType>
+									<sequence>
+										<element name="Time" type="duration"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="Weekly">
+								<complexType>
+									<sequence>
+										<element name="Time" type="duration"/>
+										<element name="Weekday" maxOccurs="unbounded">
+											<simpleType>
+												<restriction base="string">
+													<enumeration value="Monday"/>
+													<enumeration value="Tuesday"/>
+													<enumeration value="Wednesday"/>
+													<enumeration value="Thursday"/>
+													<enumeration value="Friday"/>
+													<enumeration value="Saturday"/>
+													<enumeration value="Sunday"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+						</choice>
+					</sequence>
+					<attribute name="name" type="NMTOKEN" use="required"/>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="name" type="NMTOKEN" use="required"/>
+		<attribute name="component" type="string" use="required" fixed="Scheduler"/>
+	</complexType>
+	<complexType name="InputPortComponentType">
+		<sequence>
+			<element name="EventType" nillable="true">
+				<complexType>
+					<attribute name="name" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+			<element name="Filter" minOccurs="0">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:FilterType"/>
+					</complexContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="InputPortElementType">
+		<sequence>
+			<element name="EventType" nillable="true">
+				<complexType>
+					<attribute name="name" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+			<choice minOccurs="0">
+				<element name="Filter">
+					<complexType>
+						<complexContent>
+							<extension base="senactive:FilterType"/>
+						</complexContent>
+					</complexType>
+				</element>
+				<element name="FilterRef" nillable="true">
+					<complexType>
+						<attribute name="name" type="NMTOKEN" use="required"/>
+					</complexType>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="OutputPortElementType">
+		<sequence>
+			<element name="EventType">
+				<annotation>
+					<documentation>This event type can be a registered event type, "All Events" event type, or also "Exception Events" type </documentation>
+				</annotation>
+				<complexType>
+					<attribute name="name" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+			<choice minOccurs="0">
+				<element name="Filter">
+					<complexType>
+						<complexContent>
+							<extension base="senactive:FilterType"/>
+						</complexContent>
+					</complexType>
+				</element>
+				<element name="FilterRef" nillable="true">
+					<complexType>
+						<attribute name="name" type="NMTOKEN" use="required"/>
+					</complexType>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="OutputPortComponentType">
+		<sequence>
+			<element name="EventType" nillable="true">
+				<annotation>
+					<documentation>This event type can be a registered event type, "All Events" event type, or also "Exception Events" type </documentation>
+				</annotation>
+				<complexType>
+					<attribute name="name" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+			<element name="Filter" minOccurs="0">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:FilterType"/>
+					</complexContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="EventServiceComponentType">
+		<complexContent>
+			<extension base="senactive:ManagedComponentType">
+				<sequence>
+					<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0"/>
+					<element name="ProcessInOrder" type="xs:boolean" default="true" minOccurs="0"/>
+					<element name="InputPort" type="senactive:InputPortComponentType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="OutputPort" type="senactive:OutputPortComponentType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="TimerEventSettings" minOccurs="0">
+						<complexType>
+							<sequence>
+								<element name="Default" type="senactive:TimeEventSettingsForScheduleType" minOccurs="0"/>
+								<element name="Schedule" minOccurs="0" maxOccurs="unbounded">
+									<complexType>
+										<complexContent>
+											<extension base="senactive:TimeEventSettingsForScheduleType">
+												<attribute name="name" type="NMTOKEN" use="required"/>
+											</extension>
+										</complexContent>
+									</complexType>
+								</element>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="CorrelationSettings" type="senactive:CorrelationSettingsComponentType" minOccurs="0"/>
+					<element name="SynchronizationSettings" minOccurs="0" maxOccurs="unbounded">
+						<complexType>
+							<sequence>
+								<element name="CorrelationSet" type="senactive:CorrelationSetType"/>
+							</sequence>
+						</complexType>
+					</element>
+					<element name="TransactionSettings" type="senactive:TransactionSettingsType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="EventServiceMapElementType">
+		<sequence minOccurs="0">
+			<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0"/>
+			<element name="CorrelationSettings" type="senactive:CorrelationSettingsElementType" minOccurs="0"/>
+			<element name="TransactionSettings" type="senactive:TransactionSettingsType" minOccurs="0"/>
+			<element name="ThreadPoolSettings" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="ThreadPoolRef" nillable="true">
+							<complexType>
+								<attribute name="name" type="string" use="required"/>
+							</complexType>
+						</element>
+						<element name="ProcessTimeout" type="nonNegativeInteger" minOccurs="0"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AutoPublishPorts" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="OutputPort" type="senactive:OutputPortElementType" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="name" type="NMTOKEN" use="required"/>
+		<attribute name="component" type="NMTOKEN" use="required"/>
+	</complexType>
+	<complexType name="HubType">
+		<sequence>
+			<element name="InputPort" type="senactive:InputPortElementType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="OutputPort" type="senactive:OutputPortElementType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+	</complexType>
+	<complexType name="EventAdapterComponentType">
+		<complexContent>
+			<extension base="senactive:ManagedComponentType">
+				<sequence>
+					<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0"/>
+					<element name="OutputPort" type="senactive:OutputPortComponentType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="EventTransformer" nillable="true" minOccurs="0">
+						<complexType>
+							<attribute name="name" type="NMTOKEN" use="required"/>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="EventSelectorComponentType">
+		<complexContent>
+			<extension base="senactive:ManagedComponentType"/>
+		</complexContent>
+	</complexType>
+	<complexType name="EventAdapterMapElementType">
+		<sequence>
+			<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0"/>
+			<element name="EventTransformer" nillable="true" minOccurs="0">
+				<complexType>
+					<attribute name="name" type="NMTOKEN" use="required"/>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="name" type="NMTOKEN" use="required"/>
+		<attribute name="component" type="NMTOKEN" use="required"/>
+	</complexType>
+	<complexType name="EventProcessingMapType">
+		<sequence>
+			<element name="Description" minOccurs="0"/>
+			<element name="InitParameter" type="senactive:ParameterSetType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EventAdapter" type="senactive:EventAdapterMapElementType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EventService" type="senactive:EventServiceMapElementType" maxOccurs="unbounded"/>
+			<element name="Scheduler" type="senactive:SchedulerMapElementType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="Hub" type="senactive:HubType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="Connector" type="senactive:ConnectorType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="CorrelationSet" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:CorrelationSetType">
+							<attributeGroup ref="senactive:NameAttributeGroup"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="SynchronizationBlock" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:SynchronizationBlockType">
+							<attributeGroup ref="senactive:NameAttributeGroup"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="Filter" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<complexContent>
+						<extension base="senactive:FilterType">
+							<attribute name="name" type="NMTOKENS" use="required"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+	</complexType>
+	<element name="InTimeApplication" type="senactive:InTimeApplicationType"/>
+	<complexType name="EventTransformerComponentType">
+		<complexContent>
+			<extension base="senactive:ManagedComponentType">
+				<sequence>
+					<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0"/>
+					<element name="OutputPort" type="senactive:OutputPortComponentType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="MapElementType">
+		<sequence>
+			<element name="MapElement" nillable="true">
+				<complexType>
+					<attribute name="name" type="NMTOKEN" use="required"/>
+					<attribute name="eventType" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="FilterType">
+		<choice>
+			<element name="XPathSelector" type="senactive:XPathSelectorType"/>
+			<element name="CustomSelector" type="senactive:CustomSelectorType"/>
+		</choice>
+	</complexType>
+	<complexType name="DataSourceType">
+		<sequence>
+			<element name="ConnectionString" type="string"/>
+			<element name="User" type="string" minOccurs="0"/>
+			<element name="Password" type="string" minOccurs="0"/>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+		<attribute name="dbType" use="required">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="SqlDB"/>
+					<enumeration value="OleDB"/>
+					<enumeration value="OdbcDB"/>
+					<enumeration value="OracleDB"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<complexType name="InTimeApplicationType">
+		<sequence maxOccurs="unbounded">
+			<element name="Description" type="string" minOccurs="0"/>
+			<element name="InitParameters" type="senactive:ParameterSetType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="ApplicationComponents">
+				<complexType>
+					<sequence>
+						<element name="EventAdapterComponent" type="senactive:EventAdapterComponentType" minOccurs="0" maxOccurs="unbounded"/>
+						<element name="EventTransformerComponent" type="senactive:EventTransformerComponentType" minOccurs="0" maxOccurs="unbounded"/>
+						<element name="EventServiceComponent" type="senactive:EventServiceComponentType" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="ThreadPools" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="ThreadPool" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<complexContent>
+									<extension base="senactive:ThreadPoolType"/>
+								</complexContent>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="EventProcessingMaps">
+				<complexType>
+					<sequence>
+						<element name="EventProcessingMap" type="senactive:EventProcessingMapType" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="DataSources" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="DataSource" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<complexContent>
+									<extension base="senactive:DataSourceType"/>
+								</complexContent>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Resources" minOccurs="0">
+				<complexType>
+					<choice maxOccurs="unbounded">
+						<element name="StringResource" type="senactive:StringResourceType"/>
+						<element name="FileResource" type="senactive:FileResourceType"/>
+					</choice>
+				</complexType>
+			</element>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+		<attribute name="schemaVersion" type="string" use="required" fixed="1.0"/>
+	</complexType>
+	<complexType name="ComponentLibraryType">
+		<sequence minOccurs="0" maxOccurs="unbounded">
+			<element name="EventAdapterComponent" type="senactive:EventAdapterComponentType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EventTransformerComponent" type="senactive:EventTransformerComponentType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EventServiceComponent" type="senactive:EventServiceComponentType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EventSelectorComponent" type="senactive:EventSelectorComponentType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<element name="ComponentLibrary" type="senactive:ComponentLibraryType"/>
+	<complexType name="CorrelationSetType">
+		<sequence>
+			<element name="WaitingTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="CheckoutTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="CorrelationData" maxOccurs="unbounded">
+				<complexType>
+					<choice>
+						<element name="XPathSelector" type="senactive:XPathSelectorType"/>
+						<element name="EventAttributeSelector" type="senactive:EventAttributeSelectorType"/>
+						<element name="CustomSelector" type="senactive:CustomSelectorType"/>
+					</choice>
+					<attribute name="eventType" type="senactive:EventTypeType" use="required"/>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="SynchronizationBlockType">
+		<sequence>
+			<choice>
+				<element name="CorrelationSet" type="senactive:CorrelationSetType"/>
+				<element name="CorrelationSetRef" nillable="true">
+					<complexType>
+						<attribute name="name" type="NMTOKEN" use="required"/>
+					</complexType>
+				</element>
+			</choice>
+			<element name="MaxParallel" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="WaitingTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="LockTimeout" type="nonNegativeInteger" minOccurs="0"/>
+			<element name="Members">
+				<complexType>
+					<sequence>
+						<element name="EventService" nillable="true" maxOccurs="unbounded">
+							<complexType>
+								<attribute name="name" type="NMTOKEN" use="required"/>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="ConnectorType">
+		<sequence>
+			<element name="From" type="senactive:MapElementType"/>
+			<element name="To" type="senactive:MapElementType"/>
+			<choice minOccurs="0">
+				<element name="Filter" type="senactive:FilterType"/>
+				<element name="FilterRef" nillable="true">
+					<complexType>
+						<attribute name="name" type="NMTOKEN" use="required"/>
+					</complexType>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="ParameterSetType">
+		<sequence>
+			<element name="Parameter" type="senactive:ParameterType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="ThreadPoolType">
+		<sequence>
+			<element name="MinThreads" type="nonNegativeInteger" default="0"/>
+			<element name="MaxThreads" type="nonNegativeInteger"/>
+		</sequence>
+		<attributeGroup ref="senactive:NameAttributeGroup"/>
+	</complexType>
+	<complexType name="XPathSelectorType">
+		<sequence>
+			<element name="XPathExpression" type="xs:string"/>
+		</sequence>
+	</complexType>
+	<complexType name="EventAttributeSelectorType">
+		<sequence>
+			<choice maxOccurs="unbounded">
+				<element name="EventAttributeValue" nillable="true">
+					<complexType>
+						<simpleContent>
+							<extension base="string">
+								<attribute name="name" type="NMTOKEN" use="required"/>
+							</extension>
+						</simpleContent>
+					</complexType>
+				</element>
+				<element name="EventAttribute">
+					<complexType>
+						<complexContent>
+							<extension base="senactive:EventAttributeSelectorType">
+								<attribute name="name" type="NMTOKEN" use="required"/>
+							</extension>
+						</complexContent>
+					</complexType>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="TransactionSettingsType">
+		<sequence>
+			<element name="IsolationLevel">
+				<simpleType>
+					<restriction base="xs:string">
+						<enumeration value="Serializable"/>
+						<enumeration value="RepeatableRead"/>
+						<enumeration value="ReadCommitted"/>
+						<enumeration value="ReadUncommitted"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="ResourceType">
+		<attribute name="name" type="NMTOKEN" use="required"/>
+	</complexType>
+	<complexType name="StringResourceType">
+		<complexContent>
+			<extension base="senactive:ResourceType">
+				<sequence>
+					<element name="Value" type="xs:string"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="FileResourceType">
+		<complexContent>
+			<extension base="senactive:ResourceType">
+				<sequence>
+					<element name="File" type="xs:string"/>
+				</sequence>
+				<attribute name="format" use="required">
+					<simpleType>
+						<restriction base="xs:string">
+							<enumeration value="text"/>
+							<enumeration value="binary"/>
+						</restriction>
+					</simpleType>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<attributeGroup name="NameAttributeGroup">
+		<attribute name="name" type="NMTOKEN" use="required"/>
+		<attribute name="displayName" type="string" use="optional"/>
+	</attributeGroup>
+	<complexType name="CustomSelectorType">
+		<sequence>
+			<any namespace="##any" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="name" type="NMTOKEN" use="required"/>
+		<attribute name="implementationClass" type="NCName" use="required"/>
+	</complexType>
+	<simpleType name="EventTypeType">
+		<restriction base="string">
+			<pattern value="[\?]|[\*]|[a-zA-Z0-9]+"/>
+		</restriction>
+	</simpleType>
+	<complexType name="TimeEventSettingsForScheduleType">
+		<sequence>
+			<element name="ProcessBySession" nillable="true">
+				<complexType>
+					<sequence>
+						<element name="ContinueProcessingAfterFailure" type="boolean" default="true" minOccurs="0"/>
+						<element name="SingleTransaction" type="boolean" default="true" minOccurs="0"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+</schema>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 sp1 U (http://www.xmlspy.com) by - (Ru-Board) -->
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by - (-) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="virtualRoot">
+		<xs:choice>
+			<xs:element ref="EventType"/>
+			<xs:element ref="EventObjectType"/>
+			<xs:element ref="VirtualEventType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="EventType" type="EventTypeType"/>
+	<xs:element name="EventObjectType" type="EventObjectTypeType"/>
+	<xs:complexType name="EventTypeAttributeType">
+		<xs:sequence>
+			<xs:element name="DataType" type="EventDataTypeType"/>
+			<xs:element name="Validators" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Validator" type="EventTypeAttributeValidatorType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="catalogName" type="xs:string" use="required"/>
+		<xs:attribute name="reuseable" type="xs:boolean" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EventDataTypeType">
+		<xs:sequence>
+			<xs:element name="RuntimeType" nillable="true">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="catalogName" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="catalogName" type="xs:string" use="required"/>
+		<xs:attribute name="multiValue" type="xs:boolean" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EventTypeAttributeValidatorType">
+		<xs:sequence>
+			<xs:element name="Parameters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Parameter" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="name" type="xs:string" use="required"/>
+										<xs:attribute name="runtimeType" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="catalogName" type="xs:string" use="required"/>
+		<xs:attribute name="runtimeType" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EventObjectTypeType">
+		<xs:sequence>
+			<xs:element name="Attributes" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Attribute" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="EventTypeAttributeType">
+										<xs:sequence>
+											<xs:element name="Name" type="xs:string"/>
+											<xs:element name="Mandatory" type="xs:boolean"/>
+											<xs:choice minOccurs="0">
+												<xs:element name="DefaultValue" type="xs:string"/>
+												<xs:element name="DefaultValues">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Value" type="xs:string" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="catalogName" type="xs:NMTOKEN" use="required"/>
+	</xs:complexType>
+	<xs:element name="EventTypeAttribute" type="EventTypeAttributeType"/>
+	<xs:element name="EventDataType" type="EventDataTypeType"/>
+	<xs:element name="EventTypeAttributeValidator" type="EventTypeAttributeValidatorType"/>
+	<xs:element name="VirtualEventType" type="VirtualEventTypeType"/>
+	<xs:complexType name="VirtualEventTypeType">
+		<xs:complexContent>
+			<xs:extension base="EventObjectTypeType">
+				<xs:sequence>
+					<xs:element name="BaseTypes" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="BaseType" type="xs:string" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="XPathConstraints" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Expression" type="xs:string" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EventTypeType">
+		<xs:complexContent>
+			<xs:extension base="EventObjectTypeType">
+				<xs:sequence>
+					<xs:element name="AllowUnknownAttributes" type="xs:boolean"/>
+					<xs:element name="ImplementationType" type="xs:string"/>
+					<xs:element name="Parent" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>
