@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InTimeApplication name="TelcoSampleApplication" displayName="Telco Sample Application" schemaVersion="1.0" xmlns="http://www.senactive.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com ../../xsd/epm.xsd">
+<Description>
+Telco Sample Application
+v 0.01
+</Description>
+	<ApplicationComponents>  
+		<!--
+            MSMQ Event Adapter
+        -->
+		<EventAdapterComponent name="MSMQSimulationMessageAdapterComponent" implementationClass="Eventis.Components.EventAdapters.Msmq.MsmqEventAdapter">
+			<EventTransformer name="MSMQSimulationMessageTransformer"/>
+		</EventAdapterComponent>
+		<!--
+            Simulation Transformer 
+        -->
+		<EventTransformerComponent name="MSMQSimulationMessageTransformer" implementationClass="Eventis.Components.EventAdapters.Msmq.MsmqSimulationTransformer">
+			<OutputPort>
+				<EventType name="*"/>
+			</OutputPort>
+		</EventTransformerComponent>
+		<!--
+            Component for storing the Tender*-Events
+        -->
+		<EventServiceComponent name="EventReceiverComponent" implementationClass="Eventis.InTimeEM.EventReceiverService">
+			<InputPort>
+				<EventType name="*"/>
+			</InputPort>
+		</EventServiceComponent>
+	</ApplicationComponents>
+	<EventProcessingMaps>
+		<EventProcessingMap name="EMMap">
+			<!--
+                Configuration of the Event Adapter
+            -->
+			<EventAdapter name="MsmqEventAdapter" component="MSMQSimulationMessageAdapterComponent">
+				<InitParameters>
+					<Parameter name="QueueName">
+						<Value>.\Private$\EMQueue</Value>
+					</Parameter>
+					<Parameter name="Mode">
+						<Value>Transactional</Value>
+					</Parameter>
+				</InitParameters>
+			</EventAdapter>
+			
+			
+			<!-- 
+			  Correlating all EVENTS with same UserId == CustomerId
+			  -->
+			<EventService name="SameCustomer" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>SameCustomer</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						
+						<CorrelationData eventType="IncomingCall">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="OutgoingCall">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="SMSReceived">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="SMSSent">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+
+						<CorrelationData eventType="ChurnAlarm">
+							<XPathSelector>
+								<XPathExpression>//UserId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+
+						<CorrelationData eventType="LoginWebpage">
+							<XPathSelector>
+								<XPathExpression>//UserId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="VisitsWebpage">
+							<XPathSelector>
+								<XPathExpression>//UserId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						
+						
+					
+							
+											
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
+			
+
+			<!-- Not yet Correlated:
+	
+				CampaignEventObjectType.xml
+
+
+
+
+		
+			-->
+			
+			
+			
+			<!--
+                Connect the event adapter to the correlating event services
+            -->
+		
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="SameCustomer" eventType="*"/>
+				</To>
+			</Connector>
+		
+
+						
+			
+			
+		</EventProcessingMap>
+	</EventProcessingMaps>
+</InTimeApplication>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EventType catalogName="LoginWebpage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="UserId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>UserId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DateTime">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateTime</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		
+		<Attribute reuseable="true" catalogName="TechInfo">
+			<DataType multiValue="false" catalogName="TechInfo">
+				<RuntimeType catalogName="TechInfo"/>
+			</DataType>
+			<Name>TechInfo</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		
+		</Attributes>
+	<AllowUnknownAttributes>false</AllowUnknownAttributes>
+	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>
+</EventType>
