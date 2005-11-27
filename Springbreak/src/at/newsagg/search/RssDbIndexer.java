@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,12 +47,12 @@ public class RssDbIndexer {
                 index = new File(indexLocation);
                 this.setIndexLocation(indexLocation);
                 List items = (List)itemDao.getAllItems();
+                log.debug("### items empty? " + items);
                 try {
                     final IndexWriter writer = new IndexWriter(indexLocation, new StandardAnalyzer(), true);
                     
                     for (Iterator iter = items.iterator(); iter.hasNext(); ) { 
                         Item rssItem = (Item) iter.next();
-                        //System.out.println("####### " + rssItem.getTitle());
                         Document doc = new Document();
                         doc.add(Field.Text("id",  Long.toString(rssItem.getId())));
                         doc.add(Field.Text("title", rssItem.getTitle()));
@@ -70,70 +71,44 @@ public class RssDbIndexer {
     }
     
     /**
-     * Search index for something
+     * Search whole index for something
      * 
      * @param search SearchString
      * @param numberOfResults 
      */
-    public void search(String search, int numberOfResults) {
+    public Vector searchAllRssItems(String search, int numberOfResults) {
     	log.debug("#### searchQuery=" + search);
     	log.debug("### numberOfResults " + numberOfResults);
     	try {
 	    	Directory fsDir = FSDirectory.getDirectory(index, false);
 	    	IndexSearcher is = new IndexSearcher(fsDir);
 	    	
-	    	Query query = QueryParser.parse(search, "description", new StandardAnalyzer());
+	    	Query query = QueryParser.parse(search.trim(), "description", new StandardAnalyzer());
 	    	
 	    	long start = new Date().getTime();
 	    	Hits hits = is.search(query);
 	    	long end = new Date().getTime();
 	    	
+	    	Vector rssItems = new Vector();
+	    	log.debug("#### hits.length() " + hits.length());
 	    	for (int i = 0; i < hits.length(); i++) {
 	    		Document doc = hits.doc(i);
 	    		log.debug("#### found object id = " + doc.get("id"));
-	    		log.debug("#### found object id = " + doc.get("id"));
+	    		
+	    		// retrieve Item by Id from database
+	    		rssItems.add(itemDao.getItem(Integer.parseInt(doc.get("id"))));
 	    	}
+	    	
+	    	return rssItems;
+	    	
     	} catch (IOException e) {
     		 e.printStackTrace();
     	} catch (ParseException e) {
     		 e.printStackTrace();
     	}
-    	
- /*           log.debug("#### searchQuery=" + search);
-            System.out.println("#### numberOfResults " + numberOfResults);
-            // create query from searchstring
-            Query query = null;
-            try {
-                query = QueryParser.parse(search, "description", new StandardAnalyzer());
-            }
-            catch (ParseException e) {
-                e.printStackTrace();
-            }
-            // create List with ids to retrieve the rss db objects
-            ArrayList ids = new ArrayList();
-            try {
-                IndexReader reader = IndexReader.open(index);
-                IndexSearcher searcher = new IndexSearcher(reader);
-                Hits hits = searcher.search(query);
-                for (int i = 0; i != hits.length() && i != numberOfResults; ++i) {
-                    Document doc = hits.doc(i);
-                    ids.add(new Integer(doc.getField("id").stringValue()));
-                }
-                searcher.close();
-                reader.close();
-                log.debug("#### id Object size = " + ids.size());
-                for (Iterator iter = ids.iterator(); iter.hasNext(); ) { 
-                    Integer id = (Integer) iter.next();
-                    System.out.println("#### " + id);
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            */
-            
-            // create rss objects based on the resultset
+    	return null;
     }
+    
 
     public ItemDAO getItemDao() {
         return itemDao;

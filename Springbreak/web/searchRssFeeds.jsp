@@ -16,5 +16,8 @@
 			</td>
 		</tr>
 	</table>
+	<c:forEach var="rssItem" items="${rssItems}" varStatus="status"> 
+		${rssItem.id}<br/>
+	</c:forEach> 
 </form>
 </body>

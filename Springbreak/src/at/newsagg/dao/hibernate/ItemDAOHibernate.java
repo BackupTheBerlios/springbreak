@@ -64,7 +64,7 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
      * @return
      */
     public Item getItem(int id) {
-        return (Item) getHibernateTemplate().load(Item.class, new Integer(id));
+        return (Item) getHibernateTemplate().load(Item.class, new Long(id));
     }
 
     /**

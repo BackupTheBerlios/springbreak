@@ -1,19 +1,17 @@
 package at.newsagg.web; 
 
-import javax.servlet.ServletException;
+import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.validation.BindException;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.web.servlet.view.RedirectView;
 
-import at.newsagg.search.RssDbIndexer;  
+import at.newsagg.search.RssDbIndexer;
 import at.newsagg.web.commandObj.SearchFormCommand;
 
 /**
@@ -45,9 +43,9 @@ public class SearchFormController  extends SimpleFormController {
             return showForm(request, response, errors);
         } 
         
-        rssDbIndexer.search(search, 100);
-        
-        return new ModelAndView(new RedirectView(getSuccessView())); 
+        //return new ModelAndView(new RedirectView(getSuccessView()), "rssItems", rssDbIndexer.searchAllRssItems(search, 100));
+        Vector rssItems = rssDbIndexer.searchAllRssItems(search, 100);
+        return new ModelAndView("searchRssFeeds", "rssItems", rssItems);
         } 
     
 }
