@@ -27,7 +27,7 @@
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.String</RuntimeType>
 			</DataType>
-			<Name>MsgLength</Name>
+			<Name>Duration</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		<Attribute reuseable="true" catalogName="Location">

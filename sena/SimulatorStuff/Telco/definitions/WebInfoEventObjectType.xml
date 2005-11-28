@@ -6,14 +6,14 @@
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.String</RuntimeType>
 			</DataType>
-			<Name>TransportId</Name>
+			<Name>RequestedService</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		<Attribute reuseable="false" catalogName="Parameters">
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.String</RuntimeType>
 			</DataType>
-			<Name>CarrierId</Name>
+			<Name>Parameters</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		</Attributes>
