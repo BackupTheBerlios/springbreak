@@ -141,14 +141,86 @@
 		</Enumeration>
 	</ValueGenerator>
 	
+	<ValueGenerator name="VG_WebService">
+		<Enumeration>
+			<Elements>
+				<Element>Online-Bill</Element>
+				<Element>Webshop</Element>
+				<Element>Vertragsverlaengerung</Element>
+				<Element>OnlineSMS</Element>
+				<Element>Webshop</Element>
+				<Element>Online-Bill</Element>
+				<Element>Webshop</Element>
+				<Element>Kundentreue</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_Browser">
+		<Enumeration>
+			<Elements>
+				<Element>IE 6.0</Element>
+				<Element>Opera 8.5</Element>
+				<Element>IE 6.0</Element>
+				<Element>IE 6.0</Element>
+				<Element>Firefox 1.5</Element>
+				<Element>IE 6.0</Element>
+				<Element>IE 5.5</Element>
+				<Element>Safari</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_OS">
+		<Enumeration>
+			<Elements>
+				<Element>Win XP</Element>
+				<Element>Win 2000</Element>
+				<Element>Win XP</Element>
+				<Element>Win XP</Element>
+				<Element>Linux</Element>
+				<Element>Win 98</Element>
+				<Element>Win XP</Element>
+				<Element>MacOS X</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	
 	<!-- EVENT OBJECT GENERATORS -->
 	
+	<!-- Info how Customer contacts Provider -->
 	<EventObjectGenerator name="EO_ContactInfo">
     	<Template>	
     		<ContactInfo>	
     			<ContactType><ValueGenerator name="VG_ContactType"/></ContactType>	
     			<Topic><ValueGenerator name="VG_ContactTopic"/></Topic>
 			</ContactInfo>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <!-- Info what Customer access in Web -->
+	<EventObjectGenerator name="EO_WebInfo">
+    	<Template>	
+    		<WebInfo>	
+    			<RequestedService><ValueGenerator name="VG_WebService"/></RequestedService>	
+    			<Parameters>empty</Parameters>
+			</WebInfo>		
+    	</Template>
+    </EventObjectGenerator>
+    
+    <!-- Technical Info what Customer access in Web -->
+	<EventObjectGenerator name="EO_TechInfo">
+    	<Template>	
+    		<TechInfo>	
+    			<Browser><ValueGenerator name="VG_Browser"/></Browser>	
+    			<OS><ValueGenerator name="VG_OS"/></OS>
+    			<SSL>true</SSL>
+			</TechInfo>		
     	</Template>
     </EventObjectGenerator>
 	
@@ -379,6 +451,9 @@
 				<DateTime>
 					<ValueGenerator name="VG_StartPoint"/>
 				</DateTime>
+				<TechInfo>
+					<EventObjectGenerator name="EO_TechInfo"/>
+				</TechInfo>
 				
 			</LoginWebpage>
 		</Template>
@@ -395,6 +470,9 @@
 				<DateTime>
 					<ValueGenerator name="VG_StartPoint"/>
 				</DateTime>
+				<WebInfo>
+					<EventObjectGenerator name="EO_WebInfo"/>
+				</WebInfo>
 				
 			</VisitsWebpage>
 		</Template>
@@ -693,8 +771,8 @@
 			<ValueGenerator name="VG_PartnerId"/>
 		</ScopeVariable>
 		
-		<EventGenerator name="EG_OutgoingCall"/>
-		
+		<EventGenerator name="EG_VisitsWebpage"/>
+		<EventGenerator name="EG_LoginWebpage"/>
 		
 		<DateSequence>
 			<CorrelationData eventType="*">

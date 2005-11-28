@@ -96,6 +96,41 @@ v 0.01
 								<XPathExpression>//UserId</XPathExpression>
 							</XPathSelector>
 						</CorrelationData>
+						<CorrelationData eventType="ContactsProvider">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="MMSReceived">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="MMSSent">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="MParkingRequest">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="MParkingFulFill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="TicketRequest">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="TicketFulFill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
 						
 						
 					
