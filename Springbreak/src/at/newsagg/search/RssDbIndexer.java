@@ -22,6 +22,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import at.newsagg.dao.ItemDAO;
+import at.newsagg.model.User;
 import at.newsagg.model.parser.hibernate.Item;
 
 /**
@@ -76,9 +77,11 @@ public class RssDbIndexer {
      * @param search SearchString
      * @param numberOfResults 
      */
-    public Vector searchAllRssItems(String search, int numberOfResults) {
+    public Vector searchAllRssItems(String search, int numberOfResults, User user) {
     	log.debug("#### searchQuery=" + search);
     	log.debug("### numberOfResults " + numberOfResults);
+    	log.debug("### user " + user.getUsername());
+    	
     	try {
 	    	Directory fsDir = FSDirectory.getDirectory(index, false);
 	    	IndexSearcher is = new IndexSearcher(fsDir);

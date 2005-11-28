@@ -302,7 +302,9 @@
  <bean id="atom03Parser" class="at.newsagg.parser.Atom_0_3_Parser" />
  
  <bean id="rssIndexer" class="at.newsagg.search.RssDbIndexer">
- 			<property name="itemDao"><ref local="itemDAO"/></property> 
+ 			<property name="itemDao">
+ 				<ref local="itemDAO"/>
+ 			</property> 
  </bean>
 
 <!-- Ende RSS Parser Definitions -->

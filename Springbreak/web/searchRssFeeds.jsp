@@ -6,18 +6,22 @@
 <h3><fmt:message key="indexerSearch.searchtitle"/></h3>
 
 <form method="post" action="<c:url value="/showSearch.html"/>">  
-	<table class="adminstyle"> 
-		<tr>
-			<td>
-					 <input type="text"  name="search"/>
-			</td>
-			<td>
-					<input type="submit" value="<fmt:message key="indexerSearch.searchbuttonlabel"/>">
-			</td>
-		</tr>
-	</table>
+	<center>
+	<input type="text"  name="search"/>&nbsp;<input type="submit" value="<fmt:message key="indexerSearch.searchbuttonlabel"/>">
+	</center>
+	<br/>
+	<br/>
 	<c:forEach var="rssItem" items="${rssItems}" varStatus="status"> 
-		${rssItem.id}<br/>
+		<table class="adminstyle"> 
+			<tr>
+				<td>${rssItem.title}</td>
+			</tr>
+			<tr>
+				<td>${rssItem.description}</td>
+			</tr>
+		</table>
+		<br/>
+		<br/>
 	</c:forEach> 
 </form>
 </body>
