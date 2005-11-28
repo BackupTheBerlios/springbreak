@@ -5,7 +5,7 @@
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.Int32</RuntimeType>
 			</DataType>
-			<Name>Request</Name>
+			<Name>RequestId</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		<Attribute reuseable="false" catalogName="CustomerId">
