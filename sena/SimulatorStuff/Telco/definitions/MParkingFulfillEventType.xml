@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EventType catalogName="MParkingFulFill" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="RequestId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>Request</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="CustomerId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>CustomerId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="DateTime">
+			<DataType multiValue="false" catalogName="DateTime">
+				<RuntimeType>System.DateTime</RuntimeType>
+			</DataType>
+			<Name>DateTime</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		</Attributes>
+	<AllowUnknownAttributes>false</AllowUnknownAttributes>
+	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>
+</EventType>

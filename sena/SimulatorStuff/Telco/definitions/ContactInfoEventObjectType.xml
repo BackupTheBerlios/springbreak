@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MultipleDefinitions>
+<EventObjectType catalogName="ContactInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+	<Attributes>
+		<Attribute reuseable="false" catalogName="Topic">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>Topic</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="ContactType">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>ContactType</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		</Attributes>
+</EventObjectType>
+</MultipleDefinitions>
