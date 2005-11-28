@@ -51,18 +51,21 @@
 			</Increment>
 		</DateRange>
 	</ValueGenerator>
-	<ValueGenerator name="VG_Price">
+	
+	<!-- Reason why User on Churnlist -->
+	<ValueGenerator name="VG_ChurnReason">
 		<Enumeration>
 			<Elements>
-				<Element>2500</Element>
-				<Element>3500</Element>
-				<Element>2400</Element>
-				<Element>3200</Element>
-				<Element>2600</Element>
+				<Element>ContractEnds</Element>
+				<Element>UsageDown</Element>
+				<Element>CallsToOtherProvider</Element>
+				<Element>Dissatisfaction</Element>
 			</Elements>
-			<DataType>System.Int32</DataType>
+			<DataType>System.String</DataType>
 		</Enumeration>
 	</ValueGenerator>
+	
+	
 	<ValueGenerator name="VG_Boolean">
 		<Booleans>
 			<ProbabilityTrue>1</ProbabilityTrue>
@@ -176,10 +179,46 @@
 				<DateTime>
 					<ValueGenerator name="VG_StartPoint"/>
 				</DateTime>
-				<TechInfo />
+				
 			</LoginWebpage>
 		</Template>
 	</EventGenerator>
+	
+	<!-- visits Webpage -->
+	
+	<EventGenerator name="EG_VisitsWebpage">
+		<Template>
+			<VisitsWebpage>
+				<UserId>
+					<ScopeVariable name="UserId"/>
+				</UserId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				
+			</VisitsWebpage>
+		</Template>
+	</EventGenerator>
+	
+	<!-- User added to Churn List -->
+	
+	<EventGenerator name="EG_ChurnAlarm">
+		<Template>
+			<ChurnAlarm>
+				<UserId>
+					<ScopeVariable name="UserId"/>
+				</UserId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Reason>
+					<ValueGenerator name="VG_ChurnReason"/>
+				</Reason>
+				
+			</ChurnAlarm>
+		</Template>
+	</EventGenerator>
+	
 	
 	
 	<!--
@@ -211,6 +250,62 @@
 			<EventGenerator name="EG_SMSReceived"/>
 	</EventSequence>
 	
+
+	
+		<!-- Sequence of User login and visits webpage-->
+	<EventSequence name="ES_HitWebpage">
+			
+			<EventGenerator name="EG_LoginWebpage"/>
+			<EventGenerator name="EG_VisitsWebpage">
+				<RandomInstances>
+					<Min>1</Min>
+					<Max>5</Max>
+				</RandomInstances>
+			</EventGenerator>
+			
+			<!-- Zeit von Login bis Seite betrachten -->
+			<DateSequence>
+			<CorrelationData eventType="LoginWebpage">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="VisitsWebpage">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>10</Seconds>
+				</Min>
+				<Max>
+					<Minutes>5</Minutes>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+		
+		<!-- Zeit zwischen Seiten betrachten -->
+		<DateSequence>
+			<CorrelationData eventType="VisitsWebpage">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>25</Seconds>
+				</Min>
+				<Max>
+					<Minutes>10</Minutes>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+	</EventSequence>
+	
+<!-- ***************************************************************************************** -->	
 	<!-- Run Events for a single Customer -->
 	<EventSequence name="ES_RunCustomer">
 	
@@ -265,13 +360,23 @@
 			<Case probability="0.1">
 				<EventGenerator name="EG_SMSReceived"/>
 			</Case>
-			<Case probability="0.5">
+			<Case probability="0.1">
 				<EventSequence name="ES_Sent_Received_SMS"/>
 			</Case>
 			
-			<Case probability="0.5">
+			<Case probability="0.1">
 				<EventSequence name="ES_Received_Sent_SMS"/>
 			</Case>
+			
+			<Case probability="0.1">
+				<EventSequence name="ES_HitWebpage"/>
+			</Case>
+			
+			<Case probability="0.05">
+				<EventGenerator name="EG_ChurnAlarm"/>
+			</Case>
+			
+			
 		</Switch>
 	</EventSequence>
 	
@@ -305,6 +410,50 @@
 			</RandomTimeSpans>
 		</DateSequence>
 	</EventSequence>
+	
+	
+
+	
+	<!-- Run RandomInstances of Users -->
+	<EventSequence name="ES_Tester">
+		
+	<ScopeVariable name="UserId">
+			<ValueGenerator name="VG_UserId"/>
+		</ScopeVariable>
+		
+		<EventGenerator name="EG_ChurnAlarm"/>
+		
+		<DateSequence>
+			<CorrelationData eventType="*">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="*">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>1</Seconds>
+				</Min>
+				<Max>
+					<Hours>24</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+	</EventSequence>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!--
     ***************************************
     **** Simulator Run Definitions ****
@@ -317,6 +466,15 @@
 			<Concurrency>Serialized</Concurrency>
 		</EventSequenceSimulation>
 	</SimulationRun>
+	
+	<SimulationRun name="ES_Tester">
+		<EventSequenceSimulation>
+		<EventSequence name="ES_Tester" />
+			<Instances>1</Instances>
+			<Concurrency>Serialized</Concurrency>
+		</EventSequenceSimulation>
+	</SimulationRun>
+	
 	<EventReceiver name="Receiver1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
 		<MsmqQueue>
 			<QueueName>.\Private$\EMQueue</QueueName>
