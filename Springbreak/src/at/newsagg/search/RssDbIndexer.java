@@ -2,6 +2,7 @@ package at.newsagg.search;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,9 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import at.newsagg.dao.FeedSubscriberDAO;
 import at.newsagg.dao.ItemDAO;
+import at.newsagg.model.FeedSubscriber;
 import at.newsagg.model.User;
 import at.newsagg.model.parser.hibernate.Item;
 
@@ -34,6 +37,7 @@ import at.newsagg.model.parser.hibernate.Item;
 public class RssDbIndexer {
 	private static Log log = LogFactory.getLog(RssDbIndexer.class);
     private ItemDAO itemDao;
+    private FeedSubscriberDAO feedSubscriberDAO;
     private String indexLocation;
     private File index;
     private boolean indexCreated = false;
@@ -77,10 +81,9 @@ public class RssDbIndexer {
      * @param search SearchString
      * @param numberOfResults 
      */
-    public Vector searchAllRssItems(String search, int numberOfResults, User user) {
+    public Vector searchAllRssItems(String search, int numberOfResults) {
     	log.debug("#### searchQuery=" + search);
     	log.debug("### numberOfResults " + numberOfResults);
-    	log.debug("### user " + user.getUsername());
     	
     	try {
 	    	Directory fsDir = FSDirectory.getDirectory(index, false);
@@ -112,6 +115,62 @@ public class RssDbIndexer {
     	return null;
     }
     
+    /**
+     * Search whole index for something
+     * 
+     * @param search SearchString
+     * @param numberOfResults 
+     */
+    public Vector searchRssItemsByUserSubscription(String search, int numberOfResults, User user) {
+    	log.debug("#### searchQuery=" + search);
+    	log.debug("### numberOfResults " + numberOfResults);
+    	log.debug("### user " + user.getUsername());
+    	
+    	try {
+	    	Directory fsDir = FSDirectory.getDirectory(index, false);
+	    	IndexSearcher is = new IndexSearcher(fsDir);
+	    	
+	    	Query query = QueryParser.parse(search.trim(), "description", new StandardAnalyzer());
+	    	
+	    	long start = new Date().getTime();
+	    	Hits hits = is.search(query);
+	    	long end = new Date().getTime();
+	    	
+	    	Vector rssItems = new Vector();
+	    	Collection subscribedFeeds = feedSubscriberDAO.getFeedSubscriberByUser(user.getUsername());
+	    	
+	    	log.debug("#### hits.length() " + hits.length());
+	    	for (int i = 0; i < hits.length(); i++) {
+	    		Document doc = hits.doc(i);
+	    		log.debug("#### found object id = " + doc.get("id"));
+	    		
+	    		// retrieve Item by Id from database
+	    		Item item = itemDao.getItem(Integer.parseInt(doc.get("id")));
+	    		
+	    		// check if this object has been subscribed by the user
+	    		
+	    		for (Iterator iter = subscribedFeeds.iterator(); iter.hasNext(); ) { 
+	    			FeedSubscriber feedSubscriber = (FeedSubscriber) iter.next();
+	    			
+	    			// if item is subscribed then add to collection
+	    			if ( feedSubscriber.getChannel().getId() == item.getChannel().getId() ) {
+	    				rssItems.add(item);
+	    			}
+	    		}
+	    		
+	    		
+	    		
+	    	}
+	    	
+	    	return rssItems;
+	    	
+    	} catch (IOException e) {
+    		 e.printStackTrace();
+    	} catch (ParseException e) {
+    		 e.printStackTrace();
+    	}
+    	return null;
+    }
 
     public ItemDAO getItemDao() {
         return itemDao;
@@ -128,6 +187,14 @@ public class RssDbIndexer {
     public void setIndexLocation(String indexLocation) {
         this.indexLocation = indexLocation;
     }
+
+	public FeedSubscriberDAO getFeedSubscriberDAO() {
+		return feedSubscriberDAO;
+	}
+
+	public void setFeedSubscriberDAO(FeedSubscriberDAO feedSubscriberDAO) {
+		this.feedSubscriberDAO = feedSubscriberDAO;
+	}
     
     
  

@@ -305,6 +305,9 @@
  			<property name="itemDao">
  				<ref local="itemDAO"/>
  			</property> 
+ 			<property name="feedSubscriberDAO">
+ 				<ref local="feedSubscriberDAO"/>
+ 			</property>
  </bean>
 
 <!-- Ende RSS Parser Definitions -->

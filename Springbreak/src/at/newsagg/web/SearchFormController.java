@@ -45,8 +45,8 @@ public class SearchFormController  extends SimpleFormController {
         
         //return new ModelAndView(new RedirectView(getSuccessView()), "rssItems", rssDbIndexer.searchAllRssItems(search, 100));
         UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
-        Vector rssItems = rssDbIndexer.searchAllRssItems(search, 100, userSession.getUserData());
+        Vector rssItems = rssDbIndexer.searchRssItemsByUserSubscription(search, 100, userSession.getUserData());
         return new ModelAndView("searchRssFeeds", "rssItems", rssItems);
-        } 
+   } 
     
 }
