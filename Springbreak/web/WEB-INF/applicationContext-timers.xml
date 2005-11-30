@@ -50,37 +50,45 @@ Sollte mächtiger und einfacher in der Definition sein
    </bean>
 
 <bean id="logTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
-      <property name="jobDetail"> 
-         <ref local="courseServiceInvokingJobDetail"/> 
-      </property> 
-      <property name="cronExpression">
-            <value>0 40 10 ? * MON</value>
-      </property> 
-   </bean>
-
-
-
-<bean id="courseServiceInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-<property name="targetObject">
-<ref bean="LogStatisticsCronJobService"/>
-</property>
-<property name="targetMethod">
-<value>runStatistics</value>
-</property>
+	<property name="jobDetail"> 
+		<list>
+			<ref local="courseServiceInvokingJobDetail"/> 
+			<ref local="timerLuceneIndizierung"/> 
+		</list>
+	</property> 
+	
+	<property name="cronExpression">
+	      <value>0 40 10 ? * MON</value>
+	</property> 
 </bean>
 
 
 
+<bean id="courseServiceInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<property name="targetObject">
+		<ref bean="LogStatisticsCronJobService"/>
+	</property>
+	<property name="targetMethod">
+		<value>runStatistics</value>
+	</property>
+</bean>
 
+<bean id="timerLuceneIndizierung" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<property name="targetObject">
+		<ref bean="IndexFeedsCronJobService"/>
+	</property>
+	<property name="targetMethod">
+		<value>indexFeeds</value>
+	</property>
+</bean>
 
-<bean id="LogStatisticsCronJobService"
-		class="at.newsagg.service.impl.LogStatisticsCronJobServiceImpl">
-		<property name="channelDAO"><ref bean="channelDAO"/></property>
-		<property name="feedSubscriberDAO"><ref bean="feedSubscriberDAO"/></property>
-		<property name="logDAO"><ref bean="logDAO"/></property>
-	</bean>
+<bean id="LogStatisticsCronJobService" class="at.newsagg.service.impl.LogStatisticsCronJobServiceImpl">
+	<property name="channelDAO"><ref bean="channelDAO"/></property>
+	<property name="feedSubscriberDAO"><ref bean="feedSubscriberDAO"/></property>
+	<property name="logDAO"><ref bean="logDAO"/></property>
+</bean>
+
+<bean id="IndexFeedsCronJobService" class="at.newsagg.service.impl.IndexFeedsImpl"/>
+
 	
-
-
-
-	</beans>
+</beans>
