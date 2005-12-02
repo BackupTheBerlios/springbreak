@@ -66,7 +66,18 @@ Sollte mächtiger und einfacher in der Definition sein
 	</property> 
 	
 	<property name="cronExpression">
-	      <value>30 20 4 ? * MON-FRI</value>
+		<!-- 
+		A cron expression has at least 6 (and optionally 7) time elements, separated by spaces. 
+		Each of these elements can be specified with an explicit value (e.g., 6), a range 
+		(e.g., 9–12), a list (e.g., 9,11,13), or a wildcard (e.g., *). The day of the month and
+		day of the week elements are mutually exclusive, so you should also indicate 
+		which one of these fields you don’t want to set by specifying it with a question 
+			mark (?).
+			 
+			 Seconds (0–59) Minutes (0–59) Hours (0–23) Day of month (1–31) 
+		     Month (1–12 or JAN–DEC) Day of week (1–7 or SUN–SAT) Year (1970–2099)  -->
+		<!-- <value>30 20 4 ? * MON-FRI</value>  -->
+		<value>0 0 * ? * MON-FRI</value> 
 	</property> 
 </bean>
 
@@ -96,7 +107,11 @@ Sollte mächtiger und einfacher in der Definition sein
 	<property name="logDAO"><ref bean="logDAO"/></property>
 </bean>
 
-<bean id="IndexFeedsCronJobService" class="at.newsagg.service.impl.IndexFeedsImpl"/>
+<bean id="IndexFeedsCronJobService" class="at.newsagg.service.impl.IndexFeedsImpl">
+	<property name="rssDbIndexer">
+ 		<ref local="rssIndexer"/>
+ 	</property>
+</bean>
 
 	
 </beans>
