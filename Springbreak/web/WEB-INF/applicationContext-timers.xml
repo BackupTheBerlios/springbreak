@@ -109,7 +109,7 @@ Sollte mächtiger und einfacher in der Definition sein
 
 <bean id="IndexFeedsCronJobService" class="at.newsagg.service.impl.IndexFeedsImpl">
 	<property name="rssDbIndexer">
- 		<ref local="rssIndexer"/>
+ 		<ref bean="rssIndexer"/>
  	</property>
 </bean>
 
