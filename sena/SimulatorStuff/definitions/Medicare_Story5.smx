@@ -94,7 +94,7 @@
       <ShipmentInfo>
         <From>Vienna</From>
         <To>Barcelona-Airport</To>
-        <DeliveryDate>2005-11-08T16:00:00</DeliveryDate>
+        <DeliveryDate>2005-11-10T17:00:00</DeliveryDate>
         <TransportType>Plane</TransportType>
         <Price>3000</Price>
         <MinTemp>-20</MinTemp>
@@ -161,7 +161,7 @@
       <Elements>
         <Element>2005-11-08T16:00:00</Element>
         <Element>2005-11-08T16:00:00</Element>
-        <Element>2005-11-08T17:00:00</Element>
+        <Element>2005-11-11T16:00:00</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
@@ -217,7 +217,7 @@
       <OrderReceived>
         <OrderId>17020</OrderId>
         <DateTime>2005-11-07T10:22:54</DateTime>
-        <DeliveryDate>2005-11-08T17:00:00</DeliveryDate>
+        <DeliveryDate>2005-11-10T17:00:00</DeliveryDate>
         <Destination>Barcelona</Destination>
         <ProductCollection>
           <EventObjectGenerator name="EO_ProductCollection">
@@ -454,7 +454,7 @@
       <ShipmentInfo>
         <From>Paris</From>
         <To>Barcelona-Airport</To>
-        <DeliveryDate>2005-11-08T16:00:00</DeliveryDate>
+        <DeliveryDate>2005-11-10T17:00:00</DeliveryDate>
         <TransportType>Plane</TransportType>
         <Price>2000</Price>
         <MinTemp>-20</MinTemp>
@@ -467,7 +467,7 @@
       <ShipmentInfo>
         <From>Paris</From>
         <To>Barcelona-Airport</To>
-        <DeliveryDate>2005-11-08T16:00:00</DeliveryDate>
+        <DeliveryDate>2005-11-10T17:00:00</DeliveryDate>
         <TransportType>Plane</TransportType>
         <Price>2500</Price>
         <MinTemp>-20</MinTemp>
@@ -480,7 +480,7 @@
       <ShipmentInfo>
         <From>Paris</From>
         <To>Barcelona-Warehouse</To>
-        <DeliveryDate>2005-11-08T17:00:00</DeliveryDate>
+        <DeliveryDate>2005-11-10T17:00:00</DeliveryDate>
         <TransportType>CooledTruck</TransportType>
         <Price>200</Price>
         <MinTemp>-20</MinTemp>

@@ -150,7 +150,7 @@
       <ShipmentInfo>
         <From>Vienna</From>
         <To>Rotterdam</To>
-        <DeliveryDate>2005-11-09T09:09:09</DeliveryDate>
+        <DeliveryDate>2005-11-11T16:00:00</DeliveryDate>
         <TransportType>ExtraCoolTruck</TransportType>
         <Price>4000</Price>
         <MinTemp>-20</MinTemp>
@@ -198,11 +198,11 @@
       <DataType>System.String</DataType>
     </Enumeration>
   </ValueGenerator>
-  <ValueGenerator name="VG_LateBuffered">
+  <ValueGenerator name="VG_LateBuffered" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Enumeration>
       <Elements>
         <Element>2005-11-08T20:00:00</Element>
-        <Element>2005-11-09T01:00:00</Element>
+        <Element>2005-11-11T16:00:00</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
@@ -270,10 +270,10 @@
       <DataType>System.String</DataType>
     </Enumeration>
   </ValueGenerator>
-  <ValueGenerator name="VG_LateBuffered_BackupPlan">
+  <ValueGenerator name="VG_LateBuffered_BackupPlan" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
     <Enumeration>
       <Elements>
-        <Element>2005-11-08T16:00:00</Element>
+        <Element>2005-11-11T16:00:00</Element>
       </Elements>
       <DataType>System.String</DataType>
     </Enumeration>
