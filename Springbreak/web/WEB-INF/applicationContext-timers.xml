@@ -77,7 +77,7 @@ Sollte mächtiger und einfacher in der Definition sein
 			 Seconds (0–59) Minutes (0–59) Hours (0–23) Day of month (1–31) 
 		     Month (1–12 or JAN–DEC) Day of week (1–7 or SUN–SAT) Year (1970–2099)  -->
 		<!-- <value>30 20 4 ? * MON-FRI</value>  -->
-		<value>0 0 * ? * MON-FRI</value> 
+		<value>0 15 * ? * MON-FRI</value> 
 	</property> 
 </bean>
 

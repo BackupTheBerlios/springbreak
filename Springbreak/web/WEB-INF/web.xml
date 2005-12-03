@@ -15,7 +15,7 @@
     	<param-name>contextConfigLocation</param-name> 
 <!-- /WEB-INF/applicationContext-timers.xml -->
     	<param-value> 
-    		/WEB-INF/applicationContext.xml /WEB-INF/action-servlet.xml /WEB-INF/applicationContext-timers.xml
+    		/WEB-INF/applicationContext.xml /WEB-INF/action-servlet.xml 
     	</param-value> 
     </context-param>
     

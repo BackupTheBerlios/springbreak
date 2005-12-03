@@ -38,41 +38,60 @@ public class RssDbIndexer {
 	private static Log log = LogFactory.getLog(RssDbIndexer.class);
     private ItemDAO itemDao;
     private FeedSubscriberDAO feedSubscriberDAO;
-    private String indexLocation;
     private File index;
+    private String indexLocation;
     private boolean indexCreated = false;
+    private Date lastIndexUpdate;
+    private int numberOfIndexedItems;
     
     /**
-     * creates Index over all rss feeds
+     * Creates Index over all rss feeds. 
      * 
      * @param indexLocation indexlocation e:/tmp
      */
     public void build(String indexLocation) {
-            if (indexLocation != null || !indexLocation.equals("")) {
-                index = new File(indexLocation);
-                this.setIndexLocation(indexLocation);
-                List items = (List)itemDao.getAllItems();
-                log.debug("### items empty? " + items);
-                try {
-                    final IndexWriter writer = new IndexWriter(indexLocation, new StandardAnalyzer(), true);
-                    
-                    for (Iterator iter = items.iterator(); iter.hasNext(); ) { 
-                        Item rssItem = (Item) iter.next();
-                        Document doc = new Document();
-                        doc.add(Field.Text("id",  Long.toString(rssItem.getId())));
-                        doc.add(Field.Text("title", rssItem.getTitle()));
-                        doc.add(Field.Text("description", rssItem.getTitle()));
-                        writer.addDocument(doc);
-                        indexCreated = true;
-                    }
-                    log.debug("#### docCount=" + writer.docCount());
-                    writer.optimize();
-                    writer.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    	this.setIndexLocation(indexLocation);
+        this.buildIndex();
+    }
+    
+    /**
+     * Creates Index over all rss feeds. Takes standard path as 
+     * Lucene index location
+     */
+    public void build() {
+    	this.buildIndex();
+    }
+    
+    /**
+     * Creates Index over all rss feeds
+     */
+    private void buildIndex() {
+    	 if (indexLocation != null || !indexLocation.equals("")) {
+             index = new File(indexLocation);
+             List items = (List)itemDao.getAllItems();
+             log.debug("### items empty? " + items);
+             try {
+                 final IndexWriter writer = new IndexWriter(indexLocation, new StandardAnalyzer(), true);
+                 
+                 for (Iterator iter = items.iterator(); iter.hasNext(); ) { 
+                     Item rssItem = (Item) iter.next();
+                     Document doc = new Document();
+                     doc.add(Field.Text("id",  Long.toString(rssItem.getId())));
+                     doc.add(Field.Text("title", rssItem.getTitle()));
+                     doc.add(Field.Text("description", rssItem.getTitle()));
+                     writer.addDocument(doc);
+                     indexCreated = true;
+                 }
+                 this.lastIndexUpdate = new Date(System.currentTimeMillis());
+                 this.numberOfIndexedItems = writer.docCount();
+                 log.debug("#### docCount=" + writer.docCount());
+                 writer.optimize();
+                 writer.close();
+             }
+             catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
     }
     
     /**
@@ -157,9 +176,6 @@ public class RssDbIndexer {
 	    				rssItems.add(item);
 	    			}
 	    		}
-	    		
-	    		
-	    		
 	    	}
 	    	
 	    	return rssItems;
@@ -194,6 +210,30 @@ public class RssDbIndexer {
 
 	public void setFeedSubscriberDAO(FeedSubscriberDAO feedSubscriberDAO) {
 		this.feedSubscriberDAO = feedSubscriberDAO;
+	}
+
+	public boolean isIndexCreated() {
+		return indexCreated;
+	}
+
+	public void setIndexCreated(boolean indexCreated) {
+		this.indexCreated = indexCreated;
+	}
+
+	public Date getLastIndexUpdate() {
+		return lastIndexUpdate;
+	}
+
+	public void setLastIndexUpdate(Date lastIndexUpdate) {
+		this.lastIndexUpdate = lastIndexUpdate;
+	}
+
+	public int getNumberOfIndexedItems() {
+		return numberOfIndexedItems;
+	}
+
+	public void setNumberOfIndexedItems(int numberOfIndexedItems) {
+		this.numberOfIndexedItems = numberOfIndexedItems;
 	}
     
     

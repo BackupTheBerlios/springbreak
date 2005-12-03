@@ -4,16 +4,32 @@
 </head>
 <body>
 <h3><fmt:message key="indexer.indexerHomeAdminPage"/></h3>
-<spring:bind path="indexer.*"> 
-	<c:if test="${not empty status.errorMessages}"> 
-		<div class="error"> 
-			<c:forEach var="error" items="${status.errorMessages}"> 
-				<c:out value="${error}" escapeXml="false"/><br /> 
-			</c:forEach> 
-		</div> 
-	</c:if> 
-</spring:bind>
+
 <table class="adminstyle"> 
+	<tr>
+		<td>
+			Current index location:
+		</td>
+		<td>
+			 ${indexer.indexLocation}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Last index update:
+		</td>
+		<td>
+			 ${indexer.lastIndexUpdate}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Number of indexed items:
+		</td>
+		<td>
+			 ${indexer.numberOfIndexedItems}
+		</td>
+	</tr>
 	<tr>
 		<td>
 				<fmt:message key="indexer.createIndexAtPosition"/>e.g e:/tmp

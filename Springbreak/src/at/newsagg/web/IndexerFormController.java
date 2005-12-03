@@ -13,8 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import at.newsagg.model.User;
 import at.newsagg.search.RssDbIndexer;  
 import at.newsagg.web.commandObj.IndexerFormCommand;
+import at.newsagg.web.commandObj.UserFormCommand;
 
 /**
  * 
@@ -50,6 +52,22 @@ public class IndexerFormController  extends SimpleFormController {
         
         
         return new ModelAndView(new RedirectView(getSuccessView())); 
-        } 
+    }
+    
+    protected Object formBackingObject(HttpServletRequest request) throws ServletException { 
+		IndexerFormCommand indexerFormCmd = new IndexerFormCommand();
+		indexerFormCmd.setIndexLocation(rssDbIndexer.getIndexLocation());
+		if (rssDbIndexer.isIndexCreated() == true) {
+			indexerFormCmd.setIndexCreated("true");
+			indexerFormCmd.setLastIndexUpdate(rssDbIndexer.getLastIndexUpdate().toGMTString());
+		} else {
+			indexerFormCmd.setIndexCreated("false");
+		}
+		
+		indexerFormCmd.setNumberOfIndexedItems(Integer.toString(rssDbIndexer.getNumberOfIndexedItems()));
+		
+		return indexerFormCmd;
+		
+	} 
     
 }

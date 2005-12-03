@@ -47,8 +47,7 @@
         <props>
             <!-- <prop key="hibernate.dialect">net.sf.hibernate.dialect.HSQLDialect</prop>-->
             <prop key="hibernate.dialect">net.sf.hibernate.dialect.PostgreSQLDialect</prop>
-            <!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
-            <prop key="hibernate.hbm2ddl.auto">create</prop> 
+            <prop key="hibernate.hbm2ddl.auto">update</prop> 
 			<prop key="hibernate.show_sql">true</prop>
 			<prop key="hibernate.cache.provider_class">net.sf.hibernate.cache.EhCacheProvider</prop>
         </props>
@@ -311,6 +310,15 @@
  			<property name="feedSubscriberDAO">
  				<ref local="feedSubscriberDAO"/>
  			</property>
+ 			<property name="indexLocation">
+ 				<value>e:/tmp</value>
+ 			</property>
+ 			<property name="indexCreated">
+ 				<value>false</value>
+ 			</property>
+ 			<property name="numberOfIndexedItems">
+ 				<value>0</value>
+ 			</property>
  </bean>
 
 <!-- Ende RSS Parser Definitions -->
@@ -383,7 +391,7 @@ Sollte mächtiger und einfacher in der Definition sein
 			 Seconds (0–59) Minutes (0–59) Hours (0–23) Day of month (1–31) 
 		     Month (1–12 or JAN–DEC) Day of week (1–7 or SUN–SAT) Year (1970–2099)  -->
 		<!-- <value>30 20 4 ? * MON-FRI</value>  -->
-		<value>0 0 * ? * MON-FRI</value> 
+		<value>0 35 * ? * MON-FRI</value> 
 	</property> 
 </bean>
 
