@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<project name="newsagg" basedir="." default="help">
+	<!--
+	============================================================================
+		Revision: 	$Revision: 1.1 $ 
+		Id:			$Id: build.xml,v 1.1 2005/12/06 16:03:35 szabolcs Exp $ 
+		Author: 	$Author: szabolcs $ 
+		Name:		$Name:  $ 
+	============================================================================
+	-->
+
+	<!-- ====================================================== 	-->
+	<!-- config file												-->
+	<!-- ====================================================== 	-->
+	
+    <property file="build.properties"/>
+    
+	<!-- ====================================================== 	-->
+	<!-- directory configs 											-->
+	<!-- ====================================================== 	-->
+
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="build"/>
+	<property name="web.dir" value="web"/>
+	<property name="test.dir" value="test"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="config.dir" value="config"/>
+	<property name="taglibs.dir" value="taglibs"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="webapp.name" value="generic"/>
+	<property name="build.classes" value="build/classes"/>
+
+	<!-- ====================================================== 	-->
+	<!-- tomcat configs 											-->
+	<!-- ====================================================== 	-->
+	
+	<property environment="env"/>
+    <property name="tomcat.home" value="${tomcat.catalinahome}"/>
+
+	<!-- ====================================================== 	-->
+	<!-- classpath settings											-->
+	<!-- ====================================================== 	-->
+	
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.home}/common/lib">
+            <include name="servlet*.jar"/>
+        	<include name="jsp-api.jar"/>
+        </fileset>
+        <pathelement path="${build.dir}"/>
+    </path>
+
+	<!-- ====================================================== 	-->
+	<!-- COMPILE													-->
+	<!-- 															-->
+	<!-- Compiles the projects source files and unit tests into 	-->
+	<!-- build directory using the specified classpath.				-->
+	<!-- Not suitable for production - debugging options are ON!	-->
+	<!-- ====================================================== 	-->
+	
+    <target name="compile" description="Compile main source tree java files">
+    	<!-- taget dir -->
+        <mkdir dir="${build.dir}/classes"/>
+    	
+    	<!-- compile source files -->
+        <javac destdir="${build.dir}/classes" target="1.4" debug="true"
+            deprecation="false" optimize="false" failonerror="true">
+            <src path="${src.dir}"/>
+            <classpath refid="classpath"/>
+        </javac>
+    	
+        <!-- compile tests -->
+        <mkdir dir="${build.dir}/test"/>
+        <javac destdir="${build.dir}/test" target="1.4" debug="true"
+            deprecation="false" optimize="false" failonerror="true">
+            <src path="${test.dir}"/>
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${build.dir}/classes"/>
+            </classpath>
+        </javac>
+    	
+        <!-- Copy hibernate mapping files to ${build.dir}/classes -->
+        <copy todir="${build.dir}/classes">
+            <fileset dir="${src.dir}" includes="**/*.hbm.xml"/>
+        </copy>
+    </target>
+	
+	<!-- ====================================================== 	-->
+	<!-- DEPLOY														-->
+	<!-- 															-->
+	<!-- Creates a project structure and deploys it in the tomcat 	-->
+	<!-- tomcat server.												-->
+	<!-- ====================================================== 	-->
+	<target name="deploy" depends="clean, compile" description="Deploy application">
+		<!-- create structure in project dir -->
+		
+		
+		<!-- copy classes into dist WEB-INF -->
+		<copy todir="${dist.dir}/WEB-INF" preservelastmodified="true">
+			<fileset dir="${build.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy>	
+		
+		<!-- copy lib into WEB-INF -->
+		<copy todir="${dist.dir}/WEB-INF/lib" preservelastmodified="true">
+			<fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/jakarta-log4j-1.2.9/dist/lib">
+                <include name="**/*.*"/>
+            </fileset>
+			<fileset dir="${lib.dir}/spring-1.2.6">
+                <include name="**/*.*"/>
+            </fileset>
+			<fileset dir="${lib.dir}/hibernate-3.0.5">
+                <include name="hibernate3.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/j2ee">
+                <include name="/*.*"/>
+            </fileset>
+			<fileset dir="${lib.dir}/hibernate-3.0.5/lib">
+                <include name="jta.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/ehcache-1.1">
+                <include name="ehcache-1.1.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/cglib-2.1_3">
+                <include name="cglib-nodep-2.1_3.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/jakarta-commons">
+                <include name="*.jar"/>
+            </fileset>	
+			<fileset dir="${lib.dir}/sitemesh-2.2.1">
+                <include name="sitemesh-2.2.1.jar"/>
+            </fileset>	
+		</copy>	
+		
+		<!-- copy taglibs into WEB-INF -->
+		<!--copy todir="${dist.dir}/WEB-INF" preservelastmodified="true">
+			<fileset dir="${taglibs.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy-->	
+		
+		<!-- copy hibernate mappings into dist root -->
+		<copy todir="${dist.dir}/WEB-INF" preservelastmodified="true">
+			<fileset dir="${config.dir}/hibernate">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy>	
+		
+		<!-- copy web related config files into dist root -->
+		<copy todir="${dist.dir}/WEB-INF" preservelastmodified="true">
+			<fileset dir="${config.dir}/web">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy>	
+		
+		<!-- copy web related stuff into dist WEB-INF -->
+		<copy todir="${dist.dir}" preservelastmodified="true">
+			<fileset dir="${web.dir}">
+                <include name="**/*.*"/>
+                <exclude name="**/junit.jar"/>
+                <exclude name="**/*mock.jar"/>
+                <exclude name="**/strutstestcase*.jar"/>
+            </fileset>
+		</copy>	
+		
+		<!-- deploy in tomcat -->
+        <copy todir="${tomcat.home}/webapps/${webapp.name}" preservelastmodified="true">
+            <fileset dir="${dist.dir}"/>
+        </copy>
+    </target>
+	
+	<!-- ====================================================== 	-->
+	<!-- CLEAN														-->
+	<!-- 															-->
+	<!-- Cleans up relevant directories							 	-->
+	<!-- ====================================================== 	-->
+	<target name="clean" description="Clean output directories, undeploy .war in Tomcat">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+	
+	<!-- ====================================================== 	-->
+	<!-- HELP													-->
+	<!-- 															-->
+	<!-- TODO:								 						-->
+	<!-- ====================================================== 	-->
+	<target name="help">
+		<echo message=""/>
+		<echo message="${webapp.name} build file"/>
+		<echo message="-----------------------------------"/>
+		<echo message=""/>
+		<echo message="Available targets are:"/>
+		<echo message=""/>
+		<echo message="compile   --> Compile all Java files with debugging - NO PRODUCTION"/>
+		<echo message="dist   	 --> deploys web app in tomcat"/>
+		<echo message="clean   	 --> cleans up the project dir"/>
+		<echo message=""/>
+		<echo message="help      --> Displays this message"/>
+	</target>
+	
+	<!-- **************************************************************************************** -->
+	<!-- 			TOMCAT SPECIFIC TASKS 														  -->
+	<!-- **************************************************************************************** -->
+		
+	<!-- ====================================================== 	-->
+	<!-- REMOVE														-->
+	<!-- 															-->
+	<!-- Undeploys webbapp from tomcat							 	-->
+	<!-- ====================================================== 	-->
+    <target name="remove" description="Remove application from Tomcat">
+        <undeploy url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="/${webapp.name}"/>
+    </target>
+</project>
