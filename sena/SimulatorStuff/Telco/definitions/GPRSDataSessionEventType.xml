@@ -31,6 +31,14 @@
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		
+		<Attribute reuseable="true" catalogName="DataVolume">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>DataVolume</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		
 		</Attributes>
 	<AllowUnknownAttributes>false</AllowUnknownAttributes>
 	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>

@@ -23,11 +23,20 @@
 			<Name>Duration</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
+		
 		<Attribute reuseable="true" catalogName="Location">
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.String</RuntimeType>
 			</DataType>
 			<Name>Location</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		
+		<Attribute reuseable="true" catalogName="DataVolume">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.String</RuntimeType>
+			</DataType>
+			<Name>DataVolume</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		
