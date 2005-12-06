@@ -91,11 +91,7 @@ v 0.01
 								<XPathExpression>//UserId</XPathExpression>
 							</XPathSelector>
 						</CorrelationData>
-						<CorrelationData eventType="VisitsWebpage">
-							<XPathSelector>
-								<XPathExpression>//UserId</XPathExpression>
-							</XPathSelector>
-						</CorrelationData>
+						
 						<CorrelationData eventType="ContactsProvider">
 							<XPathSelector>
 								<XPathExpression>//CustomerId</XPathExpression>
@@ -127,6 +123,76 @@ v 0.01
 							</XPathSelector>
 						</CorrelationData>
 						<CorrelationData eventType="TicketFulFill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="WAPDataSession">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="GPRSDataSession">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="UMTSDataSession">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="IncomingVideoCall">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="OutgoingVideoCall">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="LotteryRequest">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="LotteryFulFill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="QuickInfoRequest">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="QuickInfoFulFill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="RequestMobilePhone_Download">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="RequestWebpage_Download">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="RequestWebpage_OnlineBill">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="RequestWebpage_OnlineShop">
+							<XPathSelector>
+								<XPathExpression>//CustomerId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="RequestWebpage_OnlineSMS">
 							<XPathSelector>
 								<XPathExpression>//CustomerId</XPathExpression>
 							</XPathSelector>
