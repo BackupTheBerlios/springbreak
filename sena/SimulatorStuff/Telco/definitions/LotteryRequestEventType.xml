@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EventType catalogName="VisitsWebpage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
+<EventType catalogName="LotteryRequest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\xsd\EventType.xsd">
 	<Attributes>
-		<Attribute reuseable="false" catalogName="UserId">
+		<Attribute reuseable="false" catalogName="RequestId">
 			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
+				<RuntimeType>System.Int32</RuntimeType>
 			</DataType>
-			<Name>UserId</Name>
+			<Name>RequestId</Name>
+			<Mandatory>true</Mandatory>
+		</Attribute>
+		<Attribute reuseable="false" catalogName="CustomerId">
+			<DataType multiValue="false" catalogName="String">
+				<RuntimeType>System.Int32</RuntimeType>
+			</DataType>
+			<Name>CustomerId</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		<Attribute reuseable="false" catalogName="DateTime">
@@ -16,15 +23,8 @@
 			<Mandatory>true</Mandatory>
 		</Attribute>
 		
-		<Attribute reuseable="true" catalogName="WebInfo">
-			<DataType multiValue="false" catalogName="WebInfo">
-				<RuntimeType catalogName="WebInfo"/>
-			</DataType>
-			<Name>WebInfo</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
-		
 		</Attributes>
 	<AllowUnknownAttributes>false</AllowUnknownAttributes>
 	<ImplementationType>Eventis.Core.Event.BaseEvent</ImplementationType>
 </EventType>
+
