@@ -23,13 +23,6 @@
 			<Name>ReceiverNr</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
-		<Attribute reuseable="true" catalogName="Location">
-			<DataType multiValue="false" catalogName="String">
-				<RuntimeType>System.String</RuntimeType>
-			</DataType>
-			<Name>Location</Name>
-			<Mandatory>true</Mandatory>
-		</Attribute>
 		<Attribute reuseable="true" catalogName="MsgLength">
 			<DataType multiValue="false" catalogName="String">
 				<RuntimeType>System.String</RuntimeType>

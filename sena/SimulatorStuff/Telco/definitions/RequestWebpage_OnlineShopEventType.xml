@@ -20,7 +20,7 @@
 			<DataType multiValue="false" catalogName="CartItem">
 				<RuntimeType catalogName="CartItem"/>
 			</DataType>
-			<Name>Chart</Name>
+			<Name>Cart</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 	</Attributes>
