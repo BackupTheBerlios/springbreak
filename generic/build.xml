@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
-<project name="newsagg" basedir="." default="help">
+<project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		Revision: 	$Revision: 1.1 $ 
-		Id:			$Id: build.xml,v 1.1 2005/12/06 16:03:35 szabolcs Exp $ 
-		Author: 	$Author: szabolcs $ 
-		Name:		$Name:  $ 
+		$Revision: 1.2 $ 
+		$Id: build.xml,v 1.2 2005/12/07 09:50:08 szabolcs Exp $ 
+		$Author: szabolcs $  
 	============================================================================
 	-->
 
@@ -14,7 +13,7 @@
 	<!-- ====================================================== 	-->
 	
     <property file="build.properties"/>
-    
+	
 	<!-- ====================================================== 	-->
 	<!-- directory configs 											-->
 	<!-- ====================================================== 	-->
@@ -51,6 +50,12 @@
         </fileset>
         <pathelement path="${build.dir}"/>
     </path>
+	
+	<taskdef file="tomcatTasks.properties">
+	    <classpath>
+	        <pathelement path="${tomcat.home}/server/lib/catalina-ant.jar"/>
+	    </classpath>
+	</taskdef>
 
 	<!-- ====================================================== 	-->
 	<!-- COMPILE													-->
@@ -113,6 +118,12 @@
 			<fileset dir="${lib.dir}/jakarta-log4j-1.2.9/dist/lib">
                 <include name="**/*.*"/>
             </fileset>
+			<fileset dir="${lib.dir}/jakarta-taglibs/standard-1.0.6/lib">
+                <include name="jstl.jar"/>
+            </fileset>	
+			<!--fileset dir="${lib.dir}/jakarta-taglibs/standard-1.0.6/tld">
+                <include name="*.*"/>
+            </fileset-->
 			<fileset dir="${lib.dir}/spring-1.2.6">
                 <include name="**/*.*"/>
             </fileset>
@@ -120,7 +131,7 @@
                 <include name="hibernate3.jar"/>
             </fileset>
 			<fileset dir="${lib.dir}/j2ee">
-                <include name="/*.*"/>
+                <include name="*.*"/>
             </fileset>
 			<fileset dir="${lib.dir}/hibernate-3.0.5/lib">
                 <include name="jta.jar"/>
@@ -160,6 +171,13 @@
             </fileset>
 		</copy>	
 		
+		<!-- copy misc config files into dist root -->
+		<copy todir="${dist.dir}/WEB-INF/classes" preservelastmodified="true">
+			<fileset dir="${config.dir}/misc">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy>	
+		
 		<!-- copy web related stuff into dist WEB-INF -->
 		<copy todir="${dist.dir}" preservelastmodified="true">
 			<fileset dir="${web.dir}">
@@ -191,6 +209,7 @@
 	<!-- 															-->
 	<!-- TODO:								 						-->
 	<!-- ====================================================== 	-->
+	
 	<target name="help">
 		<echo message=""/>
 		<echo message="${webapp.name} build file"/>
@@ -203,21 +222,53 @@
 		<echo message="clean   	 --> cleans up the project dir"/>
 		<echo message=""/>
 		<echo message="help      --> Displays this message"/>
+		<echo message=""/>
+		<echo message="Tomcat specific tasks:"/>
+		<echo message="-----------------------------------"/>
+		<echo message="tomcat-remove   --> removes this app from context"/>
+		<echo message="tomcat-reload   --> reloads apps context"/>
+		<echo message="tomcat-start    --> starts apps context"/>		
+		<echo message="tomcat-stop     --> starts apps context"/>	
+		<echo message="tomcat-stop     --> list all registered tomcat apps"/>
 	</target>
 	
-	<!-- **************************************************************************************** -->
-	<!-- 			TOMCAT SPECIFIC TASKS 														  -->
-	<!-- **************************************************************************************** -->
-		
 	<!-- ====================================================== 	-->
-	<!-- REMOVE														-->
+	<!-- TOMCAT SPECIFIC TASKS 										-->
 	<!-- 															-->
 	<!-- Undeploys webbapp from tomcat							 	-->
 	<!-- ====================================================== 	-->
-    <target name="remove" description="Remove application from Tomcat">
+
+	<target name="tomcat-remove" description="Remove application from Tomcat">
         <undeploy url="${tomcat.manager.url}"
             username="${tomcat.manager.username}"
             password="${tomcat.manager.password}"
             path="/${webapp.name}"/>
+    </target>
+
+    <target name="tomcat-reload" description="Reload application in Tomcat">
+        <reload url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="/${webapp.name}"/>
+    </target>
+
+    <target name="tomcat-start" description="Start Tomcat application">
+        <start url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="/${webapp.name}"/>
+    </target>
+
+    <target name="tomcat-stop" description="Stop Tomcat application">
+        <stop url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="/${webapp.name}"/>
+    </target>
+
+    <target name="tomcat-list" description="List Tomcat applications">
+        <list url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"/>
     </target>
 </project>

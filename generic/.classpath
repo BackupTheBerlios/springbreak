@@ -110,5 +110,19 @@
 	<classpathentry exported="true" kind="lib" path="lib/xdoclet-1.2.3/lib/xjavadoc-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ehcache-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/postgresql-8.0.309.jdbc3.jar"/>
+	<classpathentry kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-util.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-cluster.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-optional.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-storeconfig.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/commons-modeler.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-default.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-invoker.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-webdav.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-ajp.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-http.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
