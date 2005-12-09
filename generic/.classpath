@@ -28,8 +28,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/jaxrpc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/jdbc2_0-stdext.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/jms.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/j2ee/jsp-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/j2ee/jstl.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/jta.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/mail.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/rowset.jar"/>
@@ -124,5 +122,20 @@
 	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-ajp.jar"/>
 	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-coyote.jar"/>
 	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-http.jar"/>
+	<classpathentry kind="lib" path="E:/jDev/generic/lib/sqljdbc.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-adapter-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-entitybean-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-hibernate-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-html-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-jdo-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-servlet-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-struts-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-torque-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/middlegen/middlegen-xmi-plugin-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/misc/hibernatetools2.jar"/>
+	<classpathentry kind="lib" path="lib/misc/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/misc/hibernate2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
