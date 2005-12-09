@@ -35,10 +35,24 @@
 
 	<bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
 
-	<bean name="/index.html" class="at.generic.web.IndexViewController"/>
+	<bean name="/index.html" class="at.generic.web.IndexViewController">
+		<property name="correlatedEventDAO">
+			<ref bean="correlatedEventDAO"/>
+		</property> 
+	</bean>
 
 	<!-- ====================================================================================	-->
-	<!-- Protected Controllers																	 	-->
+	<!-- Protected Controllers																	-->
 	<!-- ====================================================================================	-->
 	
+	
+	<!-- ====================================================================================	-->
+	<!-- Interceptors																			-->
+	<!-- ====================================================================================	-->
+	 <bean 	name="openSessionInViewInterceptor" 
+	 		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory">
+			<ref bean="sessionFactoryForSQLServer"/>
+		</property>
+	</bean>
 </beans>
