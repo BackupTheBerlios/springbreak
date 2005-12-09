@@ -3,22 +3,30 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 	<!-- ====================================================================================	-->
-	<!-- database connection configs															-->
+	<!-- Database Connection Configs															-->
 	<!-- ====================================================================================	-->
     
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="postgresSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/newsagg</value></property>
         <property name="username"><value>postgres</value></property>
         <property name="password"><value>letmein</value></property>
     </bean>
+    
+    <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value></property>
+        <!--  <property name="url"><value>jdbc:sqlserver://192.168.0.9/database=InTimeAdminDB/user=sa/password=senactive</value></property> -->
+        <property name="url"><value>jdbc:sqlserver://192.168.0.10/database=InTimeAdminDB</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value>senactive</value></property>
+    </bean>
 
 	<!-- ====================================================================================	-->
-	<!-- hibernate configs																	 	-->
+	<!-- Hibernate Configs																	 	-->
 	<!-- ====================================================================================	-->
     
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
-		<property name="dataSource"><ref local="dataSource"/></property>
+    <bean id="sessionFactoryForPostgresSource" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource"><ref local="postgresSource"/></property>
         <property name="mappingResources">
             <list>
                 
@@ -33,15 +41,41 @@
         </props>
         </property>
     </bean> 
+    
+   <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource">
+			<ref local="msSqlSource"/>
+		</property>
+        <property name="mappingResources">
+            <list>
+                 <value>Correlatedevent.hbm.xml</value>
+                 <value>Correlationset.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop> 
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+        </props>
+        </property>
+    </bean>     
 	
 	<!-- ====================================================================================	-->
-	<!-- Transaction manager																 	-->
+	<!-- Transaction Manager																 	-->
 	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA)			-->
 	<!-- ====================================================================================	-->
     
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManagerForPostgresSource" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
-        	<ref local="sessionFactory"/>
+        	<ref local="sessionFactoryForPostgresSource"/>
+        </property>
+    </bean>
+    
+    <bean id="transactionManagerForSQLServerSource" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+        	<ref local="sessionFactoryForSQLServer"/>
         </property>
     </bean>
     
@@ -49,14 +83,21 @@
     <!-- ====================================================================================	-->
 	<!-- User DAOs																				-->
 	<!-- ====================================================================================	-->
-	<!-- 
-	<bean id="itemDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+	
+	<!-- Correlatedevent -->
+	<bean id="correlatedEventDAOTarget" class="at.generic.dao.hibernate.CorrelatedeventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
     	<property name="transactionManager"> 
-         <ref local="transactionManager" /> 
-      </property> 
-      <property name="target"> 
-         <ref local="itemDAOTarget" /> 
-      </property> 
+        	<ref local="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref local="correlatedEventDAOTarget" /> 
+		</property> 
       <property name="transactionAttributes"> 
          <props> 
             <prop key="save*">PROPAGATION_REQUIRED</prop>
@@ -65,7 +106,31 @@
 			<prop key="*">PROPAGATION_REQUIRED</prop>
          </props> 
       </property>
-    </bean>-->
+    </bean>
+    
+	<!-- Correlatedset -->    
+    <bean id="correlatedSetDAOTarget" class="at.generic.dao.hibernate.CorrelatedsetDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedSetDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref local="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref local="correlatedSetDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
 
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->

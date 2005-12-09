@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="at.generic.model.Correlationset" 
+    table="CORRELATIONSETS"
+>
+
+    <id
+        name="id"
+        type="java.lang.Integer"
+        column="ID"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="correlationSetDef"
+        type="java.lang.String"
+        column="CorrelationSetDef"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="correlationSetGuid"
+        type="java.lang.String"
+        column="CorrelationSetGUID"
+        not-null="true"
+        length="36"
+    />
+    <property
+        name="correlatingData"
+        type="java.lang.String"
+        column="CorrelatingData"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="eventType"
+        type="java.lang.String"
+        column="EventType"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="dbtimeCreated"
+        type="java.sql.Timestamp"
+        column="DBTimeCreated"
+        not-null="true"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to Correlatedevent -->
+    <many-to-one
+        name="correlatedevent"
+        class="at.generic.model.Correlatedevent"
+        not-null="true"
+    >
+        <column name="EventID" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>
