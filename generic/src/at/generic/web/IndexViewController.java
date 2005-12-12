@@ -15,7 +15,7 @@ import at.generic.model.Correlatedevent;
 
 public class IndexViewController implements Controller { 
 	private static Log log = LogFactory.getLog(IndexViewController.class); 
-	private CorrelatedeventDAO correlatedeventDAO;
+	private CorrelatedeventDAO correlatedEventDAO;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 	    request.getSession().invalidate();
@@ -23,11 +23,21 @@ public class IndexViewController implements Controller {
 	    
 	    log.debug("## in handleRequest IndexViewController");
 	    
-	    Correlatedevent ce = correlatedeventDAO.getCorrelatedevent(new Integer(3490));
+	    Correlatedevent ce = correlatedEventDAO.getCorrelatedevent(new Integer(3490));
 	    
 	    log.debug("### Correlatedevent " + ce.getEventXml());
 	    
 	    
 		return new ModelAndView("index"); 
 	}
+
+	public CorrelatedeventDAO getCorrelatedEventDAO() {
+		return correlatedEventDAO;
+	}
+
+	public void setCorrelatedEventDAO(CorrelatedeventDAO correlatedEventDAO) {
+		this.correlatedEventDAO = correlatedEventDAO;
+	}
+	
+	
 }

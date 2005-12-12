@@ -5,16 +5,16 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.orm.hibernate.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import at.generic.dao.CorrelatedeventDAO;
 import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAOHibernate.java,v 1.1 2005/12/09 16:24:33 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAOHibernate.java,v 1.2 2005/12/12 17:30:03 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * DAO interface Hibernate implementation
  * 
