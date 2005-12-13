@@ -11,7 +11,7 @@
     </appender>
  
    
-   <logger name="at.newsagg">
+   <logger name="at.generic">
         <level value="DEBUG"/>
     </logger>
 	
