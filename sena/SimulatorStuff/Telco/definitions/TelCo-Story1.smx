@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SimulationModel xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.senactive.com/Schemas/SimulationModel/v1_0
+..\..\xsd\SimulationModel.xsd" name="TelcoSimulation_Story1" displayName="TecoSimulatinModel_Story1" schemaVersion="1.0">
+	<!--
+        *******************************
+        **** Value Generators ****
+        *******************************
+    -->
+    
+    <ValueGenerator name="VG_UserId">
+		<Enumeration>
+			<Elements>
+				<Element>2541671</Element>
+			</Elements>
+			<DataType>System.Int32</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	<!--
+	  Callee etc.
+		-->
+	<ValueGenerator name="VG_PartnerId">
+		<NumRange>
+			<Start>2321</Start>
+			<Stop>8500</Stop>
+			<Increment>7</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	<!--
+        Request
+    -->
+	<ValueGenerator name="VG_RequestId">
+		<NumRange>
+			<Start>900232</Start>
+			<Stop>1000000</Stop>
+			<Increment>1</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	
+	<!--
+		Location, where the user is currently registered
+	-->
+	<ValueGenerator name="VG_Location">
+		<NumRange>
+			<Start>700</Start>
+			<Stop>770</Stop>
+			<Increment>11</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	<!--
+        Startpoint; beginning here the first event of an user
+    -->
+	<ValueGenerator name="VG_StartPoint">
+		<DateRange>
+			<Start>2003-01-01T07:00:00</Start>
+			<Stop>2010-12-01T00:00:00</Stop>
+			<Increment>
+				<Minutes>0</Minutes>
+			</Increment>
+		</DateRange>
+	</ValueGenerator>
+	
+	<!-- Reason why User on Churnlist -->
+	<ValueGenerator name="VG_ChurnReason">
+		<Enumeration>
+			<Elements>
+				<Element>ContractEnds</Element>
+				<Element>UsageDown</Element>
+				<Element>CallsToOtherProvider</Element>
+				<Element>Dissatisfaction</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	<ValueGenerator name="VG_Boolean">
+		<Booleans>
+			<ProbabilityTrue>1</ProbabilityTrue>
+		</Booleans>
+	</ValueGenerator>
+	
+	
+	<ValueGenerator name="VG_ContactType">
+		<Enumeration>
+			<Elements>
+				<Element>Shop01</Element>
+				<Element>Shop08</Element>
+				<Element>EMail</Element>
+				<Element>Shop01</Element>
+				<Element>EMail</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_ContactTopic">
+		<Enumeration>
+			<Elements>
+				<Element>Information</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_Ticket">
+		<Enumeration>
+			<Elements>
+				<Element>Train</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	
+	
+	<ValueGenerator name="VG_QuickInfo_Topic">
+		<Enumeration>
+			<Elements>
+				<Element>News</Element>
+				<Element>Sports</Element>
+				<Element>News</Element>
+				<Element>News</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
+	
+	
+	
+	<!-- EVENT OBJECT GENERATORS -->
+	
+	
+	<!-- Info how Customer contacts Provider -->
+	<EventObjectGenerator name="EO_ContactInfo">
+    	<Template>	
+    		<ContactInfo>	
+    			<ContactType>CallCenter</ContactType>	
+    			<Topic>Malfunction</Topic>
+			</ContactInfo>		
+    	</Template>
+    </EventObjectGenerator>
+    
+   
+    
+    
+	
+	
+	<!-- ****************************************
+		EVENT GENERATORS
+	******************************************	 -->
+	
+	<!-- User contacts provider -->
+	
+	<EventGenerator name="EG_ContactsProvider">
+		<Template>
+			<ContactsProvider>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<ContactInfo>
+					<EventObjectGenerator name="EO_ContactInfo" />
+				</ContactInfo>
+				
+			</ContactsProvider>
+		</Template>
+	</EventGenerator>		
+
+	<!-- Outgoing call -->
+	<EventGenerator name="EG_OutgoingCall">
+		<Template>
+			<OutgoingCall>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<CalleeNr>
+					<ScopeVariable name="PartnerId"/>
+				</CalleeNr>
+				<Duration>30</Duration>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+			</OutgoingCall>
+		</Template>
+	</EventGenerator>
+	<!-- Incoming call -->
+	<EventGenerator name="EG_IncomingCall">
+		<Template>
+			<IncomingCall>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<CallerNr>
+					<ScopeVariable name="PartnerId"/>
+				</CallerNr>
+				<Duration>30</Duration>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+			</IncomingCall>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	
+	<!-- Outgoing SMS -->
+	<EventGenerator name="EG_SMSSent">
+		<Template>
+			<SMSSent>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<ReceiverNr>
+					<ScopeVariable name="PartnerId"/>
+				</ReceiverNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<MsgLength>160</MsgLength>
+			</SMSSent>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Incoming SMS -->
+		<EventGenerator name="EG_SMSReceived">
+		<Template>
+			<SMSReceived>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<SenderNr>
+					<ScopeVariable name="PartnerId"/>
+				</SenderNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<MsgLength>160</MsgLength>
+			</SMSReceived>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!-- GPRS Data Session -->
+	
+	<EventGenerator name="EG_GPRSDataSession">
+		<Template>
+			<GPRSDataSession>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Duration>30</Duration>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<DataVolume>100</DataVolume>
+			</GPRSDataSession>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	<!-- WAP Data Session -->
+	
+	<EventGenerator name="EG_WAPDataSession">
+		<Template>
+			<WAPDataSession>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Duration>30</Duration>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<DataVolume>100</DataVolume>
+			</WAPDataSession>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Outgoing MMS -->
+	<EventGenerator name="EG_MMSSent">
+		<Template>
+			<MMSSent>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<ReceiverNr>
+					<ScopeVariable name="PartnerId"/>
+				</ReceiverNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+			</MMSSent>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Incoming MMS -->
+	<EventGenerator name="EG_MMSReceived">
+		<Template>
+			<MMSReceived>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<SenderNr>
+					<ScopeVariable name="PartnerId"/>
+				</SenderNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+			</MMSReceived>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	
+		<!-- User requests Ticket -->
+	<EventGenerator name="EG_TicketRequest">
+		<Template>
+			<TicketRequest>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<ReceiverNr>0800-TICKET</ReceiverNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<TicketInfo><ValueGenerator name="VG_Ticket"/></TicketInfo>
+			</TicketRequest>
+		</Template>
+	</EventGenerator>
+	
+		<!-- User requests Ticket, that fails in this story -->
+	<EventGenerator name="EG_TicketRequest_fails">
+		<Template>
+			<TicketRequest>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<ReceiverNr>0800-TICKET</ReceiverNr>
+				<Location>
+					<ValueGenerator name="VG_Location"/>
+				</Location>
+				<TicketInfo>VIENNA-SALZBURG CLASS1 18:00</TicketInfo>
+			</TicketRequest>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	
+	<!-- Provider fulfills User Ticket request -->
+	<EventGenerator name="EG_TicketFulFill">
+		<Template>
+			<TicketFulFill>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+			</TicketFulFill>
+		</Template>
+	</EventGenerator>
+	
+	
+	<!-- User requests Lottery Tip -->
+	<EventGenerator name="EG_LotteryRequest">
+		<Template>
+			<LotteryRequest>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+			</LotteryRequest>
+		</Template>
+	</EventGenerator>
+	
+		<!-- Provider fulfills Lottery request -->
+	<EventGenerator name="EG_LotteryFulFill">
+		<Template>
+			<LotteryFulFill>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+			</LotteryFulFill>
+		</Template>
+	</EventGenerator>
+	
+	<!-- User requests QuickInfo -->
+	<EventGenerator name="EG_QuickInfoRequest">
+		<Template>
+			<QuickInfoRequest>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Topic>
+					<ValueGenerator name="VG_QuickInfo_Topic" />
+				</Topic>
+			</QuickInfoRequest>
+		</Template>
+	</EventGenerator>
+	
+	<!-- Provider fulfills QuickInfo request -->
+	<EventGenerator name="EG_QuickInfoFulFill">
+		<Template>
+			<QuickInfoFulFill>
+				<RequestId>
+					<ScopeVariable name="RequestId"/>
+				</RequestId>
+				<CustomerId>
+					<ScopeVariable name="UserId"/>
+				</CustomerId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+			</QuickInfoFulFill>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- User added to Churn List -->
+	
+	<EventGenerator name="EG_ChurnAlarm">
+		<Template>
+			<ChurnAlarm>
+				<UserId>
+					<ScopeVariable name="UserId"/>
+				</UserId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Reason>
+					<ValueGenerator name="VG_ChurnReason"/>
+				</Reason>
+				
+			</ChurnAlarm>
+		</Template>
+	</EventGenerator>
+	
+	
+	
+	
+	
+	<!--
+        ***********************
+        **** Sequences ****
+        ***********************
+    -->
+	<!-- Sequence of Outgoing-Incoming Calls with the same Partner (because of scopevariable) -->
+	<EventSequence name="ES_Outgoing_Incoming">
+		<EventGenerator name="EG_OutgoingCall"/>
+		<EventGenerator name="EG_IncomingCall"/>
+	</EventSequence>
+	
+	<!-- Sequence of Incoming-Outgoing Calls with the same Partner (because of scopevariable) -->
+	<EventSequence name="ES_Incoming_Outgoing">
+		<EventGenerator name="EG_IncomingCall"/>
+		<EventGenerator name="EG_OutgoingCall"/>
+	</EventSequence>
+	
+	
+	
+	<!-- Sequence of Outgoing-Incoming SMS with the same Partner (because of scopevariable) -->
+	<EventSequence name="ES_Sent_Received_SMS">
+		<EventGenerator name="EG_SMSSent"/>
+		<EventGenerator name="EG_SMSReceived"/>
+	</EventSequence>
+	
+	<!-- Sequence of Incoming-Outgoing SMS with the same Partner (because of scopevariable) -->
+	<EventSequence name="ES_Received_Sent_SMS">
+			<EventGenerator name="EG_SMSSent"/>
+			<EventGenerator name="EG_SMSReceived"/>
+	</EventSequence>
+	
+	
+	<!-- Sequence of Request-FulFill Ticket -->
+	<EventSequence name="ES_Request_FulFill_Ticket">
+	
+			<ScopeVariable name="RequestId">
+				<ValueGenerator name="VG_RequestId" />
+			</ScopeVariable>
+			
+			<EventGenerator name="EG_TicketRequest"/>
+			<EventGenerator name="EG_TicketFulFill"/>
+			
+			
+			<DateSequence>
+			<CorrelationData eventType="TicketRequest">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="TicketFulFill">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>10</Seconds>
+				</Min>
+				<Max>
+					<Minutes>2</Minutes>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+	</EventSequence>
+	
+	
+	
+	<!-- Sequence of Request-FulFill Lottery -->
+	<EventSequence name="ES_Request_FulFill_Lottery">
+	
+			<ScopeVariable name="RequestId">
+				<ValueGenerator name="VG_RequestId" />
+			</ScopeVariable>
+			
+			<EventGenerator name="EG_LotteryRequest"/>
+			<EventGenerator name="EG_LotteryFulFill"/>
+			
+			
+			<DateSequence>
+			<CorrelationData eventType="LotteryRequest">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="LotteryFulFill">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>20</Seconds>
+				</Min>
+				<Max>
+					<Minutes>4</Minutes>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+	</EventSequence>
+	
+	<!-- Sequence of Request-FulFill QuickInfo -->
+	<EventSequence name="ES_Request_FulFill_QuickInfo">
+	
+			<ScopeVariable name="RequestId">
+				<ValueGenerator name="VG_RequestId" />
+			</ScopeVariable>
+			
+			<EventGenerator name="EG_QuickInfoRequest"/>
+			<EventGenerator name="EG_QuickInfoFulFill"/>
+			
+			
+			<DateSequence>
+			<CorrelationData eventType="LotteryRequest">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="LotteryFulFill">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>5</Seconds>
+				</Min>
+				<Max>
+					<Minutes>1</Minutes>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+	</EventSequence>
+	
+		
+<!-- ***************************************************************************************** -->	
+	
+	<EventSequence name="ES_CustomerActions">
+		<Switch>
+			<Case probability="0.15">
+				<EventGenerator name="EG_OutgoingCall"/>
+			</Case>
+			
+			<Case probability="0.07">
+				<EventGenerator name="EG_IncomingCall"/>
+			</Case>
+			
+			<Case probability="0.10">
+					<!-- A sequence of calls between the same number and the user -->
+					<EventSequence name="ES_Incoming_Outgoing">
+						<RandomInstances>
+							<Min>1</Min>
+							<Max>10</Max>
+						</RandomInstances>
+					</EventSequence>
+			</Case>
+			
+			<Case probability="0.20">
+				<!-- A sequence of calls between the same number and the user.user starts -->
+					<EventSequence name="ES_Outgoing_Incoming">
+					<RandomInstances>
+						<Min>1</Min>
+						<Max>10</Max>
+					</RandomInstances>
+					</EventSequence>
+			</Case>
+			
+			<Case probability="0.05">
+				<EventGenerator name="EG_SMSSent"/>
+			</Case>
+			
+			<Case probability="0.05"> 
+				<EventGenerator name="EG_SMSReceived"/>
+			</Case>
+			<Case probability="0.05">
+				<EventSequence name="ES_Sent_Received_SMS">
+					<RandomInstances>
+						<Min>1</Min>
+						<Max>4</Max>
+					</RandomInstances>
+				</EventSequence>
+			</Case>
+			
+			<Case probability="0.05">
+				<EventSequence name="ES_Received_Sent_SMS">
+					<RandomInstances>
+						<Min>1</Min>
+						<Max>4</Max>
+					</RandomInstances>
+				</EventSequence>
+			</Case>
+			
+			
+			<Case probability="0.05">
+				<EventGenerator name="EG_MMSSent"/>
+			</Case>
+			<Case probability="0.02">
+				<EventGenerator name="EG_MMSReceived"/>
+			</Case>
+			
+			<Case probability="0.1">
+				<EventSequence name="ES_Request_FulFill_Lottery"/>
+			</Case>
+			
+			<Case probability="0.05">
+				<EventSequence name="ES_Request_FulFill_Ticket"/>
+			</Case>
+			
+			<Case probability="0.01">
+				<EventGenerator name="EG_WAPDataSession"/>
+			</Case> 
+			<Case probability="0.01">
+				<EventGenerator name="EG_GPRSDataSession"/>
+			</Case> 
+			
+			
+			<Case probability="0.05">
+				<EventSequence name="ES_Request_FulFill_QuickInfo"/>
+			</Case>
+		
+		</Switch>
+		
+		
+		
+	</EventSequence>
+
+	<!-- User has problems with ticket;
+	     contacts callcenter
+	     ticketrequest is fulfilled -->
+	<EventSequence name="ES_Contact_Solution">
+		<ScopeVariable name="RequestId">
+				<ValueGenerator name="VG_RequestId" />
+		</ScopeVariable>
+			
+		<EventGenerator name="EG_TicketRequest_fails"/>
+		<EventGenerator name="EG_ContactsProvider"/>
+		<EventGenerator name="EG_TicketFulFill"/>
+		
+		<!-- Time between Events -->
+		<DateSequence>
+			<CorrelationData eventType="TicketRequest">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="ContactsProvider">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<FixedTimeSpans>
+				<Seconds>1810</Seconds>	
+			</FixedTimeSpans>
+		</DateSequence>
+		
+		<DateSequence>
+			<CorrelationData eventType="ContactsProvider">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="TicketFulFill">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<FixedTimeSpans>
+				<Seconds>302</Seconds>	
+			</FixedTimeSpans>
+		</DateSequence>
+		
+	</EventSequence>
+	
+	<!-- Run Events for a single Customer -->
+	<EventSequence name="ES_RunCustomer">
+	
+		<ScopeVariable name="UserId">
+			<ValueGenerator name="VG_UserId"/>
+		</ScopeVariable>
+		<ScopeVariable name="PartnerId">
+			<ValueGenerator name="VG_PartnerId"/>
+		</ScopeVariable>
+		
+		
+		<!-- Actions for this user -->
+		<EventSequence name="ES_CustomerActions">
+			<Instances>500</Instances>
+		</EventSequence>
+		
+		
+		<EventSequence name="ES_Contact_Solution"/>
+		
+		
+		<!-- Time between Events -->
+		<DateSequence>
+			<CorrelationData eventType="*">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="*">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Seconds>1</Seconds>
+				</Min>
+				<Max>
+					<Hours>24</Hours>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+		</DateSequence>
+		
+		
+		
+	</EventSequence>
+	
+	
+	
+
+	
+		
+
+	
+	<!-- Run Story1-->
+	<EventSequence name="ES_RunStory1">
+		<EventSequence name="ES_RunCustomer"/>
+	</EventSequence>
+	
+	
+	
+	
+	<!--
+    ***************************************
+    **** Simulator Run Definitions ****
+    ***************************************
+    -->
+	<SimulationRun name="ES_Startme">
+		<EventSequenceSimulation>
+			<EventSequence name="ES_RunStory1"/>
+			<!-- Number of Users to generate -->
+			<Instances>1</Instances>
+			<Concurrency>Serialized</Concurrency>
+		</EventSequenceSimulation>
+	</SimulationRun>
+	
+	
+	<EventReceiver name="Receiver1" xmlns="http://www.senactive.com/Schemas/SimulationModel/v1_0">
+		<MsmqQueue>
+			<QueueName>.\Private$\EMQueue</QueueName>
+			<Transactional>true</Transactional>
+		</MsmqQueue>
+	</EventReceiver>
+</SimulationModel>
