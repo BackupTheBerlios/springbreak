@@ -135,13 +135,9 @@
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->
 	<!-- ====================================================================================	-->
-	<!-- 
-     <bean id="userManager" class="at.newsagg.service.impl.UserManagerImpl"> 
-    	<property name="userDAO"><ref local="userDAO"/></property> 
-    	<property name="catDAO"><ref local="categoryDAO"/></property> 
-    	<property name="channelDAO"><ref local="channelDAO"/></property> 
-    	<property name="parserService"><ref local="parserCronJobService"/></property> 
-    	<property name="feedSubscriberDAO"><ref local="feedSubscriberDAO"/></property> 
-    </bean>-->
+	
+	<bean id="eventSourceManager" class="at.generic.service.impl.EventSourceManagerImpl"> 
+    	<property name="correlatedEventDAO"><ref local="correlatedEventDAOTarget"/></property> 
+    </bean>
 
 </beans>

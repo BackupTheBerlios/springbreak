@@ -6,9 +6,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAO.java,v 1.1 2005/12/09 16:24:33 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAO.java,v 1.2 2005/12/14 22:15:14 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * DAO interface for Correlatedevent
  * 
@@ -19,6 +19,11 @@ public interface CorrelatedeventDAO extends DAO
 	 * @return List with Correlated Events
 	 */
 	public List getCorrelatedevents(); 
+	
+	/**
+	 * @return List with Correlated Events using pagination
+	 */
+	public List getCorrelatedeventsByPage(int pageNumber, int pageSize); 
 	
 	/**
 	 * @param id Correlated events id

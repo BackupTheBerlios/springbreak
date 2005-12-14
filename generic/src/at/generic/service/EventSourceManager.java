@@ -1,33 +1,37 @@
 package at.generic.service;
 
 import java.util.List;
-
-import at.generic.model.Correlatedevent;
+import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: EventSourceManager.java,v 1.1 2005/12/14 09:58:12 szabolcs Exp $
+ * @version $Id: EventSourceManager.java,v 1.2 2005/12/14 22:15:14 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Interface for the Events Data Manager
  * 
  */
 public interface EventSourceManager {
 	/**
-	 * Returns all CorrelatedEvents
+	 * Returns all CorrelatedEvents with Raw XML Data
 	 * 
 	 * @return List with all correlated events
 	 */
 	public List getAllCorrelatedEvents();
 	
 	/**
-	 * Returns the DateTime for a given correlatedEvent
-	 * 
-	 * @param correlatedEvent
-	 * @return String with DateTime 
+	 * Returns a Vector with the parsed xml events and the raw data attached
+	 * @return
 	 */
-	public String getDateTimeForEvent(Correlatedevent correlatedEvent);
+	public Vector getAllCorrelatedEventModels();
 	
-
+	/**
+	 * Returns a subset of CorrelatedEvents with Raw XML Data
+	 * according to the selected page 
+	 * 
+	 * @return List with all correlated events
+	 */
+	public Vector getCorrelatedEventsByPage(int pageNr);
+	
 }

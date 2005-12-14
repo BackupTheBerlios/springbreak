@@ -4,7 +4,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import at.generic.dao.CorrelatedeventDAO;
@@ -12,9 +17,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAOHibernate.java,v 1.2 2005/12/12 17:30:03 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAOHibernate.java,v 1.3 2005/12/14 22:15:14 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -28,7 +33,7 @@ public class CorrelatedeventDAOHibernate extends HibernateDaoSupport implements 
 	 * @return List with Correlated Events
 	 */
 	public List getCorrelatedevents() {
-		return getHibernateTemplate().find("from Correlatedevents order by id"); 
+		return getHibernateTemplate().find("from Correlatedevent order by id"); 
 	}
 	
 	/**
@@ -43,6 +48,28 @@ public class CorrelatedeventDAOHibernate extends HibernateDaoSupport implements 
 		if (correlatedEvent == null) { 
 			throw new ObjectRetrievalFailureException(Correlatedevent.class, id); 
 		} return correlatedEvent;
+	}
+	
+	/**
+	 * Returns a List of Correlatedevent objects using paging
+	 * 
+	 * @return List with Correlated Events using pagination
+	 */
+	public List getCorrelatedeventsByPage(final int pageNumber, final int pageSize) {
+		HibernateTemplate ht = getHibernateTemplate();
+		List correlatedEvents = ht.executeFind(new HibernateCallback() {
+		
+			public Object doInHibernate(Session session) throws HibernateException {
+				Query q = session.createQuery("from Correlatedevent order by id");
+				q.setMaxResults(pageSize);
+				q.setFirstResult(pageSize * pageNumber - pageSize + 1);
+				List correlatedEvents = q.list();
+				return correlatedEvents;
+			}
+		});
+		
+		log.debug("Size: " + correlatedEvents.size());
+		return correlatedEvents;
 	}
 	
 	/**

@@ -13,16 +13,15 @@ import at.generic.service.EventSourceManager;
 
 /**
  * @author szabolcs
- * @version $Id: IndexViewController.java,v 1.4 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: CorrelatedEventsController.java,v 1.1 2005/12/14 22:15:14 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.1 $
  * 
  * Main View Controller
  * 
  */
-public class IndexViewController implements Controller { 
+public class CorrelatedEventsController implements Controller { 
 	private static Log log = LogFactory.getLog(IndexViewController.class); 
-	
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 	    request.getSession().invalidate();

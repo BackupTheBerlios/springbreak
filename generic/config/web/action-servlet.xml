@@ -34,16 +34,33 @@
 	<!-- ====================================================================================	-->
 
 	<bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
-
-	<bean name="/index.html" class="at.generic.web.IndexViewController">
-		<property name="correlatedEventDAO">
-			<ref bean="correlatedEventDAO"/>
-		</property> 
-	</bean>
-
+	
+	<bean name="/index.html" class="at.generic.web.IndexViewController"/>
+	
 	<!-- ====================================================================================	-->
 	<!-- Protected Controllers																	-->
 	<!-- ====================================================================================	-->
+	
+	<bean 	id="urlMapping"     
+			class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"> 
+		<property name="interceptors">
+	        <list>
+				<!-- Interceptor für Lacy Loading im View -->
+	             <ref bean="openSessionInViewInterceptor"/>
+	        </list>
+		</property>
+       	<property name="mappings">
+			<props>
+				<prop key="/browseEvents.html">BrowseEventsController</prop>
+			</props>
+		</property>
+	</bean>
+  
+  	<bean name="BrowseEventsController" class="at.generic.web.BrowseEventsViewController">
+  		<property name="eventSourceManager">
+			<ref bean="eventSourceManager"/>
+		</property>
+  	</bean>
 	
 	
 	<!-- ====================================================================================	-->
