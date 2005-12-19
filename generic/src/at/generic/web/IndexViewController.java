@@ -8,14 +8,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import at.generic.service.EventSourceManager;
+import at.generic.etl.SourceEventEtl;
 
 
 /**
  * @author szabolcs
- * @version $Id: IndexViewController.java,v 1.4 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: IndexViewController.java,v 1.5 2005/12/19 23:18:07 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Main View Controller
  * 
@@ -26,9 +26,12 @@ public class IndexViewController implements Controller {
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 	    request.getSession().invalidate();
+
 	    
 		return new ModelAndView("index"); 
 	}
 
+
+		
 	
 }

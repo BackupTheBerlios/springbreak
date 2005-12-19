@@ -13,14 +13,15 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import at.generic.eventmodel.OrderReceivedEvent;
 import at.generic.service.EventSourceManager;
+import at.generic.web.commandObj.BrowserCommand;
 import at.generic.web.commandObj.ListEventsCommand;
 
 
 /**
  * @author szabolcs
- * @version $Id: BrowseEventsViewController.java,v 1.1 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: BrowseEventsViewController.java,v 1.2 2005/12/19 23:18:07 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Event Browser View Controller
  * 
@@ -31,13 +32,28 @@ public class BrowseEventsViewController implements Controller {
 	private EventSourceManager eventSourceManager;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
-	    request.getSession().invalidate();
-	    
+	    //request.getSession().invalidate();
+		
+		// check if the Browser has been initialized
+		/*if (eventSourceManager.getPopulatedNumberOfEvents() == false) {
+			eventSourceManager.getAllCorrelatedEventModels();
+			log.debug("### identified events: " + eventSourceManager.getNumberOfEvents());
+		}
+		
 	    Vector browserList = new Vector();
+	    BrowserCommand browserCmd = new BrowserCommand();
 	    
-	    //Vector correlatedEventModels = eventSourceManager.getAllCorrelatedEventModels();
-	    Vector correlatedEventModels = eventSourceManager.getCorrelatedEventsByPage(2);
-	     correlatedEventModels = eventSourceManager.getCorrelatedEventsByPage(1);
+	    // start with page 1 if the user clicked "Browse Events"
+	    Vector correlatedEventModels = null;
+	    
+	    if (request.getParameter("browserPage") == null) {
+	    	correlatedEventModels = eventSourceManager.getCorrelatedEventsByPage(1);
+	    	browserCmd.setCurrentPage(1);
+	    } else {
+	    	correlatedEventModels = eventSourceManager.getCorrelatedEventsByPage(Integer.parseInt(request.getParameter("browserPage")));
+	    	browserCmd.setCurrentPage(Integer.parseInt(request.getParameter("browserPage")));
+	    }
+
 	    Iterator i = correlatedEventModels.iterator();
 		while (i.hasNext()) {
 			Object eventObj = i.next();
@@ -51,10 +67,24 @@ public class BrowseEventsViewController implements Controller {
 				eventCmd.setDateTime(orderReceivedEvent.getDateTime());
 				
 				browserList.add(eventCmd);
+			} else if (eventObj.getClass().getName().equals("at.generic.eventmodel.BaseCorrelatedEvent")) {
+				BaseCorrelatedEvent baseCorrelatedEvent = (BaseCorrelatedEvent)eventObj;
+
+				ListEventsCommand eventCmd = new ListEventsCommand();
+				eventCmd.setEventId(baseCorrelatedEvent.getCorrelatedEvent().getId().toString());
+				eventCmd.setEventType("unidentified Event");
+				eventCmd.setDateTime("unknown");
+				
+				browserList.add(eventCmd);
 			}
 		}
+		
+		browserCmd.setListEventsCommand(browserList);
+	    browserCmd.setMaxPageSize(eventSourceManager.getNumberOfEvents()/eventSourceManager.getPageSize()+1);
 	    
-		return new ModelAndView("eventbrowser", "eventCmd", browserList); 
+		log.debug("### getMaxPageSize() : " + browserCmd.getMaxPageSize());
+		return new ModelAndView("eventbrowser", "browserCmd", browserCmd); */
+		return new ModelAndView("eventbrowser");
 	}
 
 	/**

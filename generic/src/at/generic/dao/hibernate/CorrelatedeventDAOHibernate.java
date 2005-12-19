@@ -17,9 +17,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAOHibernate.java,v 1.3 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAOHibernate.java,v 1.4 2005/12/19 23:16:54 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -60,9 +60,12 @@ public class CorrelatedeventDAOHibernate extends HibernateDaoSupport implements 
 		List correlatedEvents = ht.executeFind(new HibernateCallback() {
 		
 			public Object doInHibernate(Session session) throws HibernateException {
+				//Query q = session.createQuery("from Correlatedevent order by id");
 				Query q = session.createQuery("from Correlatedevent order by id");
 				q.setMaxResults(pageSize);
-				q.setFirstResult(pageSize * pageNumber - pageSize + 1);
+				q.setFirstResult(pageSize * pageNumber - pageSize);
+				/*q.setMaxResults(pageSize);
+				q.setFirstResult(pageSize * pageNumber - pageSize + 1);*/
 				List correlatedEvents = q.list();
 				return correlatedEvents;
 			}

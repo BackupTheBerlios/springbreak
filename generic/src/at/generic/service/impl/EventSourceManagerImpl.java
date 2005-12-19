@@ -18,9 +18,9 @@ import at.generic.xmlhandlers.EventXmlHandler;
 
 /**
  * @author szabolcs
- * @version $Id: EventSourceManagerImpl.java,v 1.2 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: EventSourceManagerImpl.java,v 1.3 2005/12/19 23:17:25 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Implementation of the Events Data Manager
  * 
@@ -28,8 +28,9 @@ import at.generic.xmlhandlers.EventXmlHandler;
 public class EventSourceManagerImpl implements EventSourceManager {
 	private static Log log = LogFactory.getLog(EventSourceManagerImpl.class);
 	private CorrelatedeventDAO correlatedEventDAO;
-	
-	private int pageSize = 3;
+	private int numberOfEvents;
+	private boolean populatedNumberOfEvents; 
+	private int pageSize;
 	
 	/**
 	 * Returns all CorrelatedEvents
@@ -41,13 +42,19 @@ public class EventSourceManagerImpl implements EventSourceManager {
 	}
 	
 	/**
-	 * Returns a Vector with all parsed xml events and the raw data attached
+	 * Returns a Vector with all parsed xml events and the raw data attached.
 	 * @return Vector with all events
 	 */
 	public Vector getAllCorrelatedEventModels() {
 		List correlatedEventList = correlatedEventDAO.getCorrelatedevents();
 		
-		return this.createEventModel(correlatedEventList);
+		// retriev number of items
+		/*Vector cem = this.createEventModel(correlatedEventList);
+		this.setNumberOfEvents(cem.size());
+		this.setPopulatedNumberOfEvents(true);
+		
+		return cem;*/
+		return null;
 	}
 	
 	/**
@@ -59,7 +66,8 @@ public class EventSourceManagerImpl implements EventSourceManager {
 	public Vector getCorrelatedEventsByPage(int pageNr) {
 		List correlatedEventList = correlatedEventDAO.getCorrelatedeventsByPage(pageNr, this.pageSize);
 		
-		return this.createEventModel(correlatedEventList);
+		//return this.createEventModel(correlatedEventList);
+		return null;
 	}
 	
 	/**
@@ -69,7 +77,7 @@ public class EventSourceManagerImpl implements EventSourceManager {
 	 * 
 	 * @return List with correlated events
 	 */
-	private Vector createEventModel(List correlatedEventList) {
+	/*private Vector createEventModel(List correlatedEventList) {
 		EventXmlHandler eventXmlHandler = new EventXmlHandler();
 		Vector parsedEventModels = new Vector(); 
 		
@@ -89,8 +97,7 @@ public class EventSourceManagerImpl implements EventSourceManager {
 		        
 				// Create EventModel and Parse xml according to its type
 		        Object parsedEvent = eventXmlHandler.handleEvent(correlatedEvent, document.getRootElement().getName());
-		        if ( parsedEvent != null)
-		        	parsedEventModels.add(parsedEvent);
+		        parsedEventModels.add(parsedEvent);
 		        
 			} catch (DocumentException e) {
 				e.printStackTrace();
@@ -98,7 +105,7 @@ public class EventSourceManagerImpl implements EventSourceManager {
 		}
 		
 		return parsedEventModels;
-	}
+	}*/
 
 	/**
 	 * Getter for correlatedEventDAO
@@ -114,6 +121,51 @@ public class EventSourceManagerImpl implements EventSourceManager {
 	public void setCorrelatedEventDAO(CorrelatedeventDAO correlatedEventDAO) {
 		this.correlatedEventDAO = correlatedEventDAO;
 	}
+
+	/**
+	 * @return Returns the numberOfEvents.
+	 */
+	public int getNumberOfEvents() {
+		return numberOfEvents;
+	}
+
+	/**
+	 * @param numberOfEvents The numberOfEvents to set.
+	 */
+	public void setNumberOfEvents(int numberOfEvents) {
+		this.numberOfEvents = numberOfEvents;
+	}
+
+	/**
+	 * @return Returns the pageSize.
+	 */
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	/**
+	 * @param pageSize The pageSize to set.
+	 */
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	/**
+	 * @return Returns the populatedNumberOfEvents.
+	 */
+	public boolean getPopulatedNumberOfEvents() {
+		return populatedNumberOfEvents;
+	}
+
+	/**
+	 * @param populatedNumberOfEvents The populatedNumberOfEvents to set.
+	 */
+	public void setPopulatedNumberOfEvents(boolean populatedNumberOfEvents) {
+		this.populatedNumberOfEvents = populatedNumberOfEvents;
+	}
+
+	
+	
 	
 	
 }

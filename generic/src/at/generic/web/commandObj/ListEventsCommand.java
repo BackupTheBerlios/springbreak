@@ -4,9 +4,9 @@ import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: ListEventsCommand.java,v 1.1 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: ListEventsCommand.java,v 1.2 2005/12/19 23:17:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Data Object for List in Browser View
  * 
@@ -15,6 +15,7 @@ public class ListEventsCommand {
 	private String eventId;
 	private String eventType;
 	private String dateTime;
+	
 	/**
 	 * @return Returns the dateTime.
 	 */
@@ -51,7 +52,5 @@ public class ListEventsCommand {
 	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
-
-	
 	
 }
