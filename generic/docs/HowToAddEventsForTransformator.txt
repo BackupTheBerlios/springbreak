@@ -1,0 +1,63 @@
+=====================================================================================
+@author szabolcs
+@version $Id: HowToAddEventsForTransformator.txt,v 1.1 2005/12/19 22:57:31 szabolcs Exp $
+$Author: szabolcs $  
+$Revision: 1.1 $
+=====================================================================================
+
+This document describes the steps how to add a new Event Type to the etl process.
+
+=====================================================================================
+
+Step 0:
+-----------------------
+Top Down approach to create database, OR Mapping and Classes.
+
+- Create database table
+- Use Middlegen from ant task "middlegen-Postgres" and generate hibernate mapping definitions
+- change 2.0 version to 3.0 in hbm.xml 
+- modify new build task "generateModels" to use ONLY THE **NEW** hbm.xml files
+- run "generateModels" task
+
+Step 1:
+-----------------------
+Add a value to the following definition <bean id="sourceEventEtl" class="at.generic.etl.SourceEventEtl"> 
+in applicationContext.xml
+
+	<property name="identifiedEvents">
+		<list>
+	   		<value>OrderReceived</value>
+	   	</list>
+	</property> 
+
+Step 2:
+-----------------------
+In SourceEventEtl.java add to method getBasicInfos() the following lines:
+
+	// OrderReceivedEvent
+	List orderReceivedEvents = orderReceivedEventDAO.getAll();
+	numberOfIdentifiedEvents = numberOfIdentifiedEvents + orderReceivedEvents.size();
+
+Step 2:
+-----------------------
+In EventXmlHandler.java add to method handleEvent(Correlatedevent correlatedEvent, String eventType):
+
+	if (eventType.equals("OrderReceived")) {
+		return this.handleOrderReceivedEvent(correlatedEvent);
+	} 
+
+Step 3:
+-----------------------
+Create XML to Bean Mapper like:
+
+private OrderReceivedEvent handleOrderReceivedEvent(Correlatedevent correlatedEvent) {
+
+Step 4:
+-----------------------
+In SourceEventEtl.java add to method storeParsedEvent(Object parsedEvent):
+
+
+	if (parsedEvent.getClass().getName().equals("at.generic.eventmodel.OrderReceivedEvent")) {
+		orderReceivedEventDAO.save((OrderReceivedEvent)parsedEvent);
+		this.numberOfIdentifiedEvents++;
+	}
