@@ -21,9 +21,9 @@ import at.generic.xmlhandlers.EventXmlHandler;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.1 2005/12/19 23:17:08 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.2 2005/12/19 23:21:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -39,6 +39,11 @@ public class SourceEventEtl {
 	private int numberOfProcessedEvents;
 	private boolean initDone;
 	
+	/**
+	 * Should be executed init to get some infos about the amount of data that has been 
+	 * transformed and how much is left... 
+	 *
+	 */
 	public void getBasicInfos () {
 		// go through database relations to count the initial numberOfIdentifiedEvents, 
 		// numberOfPorcessedEvents and identifiedEvents
@@ -60,6 +65,10 @@ public class SourceEventEtl {
 		
 	}
 	
+	/**
+	 * Main transformation service - coordinates all the work
+	 *
+	 */
 	public void transformSourceEvents () {
 		this.lastUpdate = new Date(System.currentTimeMillis());
 		this.numberOfIdentifiedEvents = 0;
@@ -95,6 +104,11 @@ public class SourceEventEtl {
 		}
 	}
 	
+	/**
+	 * Saves mapped model 
+	 *  
+	 * @param parsedEvent mapped model
+	 */
 	private void storeParsedEvent(Object parsedEvent) {
 		if (parsedEvent.getClass().getName().equals("at.generic.eventmodel.OrderReceivedEvent")) {
 			orderReceivedEventDAO.save((OrderReceivedEvent)parsedEvent);
