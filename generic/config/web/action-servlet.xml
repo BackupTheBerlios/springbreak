@@ -37,8 +37,9 @@
 	
 	<bean name="/index.html" class="at.generic.web.IndexViewController"/>
 	
+	
 	<!-- ====================================================================================	-->
-	<!-- Protected Controllers																	-->
+	<!-- Intercepted/Intercepted Controllers													-->
 	<!-- ====================================================================================	-->
 	
 	<bean 	id="urlMapping"     
@@ -52,6 +53,7 @@
        	<property name="mappings">
 			<props>
 				<prop key="/browseEvents.html">BrowseEventsController</prop>
+				<prop key="/admin.html">adminController</prop>
 			</props>
 		</property>
 	</bean>
@@ -61,7 +63,12 @@
 			<ref bean="eventSourceManager"/>
 		</property>
   	</bean>
-	
+  	
+  	<bean name="adminController" class="at.generic.web.AdminController">
+  		<property name="sourceEventEtl">
+			<ref bean="sourceEventEtl"/>
+		</property>
+  	</bean>
 	
 	<!-- ====================================================================================	-->
 	<!-- Interceptors																			-->
@@ -72,4 +79,5 @@
 			<ref bean="sessionFactoryForSQLServer"/>
 		</property>
 	</bean>
+
 </beans>

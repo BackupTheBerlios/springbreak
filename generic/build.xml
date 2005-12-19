@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.3 $ 
-		$Id: build.xml,v 1.3 2005/12/09 16:29:29 szabolcs Exp $ 
+		$Revision: 1.4 $ 
+		$Id: build.xml,v 1.4 2005/12/19 22:58:51 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -129,6 +129,9 @@
             </fileset>
 			<fileset dir="${lib.dir}/hibernate-3.0.5">
                 <include name="hibernate3.jar"/>
+            </fileset>
+			<fileset dir="${lib.dir}/hibernate-3.0.5/lib">
+                <include name="antlr-2.7.5H3.jar"/>
             </fileset>
 			<fileset dir="${lib.dir}/j2ee">
                 <include name="*.*"/>
@@ -282,6 +285,28 @@
 		</middlegen>
 	 </target>
 	
+	<target name="middlegen-Postgres" description="Run Middlegen" unless="middlegen.skip" depends="init,fail-if-no-xdoclet-1.2">
+		 	
+			<taskdef name="middlegen" classname="middlegen.MiddlegenTask" classpathref="classpath"/>
+			
+			<middlegen
+			     appname="${webapp.name}"
+			     prefsdir="${src.dir}"
+			     gui="true"
+			     databaseurl="${postgres.url}"
+			     initialContextFactory="${java.naming.factory.initial}"
+			     providerURL="${java.naming.provider.url}"
+			     driver="org.postgresql.Driver"
+			     username="${postgres.username}"
+			     password="${postgres.password}"
+	  		>
+				<!--table name="orderreceivedevent"/>
+				<table name="productcollection"/-->
+				
+				<hibernate destination="${config.dir}" package="at.generic.eventmodel"/> 
+			</middlegen>
+		 </target>
+	
 	<!-- ====================================================== 	-->
 	<!-- Code Generator											-->
 	<!-- 															-->
@@ -291,7 +316,9 @@
 		<taskdef name="hbm2java" classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask" classpathref="classpath"/> 		
 		<hbm2java output="${src.dir}"> 
 		<fileset dir="${config.dir}/hibernate"> 
-			<include name="**/*.hbm.xml"/> 
+			<!-- <include name="**/*.hbm.xml"/> -->
+			<include name="**/Orderreceivedevent.hbm.xml"/>
+			<include name="**/Productcollection.hbm.xml"/>
 		</fileset> 
 		</hbm2java> 
 	</target> 

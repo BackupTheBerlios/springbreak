@@ -8,7 +8,7 @@
     
     <bean id="postgresSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
-        <property name="url"><value>jdbc:postgresql://localhost/newsagg</value></property>
+        <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
         <property name="username"><value>postgres</value></property>
         <property name="password"><value>letmein</value></property>
     </bean>
@@ -29,7 +29,8 @@
 		<property name="dataSource"><ref local="postgresSource"/></property>
         <property name="mappingResources">
             <list>
-                
+				 <value>Orderreceivedevent.hbm.xml</value>
+                <value>Productcollection.hbm.xml</value> 
             </list>
         </property>
         <property name="hibernateProperties">
@@ -131,13 +132,62 @@
          </props> 
       </property>
     </bean>
+    
+    <!-- OrderReceivedEvent -->
+	<bean id="orderReceivedEventDAOTarget" class="at.generic.dao.hibernate.OrderReceivedEventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="orderReceivedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref local="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref local="orderReceivedEventDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
 
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->
 	<!-- ====================================================================================	-->
 	
 	<bean id="eventSourceManager" class="at.generic.service.impl.EventSourceManagerImpl"> 
-    	<property name="correlatedEventDAO"><ref local="correlatedEventDAOTarget"/></property> 
+    	<property name="correlatedEventDAO">
+    		<ref local="correlatedEventDAOTarget"/>
+    	</property> 
+    	<property name="pageSize">
+    		<value>10</value>
+    	</property> 
+    	<property name="populatedNumberOfEvents">
+    		<value>false</value>
+    	</property> 
+    	<property name="numberOfEvents">
+    		<value>0</value>
+    	</property> 
+    </bean>
+    
+    <bean id="sourceEventEtl" class="at.generic.etl.SourceEventEtl"> 
+    	<property name="correlatedEventDAO">
+    		<ref local="correlatedEventDAOTarget"/>
+    	</property> 
+    	<property name="orderReceivedEventDAO">
+    		<ref local="orderReceivedEventDAOTarget"/>
+    	</property> 
+    	<property name="identifiedEvents">
+    		<list>
+    			<value>OrderReceived</value>
+    		</list>
+    	</property> 
     </bean>
 
 </beans>

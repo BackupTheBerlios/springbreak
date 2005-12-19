@@ -8,7 +8,7 @@
 	<table border="0">
 		<tr>
 			<td>
-				<a href="browseEvents.html">Browse Events</a> | ... | ...
+				<a href="browseEvents.html">Browse Events</a> | <a href="admin.html">ETL Admin</a> | ... | ...
 			</td>
 		</tr>
 		<tr>

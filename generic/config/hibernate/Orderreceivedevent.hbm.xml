@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+
+<class 
+    name="at.generic.eventmodel.OrderReceivedEvent" 
+    table="orderreceivedevent"
+>
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="originalguid"
+        type="java.lang.String"
+        column="originalguid"
+        length="255"
+    />
+    <property
+        name="priority"
+        type="java.lang.String"
+        column="priority"
+        length="255"
+    />
+    <property
+        name="severity"
+        type="java.lang.String"
+        column="severity"
+        length="255"
+    />
+    <property
+        name="localtimecreated"
+        type="java.sql.Date"
+        column="localtimecreated"
+        length="4"
+    />
+    <property
+        name="localtimecreatedrw"
+        type="java.sql.Date"
+        column="localtimecreatedrw"
+        length="4"
+    />
+    <property
+        name="utctimecreated"
+        type="java.sql.Date"
+        column="utctimecreated"
+        length="4"
+    />
+    <property
+        name="utctimecreatedrw"
+        type="java.sql.Date"
+        column="utctimecreatedrw"
+        length="4"
+    />
+    <property
+        name="majorversion"
+        type="java.lang.String"
+        column="majorversion"
+        length="255"
+    />
+    <property
+        name="minorversion"
+        type="java.lang.String"
+        column="minorversion"
+        length="255"
+    />
+    <property
+        name="orderid"
+        type="java.lang.String"
+        column="orderid"
+        length="255"
+    />
+    <property
+        name="datetime"
+        type="java.lang.String"
+        column="datetime"
+        length="255"
+    />
+    <property
+        name="deliverydate"
+        type="java.lang.String"
+        column="deliverydate"
+        length="255"
+    />
+    <property
+        name="destination"
+        type="java.lang.String"
+        column="destination"
+        length="255"
+    />
+    
+    <property
+        name="guid"
+        type="java.lang.String"
+        column="guid"
+        not-null="true"
+        unique="true"
+        length="255"
+    />
+    <property
+        name="eventxml"
+        type="java.lang.String"
+        column="eventxml"
+        not-null="true"
+        length="7800"
+    />
+    <property
+        name="dbtimecreated"
+        type="java.sql.Timestamp"
+        column="dbtimecreated"
+        not-null="true"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Productcollection -->
+    <set
+        name="productcollections"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="id" />
+        </key>
+        <one-to-many 
+            class="at.generic.eventmodel.ProductCollection"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

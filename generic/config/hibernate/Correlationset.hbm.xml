@@ -6,7 +6,7 @@
 <hibernate-mapping>
 <class 
     name="at.generic.model.Correlationset" 
-    table="CORRELATIONSETS"
+    table="OrderReceivedEvent"
 >
 
     <id
