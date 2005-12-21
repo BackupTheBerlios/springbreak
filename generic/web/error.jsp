@@ -1,7 +1,7 @@
 <%@ page language="java" isErrorPage="true" %>
 
 <head><title>Doh!</title></head>
-
+<%@ include file="/head.jsp"%>
 An Error has occurred in this application.  
 
 <% if (exception != null) { %>
