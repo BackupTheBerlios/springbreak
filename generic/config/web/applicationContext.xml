@@ -29,8 +29,10 @@
 		<property name="dataSource"><ref local="postgresSource"/></property>
         <property name="mappingResources">
             <list>
-				 <value>Orderreceivedevent.hbm.xml</value>
+				<value>Baseevent.hbm.xml</value>
+				<value>Orderreceivedevent.hbm.xml</value>
                 <value>Productcollection.hbm.xml</value> 
+				<value>Orderconfirmed.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -156,36 +158,83 @@
          </props> 
       </property>
     </bean>
+    
+    <!-- ********************************************************************  -->
+    <!-- Generic Service Postgres -->
+	<bean id="genericDAOTargetTarget" class="at.generic.dao.hibernate.GenericServiceDAOTarget"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="genericDAOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref local="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref local="genericDAOTargetTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+     <!-- Generic Service SQLServer -->
+    <bean id="genericDAOSourceTarget" class="at.generic.dao.hibernate.GenericServiceDAOSource"> 
+    	<property name="sessionFactory"> 
+    		<ref local="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="genericDAOSource" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref local="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref local="genericDAOSourceTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
 
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->
 	<!-- ====================================================================================	-->
 	
 	<bean id="eventSourceManager" class="at.generic.service.impl.EventSourceManagerImpl"> 
-    	<property name="correlatedEventDAO">
-    		<ref local="correlatedEventDAOTarget"/>
+    	<property name="genericDAOTarget">
+    		<ref local="genericDAOTargetTarget"/>
+    	</property> 
+  	    <property name="sourceEventEtl">
+    		<ref local="sourceEventEtl"/>
     	</property> 
     	<property name="pageSize">
     		<value>10</value>
     	</property> 
-    	<property name="populatedNumberOfEvents">
-    		<value>false</value>
-    	</property> 
-    	<property name="numberOfEvents">
-    		<value>0</value>
-    	</property> 
     </bean>
     
     <bean id="sourceEventEtl" class="at.generic.etl.SourceEventEtl"> 
-    	<property name="correlatedEventDAO">
-    		<ref local="correlatedEventDAOTarget"/>
+    	<property name="genericServiceTarget">
+    		<ref local="genericDAOTargetTarget"/>
     	</property> 
-    	<property name="orderReceivedEventDAO">
-    		<ref local="orderReceivedEventDAOTarget"/>
+    	<property name="genericServiceSource">
+    		<ref local="genericDAOSourceTarget"/>
     	</property> 
     	<property name="identifiedEvents">
     		<list>
     			<value>OrderReceived</value>
+    			<value>OrderConfirmed</value>
     		</list>
     	</property> 
     </bean>

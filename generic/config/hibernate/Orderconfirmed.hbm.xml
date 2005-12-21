@@ -6,8 +6,8 @@
 <hibernate-mapping>
 
 <class 
-    name="at.generic.eventmodel.OrderReceivedEvent" 
-    table="orderreceivedevent"
+    name="at.generic.eventmodel.OrderConfirmedEvent" 
+    table="orderconfirmed"
 >
 
     <id
@@ -84,35 +84,10 @@
         column="datetime"
         length="255"
     />
-    <property
-        name="deliverydate"
-        type="java.lang.String"
-        column="deliverydate"
-        length="255"
-    />
-    <property
-        name="destination"
-        type="java.lang.String"
-        column="destination"
-        length="255"
-    />
     
     <!-- Associations -->
   
     <!-- bi-directional one-to-many association to Productcollection -->
-    <set
-        name="productcollections"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-    >
-        <key>
-            <column name="id" />
-        </key>
-        <one-to-many 
-            class="at.generic.eventmodel.ProductCollection"
-        />
-    </set>
 
 </class>
 </hibernate-mapping>
