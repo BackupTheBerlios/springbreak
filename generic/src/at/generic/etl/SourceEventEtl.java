@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,17 +12,18 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
-import at.generic.dao.CorrelatedeventDAO;
-import at.generic.dao.OrderReceivedEventDAO;
+import at.generic.dao.GenericServiceDAO;
+import at.generic.eventmodel.BaseEvent;
+import at.generic.eventmodel.OrderConfirmedEvent;
 import at.generic.eventmodel.OrderReceivedEvent;
 import at.generic.model.Correlatedevent;
 import at.generic.xmlhandlers.EventXmlHandler;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.2 2005/12/19 23:21:09 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.3 2005/12/21 22:06:30 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -31,8 +31,8 @@ import at.generic.xmlhandlers.EventXmlHandler;
  */
 public class SourceEventEtl {
 	private static Log log = LogFactory.getLog(SourceEventEtl.class);
-	private CorrelatedeventDAO correlatedEventDAO;
-	private OrderReceivedEventDAO orderReceivedEventDAO;
+	private GenericServiceDAO genericServiceTarget;
+	private GenericServiceDAO genericServiceSource;
 	private Date lastUpdate;
 	private ArrayList identifiedEvents;
 	private int numberOfIdentifiedEvents;
@@ -52,12 +52,16 @@ public class SourceEventEtl {
 			this.numberOfProcessedEvents = 0;
 			
 			// get all Events from Source to determine the maximum size
-			List correlatedEventList = correlatedEventDAO.getCorrelatedevents();
+			List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
 			numberOfProcessedEvents = correlatedEventList.size();
 			
 			// OrderReceivedEvent
-			List orderReceivedEvents = orderReceivedEventDAO.getAll();
+			List orderReceivedEvents = genericServiceTarget.getAllObjects(new OrderReceivedEvent());
 			numberOfIdentifiedEvents = numberOfIdentifiedEvents + orderReceivedEvents.size();
+			
+			// OrderConfirmedEvent
+			List orderConfirmedEvents = genericServiceTarget.getAllObjects(new OrderConfirmedEvent());
+			numberOfIdentifiedEvents = numberOfIdentifiedEvents + orderConfirmedEvents.size();
 			
 			initDone = true;
 		} 
@@ -74,7 +78,7 @@ public class SourceEventEtl {
 		this.numberOfIdentifiedEvents = 0;
 		this.numberOfProcessedEvents = 0;
 		
-		List correlatedEventList = correlatedEventDAO.getCorrelatedevents();
+		List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
 		
 		EventXmlHandler eventXmlHandler = new EventXmlHandler();
 		
@@ -94,7 +98,25 @@ public class SourceEventEtl {
 				// Create EventModel and Parse xml according to its type
 		        Object parsedEvent = eventXmlHandler.handleEvent(correlatedEvent, document.getRootElement().getName());
 		        
-		        // store object
+		        // create baseevent - just a copy for performance
+		        // don't want to create statements across multiple dbs especially over 
+		        // legacy db in an awfull slow vmware running ;-)
+		        BaseEvent baseEvent = new BaseEvent();
+				baseEvent.setId(correlatedEvent.getId());
+				baseEvent.setGuid(correlatedEvent.getGuid());
+				baseEvent.setDbtimeCreated(correlatedEvent.getDbtimeCreated());
+				baseEvent.setEventXml(correlatedEvent.getEventXml());
+				baseEvent.setEventtype("unidentified");
+				
+				if (parsedEvent == null)
+					baseEvent.setEventtype("unidentified");
+				else
+					baseEvent.setEventtype(parsedEvent.getClass().getName());
+				genericServiceTarget.save(baseEvent, baseEvent.getId());
+				
+				log.debug("### baseEvent " + baseEvent.getId());
+				
+		        // store event object
 		        if (parsedEvent != null)
 		        	this.storeParsedEvent(parsedEvent);
 		        
@@ -110,39 +132,46 @@ public class SourceEventEtl {
 	 * @param parsedEvent mapped model
 	 */
 	private void storeParsedEvent(Object parsedEvent) {
+		log.debug("### identifiedEvents.indexOf: " + identifiedEvents.indexOf("OrderReceivedEvent"));
 		if (parsedEvent.getClass().getName().equals("at.generic.eventmodel.OrderReceivedEvent")) {
-			orderReceivedEventDAO.save((OrderReceivedEvent)parsedEvent);
+			OrderReceivedEvent orderReceivedEvent = (OrderReceivedEvent) parsedEvent;
+			genericServiceTarget.save(parsedEvent, new Long(orderReceivedEvent.getId()));
+			this.numberOfIdentifiedEvents++;
+		} else if (parsedEvent.getClass().getName().equals("at.generic.eventmodel.OrderConfirmedEvent")) {
+			OrderConfirmedEvent orderConfirmedEvent = (OrderConfirmedEvent) parsedEvent;
+			log.debug("### orderConfirmedEvent.getId() " + orderConfirmedEvent.getId());
+			genericServiceTarget.save(parsedEvent, new Long(orderConfirmedEvent.getId()));
 			this.numberOfIdentifiedEvents++;
 		}
 	}
 	
 
 	/**
-	 * @return Returns the correlatedEventDAO.
+	 * @return Returns the genericServiceSource.
 	 */
-	public CorrelatedeventDAO getCorrelatedEventDAO() {
-		return correlatedEventDAO;
+	public GenericServiceDAO getGenericServiceSource() {
+		return genericServiceSource;
 	}
 
 	/**
-	 * @param correlatedEventDAO The correlatedEventDAO to set.
+	 * @param genericServiceSource The genericServiceSource to set.
 	 */
-	public void setCorrelatedEventDAO(CorrelatedeventDAO correlatedEventDAO) {
-		this.correlatedEventDAO = correlatedEventDAO;
+	public void setGenericServiceSource(GenericServiceDAO genericServiceSource) {
+		this.genericServiceSource = genericServiceSource;
 	}
 
 	/**
-	 * @return Returns the orderReceivedEventDAO.
+	 * @return Returns the genericServiceTarget.
 	 */
-	public OrderReceivedEventDAO getOrderReceivedEventDAO() {
-		return orderReceivedEventDAO;
+	public GenericServiceDAO getGenericServiceTarget() {
+		return genericServiceTarget;
 	}
 
 	/**
-	 * @param orderReceivedEventDAO The orderReceivedEventDAO to set.
+	 * @param genericServiceTarget The genericServiceTarget to set.
 	 */
-	public void setOrderReceivedEventDAO(OrderReceivedEventDAO orderReceivedEventDAO) {
-		this.orderReceivedEventDAO = orderReceivedEventDAO;
+	public void setGenericServiceTarget(GenericServiceDAO genericServiceTarget) {
+		this.genericServiceTarget = genericServiceTarget;
 	}
 
 	/**
@@ -206,6 +235,20 @@ public class SourceEventEtl {
 	 */
 	public void setNumberOfPorcessedEvents(int numberOfProcessedEvents) {
 		this.numberOfProcessedEvents = numberOfProcessedEvents;
+	}
+
+	/**
+	 * @return Returns the initDone.
+	 */
+	public boolean isInitDone() {
+		return initDone;
+	}
+
+	/**
+	 * @param initDone The initDone to set.
+	 */
+	public void setInitDone(boolean initDone) {
+		this.initDone = initDone;
 	}
 
 	

@@ -2,13 +2,16 @@ package at.generic.web.commandObj;
 
 import java.util.Vector;
 
+import at.generic.eventmodel.BaseEvent;
+
 /**
  * @author szabolcs
- * @version $Id: BrowserCommand.java,v 1.1 2005/12/19 23:17:35 szabolcs Exp $
+ * @version $Id: BrowserCommand.java,v 1.2 2005/12/21 22:07:50 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Data Object for List in Browser View. Cotains mainly logic data.
+ * Attributes NextPage and PrevPage are calculated when currentPage is set.
  * 
  */
 public class BrowserCommand { 
@@ -18,7 +21,9 @@ public class BrowserCommand {
 	private int prevPage;
 	private int maxPageSize;
 	
-	Vector listEventsCommand;
+	// data to display
+	Vector listEventsCommand;			// BaseEvent objects stored in it
+	private String eventDetail;			// either XML or HTML representation of the Event
 
 	/**
 	 * @return Returns the currentPage.
@@ -92,6 +97,22 @@ public class BrowserCommand {
 	public void setPrevPage(int prevPage) {
 		this.prevPage = prevPage;
 	}
+
+	/**
+	 * @return Returns the eventDetail.
+	 */
+	public String getEventDetail() {
+		return eventDetail;
+	}
+
+	/**
+	 * @param eventDetail The eventDetail to set.
+	 */
+	public void setEventDetail(String eventDetail) {
+		this.eventDetail = eventDetail;
+	}
+	
+	
 	
 	
 }

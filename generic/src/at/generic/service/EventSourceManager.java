@@ -1,53 +1,33 @@
 package at.generic.service;
 
 import java.util.List;
-import java.util.Vector;
+
+import at.generic.etl.SourceEventEtl;
+import at.generic.eventmodel.BaseEvent;
 
 /**
  * @author szabolcs
- * @version $Id: EventSourceManager.java,v 1.3 2005/12/19 23:17:25 szabolcs Exp $
+ * @version $Id: EventSourceManager.java,v 1.4 2005/12/21 22:07:42 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Interface for the Events Data Manager
  * 
  */
 public interface EventSourceManager {
 	/**
-	 * Returns all CorrelatedEvents with Raw XML Data
-	 * 
-	 * @return List with all correlated events
+	 * Initialize basic information for etl module
 	 */
-	public List getAllCorrelatedEvents();
+	public void init();
 	
 	/**
-	 * Returns a Vector with the parsed xml events and the raw data attached
-	 * @return
-	 */
-	public Vector getAllCorrelatedEventModels();
-	
-	/**
-	 * Returns a subset of CorrelatedEvents with Raw XML Data
+	 * Returns a subset of base events including the Raw XML Data
 	 * according to the selected page 
 	 * 
-	 * @return List with all correlated events
+	 * @return List with all the base events
 	 */
-	public Vector getCorrelatedEventsByPage(int pageNr);
+	public List getBaseEventsByPage(int pageNr);
 	
-	/**
-	 * Returns the number of identified and parsed events
-	 * 
-	 * @return Returns the numberOfEvents.
-	 */
-	public int getNumberOfEvents();
-
-	/**
-	 * sets the number of identified and parsed events
-	 * 
-	 * @param numberOfEvents The numberOfEvents to set.
-	 */
-	public void setNumberOfEvents(int numberOfEvents);
-
 	/**
 	 * Gets the maximum page size - used in the browser view
 	 * 
@@ -63,17 +43,13 @@ public interface EventSourceManager {
 	public void setPageSize(int pageSize);
 
 	/**
-	 * Flag that indicates if the maximum number of retrieved objects has been setted
-	 * 
-	 * @return Returns the populatedNumberOfEvents.
+	 * @return Returns the sourceEventEtl.
 	 */
-	public boolean getPopulatedNumberOfEvents();
+	public SourceEventEtl getSourceEventEtl();
 
 	/**
-	 * Flag that indicates if the maximum number of retrieved objects has been setted
-	 * 
-	 * @param populatedNumberOfEvents The populatedNumberOfEvents to set.
+	 * @param sourceEventEtl The sourceEventEtl to set.
 	 */
-	public void setPopulatedNumberOfEvents(boolean populatedNumberOfEvents);
+	public void setSourceEventEtl(SourceEventEtl sourceEventEtl);
 	
 }

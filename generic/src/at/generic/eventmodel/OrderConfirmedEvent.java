@@ -2,14 +2,11 @@ package at.generic.eventmodel;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 
 /** @author Hibernate CodeGenerator */
-public class OrderReceivedEvent implements Serializable {
+public class OrderConfirmedEvent implements Serializable {
 
     /** identifier field */
     private long id;
@@ -47,17 +44,8 @@ public class OrderReceivedEvent implements Serializable {
     /** nullable persistent field */
     private String datetime;
 
-    /** nullable persistent field */
-    private String deliverydate;
-
-    /** nullable persistent field */
-    private String destination;
-    
-    /** persistent field */
-    private Set productcollections;
-
     /** full constructor */
-    public OrderReceivedEvent(long id, String originalguid, String priority, String severity, Date localtimecreated, Date localtimecreatedrw, Date utctimecreated, Date utctimecreatedrw, String majorversion, String minorversion, String orderid, String datetime, String deliverydate, String destination, Set productcollections) {
+    public OrderConfirmedEvent(long id, String originalguid, String priority, String severity, Date localtimecreated, Date localtimecreatedrw, Date utctimecreated, Date utctimecreatedrw, String majorversion, String minorversion, String orderid, String datetime) {
         this.id = id;
         this.originalguid = originalguid;
         this.priority = priority;
@@ -70,34 +58,15 @@ public class OrderReceivedEvent implements Serializable {
         this.minorversion = minorversion;
         this.orderid = orderid;
         this.datetime = datetime;
-        this.deliverydate = deliverydate;
-        this.destination = destination;
-        this.productcollections = productcollections;
-    }
-    
-    /**
-     * Custom add property for digester rules!
-     * You need this to create the subset of Products for 1:n mapping out of the box with
-     * Digester.
-     */
-    public void addProductCollections(ProductCollection prodCol) {
-    	if (productcollections == null && prodCol != null) {
-    		productcollections = new HashSet();
-    		productcollections.add(prodCol);
-    	} else if ( prodCol != null ) {
-    		productcollections.add(prodCol);
-    	}
-    	
     }
 
     /** default constructor */
-    public OrderReceivedEvent() {
+    public OrderConfirmedEvent() {
     }
 
     /** minimal constructor */
-    public OrderReceivedEvent(long id, Set productcollections) {
+    public OrderConfirmedEvent(long id) {
         this.id = id;
-        this.productcollections = productcollections;
     }
 
     public long getId() {
@@ -196,31 +165,7 @@ public class OrderReceivedEvent implements Serializable {
         this.datetime = datetime;
     }
 
-    public String getDeliverydate() {
-        return this.deliverydate;
-    }
-
-    public void setDeliverydate(String deliverydate) {
-        this.deliverydate = deliverydate;
-    }
-
-    public String getDestination() {
-        return this.destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public Set getProductcollections() {
-        return this.productcollections;
-    }
-
-    public void setProductcollections(Set productcollections) {
-        this.productcollections = productcollections;
-    }
-    
-	public String toString() {
+    public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
