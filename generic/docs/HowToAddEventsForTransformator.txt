@@ -1,8 +1,8 @@
 =====================================================================================
 @author szabolcs
-@version $Id: HowToAddEventsForTransformator.txt,v 1.1 2005/12/19 22:57:31 szabolcs Exp $
+@version $Id: HowToAddEventsForTransformator.txt,v 1.2 2005/12/21 19:28:20 szabolcs Exp $
 $Author: szabolcs $  
-$Revision: 1.1 $
+$Revision: 1.2 $
 =====================================================================================
 
 This document describes the steps how to add a new Event Type to the etl process.
@@ -18,6 +18,17 @@ Top Down approach to create database, OR Mapping and Classes.
 - change 2.0 version to 3.0 in hbm.xml 
 - modify new build task "generateModels" to use ONLY THE **NEW** hbm.xml files
 - run "generateModels" task
+
+Step 0.1: 
+-----------------------
+Add Mappingresource to applicationContext.xml:
+
+<bean id="sessionFactoryForPostgresSource" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource"><ref local="postgresSource"/></property>
+        <property name="mappingResources">
+            <list>
+				<value>Baseevent.hbm.xml</value>
+				
 
 Step 1:
 -----------------------
