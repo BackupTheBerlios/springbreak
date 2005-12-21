@@ -1,0 +1,24 @@
+=====================================================================================
+$Id: OpenIssues.txt,v 1.1 2005/12/21 22:04:45 szabolcs Exp $
+$Author: szabolcs $  
+$Revision: 1.1 $
+=====================================================================================
+
+---------------------------------------------------------------------------------------
+[ ] Digester Mapping
+	Root Attribute werden nicht ausgelesen
+	
+---------------------------------------------------------------------------------------
+[ ] Digester Mappping Komplexe Verschachtelungen
+	Wie mappt man kompilizierte Verschachtelungen mit Digester?
+
+---------------------------------------------------------------------------------------	
+[ ] XSLT Transformation
+	Kann man mit XSLT generisch XML Files parsen damit man HTML Tabellen daraus macht? Idee dahinter
+	ist, dass man nicht für jedes Event ein eigenes XSL machen muss.
+	
+---------------------------------------------------------------------------------------
+[ ] Pretty Printing von XML Strings
+	Geht das mit irgendwelchen JSTL Tags?!?
+	
+---------------------------------------------------------------------------------------
