@@ -1,6 +1,7 @@
 package at.generic.etl;
 
 import java.io.ByteArrayInputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -10,7 +11,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 import at.generic.dao.GenericServiceDAO;
 import at.generic.eventmodel.BaseEvent;
@@ -21,9 +24,9 @@ import at.generic.xmlhandlers.EventXmlHandler;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.3 2005/12/21 22:06:30 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.4 2005/12/22 19:39:54 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -105,6 +108,7 @@ public class SourceEventEtl {
 				baseEvent.setId(correlatedEvent.getId());
 				baseEvent.setGuid(correlatedEvent.getGuid());
 				baseEvent.setDbtimeCreated(correlatedEvent.getDbtimeCreated());
+				//baseEvent.setEventXml(this.convertDocToPretty(document));
 				baseEvent.setEventXml(correlatedEvent.getEventXml());
 				baseEvent.setEventtype("unidentified");
 				
@@ -143,6 +147,24 @@ public class SourceEventEtl {
 			genericServiceTarget.save(parsedEvent, new Long(orderConfirmedEvent.getId()));
 			this.numberOfIdentifiedEvents++;
 		}
+	}
+	
+	private String convertDocToPretty(Document document) {
+		try {
+		
+			OutputFormat format = OutputFormat.createPrettyPrint();
+			format.setEncoding("ISO-8859-15");
+			StringWriter writer = new StringWriter();
+			XMLWriter out = new XMLWriter(writer, format);
+			out.write(document);
+			return writer.toString();
+		}
+        catch(Exception e) {
+        	log.debug(e.toString());
+        }
+        
+        return null;
+  
 	}
 	
 

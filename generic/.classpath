@@ -137,5 +137,9 @@
 	<classpathentry kind="lib" path="lib/misc/hibernatetools2.jar"/>
 	<classpathentry kind="lib" path="lib/misc/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/misc/hibernate2.jar"/>
+	<classpathentry kind="lib" path="lib/xerces-2.7.1/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/xerces-2.7.1/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/xerces-2.7.1/xercesSamples.jar"/>
+	<classpathentry kind="lib" path="lib/xerces-2.7.1/xml-apis.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.5 $ 
-		$Id: build.xml,v 1.5 2005/12/21 22:10:19 szabolcs Exp $ 
+		$Revision: 1.6 $ 
+		$Id: build.xml,v 1.6 2005/12/22 19:42:33 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -153,6 +153,9 @@
             </fileset>	
 			<fileset dir="${lib.dir}/sitemesh-2.2.1">
                 <include name="sitemesh-2.2.1.jar"/>
+            </fileset>	
+			<fileset dir="${lib.dir}/xerces-2.7.1">
+                <include name="*.jar"/>
             </fileset>	
 		</copy>	
 		

@@ -6,7 +6,6 @@
 <h2>Browser</h2>
 <br/>
 
-<center>
 <table border="0">
 	<tr>
 		<td>
@@ -50,7 +49,8 @@
 		<td valign="top">
 			<a href="">Raw</a> | <a href="">XML</a>
 			<br/>
-			<c:out value="${browserCmd.eventDetail}" escapeXml="true"/>
+    		<textarea name="user_eingabe" readonly  cols="70" rows="20"><c:out value="${browserCmd.eventDetail}" escapeXml="true"/></textarea>
+			
 		</td>
 	</tr>
 	<tr>
@@ -75,5 +75,4 @@
 		</td>
 	</tr>
 </table>
-</center>
 </body>
