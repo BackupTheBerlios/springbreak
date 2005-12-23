@@ -3,22 +3,24 @@
 </head>
 <body>
 <%@ include file="/head.jsp"%>
+<center><h2>> Admin <</h2></center>
 <br/>
 <table border="0">
 	<tr>
 		<td>
-			<h2>ETL Admin</h2>
+			<b>ETL Admin:</b>
 		</td>
 		<td>
-			<h2>Lucene Admin</h2>
+			<b>Lucene Admin:</b>
 		</td>
 	</tr>
 	<tr>
 		<td>
+			<%@ include file="/upperBorder.jsp"%>
 			<table border="0">
 				<tr>
 					<td>
-						Identified Items
+						<b>Identified Items:</b>
 					</td>
 					<td>
 						<c:out value="${adminData.numberOfIdentifiedEvents}"/>
@@ -26,7 +28,7 @@
 				</tr>
 				<tr>
 					<td>
-						Processed Items
+						<b>Processed Items:</b>
 					</td>
 					<td>
 						<c:out value="${adminData.numberOfProcessedEvents}"/>
@@ -34,19 +36,19 @@
 				</tr>
 				<tr>
 					<td>
-						Last Update
+						<b>Last Update:</b>
 					</td>
 					<td>
 						<c:out value="${adminData.lastUpdate}"/>
 					</td>
 				</tr>
-				<tr>
+				<tr valign="top">
 					<td>
-						Identified Eventtypes
+						<b>Identified Eventtypes:</b>
 					</td>
 					<td>
 						<c:forEach items="${adminData.identifiedEvents}" var="event">
-							<c:out value="${event}"/>
+							<c:out value="${event}"/><br/>
 						</c:forEach>
 					</td>
 				</tr>
@@ -62,9 +64,20 @@
 					</td>
 				</tr>
 			</table>
+			<%@ include file="/lowerBorder.jsp"%>
 		</td>
 		<td>
-			&nbsp;
+			<%@ include file="/upperBorder.jsp"%>
+			<table border="0">
+				<tr>
+					<td>
+							<br/>
+							<br/>
+							<br/><br/><br/><br/>
+					</td>
+				</tr>
+			</table>	
+			<%@ include file="/lowerBorder.jsp"%>
 		</td>
 	</tr>
 </table>	

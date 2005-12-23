@@ -220,7 +220,7 @@
     		<ref local="sourceEventEtl"/>
     	</property> 
     	<property name="pageSize">
-    		<value>10</value>
+    		<value>15</value>
     	</property> 
     </bean>
     
