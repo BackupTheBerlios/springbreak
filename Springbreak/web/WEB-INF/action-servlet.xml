@@ -106,16 +106,16 @@
 			<ref bean="userManager"/>
 		</property> 
 		<property name="standardCategoryTitle">
-			<value>My Category</value>
+			<value>${webapp.register.standardCategoryTitle}</value>
 		</property>
 		<property name="standardCategoryHTMLColor">
-			<value>#ae3080</value>
+			<value>${webapp.register.standardCategoryHTMLColor}</value>
 		</property>
 		<property name="standardFeeds">
 			<list>
-				<value>http://feeds.feedburner.com/boingboing/iBag</value>
-				<value>http://rss.slashdot.org/Slashdot/slashdot</value>
-				<value>http://vecego.0wnz.at/newdesign/rss.php</value>
+				<value>${webapp.register.standardFeed1}</value>
+				<value>${webapp.register.standardFeed2}</value>
+				<value>${webapp.register.standardFeed3}</value>
 			</list>
 		</property>
 		<!-- property name="validator">
@@ -235,7 +235,7 @@
 				<value>firstlogin</value>
 			</property>	
 			<property name="HOTTEST">
-				<value>50</value>
+				<value>${webapp.displayNumberOfItems}</value>
 			</property>	
 
 	</bean>
@@ -627,6 +627,23 @@ Statistic Controller -->
 					<prop key="org.springframework.orm.ObjectRetrievalFailureException">dataAccessFailure</prop> 
 				</props> 
 			</property> 
+	</bean>
+
+<!-- ============================== PropertyPlaceholderConfigurer ======================
+     Exporting configuration to external file; Roland Vecera 27.12.2005 
+	 
+	benoetigt einen eigenen PropertyPlaceholderConfigurer
+	http://forum.springframework.org/showthread.php?t=11347&highlight=PropertyPlaceholderConfigurer
+	
+However, a DispatcherServlet has its own application context, just using the
+root web application context as parent. Therefore, it needs to define its
+own BeanFactoryPostProcessors and/or BeanPostProcessors, in this case its
+own PropertyPlaceholderConfigurer.
+-->
+
+	<bean id="placeholderConfig"
+	 class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"><value>/WEB-INF/appconfig/app.properties</value></property>
 	</bean>
 
 

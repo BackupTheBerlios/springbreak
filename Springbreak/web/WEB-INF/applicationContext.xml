@@ -9,12 +9,10 @@
         <property name="username"><value>sa</value></property>
         <property name="password"><value></value></property>-->
         
-        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
-        <property name="url"><value>jdbc:postgresql://localhost/newsagg</value></property>
-        <!-- property name="username"><value>szabolcs</value></property>
-        <property name="password"><value></value></property-->
-        <property name="username"><value>postgres</value></property>
-        <property name="password"><value>letmein</value></property>
+        <property name="driverClassName"><value>${app.db.driver}</value></property>
+        <property name="url"><value>${app.db.url}</value></property>
+        <property name="username"><value>${app.db.username}</value></property>
+        <property name="password"><value>${app.db.password}</value></property>
     </bean>
 
     <!-- Hibernate SessionFactory -->
@@ -46,9 +44,9 @@
         <property name="hibernateProperties">
         <props>
             <!-- <prop key="hibernate.dialect">net.sf.hibernate.dialect.HSQLDialect</prop>-->
-            <prop key="hibernate.dialect">net.sf.hibernate.dialect.PostgreSQLDialect</prop>
-            <prop key="hibernate.hbm2ddl.auto">update</prop> 
-			<prop key="hibernate.show_sql">true</prop>
+            <prop key="hibernate.dialect">${app.db.hibernate.dialect}</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+			<prop key="hibernate.show_sql">${app.db.hibernate.show_sql}</prop>
 			<prop key="hibernate.cache.provider_class">net.sf.hibernate.cache.EhCacheProvider</prop>
         </props>
         </property>
@@ -130,7 +128,7 @@
     		<ref local="sessionFactory"/> 
     	</property>  
 		<property name="upperLimit">
-			<value>70</value>
+			<value>${app.db.showMaxItems}</value>
 		</property> 
     </bean>
 
@@ -311,20 +309,25 @@
  				<ref local="feedSubscriberDAO"/>
  			</property>
  			<property name="indexLocation">
- 				<value>e:/tmp</value>
+ 				<value>${app.search.indexLocation}</value>
  			</property>
  			<property name="indexCreated">
- 				<value>false</value>
+ 				<value>${app.search.indexCreated}</value>
  			</property>
  			<property name="numberOfIndexedItems">
- 				<value>0</value>
+ 				<value>${app.search.numberOfIndexedItems}</value>
  			</property>
  </bean>
 
 <!-- Ende RSS Parser Definitions -->
 
-<!-- TODO: hat das jetzt dann kein Transaktionmngmnt?! -->
+<!-- ============================== PropertyPlaceholderConfigurer ======================
+     Exporting configuration to external file; Roland Vecera 27.12.2005 -->
 
+	<bean id="placeholderConfigxx" singleton="false"
+	 class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"><value>/WEB-INF/appconfig/app.properties</value></property>
+	</bean>
 
 
 
