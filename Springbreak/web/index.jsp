@@ -1,5 +1,8 @@
+<page:applyDecorator name="login" >
+
 <head>
 <%@ include file="/taglibs.jsp"%>
+
 
 <title>News Aggregator</title>
 </head>
@@ -67,3 +70,4 @@
 <h3><fmt:message key="login.someinfoabout"/></h3>
 <strong><fmt:message key="common.newsagg"/></strong><fmt:message key="login.someinfotext"/>
 </content>
+</page:applyDecorator>

@@ -14,10 +14,8 @@
 </head>
 <body>
 <div id="container">
-     <div id="content">
-            
             <decorator:body />
-     </div>
+    
 </div>
 </body>
 </html>
