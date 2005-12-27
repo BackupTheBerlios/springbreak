@@ -18,7 +18,7 @@
 		</property>
 		<property name="period">
 			<!-- time in ms -->
-			<value>3000000</value>
+			<value>${app.timers.parseFeedsPeriodeInMs}</value>
 		</property>
 	</bean>
 
@@ -56,17 +56,11 @@ Sollte mächtiger und einfacher in der Definition sein
 	</property> 
 	
 	<property name="cronExpression">
-	      <value>0 40 10 ? * MON</value>
+	      <value>${app.timers.StatisticsCronjob}</value>
 	</property> 
 </bean>
 
-<bean id="logTrigger_lucene" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
-	<property name="jobDetail"> 
-			<ref local="timerLuceneIndizierung"/> 
-	</property> 
-	
-	<property name="cronExpression">
-		<!-- 
+<!-- 
 		A cron expression has at least 6 (and optionally 7) time elements, separated by spaces. 
 		Each of these elements can be specified with an explicit value (e.g., 6), a range 
 		(e.g., 9–12), a list (e.g., 9,11,13), or a wildcard (e.g., *). The day of the month and
@@ -76,8 +70,15 @@ Sollte mächtiger und einfacher in der Definition sein
 			 
 			 Seconds (0–59) Minutes (0–59) Hours (0–23) Day of month (1–31) 
 		     Month (1–12 or JAN–DEC) Day of week (1–7 or SUN–SAT) Year (1970–2099)  -->
-		<!-- <value>30 20 4 ? * MON-FRI</value>  -->
-		<value>0 15 * ? * MON-FRI</value> 
+
+<bean id="logTrigger_lucene" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+	<property name="jobDetail"> 
+			<ref local="timerLuceneIndizierung"/> 
+	</property> 
+	
+
+	<property name="cronExpression">
+	      <value>${app.timers.IndexingCronjob}</value>
 	</property> 
 </bean>
 
@@ -113,5 +114,8 @@ Sollte mächtiger und einfacher in der Definition sein
  	</property>
 </bean>
 
+<!-- ============================== PropertyPlaceholderConfigurer ======================
+     der PropertyPlaceholder wird von applicationContext.xml vererbt!! weil in web.xml im gleichen
+	contextConfigLocation definiert! -->
 	
 </beans>
