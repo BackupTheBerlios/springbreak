@@ -108,7 +108,18 @@ public class AddChannelController extends SimpleFormController {
         channel.setItems(new ArrayList());
 
        
-            channel = (Channel) parserService.runUpdateOnChannel(channel);
+            try {
+				channel = (Channel) parserService.runUpdateOnChannel(channel);
+			
+			} catch (ParseException e) {
+				//Something went wrong trying to parse the Channel
+				log.info("Error parsing Channel! Is "+ channel.getLocationString() +" a RSS Channel?");
+			
+				errors.rejectValue("locationString", "login failed", null,
+				"Error parsing Channel! Is "+ channel.getLocationString() +" really a RSS channel?");
+				//return to input-view, and display error
+				return showForm(request, response, errors);
+			}
         
         channelDAO.saveOrUpdateChannel(channel);
 

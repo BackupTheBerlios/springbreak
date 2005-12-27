@@ -41,7 +41,7 @@ Insert a valid URL to the input field.
 			<td> 
 				
 				<spring:bind path="channel.locationString">
-	               <input size="50" id="url" type="text" name="locationString" autocomplete="off" value="URL here"/>
+	               <input size="50" id="url" type="text" name="${status.expression}" value="${status.value}" autocomplete="off"/>
 	           
 	            </spring:bind>
 	            <div id="urlpopup" class="autocomplete"/>
