@@ -6,16 +6,15 @@
 package at.newsagg.dao.hibernate;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.type.Type;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.hibernate.support.HibernateDaoSupport;
 
 import at.newsagg.dao.ChannelDAO;
@@ -157,9 +156,9 @@ public class ChannelDAOHibernate extends HibernateDaoSupport implements
                 .find(
                         "select count (*) from Item as i where (i.date between ? and ?) and (i.channel.id = ?)",
                         //"select count (c.items) from Channel as c where (elements(c.items.date) between ? and ?) and (c.id = ?)",
-                        new Object[] { date, new Date(),
+                        new Object[] { new Timestamp(date.getTime()), new Timestamp(new Date().getTime()),
                                 new Integer(channel_id) },
-                        new Type[] { Hibernate.DATE, Hibernate.DATE,
+                        new Type[] { Hibernate.TIMESTAMP, Hibernate.TIMESTAMP,
                                 Hibernate.INTEGER }).get(0)).intValue();
 
     }

@@ -8,6 +8,7 @@ package at.newsagg.dao.hibernate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -292,11 +293,13 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new String[] { "i", "uri" },
                     new Class[] { Item.class, UserReadItem.class });
 
-            q.setParameter(0, since, Hibernate.DATE);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DATE, 1);
-            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
+            Timestamp t = new Timestamp(since.getTime());
+            q.setParameter(0, t, Hibernate.TIMESTAMP);
+//            Calendar calendar = new GregorianCalendar();
+//            calendar.setTime(new Date());
+//            calendar.add(Calendar.DATE, 1);
+            
+            q.setParameter(1, new Timestamp(new Date().getTime()), Hibernate.TIMESTAMP);
 
             java.util.Collection c = q.list();
             log.debug("Resultset: " + c.size());
@@ -390,11 +393,9 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new String[] { "i", "uri" },
                     new Class[] { Item.class, UserReadItem.class });
 
-            q.setParameter(0, since, Hibernate.DATE);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DATE, 1);
-            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
+            q.setParameter(0, new Timestamp(since.getTime()), Hibernate.TIMESTAMP);
+            
+            q.setParameter(1, new Timestamp(new Date().getTime()), Hibernate.TIMESTAMP);
             java.util.Collection c = q.list();
             log.debug("Resultset: " + c.size());
             return this.simplifyCollection(c);
@@ -438,11 +439,8 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
                     new String[] { "i", "uri" },
                     new Class[] { Item.class, UserReadItem.class });
 
-            q.setParameter(0, since, Hibernate.DATE);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DATE, 1);
-            q.setParameter(1, calendar.getTime(), Hibernate.DATE);
+            q.setParameter(0, new Timestamp(since.getTime()), Hibernate.TIMESTAMP);
+            q.setParameter(1, new Timestamp(new Date().getTime()), Hibernate.TIMESTAMP);
             log.debug(q.toString());
             java.util.Collection c = q.list();
             log.debug(q.toString());

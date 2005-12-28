@@ -5,6 +5,7 @@
  */
 package at.newsagg.dao.hibernate;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -306,8 +307,8 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         logger.info(query);
 
         //set since in query!
-        return (Collection) getHibernateTemplate().find(query, since,
-                Hibernate.DATE);
+        return (Collection) getHibernateTemplate().find(query, new Timestamp(since.getTime()),
+                Hibernate.TIMESTAMP);
 
         // I want it somehow like this: --> but i get an exception on this..
         //            ((Collection) getHibernateTemplate().find(
@@ -404,8 +405,8 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
                 + " i.channel = ? " + " order by i.date DESC";
         logger.info(query);
 
-        Object[] o = { since, new Integer(channel_id) };
-        net.sf.hibernate.type.Type[] p = { Hibernate.DATE, Hibernate.INTEGER };
+        Object[] o = { new Timestamp(since.getTime()), new Integer(channel_id) };
+        net.sf.hibernate.type.Type[] p = { Hibernate.TIMESTAMP, Hibernate.INTEGER };
 
         return (Collection) getHibernateTemplate().find(query, o, p);
 
@@ -440,8 +441,8 @@ public class FeedSubscriberDAOHibernate extends HibernateDaoSupport implements F
         logger.info(query);
 
         //set since in query!
-        return (Collection) getHibernateTemplate().find(query, since,
-                Hibernate.DATE);
+        return (Collection) getHibernateTemplate().find(query, new Timestamp(since.getTime()),
+                Hibernate.TIMESTAMP);
 
     }
     
