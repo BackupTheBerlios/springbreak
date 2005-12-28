@@ -49,4 +49,12 @@ public class ItemDAOTest extends Base {
     
     }
     
+    public void testTimestamp() throws Exception
+    {
+    	ItemDAO iDAO = (ItemDAO)ctx.getBean("itemDAO");
+    	java.util.Collection c = iDAO.getItemsForUser("vec",new java.util.Date());
+    	System.out.println("hihi");
+    	
+    }
+    
 }

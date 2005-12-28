@@ -23,6 +23,15 @@ import at.newsagg.model.parser.hibernate.Channel;
  */
 public class FeedSubscriberDAOTest extends Base {
     
+	
+	public void testTimestamp ()
+	{
+		FeedSubscriberDAO fDAO = (FeedSubscriberDAO)ctx.getBean("feedSubscriberDAO");
+		Collection c = fDAO.getItemsForUserSince("vec",new Date());
+		System.out.println("hihi");
+	}
+	
+	
     /**
      * tests save*, count*, get*-methods of FeedSubscriberDAO.
      * 
