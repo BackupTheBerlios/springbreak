@@ -10,10 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import net.sf.hibernate.Hibernate;
@@ -342,13 +340,11 @@ public class ItemDAOHibernate extends HibernateDaoSupport implements ItemDAO {
             
             PreparedStatement ps = this.getSession().connection().prepareStatement(query2);
             
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DATE, 1);
+           
+            ps.setTimestamp(1,new java.sql.Timestamp(since.getTime()));
+            ps.setTimestamp(2,new java.sql.Timestamp(new Date().getTime()));
             
-            ps.setDate(1,new java.sql.Date(since.getTime()));
             
-            ps.setDate(2,new java.sql.Date(calendar.getTime().getTime()));
             
             ResultSet rs = ps.executeQuery();
            if (!rs.next()) {
