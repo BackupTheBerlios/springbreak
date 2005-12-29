@@ -79,6 +79,16 @@
 		</Enumeration>
 	</ValueGenerator>
 	
+	<ValueGenerator name="VG_Datasize">
+		<NumRange>
+			<Start>200</Start>
+			<Stop>500</Stop>
+			<Increment>7</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	
 	
 	<ValueGenerator name="VG_Boolean">
 		<Booleans>
@@ -565,6 +575,9 @@
 				<Location>
 					<ValueGenerator name="VG_Location"/>
 				</Location>
+				<Datasize>
+					<ValueGenerator name="VG_Datasize"/>
+				</Datasize>
 			</MMSSent>
 		</Template>
 	</EventGenerator>
@@ -585,6 +598,9 @@
 				<Location>
 					<ValueGenerator name="VG_Location"/>
 				</Location>
+				<Datasize>
+					<ValueGenerator name="VG_Datasize"/>
+				</Datasize>
 			</MMSReceived>
 		</Template>
 	</EventGenerator>
@@ -1408,7 +1424,8 @@
 			<ValueGenerator name="VG_Connection"/>
 		</ScopeVariable>
 		
-		<EventGenerator name="EG_StartCampaign"/>
+		<EventGenerator name="EG_MMSSent"/>
+		<EventGenerator name="EG_MMSReceived"/>
 		
 		
 	</EventSequence>	
