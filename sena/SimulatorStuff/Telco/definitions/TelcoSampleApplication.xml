@@ -197,6 +197,16 @@ v 0.01
 								<XPathExpression>//CustomerId</XPathExpression>
 							</XPathSelector>
 						</CorrelationData>
+						<CorrelationData eventType="BillSent">
+							<XPathSelector>
+								<XPathExpression>//UserId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+						<CorrelationData eventType="BillPaid">
+							<XPathSelector>
+								<XPathExpression>//UserId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
 						
 						
 					
@@ -204,18 +214,31 @@ v 0.01
 											
 					</CorrelationSet>					
 				</CorrelationSettings>
+				
+						
+						
 			</EventService>
 			
 
-			<!-- Not yet Correlated:
-	
-				CampaignEventObjectType.xml
-
-
-
-
-		
-			-->
+			<EventService name="Campaign" component="EventReceiverComponent">
+				<InitParameters>
+					<Parameter name="CorrelationSetDef">
+						<Value>Campaign</Value>
+					</Parameter>
+				</InitParameters>
+				<CorrelationSettings>
+					<CorrelationSet>
+						<WaitingTimeout>100000</WaitingTimeout>
+						<CheckoutTimeout>100000</CheckoutTimeout>						
+						
+						<CorrelationData eventType="StartCampaign">
+							<XPathSelector>
+								<XPathExpression>//CampaignId</XPathExpression>
+							</XPathSelector>
+						</CorrelationData>
+					</CorrelationSet>					
+				</CorrelationSettings>
+			</EventService>
 			
 			
 			
@@ -229,6 +252,15 @@ v 0.01
 				</From>
 				<To>
 					<MapElement name="SameCustomer" eventType="*"/>
+				</To>
+			</Connector>
+			
+			<Connector>
+				<From>
+					<MapElement name="MsmqEventAdapter" eventType="*"/>
+				</From>
+				<To>
+					<MapElement name="Campaign" eventType="*"/>
 				</To>
 			</Connector>
 		

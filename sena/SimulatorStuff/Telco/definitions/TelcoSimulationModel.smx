@@ -240,6 +240,64 @@
 		</Enumeration>
 	</ValueGenerator>
 	
+	<ValueGenerator name="VG_SumBill">
+		<Enumeration>
+			<Elements>
+				<Element>30.3</Element>
+				<Element>17.4</Element>
+				<Element>40.8</Element>
+				<Element>25.4</Element>
+				<Element>27.1</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_BillId">
+		<NumRange>
+			<Start>1</Start>
+			<Stop>9999</Stop>
+			<Increment>1</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_CampaignId">
+		<NumRange>
+			<Start>100</Start>
+			<Stop>9999</Stop>
+			<Increment>1</Increment>
+			<DataType>System.Int32</DataType>
+		</NumRange>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_CampaignTopic">
+		<Enumeration>
+			<Elements>
+				<Element>Price Plans</Element>
+				<Element>New Features</Element>
+				<Element>Brand</Element>
+				<Element>Business Price Plans</Element>
+				<Element>Price Plans</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	<ValueGenerator name="VG_CampaignTarget">
+		<Enumeration>
+			<Elements>
+				<Element>Youth</Element>
+				<Element>Business Customers</Element>
+				<Element>14-49</Element>
+				<Element>Business Customers</Element>
+				<Element>Youth</Element>
+			</Elements>
+			<DataType>System.String</DataType>
+		</Enumeration>
+	</ValueGenerator>
+	
+	
 	
 	
 	<!-- EVENT OBJECT GENERATORS -->
@@ -284,6 +342,17 @@
     			<Product><ValueGenerator name="VG_MobileProducts"/></Product>	
     			<Amount>1</Amount>
 			</CartItem>		
+    	</Template>
+    </EventObjectGenerator>
+    
+      <!-- Campaign Infos-->
+    
+    <EventObjectGenerator name="EO_CampaignInfo">
+    	<Template>	
+    		<CampaignInfo>	
+    			<Topic><ValueGenerator name="VG_CampaignTopic"/></Topic>	
+    			<Target><ValueGenerator name="VG_CampaignTarget"/></Target>
+			</CampaignInfo>		
     	</Template>
     </EventObjectGenerator>
     
@@ -566,7 +635,7 @@
 	</EventGenerator>
 	
 	
-	<!-- Provider fullfilss User MParking request -->
+	<!-- Provider fullfills User MParking request -->
 	<EventGenerator name="EG_MParkingFulFill">
 		<Template>
 			<MParkingFulFill>
@@ -698,6 +767,46 @@
 		</Template>
 	</EventGenerator>
 	
+	
+	<!-- Provider sends Bill to User -->
+	<EventGenerator name="EG_BillSent">
+		<Template>
+			<BillSent>
+				<UserId>
+					<ScopeVariable name="UserId"/>
+				</UserId>
+				<BillId>
+					<ValueGenerator name="VG_BillId"/>
+				</BillId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<Sum>
+					<ValueGenerator name="VG_SumBill"/>
+				</Sum>
+				<PayUntil_DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</PayUntil_DateTime>
+			</BillSent>
+		</Template>
+	</EventGenerator>
+	
+	<!-- User pays Bill -->
+	<EventGenerator name="EG_BillPaid">
+		<Template>
+			<BillPaid>
+				<UserId>
+					<ScopeVariable name="UserId"/>
+				</UserId>
+				<BillId>
+					<ValueGenerator name="VG_BillId"/>
+				</BillId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+			</BillPaid>
+		</Template>
+	</EventGenerator>
 	
 	
 	
@@ -834,6 +943,25 @@
 		</Template>
 	</EventGenerator>
 	
+	<!-- Provider starts Campaign -->
+	
+	<EventGenerator name="EG_StartCampaign">
+		<Template>
+			<StartCampaign>
+				<CampaignId>
+					<ValueGenerator name="VG_CampaignId"/>
+				</CampaignId>
+				<DateTime>
+					<ValueGenerator name="VG_StartPoint"/>
+				</DateTime>
+				<CampaignInfo>
+					<EventObjectGenerator name="EO_CampaignInfo" />
+				</CampaignInfo>
+				
+			</StartCampaign>
+		</Template>
+	</EventGenerator>
+	
 	
 	
 	<!--
@@ -913,7 +1041,7 @@
 		</DateSequence>
 	</EventSequence>
 	
-	<!-- Sequence of Request-FulFill MParking -->
+	<!-- Sequence of Request-FulFill Ticket -->
 	<EventSequence name="ES_Request_FulFill_Ticket">
 	
 			<ScopeVariable name="RequestId">
@@ -1029,10 +1157,78 @@
 		
 	</EventSequence>
 	
+	<!-- Sequence of Provider sents Bill to User, User pays bill intime-->
+	<EventSequence name="ES_BillSentPaid">
+		<EventGenerator name="EG_BillSent"/>
+		<EventGenerator name="EG_BillPaid"/>
+	
+		<!-- Bill sent-paid same ID-->
+		
+		<EventCorrelation>
+			<CorrelationData eventType="BillSent">
+				<XPathSelector>
+					<XPathExpression>//BillId</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="BillPaid">
+				<XPathSelector>
+					<XPathExpression>//BillId</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+		</EventCorrelation>
+	
+		
+		
+		
+		<!-- TODO: DateTime greift falsch; ist immer 2005-01-01 7:00 -->
+		<DateSequence>
+			<CorrelationData eventType="BillSent">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="BillSent">
+				<XPathSelector>
+					<XPathExpression>//PayUntil_DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<FixedTimeSpans>
+				<Days>14</Days>
+			</FixedTimeSpans>
+				
+		</DateSequence>
+		
+		<DateSequence>
+			<CorrelationData eventType="BillSent">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<CorrelationData eventType="BillPaid">
+				<XPathSelector>
+					<XPathExpression>//DateTime</XPathExpression>
+				</XPathSelector>
+			</CorrelationData>
+			<RandomTimeSpans>
+				<Min>
+					<Hours>48</Hours>
+				</Min>
+				<Max>
+					<Days>14</Days>
+				</Max>
+				<Granularity>Seconds</Granularity>
+			</RandomTimeSpans>
+				
+		</DateSequence>
+	</EventSequence>
+	
 <!-- ***************************************************************************************** -->	
 	
 	<EventSequence name="ES_CustomerActions">
 		<Switch>
+		
+		
+			
 			<Case probability="0.08">
 				<EventGenerator name="EG_OutgoingCall"/>
 			</Case>
@@ -1157,6 +1353,20 @@
 			<Case probability="0.01">
 				<EventGenerator name="EG_RequestWebpage_OnlineSMS"/>
 			</Case>
+			<!-- Todo: sollte monatlich einmal auftreten! -->
+			<Case probability="0.01">
+				<EventSequence name="ES_BillSentPaid"/>
+			</Case>
+			
+			<!-- Todo: sollte unabhaengig vom User getriggert werden! -->
+			<Case probability="0.01">
+				<EventGenerator name="EG_StartCampaign"/>
+			</Case>
+			
+			
+			
+			
+			
 			
 			
 			
@@ -1198,29 +1408,9 @@
 			<ValueGenerator name="VG_Connection"/>
 		</ScopeVariable>
 		
-	<EventGenerator name="EG_RequestWebpage_OnlineSMS"/>
+		<EventGenerator name="EG_StartCampaign"/>
 		
-		<DateSequence>
-			<CorrelationData eventType="*">
-				<XPathSelector>
-					<XPathExpression>//DateTime</XPathExpression>
-				</XPathSelector>
-			</CorrelationData>
-			<CorrelationData eventType="*">
-				<XPathSelector>
-					<XPathExpression>//DateTime</XPathExpression>
-				</XPathSelector>
-			</CorrelationData>
-			<RandomTimeSpans>
-				<Min>
-					<Seconds>1</Seconds>
-				</Min>
-				<Max>
-					<Hours>24</Hours>
-				</Max>
-				<Granularity>Seconds</Granularity>
-			</RandomTimeSpans>
-		</DateSequence>
+		
 	</EventSequence>	
 	
 	

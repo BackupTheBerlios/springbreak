@@ -35,7 +35,7 @@
 			<DataType multiValue="false" catalogName="DateTime">
 				<RuntimeType>System.DateTime</RuntimeType>
 			</DataType>
-			<Name>Until_DateTime</Name>
+			<Name>PayUntil_DateTime</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
 
