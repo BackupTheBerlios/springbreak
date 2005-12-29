@@ -16,7 +16,6 @@
 			<Name>BillId</Name>
 			<Mandatory>true</Mandatory>
 		</Attribute>
-error(3): wrong syntax
 		<Attribute reuseable="false" catalogName="DateTime">
 			<DataType multiValue="false" catalogName="DateTime">
 				<RuntimeType>System.DateTime</RuntimeType>
