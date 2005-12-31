@@ -905,7 +905,7 @@
 	<!-- Outgoing SMS send by user through webpage-->
 	<EventGenerator name="EG_RequestWebpage_OnlineSMS">
 		<Template>
-			<SMSSent>
+			<RequestWebpage_OnlineSMS>
 				<CustomerId>
 					<ScopeVariable name="UserId"/>
 				</CustomerId>
@@ -916,7 +916,7 @@
 					<ScopeVariable name="PartnerId"/>
 				</ReceiverNr>
 				<MsgLength>160</MsgLength>
-			</SMSSent>
+			</RequestWebpage_OnlineSMS>
 		</Template>
 	</EventGenerator>
 	
@@ -1424,8 +1424,7 @@
 			<ValueGenerator name="VG_Connection"/>
 		</ScopeVariable>
 		
-		<EventSequence name="ES_Video_Outgoing_Incoming"/>
-		<EventSequence name="ES_BillSentPaid"/>		
+		<EventGenerator name="EG_RequestWebpage_OnlineSMS"/>	
 		
 	</EventSequence>	
 	
