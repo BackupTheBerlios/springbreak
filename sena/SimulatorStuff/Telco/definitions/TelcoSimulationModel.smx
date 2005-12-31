@@ -417,7 +417,7 @@
 	<!-- Outgoing Videocall -->
 	<EventGenerator name="EG_OutgoingVideoCall">
 		<Template>
-			<OutgoingCall>
+			<OutgoingVideoCall>
 				<CustomerId>
 					<ScopeVariable name="UserId"/>
 				</CustomerId>
@@ -431,14 +431,14 @@
 				<Location>
 					<ValueGenerator name="VG_Location"/>
 				</Location>
-			</OutgoingCall>
+			</OutgoingVideoCall>
 		</Template>
 	</EventGenerator>
 	
 	<!-- Incoming Videocall -->
 	<EventGenerator name="EG_IncomingVideoCall">
 		<Template>
-			<IncomingCall>
+			<IncomingVideoCall>
 				<CustomerId>
 					<ScopeVariable name="UserId"/>
 				</CustomerId>
@@ -452,7 +452,7 @@
 				<Location>
 					<ValueGenerator name="VG_Location"/>
 				</Location>
-			</IncomingCall>
+			</IncomingVideoCall>
 		</Template>
 	</EventGenerator>
 	
@@ -1424,9 +1424,8 @@
 			<ValueGenerator name="VG_Connection"/>
 		</ScopeVariable>
 		
-		<EventGenerator name="EG_MMSSent"/>
-		<EventGenerator name="EG_MMSReceived"/>
-		
+		<EventSequence name="ES_Video_Outgoing_Incoming"/>
+		<EventSequence name="ES_BillSentPaid"/>		
 		
 	</EventSequence>	
 	
