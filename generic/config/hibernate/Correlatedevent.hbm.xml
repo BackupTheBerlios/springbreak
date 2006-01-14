@@ -22,7 +22,6 @@
         type="java.lang.String"
         column="GUID"
         not-null="true"
-        unique="true"
         length="36"
     />
     <property
