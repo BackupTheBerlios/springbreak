@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.6 $ 
-		$Id: build.xml,v 1.6 2005/12/22 19:42:33 szabolcs Exp $ 
+		$Revision: 1.7 $ 
+		$Id: build.xml,v 1.7 2006/01/14 19:44:19 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -26,9 +26,10 @@
 	<property name="config.dir" value="config"/>
 	<property name="taglibs.dir" value="taglibs"/>
 	<property name="dist.dir" value="dist"/>
+	<property name="eventDefinitions.dir" value="eventDefinitions"/>
 	<property name="webapp.name" value="generic"/>
 	<property name="build.classes" value="build/classes"/>
-
+	
 	<!-- ====================================================== 	-->
 	<!-- tomcat configs 											-->
 	<!-- ====================================================== 	-->
@@ -120,6 +121,8 @@
             </fileset>
 			<fileset dir="${lib.dir}/jakarta-taglibs/standard-1.0.6/lib">
                 <include name="jstl.jar"/>
+                <include name="jaxen-full.jar"/>
+                <include name="saxpath.jar"/>
             </fileset>	
 			<!--fileset dir="${lib.dir}/jakarta-taglibs/standard-1.0.6/tld">
                 <include name="*.*"/>
@@ -183,6 +186,13 @@
 		<!-- copy misc config files into dist root -->
 		<copy todir="${dist.dir}/WEB-INF/classes" preservelastmodified="true">
 			<fileset dir="${config.dir}/misc">
+                <include name="**/*.*"/>
+            </fileset>
+		</copy>	
+		
+		<!-- copy event definitions into distribution path -->
+		<copy todir="${dist.dir}/WEB-INF/classes" preservelastmodified="true">
+			<fileset dir="${eventDefinitions.dir}">
                 <include name="**/*.*"/>
             </fileset>
 		</copy>	
