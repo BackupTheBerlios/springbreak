@@ -14,9 +14,9 @@ import at.generic.web.commandObj.AdminCommand;
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.1 2005/12/19 23:18:07 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.2 2006/01/14 19:43:05 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Controller for the ETL Process
  * 
@@ -36,7 +36,7 @@ public class AdminController implements Controller {
 		AdminCommand adminData = new AdminCommand();
 		adminData.setNumberOfIdentifiedEvents(sourceEventEtl.getNumberOfIdentifiedEvents());
 		adminData.setLastUpdate(sourceEventEtl.getLastUpdate());
-		adminData.setIdentifiedEvents(sourceEventEtl.getIdentifiedEvents());
+		//adminData.setIdentifiedEvents(sourceEventEtl.getIdentifiedEvents());
 		adminData.setNumberOfProcessedEvents(sourceEventEtl.getNumberOfProcessedEvents());
 		
 		//sourceEventEtl.transformSourceEvents();
