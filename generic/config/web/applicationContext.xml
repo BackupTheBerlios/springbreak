@@ -14,12 +14,18 @@
     </bean>
     
     <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+        <property name="url"><value>jdbc:postgresql://localhost/intimedb</value></property>
+        <property name="username"><value>postgres</value></property>
+        <property name="password"><value>letmein</value></property>
+    </bean>
+    <!-- 
+    <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value></property>
-        <!--  <property name="url"><value>jdbc:sqlserver://192.168.0.9/database=InTimeAdminDB/user=sa/password=senactive</value></property> -->
         <property name="url"><value>jdbc:sqlserver://192.168.0.10/database=InTimeAdminDB</value></property>
         <property name="username"><value>sa</value></property>
         <property name="password"><value>senactive</value></property>
-    </bean>
+    </bean>  -->
 
 	<!-- ====================================================================================	-->
 	<!-- Hibernate Configs																	 	-->
@@ -44,7 +50,26 @@
         </props>
         </property>
     </bean> 
-    
+    <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource">
+			<ref local="msSqlSource"/>
+		</property>
+        <property name="mappingResources">
+            <list>
+                 <value>Correlatedevent.hbm.xml</value>
+                 <value>Correlationset.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop> 
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+        </props>
+        </property>
+    </bean>     
+   <!-- 
    <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
 		<property name="dataSource">
 			<ref local="msSqlSource"/>
@@ -64,7 +89,7 @@
         </props>
         </property>
     </bean>     
-	
+	 -->
 	<!-- ====================================================================================	-->
 	<!-- Transaction Manager																 	-->
 	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA)			-->
@@ -224,7 +249,8 @@
     	</property> 
     </bean>
     
-    <bean id="sourceEventEtl" class="at.generic.etl.SourceEventEtl"> 
+    <!-- bean id="sourceEventEtl" class="at.generic.etl.GranSourceEvent"--> 
+    <bean id="sourceEventEtl" class="at.generic.etl.impl.GranSourceEvent" init-method="getBasicInfos"> 
     	<property name="genericServiceTarget">
     		<ref local="genericDAOTargetTarget"/>
     	</property> 
@@ -232,10 +258,14 @@
     		<ref local="genericDAOSourceTarget"/>
     	</property> 
     	<property name="identifiedEvents">
-    		<list>
-    			<value>OrderReceived</value>
-    			<value>OrderConfirmed</value>
-    		</list>
+    		<map>
+    			<entry key="OrderReceived">
+    				<value>e:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
+    			</entry>
+				<entry key="OrderComfirmed">
+    				<value>e:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
+    			</entry>
+    		</map>
     	</property> 
     </bean>
 
