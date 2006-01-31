@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="at.generic.eventmodel.Event" 
+    table="events"
+>
+
+    <id
+        name="eventid"
+        type="long"
+        column="eventid"
+    >
+    	 <generator class="assigned" />
+    </id>
+
+    <property
+        name="xmlcontent"
+        type="java.lang.String"
+        column="xmlcontent"
+        length="-1"
+    />
+    <property
+        name="guid"
+        type="java.lang.String"
+        column="guid"
+        length="255"
+    />
+    <property
+        name="priority"
+        type="java.lang.String"
+        column="priority"
+        length="255"
+    />
+    <property
+        name="localtimeid"
+        type="java.sql.Timestamp"
+        column="localtimeid"
+        length="8"
+    />
+    <property
+        name="utctimeid"
+        type="java.sql.Timestamp"
+        column="utctimeid"
+        length="8"
+    />
+    <property
+        name="localrwtimeid"
+        type="java.sql.Timestamp"
+        column="localrwtimeid"
+        length="8"
+    />
+    <property
+        name="utcrwtimeid"
+        type="java.sql.Timestamp"
+        column="utcrwtimeid"
+        length="8"
+    />
+    <property
+        name="rwtimeid"
+        type="int"
+        column="rwtimeid"
+    />
+    <property
+        name="txtimeid"
+        type="int"
+        column="txtimeid"
+    />
+    <property
+        name="eventtypeid"
+        type="int"
+        column="eventtypeid"
+    />
+    
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Eventattribute -->
+</class>
+</hibernate-mapping>

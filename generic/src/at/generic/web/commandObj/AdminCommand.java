@@ -1,34 +1,35 @@
 package at.generic.web.commandObj;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.1 2005/12/19 23:17:35 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Data Object for the ETL Admin section
  * 
  */
 public class AdminCommand { 
 	private Date lastUpdate;
-	private ArrayList identifiedEvents;
+	private List identifiedEvents;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
+	private int numberOfEventsInSource;
 	
 	
 	/**
 	 * @return Returns the identifiedEvents.
 	 */
-	public ArrayList getIdentifiedEvents() {
+	public List getIdentifiedEvents() {
 		return identifiedEvents;
 	}
 	/**
 	 * @param identifiedEvents The identifiedEvents to set.
 	 */
-	public void setIdentifiedEvents(ArrayList identifiedEvents) {
+	public void setIdentifiedEvents(List identifiedEvents) {
 		this.identifiedEvents = identifiedEvents;
 	}
 	/**
@@ -67,6 +68,7 @@ public class AdminCommand {
 	public void setNumberOfProcessedEvents(int numberOfProcessedEvents) {
 		this.numberOfProcessedEvents = numberOfProcessedEvents;
 	}
+	
 	
 	
 	

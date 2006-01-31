@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="at.generic.eventmodel.Eventtype" 
+    table="eventtype"
+>
+
+    <id
+        name="eventtypeid"
+        type="int"
+        column="eventtypeid"
+    >
+		<generator class="sequence">
+   			<param name="sequence">seq_eventtype</param>
+		</generator>
+    </id>
+
+    <property
+        name="eventname"
+        type="java.lang.String"
+        column="eventname"
+        not-null="true"
+        length="255"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Event -->
+    <set
+        name="events"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="eventtypeid" />
+        </key>
+        <one-to-many 
+            class="at.generic.eventmodel.Event"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

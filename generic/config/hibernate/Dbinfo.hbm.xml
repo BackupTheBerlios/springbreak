@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="at.generic.eventmodel.Dbinfo" 
+    table="dbinfos"
+>
+
+    <id
+        name="id"
+        type="int"
+        column="id"
+    >
+        <generator class="sequence">
+   			<param name="sequence">seq_dbinfo</param>
+		</generator>
+    </id>
+
+    <property
+        name="updatestart"
+        type="java.lang.String"
+        column="updatestart"
+        length="255"
+    />
+    <property
+        name="updatestop"
+        type="java.lang.String"
+        column="updatestop"
+        length="255"
+    />
+    <property
+        name="processeditems"
+        type="short"
+        column="processeditems"
+        length="2"
+    />
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

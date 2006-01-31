@@ -5,12 +5,13 @@ import java.util.Date;
 import java.util.Map;
 
 import at.generic.dao.GenericServiceDAO;
+import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.5 2006/01/14 19:42:54 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.6 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Main Interface for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -102,4 +103,25 @@ public interface SourceEventEtl {
 	 * @param initDone The initDone to set.
 	 */
 	public void setInitDone(boolean initDone);
+	
+	/**
+	 * @return Returns the eventHandling.
+	 */
+	public EventHandling getEventHandling();
+
+	/**
+	 * @param eventHandling The eventHandling to set.
+	 */
+	public void setEventHandling(EventHandling eventHandling);
+	
+	/**
+	 * @return Returns the identifiedEventObjects.
+	 */
+	public Map getIdentifiedEventObjects(); 
+
+	/**
+	 * @param identifiedEventObjects The identifiedEventObjects to set.
+	 */
+	public void setIdentifiedEventObjects(Map identifiedEventObjects); 
+	
 }

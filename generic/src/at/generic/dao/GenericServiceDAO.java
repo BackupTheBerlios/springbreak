@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: GenericServiceDAO.java,v 1.1 2005/12/21 22:06:10 szabolcs Exp $
+ * @version $Id: GenericServiceDAO.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Interface for the Generic DAO 
  * 
@@ -38,7 +38,14 @@ public interface GenericServiceDAO {
 	 * @param id
 	 */
 	public void save(Object obj, Serializable id);
-	 
+	
+	/**
+	 * Persists given object without to check saveorupdate problematic
+	 * 
+	 * @param obj
+	 */
+	public void saveWithoutCheck(Object obj);
+	
 	/**
 	 * Updates persistent object
 	 * 

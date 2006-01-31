@@ -19,13 +19,15 @@
         <property name="username"><value>postgres</value></property>
         <property name="password"><value>letmein</value></property>
     </bean>
+    
     <!-- 
     <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value></property>
         <property name="url"><value>jdbc:sqlserver://192.168.0.10/database=InTimeAdminDB</value></property>
         <property name="username"><value>sa</value></property>
         <property name="password"><value>senactive</value></property>
-    </bean>  -->
+    </bean>  
+    -->
 
 	<!-- ====================================================================================	-->
 	<!-- Hibernate Configs																	 	-->
@@ -38,7 +40,12 @@
 				<value>Baseevent.hbm.xml</value>
 				<value>Orderreceivedevent.hbm.xml</value>
                 <value>Productcollection.hbm.xml</value> 
-				<value>Orderconfirmed.hbm.xml</value>
+				<value>Orderconfirmed.hbm.xml</value> 
+				<value>Event.hbm.xml</value>
+				<value>Rwtime.hbm.xml</value>
+				<value>Txtime.hbm.xml</value>
+				<value>Eventattribute.hbm.xml</value>
+				<value>Eventtype.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -232,6 +239,16 @@
          </props> 
       </property>
     </bean>
+    
+    <!-- ====================================================================================	-->
+	<!-- Facades																				-->
+	<!-- ====================================================================================	-->
+
+	<bean id="eventHandlingFacade" class="at.generic.service.impl.EventHandlingImpl"> 
+    	<property name="genericServiceTarget">
+    		<ref local="genericDAOTargetTarget"/>
+    	</property> 
+    </bean>
 
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->
@@ -257,13 +274,23 @@
     	<property name="genericServiceSource">
     		<ref local="genericDAOSourceTarget"/>
     	</property> 
+    	<property name="eventHandling">
+    		<ref local="eventHandlingFacade"/>
+    	</property> 
     	<property name="identifiedEvents">
     		<map>
     			<entry key="OrderReceived">
     				<value>e:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
     			</entry>
-				<entry key="OrderComfirmed">
+				<entry key="OrderConfirmed">
     				<value>e:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
+    			</entry>
+    		</map>
+    	</property> 
+    	<property name="identifiedEventObjects">
+    		<map>
+    			<entry key="Product">
+    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
     		</map>
     	</property> 

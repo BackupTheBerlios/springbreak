@@ -9,14 +9,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import at.generic.etl.SourceEventEtl;
+import at.generic.service.EventHandling;
 import at.generic.web.commandObj.AdminCommand;
 
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.2 2006/01/14 19:43:05 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.3 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Controller for the ETL Process
  * 
@@ -33,11 +34,14 @@ public class AdminController implements Controller {
 		    sourceEventEtl.getBasicInfos();
 		}
 		
+		EventHandling eventHandling = sourceEventEtl.getEventHandling();
+		
 		AdminCommand adminData = new AdminCommand();
 		adminData.setNumberOfIdentifiedEvents(sourceEventEtl.getNumberOfIdentifiedEvents());
 		adminData.setLastUpdate(sourceEventEtl.getLastUpdate());
 		//adminData.setIdentifiedEvents(sourceEventEtl.getIdentifiedEvents());
 		adminData.setNumberOfProcessedEvents(sourceEventEtl.getNumberOfProcessedEvents());
+		adminData.setIdentifiedEvents(eventHandling.getIdentifiedEventTypes());
 		
 		//sourceEventEtl.transformSourceEvents();
 		return new ModelAndView("admin", "adminData", adminData);

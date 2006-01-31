@@ -2,8 +2,6 @@ package at.generic.etl.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,24 +16,35 @@ import org.dom4j.io.SAXReader;
 
 import at.generic.dao.GenericServiceDAO;
 import at.generic.etl.SourceEventEtl;
+import at.generic.eventmodel.Dbinfo;
+import at.generic.eventmodel.Event;
+import at.generic.eventmodel.Eventattribute;
+import at.generic.eventmodel.Eventtype;
+import at.generic.eventmodel.Rwtime;
+import at.generic.eventmodel.Txtime;
 import at.generic.model.Correlatedevent;
+import at.generic.service.EventHandling;
+import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.1 2006/01/14 19:42:54 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
  * 
  */
 public class GranSourceEvent implements SourceEventEtl {
-	private static Log log = LogFactory.getLog(DWHLikeSourceEvent.class);
+	private static Log log = LogFactory.getLog(GranSourceEvent.class);
+	
 	private GenericServiceDAO genericServiceTarget;
 	private GenericServiceDAO genericServiceSource;
-	private Date lastUpdate;
+	private EventHandling eventHandling;
+	private java.util.Date lastUpdate;
 	private Map identifiedEvents;
+	private Map identifiedEventObjects;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
 	private boolean initDone;
@@ -54,23 +63,26 @@ public class GranSourceEvent implements SourceEventEtl {
 			
 			// get all Events from Source to determine the maximum size of events in the source db
 			List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
-			numberOfProcessedEvents = correlatedEventList.size();
 			
-			// TODO: implement numberOfIdentifiedEvents - count transformed Events
-
+			this.numberOfIdentifiedEvents = eventHandling.getNumberOfIdentifiedEvents();
+			this.numberOfProcessedEvents = correlatedEventList.size();
+			
 			initDone = true;
 		} 
-		
-		
 	}
 	
 	/**
 	 * Main transformation service - coordinates all the work
 	 */
 	public void transformSourceEvents () {
-		this.lastUpdate = new Date(System.currentTimeMillis());
+		this.lastUpdate = new java.util.Date(System.currentTimeMillis());
 		this.numberOfIdentifiedEvents = 0;
 		this.numberOfProcessedEvents = 0;
+		
+		// create log data
+		Dbinfo dbInfo = new Dbinfo();
+		dbInfo.setUpdatestart(new java.util.Date(System.currentTimeMillis()).toGMTString());
+		
 		
 		List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
 		
@@ -94,13 +106,19 @@ public class GranSourceEvent implements SourceEventEtl {
 		        // parse Event Type xml if it is known
 		        if (eventTypeLocation != null) {
 			        Document eventType = this.parseXmlFile(eventTypeLocation);
-			        this.transformEvent(event, eventType);
+			        this.transformEvent(event, eventType, correlatedEvent);
 		        }
 		        
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		// determine number of identified items
+		this.numberOfIdentifiedEvents = eventHandling.getNumberOfIdentifiedEvents();
+		
+		dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
+		genericServiceTarget.save(new Dbinfo(), dbInfo);
 	}
 	
 	/**
@@ -108,13 +126,15 @@ public class GranSourceEvent implements SourceEventEtl {
 	 * 
 	 * @param event from the database
 	 * @param eventType definiton of the occured event
+	 * @param correlatedEvent Correlated Event
 	 */
-	private void transformEvent(Document event, Document eventType) {
+	private void transformEvent(Document event, Document eventType, Correlatedevent correlatedEvent) {
 		Element root = event.getRootElement();
 		log.debug("### ------------------------------------------------------- ");
 		log.debug("### root element name: " + event.getRootElement().getName());
 		// extract event header attributes and store them
 		// guid, originalGuid, priority,... 
+		/*
 		log.debug("### guid: " + event.selectSingleNode("/" + root.getName()).valueOf("@guid"));
 		log.debug("### originalGuid: " + event.selectSingleNode("/" + root.getName()).valueOf("@originalGuid"));
 		log.debug("### priority: " + event.selectSingleNode("/" + root.getName()).valueOf("@priority"));
@@ -125,14 +145,80 @@ public class GranSourceEvent implements SourceEventEtl {
 		log.debug("### utcTimeCreatedRW: " + event.selectSingleNode("/" + root.getName()).valueOf("@utcTimeCreatedRW"));
 		log.debug("### majorVersion: " + event.selectSingleNode("/" + root.getName()).valueOf("@majorVersion"));
 		log.debug("### minorVersion: " + event.selectSingleNode("/" + root.getName()).valueOf("@minorVersion"));
+		*/
+		
+		// store event data
+		Event eventStore = new Event();
+		eventStore.setEventid(new Long(correlatedEvent.getId().longValue()));
+		eventStore.setXmlcontent(correlatedEvent.getEventXml());
+		eventStore.setGuid(event.selectSingleNode("/" + root.getName()).valueOf("@originalGuid"));
+		eventStore.setPriority(event.selectSingleNode("/" + root.getName()).valueOf("@priority"));
+		eventStore.setLocaltimeid(new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@localTimeCreated")).getDateFormat());
+		eventStore.setUtctimeid(new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@utcTimeCreated")).getDateFormat());
+		eventStore.setLocalrwtimeid(new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@localTimeCreatedRW")).getDateFormat());
+		eventStore.setUtcrwtimeid(new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@utcTimeCreatedRW")).getDateFormat());
+		
+		// determine eventtypes and store them
+		Eventtype eventTypeObj = new Eventtype();
+		eventTypeObj.setEventname(event.getRootElement().getName());
+		eventHandling.storeEventtype(eventTypeObj);
+		
+		// retrieve id and save it in event object
+		Integer eventTypeId = eventHandling.getEventtypeIdByName(event.getRootElement().getName());
+		
+		// if id has been found save eventtypeid
+		if (eventTypeId.intValue() != -1)
+			eventStore.setEventtypeid(eventTypeId);
+		
+		// store decomposed dates
+		Rwtime rwTime = new Rwtime();
+		EventDate rwTimeDate = new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@localTimeCreatedRW"));
+		rwTime.setRwday(new Short((short)rwTimeDate.getDay()));
+		rwTime.setRwmonth(new Short((short)rwTimeDate.getMonth()));
+		rwTime.setRwyear(new Short((short)rwTimeDate.getYear()));
+		eventHandling.storeRwTime(rwTime);
+		
+		Integer rwTimeId = eventHandling.getRwTimeIdByDates(rwTimeDate.getDay(), rwTimeDate.getMonth(), rwTimeDate.getYear());
+		log.debug("### rwTimeId: " + rwTimeId);
+		if (rwTimeId.intValue() != -1)
+			eventStore.setRwtimeid(rwTimeId);
+		
+		Txtime txTime = new Txtime();
+		EventDate txTimeDate = new EventDate(event.selectSingleNode("/" + root.getName()).valueOf("@utcTimeCreatedRW"));
+		txTime.setTxday(new Short((short)txTimeDate.getDay()));
+		txTime.setTxmonth(new Short((short)txTimeDate.getMonth()));
+		txTime.setTxyear(new Short((short)txTimeDate.getYear()));
+		eventHandling.storeTxTime(txTime);
+		
+		Integer txTimeId = eventHandling.getTxTimeIdByDates(txTimeDate.getDay(), txTimeDate.getMonth(), txTimeDate.getYear());
+		log.debug("### txTimeId: " + txTimeId);
+		if (txTimeId.intValue() != -1)
+			eventStore.setTxtimeid(txTimeId);
+		
+		// save event
+		genericServiceTarget.save(eventStore, eventStore.getEventid());
 		
 		// iterate through the top level elements
 		// map them on event attribute facts and EventObjectAttributes
 		for ( Iterator i = root.elementIterator(); i.hasNext(); ) {
             Element element = (Element) i.next();
             log.debug("### element name: " + element.getName());
-            log.debug("### element value: " + element.getText());
+            log.debug("### element value:**" + element.getText() + "**");
             
+            // create event attribute            
+            Eventattribute eventAttrib = new Eventattribute();
+            if (!element.getText().equals("")) {
+            	log.debug("### in: ");
+	    		eventAttrib.setEventid(new Long(correlatedEvent.getId().longValue()));
+	    		eventAttrib.setAttributename(element.getName());
+	    		eventAttrib.setValue(element.getText());
+	    		eventAttrib.setXmluri(element.getUniquePath());
+	    		eventAttrib.setDatatype(this.getDataTypeForEventAttribute(element.getName(), eventType));
+	    		
+	    		// save event attribute
+	    		eventHandling.storeEventAttribute(eventAttrib);
+            }
+    		
             if (element.getText() == null || element.getText() == "") {
             	for ( Iterator i1 = element.elementIterator(); i1.hasNext(); ) {
             		Element el = (Element) i1.next();
@@ -143,9 +229,27 @@ public class GranSourceEvent implements SourceEventEtl {
                 		
                 		// store this value as EventAttribute
                 		log.debug("### element name in 3rd level: " + el2.getName());
+	                		// create event attribute
+	                		eventAttrib = new Eventattribute();
+	                		eventAttrib.setEventid(new Long(correlatedEvent.getId().longValue()));
+	                		eventAttrib.setAttributename(el2.getName());
+	                		eventAttrib.setValue(el2.getText());
+	                		eventAttrib.setXmluri(el2.getUniquePath());
+	                		
+	                		// retrieve Event Type xml location
+	                		String eventTypeObjectLocation = (String)this.identifiedEventObjects.get(el.getName());
+	                		try {
+		                		if (eventTypeObjectLocation != null) {
+		                			Document eventTypeObject = this.parseXmlFile(eventTypeObjectLocation);
+		                			eventAttrib.setDatatype(this.getDataTypeForEventAttributeObject(el2.getName(), eventTypeObject));
+		            	        }
+	                		} catch (DocumentException e) {
+	                			e.printStackTrace();
+	                		
+	                		// save event attribute
+	                		eventHandling.storeEventAttribute(eventAttrib);
+                		 }
             		}
-            		
-            		
    				}
             }
             
@@ -182,7 +286,22 @@ public class GranSourceEvent implements SourceEventEtl {
     	Node node = document.selectSingleNode("/EventType/Attributes/Attribute[Name='" + eventAttribute.trim() + "']/DataType/RuntimeType");
     	return node.getText();
     }
-
+	
+	 /**
+     * Returns the data type for an Event Attribute Object
+     * 
+     * @param eventAttribute
+     * @param document
+     * @return
+     */
+	private String getDataTypeForEventAttributeObject(String eventAttribute, Document document) {
+		log.debug("### getDataTypeForEventAttribute eventAttribute: " + eventAttribute);
+		log.debug("### getDataTypeForEventAttribute document root name: " + document.getRootElement().getName());
+    	Node node = document.selectSingleNode("/MultipleDefinitions/EventObjectType/Attributes/Attribute[Name='" + eventAttribute.trim() + "']/DataType/RuntimeType");
+    	return node.getText();
+    }
+	
+	
 	/**
 	 * @return Returns the genericServiceSource.
 	 */
@@ -235,14 +354,14 @@ public class GranSourceEvent implements SourceEventEtl {
 	/**
 	 * @return Returns the lastUpdate.
 	 */
-	public Date getLastUpdate() {
+	public java.util.Date getLastUpdate() {
 		return lastUpdate;
 	}
 
 	/**
 	 * @param lastUpdate The lastUpdate to set.
 	 */
-	public void setLastUpdate(Date lastUpdate) {
+	public void setLastUpdate(java.util.Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
@@ -288,7 +407,32 @@ public class GranSourceEvent implements SourceEventEtl {
 		this.initDone = initDone;
 	}
 
-	
-	
-	
+	/**
+	 * @return Returns the eventHandling.
+	 */
+	public EventHandling getEventHandling() {
+		return eventHandling;
+	}
+
+	/**
+	 * @param eventHandling The eventHandling to set.
+	 */
+	public void setEventHandling(EventHandling eventHandling) {
+		this.eventHandling = eventHandling;
+	}
+
+	/**
+	 * @return Returns the identifiedEventObjects.
+	 */
+	public Map getIdentifiedEventObjects() {
+		return identifiedEventObjects;
+	}
+
+	/**
+	 * @param identifiedEventObjects The identifiedEventObjects to set.
+	 */
+	public void setIdentifiedEventObjects(Map identifiedEventObjects) {
+		this.identifiedEventObjects = identifiedEventObjects;
+	}
+
 }

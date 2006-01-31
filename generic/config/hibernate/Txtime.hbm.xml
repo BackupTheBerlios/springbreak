@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="at.generic.eventmodel.Txtime" 
+    table="txtime"
+>
+
+    <id
+        name="txtimeid"
+        type="int"
+        column="txtimeid"
+    >
+        <generator class="sequence">
+   			<param name="sequence">seq_txtime</param>
+		</generator>
+    </id>
+
+    <property
+        name="txday"
+        type="short"
+        column="txday"
+        length="2"
+    />
+    <property
+        name="txmonth"
+        type="short"
+        column="txmonth"
+        length="2"
+    />
+    <property
+        name="txyear"
+        type="short"
+        column="txyear"
+        length="2"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Event -->
+    <set
+        name="events"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="txtimeid" />
+        </key>
+        <one-to-many 
+            class="at.generic.eventmodel.Event"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

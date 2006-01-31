@@ -13,9 +13,9 @@ import at.generic.eventmodel.OrderReceivedEvent;
 
 /**
  * @author szabolcs
- * @version $Id: GenericServiceDAOSource.java,v 1.1 2005/12/21 22:06:10 szabolcs Exp $
+ * @version $Id: GenericServiceDAOSource.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Generic DAO Implementation 
  * 
@@ -41,6 +41,11 @@ public class GenericServiceDAOSource extends HibernateDaoSupport implements Gene
 			getHibernateTemplate().save(obj);
 		else 
 			this.update(obj);
+	}
+	
+	public void saveWithoutCheck(Object obj) {
+		//log.debug("### saving object " + obj.getClass().getName() + " with id " + id.toString());
+		getHibernateTemplate().save(obj);
 	}
 	 
 	 public void update(Object obj) {
