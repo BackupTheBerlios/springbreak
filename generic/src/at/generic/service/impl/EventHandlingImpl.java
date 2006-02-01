@@ -18,9 +18,9 @@ import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandlingImpl.java,v 1.3 2006/02/01 19:48:39 szabolcs Exp $
+ * @version $Id: EventHandlingImpl.java,v 1.2 2006/02/01 19:48:10 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.2 $
  * 
  * Interface Facade for event operations
  * 
@@ -194,10 +194,13 @@ public class EventHandlingImpl implements EventHandling  {
 		List dbInfo = genericServiceTarget.getAllObjects(new Dbinfo());
 		log.debug("### " + dbInfo.size());
 		
-		if (dbInfo.size() == 0) 
+		if (dbInfo.size() == 0) {
+			log.debug("### getLastEtlUpdate 1");
 			return null;
-		else 
+		} else {
+			log.debug("### getLastEtlUpdate 2");
 			return (Dbinfo) dbInfo.get(dbInfo.size() - 1);
+		}
 	}
 
 	public GenericServiceDAO getGenericServiceTarget() {
