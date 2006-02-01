@@ -46,6 +46,7 @@
 				<value>Txtime.hbm.xml</value>
 				<value>Eventattribute.hbm.xml</value>
 				<value>Eventtype.hbm.xml</value>
+				<value>Dbinfo.hbm.xml</value>				
             </list>
         </property>
         <property name="hibernateProperties">
