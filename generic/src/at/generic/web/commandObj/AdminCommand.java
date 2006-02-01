@@ -5,19 +5,21 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.3 2006/02/01 19:48:51 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Data Object for the ETL Admin section
  * 
  */
 public class AdminCommand { 
-	private Date lastUpdate;
+	private String updatestart;
+	private String updatestop;
 	private List identifiedEvents;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
 	private int numberOfEventsInSource;
+	private double etlBarLength;
 	
 	
 	/**
@@ -32,18 +34,7 @@ public class AdminCommand {
 	public void setIdentifiedEvents(List identifiedEvents) {
 		this.identifiedEvents = identifiedEvents;
 	}
-	/**
-	 * @return Returns the lastUpdate.
-	 */
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-	/**
-	 * @param lastUpdate The lastUpdate to set.
-	 */
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+	
 	/**
 	 * @return Returns the numberOfIdentifiedEvents.
 	 */
@@ -68,6 +59,44 @@ public class AdminCommand {
 	public void setNumberOfProcessedEvents(int numberOfProcessedEvents) {
 		this.numberOfProcessedEvents = numberOfProcessedEvents;
 	}
+	/**
+	 * @return Returns the etlBarLength.
+	 */
+	public double getEtlBarLength() {
+		return etlBarLength;
+	}
+	/**
+	 * @param etlBarLength The etlBarLength to set.
+	 */
+	public void setEtlBarLength(double etlBarLength) {
+		this.etlBarLength = etlBarLength;
+	}
+	/**
+	 * @return Returns the updatestart.
+	 */
+	public String getUpdatestart() {
+		return updatestart;
+	}
+	/**
+	 * @param updatestart The updatestart to set.
+	 */
+	public void setUpdatestart(String updatestart) {
+		this.updatestart = updatestart;
+	}
+	/**
+	 * @return Returns the updatestop.
+	 */
+	public String getUpdatestop() {
+		return updatestop;
+	}
+	/**
+	 * @param updatestop The updatestop to set.
+	 */
+	public void setUpdatestop(String updatestop) {
+		this.updatestop = updatestop;
+	}
+	
+	
 	
 	
 	

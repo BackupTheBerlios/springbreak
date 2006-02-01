@@ -3,6 +3,7 @@ package at.generic.service;
 import java.util.List;
 
 import at.generic.dao.GenericServiceDAO;
+import at.generic.eventmodel.Dbinfo;
 import at.generic.eventmodel.Eventattribute;
 import at.generic.eventmodel.Eventtype;
 import at.generic.eventmodel.Rwtime;
@@ -10,9 +11,9 @@ import at.generic.eventmodel.Txtime;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandling.java,v 1.1 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: EventHandling.java,v 1.2 2006/02/01 19:48:10 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Facade for event operations
  * 
@@ -96,5 +97,10 @@ public interface EventHandling {
 	 * @return number if identified items
 	 */
 	public List getIdentifiedEventTypes();
+	
+	/**
+	 * Returns the last etl process infos
+	 */
+	public Dbinfo getLastEtlUpdate();
 
 }

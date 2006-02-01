@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import at.generic.dao.GenericServiceDAO;
+import at.generic.eventmodel.Dbinfo;
 import at.generic.eventmodel.Event;
 import at.generic.eventmodel.Eventattribute;
 import at.generic.eventmodel.Eventtype;
@@ -17,9 +18,9 @@ import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandlingImpl.java,v 1.1 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: EventHandlingImpl.java,v 1.3 2006/02/01 19:48:39 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.3 $
  * 
  * Interface Facade for event operations
  * 
@@ -183,6 +184,20 @@ public class EventHandlingImpl implements EventHandling  {
 		}
 		
 		return identifiedTypes; 
+	}
+	
+	/**
+	 * Returns the last etl process infos
+	 * 
+	 */
+	public Dbinfo getLastEtlUpdate() {
+		List dbInfo = genericServiceTarget.getAllObjects(new Dbinfo());
+		log.debug("### " + dbInfo.size());
+		
+		if (dbInfo.size() == 0) 
+			return null;
+		else 
+			return (Dbinfo) dbInfo.get(dbInfo.size() - 1);
 	}
 
 	public GenericServiceDAO getGenericServiceTarget() {

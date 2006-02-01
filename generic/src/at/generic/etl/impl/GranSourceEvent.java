@@ -28,9 +28,9 @@ import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.2 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.3 2006/02/01 19:47:57 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -118,7 +118,8 @@ public class GranSourceEvent implements SourceEventEtl {
 		this.numberOfIdentifiedEvents = eventHandling.getNumberOfIdentifiedEvents();
 		
 		dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
-		genericServiceTarget.save(new Dbinfo(), dbInfo);
+		dbInfo.setProcesseditems(new Short((short)this.numberOfIdentifiedEvents));
+		genericServiceTarget.saveWithoutCheck(dbInfo);
 	}
 	
 	/**

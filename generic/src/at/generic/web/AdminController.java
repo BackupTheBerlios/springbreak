@@ -9,15 +9,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import at.generic.etl.SourceEventEtl;
+import at.generic.eventmodel.Dbinfo;
 import at.generic.service.EventHandling;
 import at.generic.web.commandObj.AdminCommand;
 
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.3 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.4 2006/02/01 19:48:51 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Controller for the ETL Process
  * 
@@ -38,10 +39,20 @@ public class AdminController implements Controller {
 		
 		AdminCommand adminData = new AdminCommand();
 		adminData.setNumberOfIdentifiedEvents(sourceEventEtl.getNumberOfIdentifiedEvents());
-		adminData.setLastUpdate(sourceEventEtl.getLastUpdate());
 		//adminData.setIdentifiedEvents(sourceEventEtl.getIdentifiedEvents());
 		adminData.setNumberOfProcessedEvents(sourceEventEtl.getNumberOfProcessedEvents());
 		adminData.setIdentifiedEvents(eventHandling.getIdentifiedEventTypes());
+		
+		// calc the elt bar length
+		adminData.setEtlBarLength(((sourceEventEtl.getNumberOfIdentifiedEvents() / (sourceEventEtl.getNumberOfProcessedEvents() * 0.01))/100) * 300); 
+		
+		// get last update infos
+		Dbinfo dbInfo = eventHandling.getLastEtlUpdate();
+		
+		if (dbInfo != null) {
+			adminData.setUpdatestart(dbInfo.getUpdatestart());
+			adminData.setUpdatestop(dbInfo.getUpdatestop());
+		}
 		
 		//sourceEventEtl.transformSourceEvents();
 		return new ModelAndView("admin", "adminData", adminData);

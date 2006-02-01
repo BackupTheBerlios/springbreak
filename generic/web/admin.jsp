@@ -18,6 +18,14 @@
 		<td>
 			<%@ include file="/upperBorder.jsp"%>
 			<table border="0">
+				<tr valign="top">
+					<td>
+						<b>Status:</b>
+					</td>
+					<td>
+						<img src="images/eltbarborder.jpg" border="0" width="1"/><img src="images/eltbargreen.jpg" border="0" height="15px" width="<c:out value="${adminData.etlBarLength}"/>px"/><img src="images/eltbarred.jpg" border="0" height="15px" width="300px"/><img src="images/eltbarborder.jpg" border="0" width="1"/>						
+					</td>
+				</tr>
 				<tr>
 					<td>
 						<b>Identified Items:</b>
@@ -36,10 +44,18 @@
 				</tr>
 				<tr>
 					<td>
-						<b>Last Update:</b>
+						<b>Last Start Update:</b>
 					</td>
 					<td>
-						<c:out value="${adminData.lastUpdate}"/>
+						<c:out value="${adminData.updatestart}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Last Stop Update:</b>
+					</td>
+					<td>
+						<c:out value="${adminData.updatestop}"/>
 					</td>
 				</tr>
 				<tr valign="top">
