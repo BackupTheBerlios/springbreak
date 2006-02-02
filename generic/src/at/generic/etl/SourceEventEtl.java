@@ -9,9 +9,9 @@ import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.6 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.7 2006/02/02 19:41:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Main Interface for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -65,16 +65,6 @@ public interface SourceEventEtl {
 	public void setNumberOfProcessedEvents(int numberOfProcessedEvents);
 
 	/**
-	 * @return Returns the lastUpdate.
-	 */
-	public Date getLastUpdate();
-
-	/**
-	 * @param lastUpdate The lastUpdate to set.
-	 */
-	public void setLastUpdate(Date lastUpdate);
-
-	/**
 	 * @return Returns the numberOfIdentifiedEvents.
 	 */
 	public int getNumberOfIdentifiedEvents();
@@ -123,5 +113,25 @@ public interface SourceEventEtl {
 	 * @param identifiedEventObjects The identifiedEventObjects to set.
 	 */
 	public void setIdentifiedEventObjects(Map identifiedEventObjects); 
+	
+	/**
+	 * @return Returns the etlRunning.
+	 */
+	public boolean isEtlRunning();
+
+	/**
+	 * @param etlRunning The etlRunning to set.
+	 */
+	public void setEtlRunning(boolean etlRunning);
+	
+	/**
+	 * @return Returns the etlThreadStartedAt.
+	 */
+	public java.util.Date getEtlThreadStartedAt();
+
+	/**
+	 * @param etlThreadStartedAt The etlThreadStartedAt to set.
+	 */
+	public void setEtlThreadStartedAt(java.util.Date etlThreadStartedAt);
 	
 }

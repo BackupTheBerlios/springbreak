@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.3 2006/02/01 19:48:51 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.4 2006/02/02 19:41:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Data Object for the ETL Admin section
  * 
@@ -15,11 +15,13 @@ import java.util.List;
 public class AdminCommand { 
 	private String updatestart;
 	private String updatestop;
+	private String etlThreadStartedAt;
 	private List identifiedEvents;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
 	private int numberOfEventsInSource;
 	private double etlBarLength;
+	private boolean etlRunning;
 	
 	
 	/**
@@ -95,10 +97,30 @@ public class AdminCommand {
 	public void setUpdatestop(String updatestop) {
 		this.updatestop = updatestop;
 	}
-	
-	
-	
-	
+	/**
+	 * @return Returns the etlRunning.
+	 */
+	public boolean isEtlRunning() {
+		return etlRunning;
+	}
+	/**
+	 * @param etlRunning The etlRunning to set.
+	 */
+	public void setEtlRunning(boolean etlRunning) {
+		this.etlRunning = etlRunning;
+	}
+	/**
+	 * @return Returns the etlThreadStartedAt.
+	 */
+	public String getEtlThreadStartedAt() {
+		return etlThreadStartedAt;
+	}
+	/**
+	 * @param etlThreadStartedAt The etlThreadStartedAt to set.
+	 */
+	public void setEtlThreadStartedAt(String etlThreadStartedAt) {
+		this.etlThreadStartedAt = etlThreadStartedAt;
+	}
 	
 	
 }

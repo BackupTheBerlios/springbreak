@@ -16,9 +16,9 @@ import at.generic.web.commandObj.AdminCommand;
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.4 2006/02/01 19:48:51 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.5 2006/02/02 19:41:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Controller for the ETL Process
  * 
@@ -53,6 +53,16 @@ public class AdminController implements Controller {
 			adminData.setUpdatestart(dbInfo.getUpdatestart());
 			adminData.setUpdatestop(dbInfo.getUpdatestop());
 		}
+		
+		// check if ETL Process is running
+		if (sourceEventEtl.isEtlRunning() == true) {
+			adminData.setEtlRunning(true);
+			
+			// if so then add time when process has been started
+			adminData.setEtlThreadStartedAt(sourceEventEtl.getEtlThreadStartedAt().toGMTString());
+		}
+		
+		
 		
 		//sourceEventEtl.transformSourceEvents();
 		return new ModelAndView("admin", "adminData", adminData);

@@ -28,31 +28,47 @@ import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.3 2006/02/01 19:47:57 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.4 2006/02/02 19:41:33 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
  * 
  */
-public class GranSourceEvent implements SourceEventEtl {
+public class GranSourceEvent implements SourceEventEtl, Runnable {
 	private static Log log = LogFactory.getLog(GranSourceEvent.class);
 	
 	private GenericServiceDAO genericServiceTarget;
 	private GenericServiceDAO genericServiceSource;
 	private EventHandling eventHandling;
-	private java.util.Date lastUpdate;
+	private java.util.Date etlThreadStartedAt;
 	private Map identifiedEvents;
 	private Map identifiedEventObjects;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
 	private boolean initDone;
+	private boolean etlRunning;
+	
+	public void run() {
+		log.debug("### etl running... ");
+		
+		if (etlRunning == false) {
+			etlRunning = true;
+			//new Transformthread().transformSourceEvents();
+			Transformthread transformThread = new Transformthread();
+			new Thread(transformThread).start();
+		} 
+	}
+	
+	public void stop() {
+		log.debug("### etl stopped... ");
+		etlRunning = false;
+	}
 	
 	/**
 	 * Should be executed init to get some infos about the amount of data that has been 
 	 * transformed and how much is left... 
-	 *
 	 */
 	public void getBasicInfos () {
 		// go through database relations to count the initial numberOfIdentifiedEvents, 
@@ -71,56 +87,70 @@ public class GranSourceEvent implements SourceEventEtl {
 		} 
 	}
 	
-	/**
-	 * Main transformation service - coordinates all the work
-	 */
 	public void transformSourceEvents () {
-		this.lastUpdate = new java.util.Date(System.currentTimeMillis());
-		this.numberOfIdentifiedEvents = 0;
-		this.numberOfProcessedEvents = 0;
-		
-		// create log data
-		Dbinfo dbInfo = new Dbinfo();
-		dbInfo.setUpdatestart(new java.util.Date(System.currentTimeMillis()).toGMTString());
-		
-		
-		List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
-		
-		Iterator i = correlatedEventList.iterator();
-		while (i.hasNext()) {
-			Correlatedevent correlatedEvent = (Correlatedevent) i.next();
-			this.numberOfProcessedEvents++;
-			
-			// determine the xml type e.g.: OrderReceived,...
-			StringBuffer stringBuffer = new StringBuffer(correlatedEvent.getEventXml());
-			ByteArrayInputStream xmlStream = new ByteArrayInputStream(stringBuffer.toString().getBytes());
-			
-			try {
-				SAXReader reader = new SAXReader();
-		        Document event = reader.read(xmlStream);
-		        
-		        // retrieve Event Type xml location
-		        String eventTypeLocation = 
-		        	(String)this.identifiedEvents.get(event.getRootElement().getName());
-		        
-		        // parse Event Type xml if it is known
-		        if (eventTypeLocation != null) {
-			        Document eventType = this.parseXmlFile(eventTypeLocation);
-			        this.transformEvent(event, eventType, correlatedEvent);
-		        }
-		        
-			} catch (DocumentException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		// determine number of identified items
-		this.numberOfIdentifiedEvents = eventHandling.getNumberOfIdentifiedEvents();
-		
-		dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
-		dbInfo.setProcesseditems(new Short((short)this.numberOfIdentifiedEvents));
-		genericServiceTarget.saveWithoutCheck(dbInfo);
+		this.run();
 	}
+	
+	public class Transformthread extends Thread {
+		
+		public void run() {
+			log.debug("### Transformthread.start()");
+			transformSourceEvents();
+		}
+		/**
+		 * Main transformation service - coordinates all the work
+		 */
+		public void transformSourceEvents () {
+			etlThreadStartedAt = new java.util.Date(System.currentTimeMillis());
+			numberOfIdentifiedEvents = 0;
+			numberOfProcessedEvents = 0;
+			
+			// create log data
+			Dbinfo dbInfo = new Dbinfo();
+			dbInfo.setUpdatestart(new java.util.Date(System.currentTimeMillis()).toGMTString());
+			
+			
+			List correlatedEventList = genericServiceSource.getAllObjects(new Correlatedevent());
+			
+			Iterator i = correlatedEventList.iterator();
+			while (i.hasNext()) {
+				Correlatedevent correlatedEvent = (Correlatedevent) i.next();
+				numberOfProcessedEvents++;
+				
+				// determine the xml type e.g.: OrderReceived,...
+				StringBuffer stringBuffer = new StringBuffer(correlatedEvent.getEventXml());
+				ByteArrayInputStream xmlStream = new ByteArrayInputStream(stringBuffer.toString().getBytes());
+				
+				try {
+					SAXReader reader = new SAXReader();
+			        Document event = reader.read(xmlStream);
+			        
+			        // retrieve Event Type xml location
+			        String eventTypeLocation = 
+			        	(String)identifiedEvents.get(event.getRootElement().getName());
+			        
+			        // parse Event Type xml if it is known
+			        if (eventTypeLocation != null) {
+				        Document eventType = parseXmlFile(eventTypeLocation);
+				        transformEvent(event, eventType, correlatedEvent);
+			        }
+			        
+				} catch (DocumentException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			// determine number of identified items
+			numberOfIdentifiedEvents = eventHandling.getNumberOfIdentifiedEvents();
+			
+			dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
+			dbInfo.setProcesseditems(new Short((short)numberOfIdentifiedEvents));
+			genericServiceTarget.saveWithoutCheck(dbInfo);
+			etlRunning = false;
+		}
+	}
+	
+	
 	
 	/**
 	 * Iterates through the XML File and creates the corrseponding models 
@@ -353,20 +383,6 @@ public class GranSourceEvent implements SourceEventEtl {
 	}
 
 	/**
-	 * @return Returns the lastUpdate.
-	 */
-	public java.util.Date getLastUpdate() {
-		return lastUpdate;
-	}
-
-	/**
-	 * @param lastUpdate The lastUpdate to set.
-	 */
-	public void setLastUpdate(java.util.Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	/**
 	 * @return Returns the numberOfIdentifiedEvents.
 	 */
 	public int getNumberOfIdentifiedEvents() {
@@ -435,5 +451,35 @@ public class GranSourceEvent implements SourceEventEtl {
 	public void setIdentifiedEventObjects(Map identifiedEventObjects) {
 		this.identifiedEventObjects = identifiedEventObjects;
 	}
+
+	/**
+	 * @return Returns the etlRunning.
+	 */
+	public boolean isEtlRunning() {
+		return etlRunning;
+	}
+
+	/**
+	 * @param etlRunning The etlRunning to set.
+	 */
+	public void setEtlRunning(boolean etlRunning) {
+		this.etlRunning = etlRunning;
+	}
+
+	/**
+	 * @return Returns the etlThreadStartedAt.
+	 */
+	public java.util.Date getEtlThreadStartedAt() {
+		return etlThreadStartedAt;
+	}
+
+	/**
+	 * @param etlThreadStartedAt The etlThreadStartedAt to set.
+	 */
+	public void setEtlThreadStartedAt(java.util.Date etlThreadStartedAt) {
+		this.etlThreadStartedAt = etlThreadStartedAt;
+	}
+
+	
 
 }
