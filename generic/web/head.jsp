@@ -5,7 +5,8 @@
 </head>
 <body>
 <center>
-	<h1>Event Center</h1>
+	<!--  <h1>Event Google</h1>  -->
+	<img src="images/eventlogo.jpg" border="0" />
 	
 <table border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
