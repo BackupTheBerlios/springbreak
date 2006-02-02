@@ -18,9 +18,9 @@ import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandlingImpl.java,v 1.2 2006/02/01 19:48:10 szabolcs Exp $
+ * @version $Id: EventHandlingImpl.java,v 1.4 2006/02/02 20:51:36 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.4 $
  * 
  * Interface Facade for event operations
  * 
@@ -59,6 +59,24 @@ public class EventHandlingImpl implements EventHandling  {
 		}
 		
 		return new Integer(-1);
+	}
+	
+	/**
+	 * Retrieves eventtype name by its Id
+	 * 
+	 * @param eventid
+	 */
+	public String getEventtypeNameById(int eventtypeid) {
+		List eventTypeList = genericServiceTarget.getObjectsByQuery("from Eventtype where eventtypeid = " + eventtypeid);
+		if (eventTypeList.size() > 0) {
+			Iterator i = eventTypeList.iterator();
+			while (i.hasNext()) {
+				Eventtype et = (Eventtype) i.next();
+				return et.getEventname();
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -194,13 +212,10 @@ public class EventHandlingImpl implements EventHandling  {
 		List dbInfo = genericServiceTarget.getAllObjects(new Dbinfo());
 		log.debug("### " + dbInfo.size());
 		
-		if (dbInfo.size() == 0) {
-			log.debug("### getLastEtlUpdate 1");
+		if (dbInfo.size() == 0) 
 			return null;
-		} else {
-			log.debug("### getLastEtlUpdate 2");
+		else 
 			return (Dbinfo) dbInfo.get(dbInfo.size() - 1);
-		}
 	}
 
 	public GenericServiceDAO getGenericServiceTarget() {

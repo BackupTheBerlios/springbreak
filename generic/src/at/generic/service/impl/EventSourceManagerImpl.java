@@ -7,14 +7,14 @@ import org.apache.commons.logging.LogFactory;
 
 import at.generic.dao.hibernate.GenericServiceDAOTarget;
 import at.generic.etl.SourceEventEtl;
-import at.generic.eventmodel.BaseEvent;
+import at.generic.eventmodel.Event;
 import at.generic.service.EventSourceManager;
 
 /**
  * @author szabolcs
- * @version $Id: EventSourceManagerImpl.java,v 1.4 2005/12/21 22:07:42 szabolcs Exp $
+ * @version $Id: EventSourceManagerImpl.java,v 1.5 2006/02/02 20:51:36 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Implementation of the Events Data Manager
  * 
@@ -40,7 +40,7 @@ public class EventSourceManagerImpl implements EventSourceManager {
 	 * @return List with all the base events
 	 */
 	public List getBaseEventsByPage(int pageNr) {
-		return genericDAOTarget.getObjectsByPage(new BaseEvent(), pageNr, pageSize);
+		return genericDAOTarget.getObjectsByPage(new Event(), pageNr, pageSize);
 	}
 
 

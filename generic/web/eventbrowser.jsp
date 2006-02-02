@@ -1,5 +1,5 @@
 <head>
-<title>TEST</title>
+<title>Event Google</title>
 </head>
 <body>
 <%@ include file="/head.jsp"%>
@@ -41,12 +41,12 @@
 								<tr>
 									
 									<td>
-										<a href="browseEvents.html?browserPage=<c:out value="${browserCmd.currentPage}"/>&selectedEventId=<c:out value="${eventList.id}"/>">
-											<c:out value="${eventList.id}"/>
+										<a href="browseEvents.html?browserPage=<c:out value="${browserCmd.currentPage}"/>&selectedEventId=<c:out value="${eventList.eventid}"/>">
+											<c:out value="${eventList.eventid}"/>
 										</a>
 									</td>
 									<td><c:out value="${eventList.eventtype}"/></td>
-									<td><c:out value="${eventList.dbtimeCreated}"/></td>
+									<td><c:out value="${eventList.localtimeid}"/></td>
 								</tr>
 							</c:forEach>
 						</table>

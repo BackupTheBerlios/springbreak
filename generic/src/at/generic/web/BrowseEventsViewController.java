@@ -23,16 +23,18 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import at.generic.eventmodel.BaseEvent;
+import at.generic.eventmodel.Event;
+import at.generic.service.EventHandling;
 import at.generic.service.EventSourceManager;
 import at.generic.web.commandObj.BrowserCommand;
+import at.generic.web.commandObj.BrowserEventList;
 
 
 /**
  * @author szabolcs
- * @version $Id: BrowseEventsViewController.java,v 1.4 2005/12/22 19:39:43 szabolcs Exp $
+ * @version $Id: BrowseEventsViewController.java,v 1.5 2006/02/02 20:51:36 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Event Browser View Controller
  * 
@@ -41,6 +43,7 @@ public class BrowseEventsViewController implements Controller {
 	private static Log log = LogFactory.getLog(BrowseEventsViewController.class); 
 	
 	private EventSourceManager eventSourceManager;
+	private EventHandling eventHandling;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 		// check if the Browser has been initialized
@@ -63,17 +66,22 @@ public class BrowseEventsViewController implements Controller {
 	    
 	    Iterator i = baseEventModels.iterator();
 	    while (i.hasNext()) {
-			BaseEvent baseEvent = (BaseEvent)i.next();
-			
-			// pretty printing
-			baseEvent.setEventXml(this.convertDocToPretty(baseEvent.getEventXml()));
+	    	Event baseEvent = (Event)i.next();
+	    	
+	    	// create List for View with main data
+	    	
+	    	BrowserEventList browserListEvent = new BrowserEventList();
+	    	browserListEvent.setEventid(baseEvent.getEventid());
+	    	browserListEvent.setLocaltimeid(baseEvent.getLocaltimeid());
+	    	browserListEvent.setEventtype(eventHandling.getEventtypeNameById(baseEvent.getEventtypeid().intValue()));
             
-            browserList.add(baseEvent);
-            
-			
+            browserList.add(browserListEvent);
+
 			if (request.getParameter("selectedEventId") != null 
-					&& request.getParameter("selectedEventId").trim().equals(baseEvent.getId().toString())) {
-				browserCmd.setEventDetail(baseEvent.getEventXml());
+					&& request.getParameter("selectedEventId").trim().equals(baseEvent.getEventid().toString())) {
+				
+				// pretty printing
+				browserCmd.setEventDetail(this.convertDocToPretty(baseEvent.getXmlcontent()));
 				//log.debug("### eventXML" + baseEvent.getEventXml().substring(0,40));
 			}
 			//log.debug("### selectedEventId : " + request.getParameter("selectedEventId"));
@@ -128,6 +136,20 @@ public class BrowseEventsViewController implements Controller {
 	 */
 	public void setEventSourceManager(EventSourceManager eventSourceManager) {
 		this.eventSourceManager = eventSourceManager;
+	}
+
+	/**
+	 * @return Returns the eventHandling.
+	 */
+	public EventHandling getEventHandling() {
+		return eventHandling;
+	}
+
+	/**
+	 * @param eventHandling The eventHandling to set.
+	 */
+	public void setEventHandling(EventHandling eventHandling) {
+		this.eventHandling = eventHandling;
 	}
 	
 	

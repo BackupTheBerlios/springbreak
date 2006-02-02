@@ -11,9 +11,9 @@ import at.generic.eventmodel.Txtime;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandling.java,v 1.2 2006/02/01 19:48:10 szabolcs Exp $
+ * @version $Id: EventHandling.java,v 1.3 2006/02/02 20:51:36 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for event operations
  * 
@@ -33,6 +33,13 @@ public interface EventHandling {
 	 * @param eventname
 	 */
 	public Integer getEventtypeIdByName(String eventname);
+	
+	/**
+	 * Retrieves eventtype name by its Id
+	 * 
+	 * @param eventid
+	 */
+	public String getEventtypeNameById(int eventtypeid);
 
 	/**
 	 * @return Returns the genericServiceTarget.

@@ -1,5 +1,5 @@
 <head>
-<title>TEST</title>
+<title>Event Google</title>
 </head>
 <body>
 <%@ include file="/head.jsp"%>
@@ -11,7 +11,7 @@
 			<b>ETL Admin:</b>
 		</td>
 		<td>
-			<b>Lucene Admin:</b>
+			<b>Index Admin:</b>
 		</td>
 	</tr>
 	<tr>

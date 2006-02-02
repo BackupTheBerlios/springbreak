@@ -62,6 +62,9 @@
   		<property name="eventSourceManager">
 			<ref bean="eventSourceManager"/>
 		</property>
+		<property name="eventHandling">
+    		<ref bean="eventHandlingFacade"/>
+    	</property> 
   	</bean>
   	
   	<bean name="adminController" class="at.generic.web.AdminController">
