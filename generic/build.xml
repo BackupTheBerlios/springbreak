@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.7 $ 
-		$Id: build.xml,v 1.7 2006/01/14 19:44:19 szabolcs Exp $ 
+		$Revision: 1.8 $ 
+		$Id: build.xml,v 1.8 2006/02/02 19:41:50 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -313,9 +313,18 @@
 			     username="${postgres.username}"
 			     password="${postgres.password}"
 	  		>
+				<!--
 				<table name="baseevent"/>
 				<table name="orderreceivedevent"/>
-				<!-- <table name="productcollection"/-->
+				<table name="productcollection"/>
+				
+				<table name="events"/>
+				<table name="rwtime"/>
+				<table name="txtime"/>
+				<table name="eventattributes"/>
+				<table name="eventtype"/>
+				-->
+				<table name="dbinfos"/>
 				
 				<hibernate destination="${config.dir}" package="at.generic.eventmodel"/> 
 			</middlegen>
@@ -330,9 +339,13 @@
 		<taskdef name="hbm2java" classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask" classpathref="classpath"/> 		
 		<hbm2java output="${src.dir}"> 
 		<fileset dir="${config.dir}/hibernate"> 
-			<!-- <include name="**/*.hbm.xml"/> -->
-			<include name="**/OrderConfirmed.hbm.xml"/>
-			
+			<!-- <include name="**/*.hbm.xml"/> 
+			<include name="**/Event.hbm.xml"/>
+			<include name="**/Rwtime.hbm.xml"/>
+			<include name="**/Txtime.hbm.xml"/>
+			<include name="**/Eventattribute.hbm.xml"/>
+			<include name="**/Eventtype.hbm.xml"/>-->
+			<include name="**/Dbinfo.hbm.xml"/>
 		</fileset> 
 		</hbm2java> 
 	</target> 
