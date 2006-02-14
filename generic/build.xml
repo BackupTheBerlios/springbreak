@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.8 $ 
-		$Id: build.xml,v 1.8 2006/02/02 19:41:50 szabolcs Exp $ 
+		$Revision: 1.9 $ 
+		$Id: build.xml,v 1.9 2006/02/14 10:10:56 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -348,6 +348,28 @@
 			<include name="**/Dbinfo.hbm.xml"/>
 		</fileset> 
 		</hbm2java> 
+	</target> 
+	
+	<!-- ====================================================== 	-->
+	<!-- Copy Jsp													-->
+	<!-- Copies only Jsps - for developing purpose so you don't		-->
+	<!-- have to restart tomcat each time							-->
+	<!-- ====================================================== 	-->
+	<target name="copyJSP"> 
+		<!-- copy web related stuff into dist WEB-INF -->
+		<copy todir="${dist.dir}" preservelastmodified="true">
+			<fileset dir="${web.dir}">
+                <include name="**/*.*"/>
+                <exclude name="**/junit.jar"/>
+                <exclude name="**/*mock.jar"/>
+                <exclude name="**/strutstestcase*.jar"/>
+            </fileset>
+		</copy>	
+		
+		<!-- deploy in tomcat -->
+        <copy todir="${tomcat.home}/webapps/${webapp.name}" preservelastmodified="true">
+            <fileset dir="${dist.dir}"/>
+        </copy>
 	</target> 
 	
 	<!-- ====================================================== 	-->

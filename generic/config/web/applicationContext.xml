@@ -286,6 +286,46 @@
 				<entry key="OrderConfirmed">
     				<value>e:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
     			</entry>
+    			
+    			<entry key="DataLoggerConfigured">
+    				<value>e:/jDev/generic/eventDefinitions/DataLoggerConfiguredEventType.xml</value>    			
+    			</entry>
+    			<entry key="DataLoggerRead">
+    				<value>e:/jDev/generic/eventDefinitions/DataLoggerReadEventType.xml</value>    			
+    			</entry>
+    			<entry key="ErrorEvent">
+    				<value>e:/jDev/generic/eventDefinitions/ErrorEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentAudit">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentAuditEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentCreated">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentCreatedEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentDelivered">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentDeliveredEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentExpedited">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentExpeditedEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentStarted">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentStartedEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentTenderAccepted">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderAcceptedEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentTenderIssued">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderIssuedEventType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentTenderRejected">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderRejectedEventType.xml</value>    			
+    			</entry>
+    			<entry key="TransportEnd">
+    				<value>e:/jDev/generic/eventDefinitions/TransportEndEventType.xml</value>    			
+    			</entry>
+    			<entry key="TransportStart">
+    				<value>e:/jDev/generic/eventDefinitions/TransportStartEventType.xml</value>    			
+    			</entry> 
     		</map>
     	</property> 
     	<property name="identifiedEventObjects">
@@ -293,7 +333,31 @@
     			<entry key="Product">
     				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
+    			<entry key="LogEntry">
+    				<value>e:/jDev/generic/eventDefinitions/LogEntryEventObjectType.xml</value>    			
+    			</entry>
+    			<entry key="Product">
+    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
+    			</entry>
+    			<entry key="ShipmentInfo">
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentInfoEventObjectType.xml</value>    			
+    			</entry>
+    			<entry key="TransportInfo">
+    				<value>e:/jDev/generic/eventDefinitions/TransportInfoEventObjectType.xml</value>    			
+    			</entry>
     		</map>
+    	</property> 
+    </bean>
+    
+    <bean id="eventSearch" class="at.generic.search.impl.SearchForAttribsImpl"> 
+    	<property name="genericServiceTarget">
+    		<ref local="genericDAOTargetTarget"/>
+    	</property> 
+  	    <property name="eventHandling">
+    		<ref local="eventHandlingFacade"/>
+    	</property> 
+    	<property name="fetchLimit">
+    		<value>300</value>
     	</property> 
     </bean>
 

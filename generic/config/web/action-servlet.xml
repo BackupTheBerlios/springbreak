@@ -54,6 +54,7 @@
 			<props>
 				<prop key="/browseEvents.html">BrowseEventsController</prop>
 				<prop key="/admin.html">adminController</prop>
+				<prop key="/search.html">searchController</prop>
 			</props>
 		</property>
 	</bean>
@@ -70,6 +71,12 @@
   	<bean name="adminController" class="at.generic.web.AdminController">
   		<property name="sourceEventEtl">
 			<ref bean="sourceEventEtl"/>
+		</property>
+  	</bean>
+  	
+  	<bean name="searchController" class="at.generic.web.SearchController">
+  		<property name="eventSearch">
+			<ref bean="eventSearch"/>
 		</property>
   	</bean>
 	

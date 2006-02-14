@@ -14,12 +14,13 @@ import at.generic.eventmodel.Eventattribute;
 import at.generic.search.SearchForAttribs;
 import at.generic.search.resultmodel.SearchResult;
 import at.generic.service.EventHandling;
+import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchForAttribsImpl.java,v 1.2 2006/02/12 16:35:50 szabolcs Exp $
+ * @version $Id: SearchForAttribsImpl.java,v 1.3 2006/02/14 10:09:38 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Searchinterface for Events.
  * 
@@ -41,17 +42,15 @@ public class SearchForAttribsImpl implements SearchForAttribs {
 	 */
 	public List getEventsForFoundAttribs(String searchStr) {
 		log.debug("### searchStr: " + searchStr);
-		// TODO: analyze the search string
-		this.createSearchAttributeList(searchStr);
-		
-		// extract quoted substrings
+		// Analyze the search string and extract quoted substrings
+		Vector searchAttribs = this.createSearchAttributeList(searchStr);
 		
 		// TODO: determine search type AND, OR, Wildcards
 		
 		// TODO: choose search type
 		
 		// execute search
-		List resultList = this.getEventsWithSimpleSearch(searchStr);
+		List resultList = this.getEventsWithSimpleSearch(searchAttribs);
 		
 		// return results
 		return resultList;
@@ -64,10 +63,21 @@ public class SearchForAttribsImpl implements SearchForAttribs {
 	 * @param word the simple search String
 	 * @return List with Events and EventAttributes 
 	 */
-	private List getEventsWithSimpleSearch(String word) {
+	private List getEventsWithSimpleSearch(Vector searchAttribs) {
 		// TODO: limit einbauen 300
+		String hqlAttribList = new String();
+		Iterator itAttr = searchAttribs.iterator();
+		while (itAttr.hasNext()) {
+			hqlAttribList = hqlAttribList + " value = '" + (String) itAttr.next() + "'";
+			
+			if (itAttr.hasNext())
+				hqlAttribList = hqlAttribList + " OR ";
+		}
+		
+		log.debug("### hqlAttribList: " + hqlAttribList);
+		
 		List eventAttribList = genericServiceTarget.getObjectsByQuery(
-				"from Eventattribute where value = '" + word + "'");
+				"from Eventattribute where " + hqlAttribList );
 		
 		List resultList = new Vector();
 		
@@ -76,6 +86,8 @@ public class SearchForAttribsImpl implements SearchForAttribs {
 			while (i.hasNext()) {
 				Eventattribute ea = (Eventattribute) i.next();
 				Event event = eventHandling.getEventById(ea.getEventid());
+				
+				event.setXmlcontent(new XMLUtils().convertDocToPretty(event.getXmlcontent()));
 				
 				log.debug("### ea.getAttributeid(): " + ea.getAttributeid());
 				log.debug("### ea.getAttributename(): " + ea.getAttributename());

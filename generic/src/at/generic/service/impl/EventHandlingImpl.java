@@ -18,9 +18,9 @@ import at.generic.service.EventHandling;
 
 /**
  * @author szabolcs
- * @version $Id: EventHandlingImpl.java,v 1.4 2006/02/02 20:51:36 szabolcs Exp $
+ * @version $Id: EventHandlingImpl.java,v 1.5 2006/02/14 10:09:52 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Interface Facade for event operations
  * 
@@ -168,7 +168,8 @@ public class EventHandlingImpl implements EventHandling  {
 		List time = genericServiceTarget.getObjectsByQuery(
 				"from Eventattribute where attributename = '" + eventAttrib.getAttributename() + "' and " +
 				"value = '" + eventAttrib.getValue() + "' and " +  
-				"xmluri = '" + eventAttrib.getXmluri() + "'"
+				"xmluri = '" + eventAttrib.getXmluri() + "' and " +
+				"eventid = " + eventAttrib.getEventid()
 			);
 		if (time.size() == 0) {
 			genericServiceTarget.saveWithoutCheck(eventAttrib);
@@ -216,6 +217,32 @@ public class EventHandlingImpl implements EventHandling  {
 			return null;
 		else 
 			return (Dbinfo) dbInfo.get(dbInfo.size() - 1);
+	}
+	
+	/**
+	 * Return Event by its id
+	 * 
+	 * @param id
+	 * @return Event
+	 */
+	public Event getEventById(Long id) {
+		Event event = (Event)genericServiceTarget.getObjectById(new Event(), id);
+		
+		return event; 
+	}
+	
+	/**
+	 * Returns all Attributes belonging to an event
+	 * 
+	 * @param eventId Events id
+	 * @return List with Attributes
+	 */
+	public List getAllEventAttributesByEvent(Long id) {
+		List events = genericServiceTarget.getObjectsByQuery(
+				"from Eventattribute where eventid = " + id
+				);
+		log.debug("### events.size():" + events.size());
+		return events;
 	}
 
 	public GenericServiceDAO getGenericServiceTarget() {

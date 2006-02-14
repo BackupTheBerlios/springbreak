@@ -6,7 +6,7 @@
 <body>
 <center>
 	<!--  <h1>Event Google</h1>  -->
-	<img src="images/eventlogo.jpg" border="0" />
+	<a href="index.html"><img src="images/eventlogo.jpg" border="0" /></a>
 	
 <table border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
@@ -22,8 +22,11 @@
 				</tr>
 				<tr>
 					<td>
-						<center><input type="text" size="55"/><br/>
-						<input type="submit" value="Event-Search"/> </center>
+						<form action="search.html" method="post">
+							<center><input type="text" name="searchstring" size="55" value="<c:out value="${searchResult.searchString}"/>"/><br/>
+							<input type="hidden" name="newSearch" value="true"/>
+							<input type="submit" value="Event-Search"/> </center>
+						</form>
 					</td>
 				</tr>		
 			</table>

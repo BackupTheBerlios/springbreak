@@ -23,7 +23,7 @@
 						<b>Status:</b>
 					</td>
 					<td>
-						<img src="images/eltbarborder.jpg" border="0" width="1"/><img src="images/eltbargreen.jpg" border="0" height="15px" width="<c:out value="${adminData.etlBarLength}"/>px"/><img src="images/eltbarred.jpg" border="0" height="15px" width="300px"/><img src="images/eltbarborder.jpg" border="0" width="1"/>
+						<img src="images/eltbarborder.jpg" border="0" width="1"/><img src="images/eltbargreen.jpg" border="0" height="15px" width="<c:out value="${adminData.etlBarLength}"/>px"/><img src="images/eltbarred.jpg" border="0" height="15px" width="<c:out value="${300-adminData.etlBarLength}"/>px"/><img src="images/eltbarborder.jpg" border="0" width="1"/>
 						<c:if test="${adminData.etlRunning == true}">
 							<br/>Process is running since <c:out value="${adminData.etlThreadStartedAt}"/>
 						</c:if>											

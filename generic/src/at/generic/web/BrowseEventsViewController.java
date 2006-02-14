@@ -26,15 +26,16 @@ import org.xml.sax.SAXException;
 import at.generic.eventmodel.Event;
 import at.generic.service.EventHandling;
 import at.generic.service.EventSourceManager;
+import at.generic.util.XMLUtils;
 import at.generic.web.commandObj.BrowserCommand;
 import at.generic.web.commandObj.BrowserEventList;
 
 
 /**
  * @author szabolcs
- * @version $Id: BrowseEventsViewController.java,v 1.5 2006/02/02 20:51:36 szabolcs Exp $
+ * @version $Id: BrowseEventsViewController.java,v 1.6 2006/02/14 10:10:08 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Event Browser View Controller
  * 
@@ -81,7 +82,7 @@ public class BrowseEventsViewController implements Controller {
 					&& request.getParameter("selectedEventId").trim().equals(baseEvent.getEventid().toString())) {
 				
 				// pretty printing
-				browserCmd.setEventDetail(this.convertDocToPretty(baseEvent.getXmlcontent()));
+				browserCmd.setEventDetail(new XMLUtils().convertDocToPretty(baseEvent.getXmlcontent()));
 				//log.debug("### eventXML" + baseEvent.getEventXml().substring(0,40));
 			}
 			//log.debug("### selectedEventId : " + request.getParameter("selectedEventId"));

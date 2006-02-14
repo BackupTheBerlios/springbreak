@@ -28,9 +28,9 @@ import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.4 2006/02/02 19:41:33 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.5 2006/02/14 10:09:25 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -162,6 +162,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 	private void transformEvent(Document event, Document eventType, Correlatedevent correlatedEvent) {
 		Element root = event.getRootElement();
 		log.debug("### ------------------------------------------------------- ");
+		log.debug("### Id: " + correlatedEvent.getId());
 		log.debug("### root element name: " + event.getRootElement().getName());
 		// extract event header attributes and store them
 		// guid, originalGuid, priority,... 
@@ -276,10 +277,15 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		            	        }
 	                		} catch (DocumentException e) {
 	                			e.printStackTrace();
+	                		}
+	                		
+	                		/*log.debug("### eventAttrib.getEventid: " + eventAttrib.getEventid());
+	                		log.debug("### eventAttrib.getAttributename: " + eventAttrib.getAttributename());
+	                		log.debug("### eventAttrib.getValue: " + eventAttrib.getValue());
+	                		log.debug("### eventAttrib.getXmluri: " + eventAttrib.getXmluri());*/
 	                		
 	                		// save event attribute
 	                		eventHandling.storeEventAttribute(eventAttrib);
-                		 }
             		}
    				}
             }
