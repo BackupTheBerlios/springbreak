@@ -10,14 +10,14 @@
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
         <property name="username"><value>postgres</value></property>
-        <property name="password"><value>letmein</value></property>
+        <property name="password"><value>postgres</value></property>
     </bean>
     
     <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/intimedb</value></property>
         <property name="username"><value>postgres</value></property>
-        <property name="password"><value>letmein</value></property>
+        <property name="password"><value>postgres</value></property>
     </bean>
     
     <!-- 
@@ -34,14 +34,10 @@
 	<!-- ====================================================================================	-->
     
     <bean id="sessionFactoryForPostgresSource" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
-		<property name="dataSource"><ref local="postgresSource"/></property>
+		<property name="dataSource"><ref bean="postgresSource"/></property>
         <property name="mappingResources">
             <list>
-				<value>Baseevent.hbm.xml</value>
-				<value>Orderreceivedevent.hbm.xml</value>
-                <value>Productcollection.hbm.xml</value> 
-				<value>Orderconfirmed.hbm.xml</value> 
-				<value>Event.hbm.xml</value>
+            	<value>Event.hbm.xml</value>
 				<value>Rwtime.hbm.xml</value>
 				<value>Txtime.hbm.xml</value>
 				<value>Eventattribute.hbm.xml</value>
@@ -60,7 +56,7 @@
     </bean> 
     <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
 		<property name="dataSource">
-			<ref local="msSqlSource"/>
+			<ref bean="msSqlSource"/>
 		</property>
         <property name="mappingResources">
             <list>
@@ -80,7 +76,7 @@
    <!-- 
    <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
 		<property name="dataSource">
-			<ref local="msSqlSource"/>
+			<ref bean="msSqlSource"/>
 		</property>
         <property name="mappingResources">
             <list>
@@ -105,140 +101,14 @@
     
     <bean id="transactionManagerForPostgresSource" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
-        	<ref local="sessionFactoryForPostgresSource"/>
+        	<ref bean="sessionFactoryForPostgresSource"/>
         </property>
     </bean>
     
     <bean id="transactionManagerForSQLServerSource" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
-        	<ref local="sessionFactoryForSQLServer"/>
+        	<ref bean="sessionFactoryForSQLServer"/>
         </property>
-    </bean>
-    
-    
-    <!-- ====================================================================================	-->
-	<!-- User DAOs																				-->
-	<!-- ====================================================================================	-->
-	
-	<!-- Correlatedevent -->
-	<bean id="correlatedEventDAOTarget" class="at.generic.dao.hibernate.CorrelatedeventDAOHibernate"> 
-    	<property name="sessionFactory"> 
-    		<ref local="sessionFactoryForSQLServer"/> 
-    	</property> 
-    </bean>
-	
-	<bean id="correlatedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    	<property name="transactionManager"> 
-        	<ref local="transactionManagerForSQLServerSource" /> 
-      	</property> 
-		<property name="target"> 
-		   <ref local="correlatedEventDAOTarget" /> 
-		</property> 
-      <property name="transactionAttributes"> 
-         <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
-            <prop key="update*">PROPAGATION_REQUIRED</prop> 
-            <prop key="remove*">PROPAGATION_REQUIRED</prop>
-			<prop key="*">PROPAGATION_REQUIRED</prop>
-         </props> 
-      </property>
-    </bean>
-    
-	<!-- Correlatedset -->    
-    <bean id="correlatedSetDAOTarget" class="at.generic.dao.hibernate.CorrelatedsetDAOHibernate"> 
-    	<property name="sessionFactory"> 
-    		<ref local="sessionFactoryForSQLServer"/> 
-    	</property> 
-    </bean>
-	
-	<bean id="correlatedSetDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    	<property name="transactionManager"> 
-        	<ref local="transactionManagerForSQLServerSource" /> 
-      	</property> 
-		<property name="target"> 
-		   <ref local="correlatedSetDAOTarget" /> 
-		</property> 
-      <property name="transactionAttributes"> 
-         <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
-            <prop key="update*">PROPAGATION_REQUIRED</prop> 
-            <prop key="remove*">PROPAGATION_REQUIRED</prop>
-			<prop key="*">PROPAGATION_REQUIRED</prop>
-         </props> 
-      </property>
-    </bean>
-    
-    <!-- OrderReceivedEvent -->
-	<bean id="orderReceivedEventDAOTarget" class="at.generic.dao.hibernate.OrderReceivedEventDAOHibernate"> 
-    	<property name="sessionFactory"> 
-    		<ref local="sessionFactoryForPostgresSource"/> 
-    	</property> 
-    </bean>
-	
-	<bean id="orderReceivedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    	<property name="transactionManager"> 
-        	<ref local="transactionManagerForPostgresSource" /> 
-      	</property> 
-		<property name="target"> 
-		   <ref local="orderReceivedEventDAOTarget" /> 
-		</property> 
-      <property name="transactionAttributes"> 
-         <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
-            <prop key="update*">PROPAGATION_REQUIRED</prop> 
-            <prop key="remove*">PROPAGATION_REQUIRED</prop>
-			<prop key="*">PROPAGATION_REQUIRED</prop>
-         </props> 
-      </property>
-    </bean>
-    
-    <!-- ********************************************************************  -->
-    <!-- Generic Service Postgres -->
-	<bean id="genericDAOTargetTarget" class="at.generic.dao.hibernate.GenericServiceDAOTarget"> 
-    	<property name="sessionFactory"> 
-    		<ref local="sessionFactoryForPostgresSource"/> 
-    	</property> 
-    </bean>
-	
-	<bean id="genericDAOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    	<property name="transactionManager"> 
-        	<ref local="transactionManagerForPostgresSource" /> 
-      	</property> 
-		<property name="target"> 
-		   <ref local="genericDAOTargetTarget" /> 
-		</property> 
-      <property name="transactionAttributes"> 
-         <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
-            <prop key="update*">PROPAGATION_REQUIRED</prop> 
-            <prop key="remove*">PROPAGATION_REQUIRED</prop>
-			<prop key="*">PROPAGATION_REQUIRED</prop>
-         </props> 
-      </property>
-    </bean>
-    
-     <!-- Generic Service SQLServer -->
-    <bean id="genericDAOSourceTarget" class="at.generic.dao.hibernate.GenericServiceDAOSource"> 
-    	<property name="sessionFactory"> 
-    		<ref local="sessionFactoryForSQLServer"/> 
-    	</property> 
-    </bean>
-	
-	<bean id="genericDAOSource" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
-    	<property name="transactionManager"> 
-        	<ref local="transactionManagerForSQLServerSource" /> 
-      	</property> 
-		<property name="target"> 
-		   <ref local="genericDAOSourceTarget" /> 
-		</property> 
-      <property name="transactionAttributes"> 
-         <props> 
-            <prop key="save*">PROPAGATION_REQUIRED</prop>
-            <prop key="update*">PROPAGATION_REQUIRED</prop> 
-            <prop key="remove*">PROPAGATION_REQUIRED</prop>
-			<prop key="*">PROPAGATION_REQUIRED</prop>
-         </props> 
-      </property>
     </bean>
     
     <!-- ====================================================================================	-->
@@ -247,9 +117,72 @@
 
 	<bean id="eventHandlingFacade" class="at.generic.service.impl.EventHandlingImpl"> 
     	<property name="genericServiceTarget">
-    		<ref local="genericDAOTargetTarget"/>
+    		<ref bean="genericDAOTargetTarget"/>
     	</property> 
     </bean>
+    
+    <bean id="eventPersistenceService" class="at.generic.service.impl.EventPersistenceServiceImpl"> 
+    	<property name="eventDAO">
+    		<ref bean="eventDAOTarget"/>
+    	</property> 
+    	<property name="eventattributeDAO">
+    		<ref bean="eventattributeDAOTarget"/>
+    	</property> 
+    	<property name="eventtypeDAO">
+    		<ref bean="eventtypeDAOTarget"/>
+    	</property> 
+    	<property name="rwtimeDAO">
+    		<ref bean="rwtimeDAOTarget"/>
+    	</property> 
+    	<property name="txtimeDAO">
+    		<ref bean="txtimeDAOTarget"/>
+    	</property> 
+    	<property name="correlatedEventDAO">
+    		<ref bean="correlatedEventDAO"/>
+    	</property> 
+    </bean>
+    
+    <bean id="correlatingEventsPersistenceService" class="at.generic.service.impl.CorrelatingEventsPersistenceServiceImpl"> 
+    	<property name="correlatedEventDAO">
+    		<ref bean="correlatedEventDAOTarget"/>
+    	</property> 
+    	<property name="correlatedSetDAO">
+    		<ref bean="correlatedSetDAOTarget"/>
+    	</property> 
+    </bean>
+    
+    <bean id="adminPersistenceService" class="at.generic.service.impl.AdminPersistenceServiceImpl"> 
+    	<property name="dbInfoDAO">
+    		<ref bean="dbInfoDAOTarget"/>
+    	</property> 
+    </bean>
+    
+	<bean id="indexingServiceEvents" class="at.generic.search.impl.LuceneIndexingImpl" init-method="init"> 
+    	<property name="indexLocation">
+    		<value>d:/luceneindex/events</value>
+    	</property> 
+    </bean>    
+    
+    <bean id="indexingServiceCorrEvents" class="at.generic.search.impl.LuceneIndexingImpl" init-method="init"> 
+    	<property name="indexLocation">
+    		<value>d:/luceneindex/correvents</value>
+    	</property> 
+    </bean>    
+    
+    <bean id="searchService" class="at.generic.search.impl.SearchServiceImpl"> 
+    	<property name="indexingServiceCorrEvents">
+    		<ref bean="indexingServiceCorrEvents"/>
+    	</property> 
+    	 <property name="eventPersistenceService">
+    		<ref bean="eventPersistenceService"/>
+    	</property> 
+    	<property name="corrPersistenceService">
+    		<ref bean="correlatingEventsPersistenceService"/>
+    	</property>
+    	<property name="maxSearchResults">
+    		<value>100</value>
+    	</property>
+    </bean>    
 
     <!-- ====================================================================================	-->
 	<!-- Managers																				-->
@@ -257,10 +190,10 @@
 	
 	<bean id="eventSourceManager" class="at.generic.service.impl.EventSourceManagerImpl"> 
     	<property name="genericDAOTarget">
-    		<ref local="genericDAOTargetTarget"/>
+    		<ref bean="genericDAOTargetTarget"/>
     	</property> 
   	    <property name="sourceEventEtl">
-    		<ref local="sourceEventEtl"/>
+    		<ref bean="sourceEventEtl"/>
     	</property> 
     	<property name="pageSize">
     		<value>15</value>
@@ -269,81 +202,88 @@
     
     <!-- bean id="sourceEventEtl" class="at.generic.etl.GranSourceEvent"--> 
     <bean id="sourceEventEtl" class="at.generic.etl.impl.GranSourceEvent" init-method="getBasicInfos"> 
-    	<property name="genericServiceTarget">
-    		<ref local="genericDAOTargetTarget"/>
+    	<property name="eventPersistenceService">
+    		<ref bean="eventPersistenceService"/>
     	</property> 
-    	<property name="genericServiceSource">
-    		<ref local="genericDAOSourceTarget"/>
-    	</property> 
-    	<property name="eventHandling">
-    		<ref local="eventHandlingFacade"/>
-    	</property> 
+    	<property name="corrEventsPersistenceService">
+    		<ref bean="correlatingEventsPersistenceService"/>
+    	</property>
+    	<property name="adminPersistenceService">
+    		<ref bean="adminPersistenceService"/>
+    	</property>
+    	<property name="indexingServiceEvents">
+    		<ref bean="indexingServiceEvents"/>
+    	</property>
+    	<property name="indexingServiceCorrEvents">
+    		<ref bean="indexingServiceCorrEvents"/>
+    	</property>
+    	
     	<property name="identifiedEvents">
     		<map>
     			<entry key="OrderReceived">
-    				<value>e:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
     			</entry>
 				<entry key="OrderConfirmed">
-    				<value>e:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
     			</entry>
     			
     			<entry key="DataLoggerConfigured">
-    				<value>e:/jDev/generic/eventDefinitions/DataLoggerConfiguredEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/DataLoggerConfiguredEventType.xml</value>    			
     			</entry>
     			<entry key="DataLoggerRead">
-    				<value>e:/jDev/generic/eventDefinitions/DataLoggerReadEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/DataLoggerReadEventType.xml</value>    			
     			</entry>
     			<entry key="ErrorEvent">
-    				<value>e:/jDev/generic/eventDefinitions/ErrorEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ErrorEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentAudit">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentAuditEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentAuditEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentCreated">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentCreatedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentCreatedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentDelivered">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentDeliveredEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentDeliveredEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentExpedited">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentExpeditedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentExpeditedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentStarted">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentStartedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentStartedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderAccepted">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderAcceptedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderAcceptedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderIssued">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderIssuedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderIssuedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderRejected">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderRejectedEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderRejectedEventType.xml</value>    			
     			</entry>
     			<entry key="TransportEnd">
-    				<value>e:/jDev/generic/eventDefinitions/TransportEndEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/TransportEndEventType.xml</value>    			
     			</entry>
     			<entry key="TransportStart">
-    				<value>e:/jDev/generic/eventDefinitions/TransportStartEventType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/TransportStartEventType.xml</value>    			
     			</entry> 
     		</map>
     	</property> 
     	<property name="identifiedEventObjects">
     		<map>
     			<entry key="Product">
-    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
     			<entry key="LogEntry">
-    				<value>e:/jDev/generic/eventDefinitions/LogEntryEventObjectType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/LogEntryEventObjectType.xml</value>    			
     			</entry>
     			<entry key="Product">
-    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
     			<entry key="ShipmentInfo">
-    				<value>e:/jDev/generic/eventDefinitions/ShipmentInfoEventObjectType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/ShipmentInfoEventObjectType.xml</value>    			
     			</entry>
     			<entry key="TransportInfo">
-    				<value>e:/jDev/generic/eventDefinitions/TransportInfoEventObjectType.xml</value>    			
+    				<value>d:/jDev/generic/eventDefinitions/TransportInfoEventObjectType.xml</value>    			
     			</entry>
     		</map>
     	</property> 
@@ -351,10 +291,10 @@
     
     <bean id="eventSearch" class="at.generic.search.impl.SearchForAttribsImpl"> 
     	<property name="genericServiceTarget">
-    		<ref local="genericDAOTargetTarget"/>
+    		<ref bean="genericDAOTargetTarget"/>
     	</property> 
   	    <property name="eventHandling">
-    		<ref local="eventHandlingFacade"/>
+    		<ref bean="eventHandlingFacade"/>
     	</property> 
     	<property name="fetchLimit">
     		<value>300</value>

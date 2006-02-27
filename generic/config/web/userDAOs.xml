@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   	<!-- ====================================================================================	-->
+	<!-- User DAOs																				-->
+	<!-- ====================================================================================	-->
+	
+	<!-- Correlatedevent -->
+	<bean id="correlatedEventDAOTarget" class="at.generic.dao.hibernate.CorrelatedeventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="correlatedEventDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+	<!-- Correlatedset -->    
+    <bean id="correlatedSetDAOTarget" class="at.generic.dao.hibernate.CorrelatedsetDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedSetDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="correlatedSetDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Event -->    
+    <bean id="eventDAOTarget" class="at.generic.dao.hibernate.EventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="eventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="eventDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Eventattribute -->    
+    <bean id="eventattributeDAOTarget" class="at.generic.dao.hibernate.EventattributeDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="eventattributeDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="eventattributeDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Eventtype -->    
+    <bean id="eventtypeDAOTarget" class="at.generic.dao.hibernate.EventtypeDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="eventtypeDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="eventtypeDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Rwtime -->    
+    <bean id="rwtimeDAOTarget" class="at.generic.dao.hibernate.RwtimeDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="rwtimeDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="rwtimeDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Txtime -->    
+    <bean id="txtimeDAOTarget" class="at.generic.dao.hibernate.TxtimeDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="txtimeDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="txtimeDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+     <!-- Dbinfo -->    
+    <bean id="dbInfoDAOTarget" class="at.generic.dao.hibernate.DbinfoDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="dbInfoDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="dbInfoDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- ********************************************************************  -->
+    <!-- Generic Service Postgres -->
+	<bean id="genericDAOTargetTarget" class="at.generic.dao.hibernate.GenericServiceDAOTarget"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="genericDAOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="genericDAOTargetTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+     <!-- Generic Service SQLServer -->
+    <bean id="genericDAOSourceTarget" class="at.generic.dao.hibernate.GenericServiceDAOSource"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="genericDAOSource" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="genericDAOSourceTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    
+</beans>
+    
+    

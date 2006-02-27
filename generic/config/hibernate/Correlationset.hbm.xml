@@ -52,17 +52,17 @@
         not-null="true"
         length="23"
     />
+    
+    <property
+    	name="eventid"
+        type="long"
+        column="eventid"
+    />
 
     <!-- Associations -->
   
     <!-- bi-directional many-to-one association to Correlatedevent -->
-    <many-to-one
-        name="correlatedevent"
-        class="at.generic.model.Correlatedevent"
-        not-null="true"
-    >
-        <column name="EventID" />
-    </many-to-one>
+    
 
 </class>
 </hibernate-mapping>

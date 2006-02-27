@@ -72,12 +72,27 @@
   		<property name="sourceEventEtl">
 			<ref bean="sourceEventEtl"/>
 		</property>
+		<property name="adminPersistenceService">
+			<ref bean="adminPersistenceService"/>
+		</property>
+		<property name="eventPersistenceService">
+			<ref bean="eventPersistenceService"/>
+		</property>
+		<property name="indexingServiceEvents">
+			<ref bean="indexingServiceEvents"/>
+		</property>
+		<property name="indexingServiceCorrEvents">
+			<ref bean="indexingServiceCorrEvents"/>
+		</property>
   	</bean>
   	
   	<bean name="searchController" class="at.generic.web.SearchController">
   		<property name="eventSearch">
 			<ref bean="eventSearch"/>
 		</property>
+		<property name="searchService">
+    		<ref bean="searchService"/>
+    	</property>
   	</bean>
 	
 	<!-- ====================================================================================	-->
