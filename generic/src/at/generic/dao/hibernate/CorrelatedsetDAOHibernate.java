@@ -13,9 +13,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedsetDAOHibernate.java,v 1.2 2005/12/12 17:30:03 szabolcs Exp $
+ * @version $Id: CorrelatedsetDAOHibernate.java,v 1.3 2006/02/27 14:57:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -29,7 +29,7 @@ public class CorrelatedsetDAOHibernate extends HibernateDaoSupport implements Co
 	 * @return List with Correlated Sets
 	 */
 	public List getCorrelatedset() {
-		return getHibernateTemplate().find("from Correlatedevents order by id"); 
+		return getHibernateTemplate().find("from Correlationset order by correlationsetguid"); 
 	}
 	
 	/**
@@ -71,5 +71,15 @@ public class CorrelatedsetDAOHibernate extends HibernateDaoSupport implements Co
 	public void removeCorrelatedset(Integer id) {
 		Object correlatedSet = getHibernateTemplate().load(Correlationset.class, id); 
 		getHibernateTemplate().delete(correlatedSet); 
+	}
+	
+	/**
+	 * Returns a list with correlatedsets according to the given guid
+	 * 
+	 * @param guid
+	 * @return List with correlatedsets or null if nothing found
+	 */
+	public List getCorrelatedsetByGuid (String guid) {
+		return getHibernateTemplate().find("from Correlationset where correlationsetguid = '" + guid.trim() + "' order by correlationsetguid");
 	}
 }

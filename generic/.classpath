@@ -109,19 +109,19 @@
 	<classpathentry exported="true" kind="lib" path="lib/ehcache-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/postgresql-8.0.309.jdbc3.jar"/>
 	<classpathentry kind="var" path="JRE_LIB"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-util.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-ant.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-cluster.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-optional.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/catalina-storeconfig.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/commons-modeler.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-default.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-invoker.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/servlets-webdav.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-ajp.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-coyote.jar"/>
-	<classpathentry kind="lib" path="D:/tomcat5.5/server/lib/tomcat-http.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/tomcat-util.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/catalina-cluster.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/catalina-optional.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/catalina-storeconfig.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/commons-modeler.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/servlets-default.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/servlets-invoker.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/servlets-webdav.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/tomcat-ajp.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="D:/Tomcat5.5/server/lib/tomcat-http.jar"/>
 	<classpathentry kind="lib" path="E:/jDev/generic/lib/sqljdbc.jar"/>
 	<classpathentry kind="lib" path="lib/middlegen/middlegen-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
@@ -141,5 +141,6 @@
 	<classpathentry kind="lib" path="lib/xerces-2.7.1/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xerces-2.7.1/xercesSamples.jar"/>
 	<classpathentry kind="lib" path="lib/xerces-2.7.1/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-1.4.3/lucene-1.4.3.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

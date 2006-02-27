@@ -87,14 +87,63 @@
 			</table>
 			<%@ include file="/lowerBorder.jsp"%>
 		</td>
-		<td>
+		<td valign="top">
 			<%@ include file="/upperBorder.jsp"%>
 			<table border="0">
 				<tr>
 					<td>
-							<br/>
-							<br/>
-							<br/><br/><br/><br/>
+						<u><b>Event Index:</b></u>
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<b>Index location:</b>
+					</td>
+					<td>
+						<c:out value="${adminData.indexLocationForEvents}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Number of indexed events:</b>
+					</td>
+					<td>
+						<c:out value="${adminData.numberOfIndexedIemsForEvents}"/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><br/></td>
+					<td>&nbsp;</td>
+				</tr>
+				
+				<tr>
+					<td>
+							<u><b>Correlation Index:</b></u>
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+								
+				<tr>
+					<td>
+						<b>Index location:</b>
+					</td>
+					<td>
+						<c:out value="${adminData.indexLocationForCorrEvents}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Number of indexed events:</b>
+					</td>
+					<td>
+						<c:out value="${adminData.numberOfIndexedIemsForCorrEvents}"/>
 					</td>
 				</tr>
 			</table>	

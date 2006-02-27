@@ -5,14 +5,15 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.4 2006/02/02 19:41:34 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.5 2006/02/27 14:59:47 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Data Object for the ETL Admin section
  * 
  */
 public class AdminCommand { 
+	// etl stuff
 	private String updatestart;
 	private String updatestop;
 	private String etlThreadStartedAt;
@@ -22,6 +23,18 @@ public class AdminCommand {
 	private int numberOfEventsInSource;
 	private double etlBarLength;
 	private boolean etlRunning;
+	
+	// index event 
+	private String indexLocationForEvents;
+	private int numberOfIndexedIemsForEvents = 0;
+	private boolean indexCreatedForEvents = false;
+	
+	// index corr event
+	private String indexLocationForCorrEvents;
+	private int numberOfIndexedIemsForCorrEvents = 0;
+	private boolean indexCreatedForCorrEvents = false;
+	
+	
 	
 	
 	/**
@@ -120,6 +133,91 @@ public class AdminCommand {
 	 */
 	public void setEtlThreadStartedAt(String etlThreadStartedAt) {
 		this.etlThreadStartedAt = etlThreadStartedAt;
+	}
+	/**
+	 * @return Returns the indexCreatedForCorrEvents.
+	 */
+	public boolean isIndexCreatedForCorrEvents() {
+		return indexCreatedForCorrEvents;
+	}
+	/**
+	 * @param indexCreatedForCorrEvents The indexCreatedForCorrEvents to set.
+	 */
+	public void setIndexCreatedForCorrEvents(boolean indexCreatedForCorrEvents) {
+		this.indexCreatedForCorrEvents = indexCreatedForCorrEvents;
+	}
+	/**
+	 * @return Returns the indexCreatedForEvents.
+	 */
+	public boolean isIndexCreatedForEvents() {
+		return indexCreatedForEvents;
+	}
+	/**
+	 * @param indexCreatedForEvents The indexCreatedForEvents to set.
+	 */
+	public void setIndexCreatedForEvents(boolean indexCreatedForEvents) {
+		this.indexCreatedForEvents = indexCreatedForEvents;
+	}
+	/**
+	 * @return Returns the indexLocationForCorrEvents.
+	 */
+	public String getIndexLocationForCorrEvents() {
+		return indexLocationForCorrEvents;
+	}
+	/**
+	 * @param indexLocationForCorrEvents The indexLocationForCorrEvents to set.
+	 */
+	public void setIndexLocationForCorrEvents(String indexLocationForCorrEvents) {
+		this.indexLocationForCorrEvents = indexLocationForCorrEvents;
+	}
+	/**
+	 * @return Returns the indexLocationForEvents.
+	 */
+	public String getIndexLocationForEvents() {
+		return indexLocationForEvents;
+	}
+	/**
+	 * @param indexLocationForEvents The indexLocationForEvents to set.
+	 */
+	public void setIndexLocationForEvents(String indexLocationForEvents) {
+		this.indexLocationForEvents = indexLocationForEvents;
+	}
+	/**
+	 * @return Returns the numberOfEventsInSource.
+	 */
+	public int getNumberOfEventsInSource() {
+		return numberOfEventsInSource;
+	}
+	/**
+	 * @param numberOfEventsInSource The numberOfEventsInSource to set.
+	 */
+	public void setNumberOfEventsInSource(int numberOfEventsInSource) {
+		this.numberOfEventsInSource = numberOfEventsInSource;
+	}
+	/**
+	 * @return Returns the numberOfIndexedIemsForCorrEvents.
+	 */
+	public int getNumberOfIndexedIemsForCorrEvents() {
+		return numberOfIndexedIemsForCorrEvents;
+	}
+	/**
+	 * @param numberOfIndexedIemsForCorrEvents The numberOfIndexedIemsForCorrEvents to set.
+	 */
+	public void setNumberOfIndexedIemsForCorrEvents(
+			int numberOfIndexedIemsForCorrEvents) {
+		this.numberOfIndexedIemsForCorrEvents = numberOfIndexedIemsForCorrEvents;
+	}
+	/**
+	 * @return Returns the numberOfIndexedIemsForEvents.
+	 */
+	public int getNumberOfIndexedIemsForEvents() {
+		return numberOfIndexedIemsForEvents;
+	}
+	/**
+	 * @param numberOfIndexedIemsForEvents The numberOfIndexedIemsForEvents to set.
+	 */
+	public void setNumberOfIndexedIemsForEvents(int numberOfIndexedIemsForEvents) {
+		this.numberOfIndexedIemsForEvents = numberOfIndexedIemsForEvents;
 	}
 	
 	

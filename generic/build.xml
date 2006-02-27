@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.9 $ 
-		$Id: build.xml,v 1.9 2006/02/14 10:10:56 szabolcs Exp $ 
+		$Revision: 1.10 $ 
+		$Id: build.xml,v 1.10 2006/02/27 15:00:52 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -158,6 +158,9 @@
                 <include name="sitemesh-2.2.1.jar"/>
             </fileset>	
 			<fileset dir="${lib.dir}/xerces-2.7.1">
+                <include name="*.jar"/>
+            </fileset>	
+			<fileset dir="${lib.dir}/lucene-1.4.3">
                 <include name="*.jar"/>
             </fileset>	
 		</copy>	
@@ -323,8 +326,9 @@
 				<table name="txtime"/>
 				<table name="eventattributes"/>
 				<table name="eventtype"/>
-				-->
 				<table name="dbinfos"/>
+				-->
+				<table name="wordindex"/>
 				
 				<hibernate destination="${config.dir}" package="at.generic.eventmodel"/> 
 			</middlegen>
@@ -344,8 +348,10 @@
 			<include name="**/Rwtime.hbm.xml"/>
 			<include name="**/Txtime.hbm.xml"/>
 			<include name="**/Eventattribute.hbm.xml"/>
-			<include name="**/Eventtype.hbm.xml"/>-->
+			<include name="**/Eventtype.hbm.xml"/>
 			<include name="**/Dbinfo.hbm.xml"/>
+			<include name="**/Wordindex.hbm.xml"/-->
+			<include name="**/Correlationset.hbm.xml"/>
 		</fileset> 
 		</hbm2java> 
 	</target> 

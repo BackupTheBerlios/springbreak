@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import at.generic.dao.CorrelatedeventDAO;
+import at.generic.dao.EventDAO;
 import at.generic.dao.GenericServiceDAO;
+import at.generic.service.AdminPersistenceService;
+import at.generic.service.CorrelatingEventsPersistenceService;
 import at.generic.service.EventHandling;
+import at.generic.service.EventPersistenceService;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.7 2006/02/02 19:41:34 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.8 2006/02/27 14:57:57 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * 
  * Main Interface for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -29,26 +34,6 @@ public interface SourceEventEtl {
 	 */
 	public void transformSourceEvents ();
     
-	/**
-	 * @return Returns the genericServiceSource.
-	 */
-	public GenericServiceDAO getGenericServiceSource();
-
-	/**
-	 * @param genericServiceSource The genericServiceSource to set.
-	 */
-	public void setGenericServiceSource(GenericServiceDAO genericServiceSource);
-
-	/**
-	 * @return Returns the genericServiceTarget.
-	 */
-	public GenericServiceDAO getGenericServiceTarget();
-
-	/**
-	 * @param genericServiceTarget The genericServiceTarget to set.
-	 */
-	public void setGenericServiceTarget(GenericServiceDAO genericServiceTarget);
-
 	/**
 	 * @return Returns the identifiedEvents.
 	 */
@@ -95,16 +80,6 @@ public interface SourceEventEtl {
 	public void setInitDone(boolean initDone);
 	
 	/**
-	 * @return Returns the eventHandling.
-	 */
-	public EventHandling getEventHandling();
-
-	/**
-	 * @param eventHandling The eventHandling to set.
-	 */
-	public void setEventHandling(EventHandling eventHandling);
-	
-	/**
 	 * @return Returns the identifiedEventObjects.
 	 */
 	public Map getIdentifiedEventObjects(); 
@@ -134,4 +109,35 @@ public interface SourceEventEtl {
 	 */
 	public void setEtlThreadStartedAt(java.util.Date etlThreadStartedAt);
 	
+	/**
+	 * @return Returns the eventPersistenceService.
+	 */
+	public EventPersistenceService getEventPersistenceService();
+
+	/**
+	 * @param eventPersistenceService The eventPersistenceService to set.
+	 */
+	public void setEventPersistenceService(EventPersistenceService eventPersistenceService);
+	
+	/**
+	 * @return Returns the corrEventsPersistenceService.
+	 */
+	public CorrelatingEventsPersistenceService getCorrEventsPersistenceService();
+
+	/**
+	 * @param corrEventsPersistenceService The corrEventsPersistenceService to set.
+	 */
+	public void setCorrEventsPersistenceService(
+			CorrelatingEventsPersistenceService corrEventsPersistenceService);
+	
+	/**
+	 * @return Returns the adminPersistenceService.
+	 */
+	public AdminPersistenceService getAdminPersistenceService();
+
+	/**
+	 * @param adminPersistenceService The adminPersistenceService to set.
+	 */
+	public void setAdminPersistenceService(
+			AdminPersistenceService adminPersistenceService);
 }

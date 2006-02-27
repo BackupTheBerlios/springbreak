@@ -26,22 +26,32 @@ public class Correlationset implements Serializable {
     /** persistent field */
     private Date dbtimeCreated;
 
-    /** persistent field */
-    private at.generic.model.Correlatedevent correlatedevent;
+    /** nullable persistent field */
+    private Long eventid;
 
     /** full constructor */
-    public Correlationset(Integer id, String correlationSetDef, String correlationSetGuid, String correlatingData, String eventType, Date dbtimeCreated, at.generic.model.Correlatedevent correlatedevent) {
+    public Correlationset(Integer id, String correlationSetDef, String correlationSetGuid, String correlatingData, String eventType, Date dbtimeCreated, Long eventid) {
         this.id = id;
         this.correlationSetDef = correlationSetDef;
         this.correlationSetGuid = correlationSetGuid;
         this.correlatingData = correlatingData;
         this.eventType = eventType;
         this.dbtimeCreated = dbtimeCreated;
-        this.correlatedevent = correlatedevent;
+        this.eventid = eventid;
     }
 
     /** default constructor */
     public Correlationset() {
+    }
+
+    /** minimal constructor */
+    public Correlationset(Integer id, String correlationSetDef, String correlationSetGuid, String correlatingData, String eventType, Date dbtimeCreated) {
+        this.id = id;
+        this.correlationSetDef = correlationSetDef;
+        this.correlationSetGuid = correlationSetGuid;
+        this.correlatingData = correlatingData;
+        this.eventType = eventType;
+        this.dbtimeCreated = dbtimeCreated;
     }
 
     public Integer getId() {
@@ -92,12 +102,12 @@ public class Correlationset implements Serializable {
         this.dbtimeCreated = dbtimeCreated;
     }
 
-    public at.generic.model.Correlatedevent getCorrelatedevent() {
-        return this.correlatedevent;
+    public Long getEventid() {
+        return this.eventid;
     }
 
-    public void setCorrelatedevent(at.generic.model.Correlatedevent correlatedevent) {
-        this.correlatedevent = correlatedevent;
+    public void setEventid(Long eventid) {
+        this.eventid = eventid;
     }
 
     public String toString() {

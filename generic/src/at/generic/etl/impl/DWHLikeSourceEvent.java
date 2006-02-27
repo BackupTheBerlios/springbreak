@@ -28,9 +28,10 @@ import at.generic.xmlhandlers.EventXmlHandler;
 
 /**
  * @author szabolcs
- * @version $Id: DWHLikeSourceEvent.java,v 1.1 2006/01/14 19:42:54 szabolcs Exp $
+ * @version $Id: DWHLikeSourceEvent.java,v 1.2 2006/02/27 14:57:57 szabolcs Exp $
+ * @deprecated
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
