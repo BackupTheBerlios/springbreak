@@ -1,7 +1,8 @@
 package at.generic.search.impl;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -15,22 +16,33 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import at.generic.search.lucene.TermsFilter;
 import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.1 2006/02/27 14:58:25 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Fulltext index service
  * 
+ * TODO:
+ * - create batch update for documents --> speed much better
+ * - IndexSearcher is capable of caching if you create one instance!! p.177
+ *   But you have to recreate the instance if the index changes. 
+ *   A possible solution would be to make a batch update for bigger inserts
+ *   and when closing the batch update to create a new instance of IndexSearcher.
+ *   If a normal index update has been performed then the IndexSearch will be recreated.
+ * - check out CachingWrappingFilter when using ChainedFilter p. 307 
  * 
  */
 public class LuceneIndexingImpl implements IndexingService {
@@ -100,9 +112,7 @@ public class LuceneIndexingImpl implements IndexingService {
 	    	IndexSearcher is = new IndexSearcher(fsDir);
 	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
 
-	    	long start = new Date().getTime();
 	    	Hits hits = is.search(query);
-	    	long end = new Date().getTime();
 	    	
 	    	Vector items = new Vector();
 	    	log.debug("#### hits.length() " + hits.length());
@@ -132,7 +142,65 @@ public class LuceneIndexingImpl implements IndexingService {
     	}
     	return null;
     }
-	
+    
+    /**
+     * Search whole index using a list of wids to filter for
+     * 
+     * @param search
+     * @param numberOfResults
+     * @param widList
+     * @return
+     */
+    public Vector search(String search, int numberOfResults, List widList) {
+    	log.debug("#### searchQuery=" + search);
+    	log.debug("### numberOfResults " + numberOfResults);
+    	
+    	try {
+	    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
+	    	IndexSearcher is = new IndexSearcher(fsDir);
+	    	
+	    	// build a filter
+	    	TermsFilter filter = new TermsFilter();
+	    	Iterator widIt = widList.iterator();
+			while (widIt.hasNext()) {
+				String id = (String)widIt.next();
+				filter.addTerm(new Term("wid", id)); 
+			} 
+	    	
+	    	
+	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
+
+	    	Hits hits = is.search(query, filter);
+	    	
+	    	Vector items = new Vector();
+	    	log.debug("#### hits.length() " + hits.length());
+	    	
+	    	int maxHitSize = 0;
+	    	if (numberOfResults > hits.length()) 
+	    		maxHitSize = hits.length();
+	    	else 
+	    		maxHitSize = numberOfResults;
+	    			
+	    	//for (int i = 0; i < hits.length(); i++) {
+	    	for (int i = 0; i < maxHitSize; i++) {
+	    		Document doc = hits.doc(i);
+	    		log.debug("#### found object wid = " + doc.get("wid"));
+	    		log.debug("#### found object type = " + doc.get("type"));
+	    		log.debug("#### found object text = " + doc.get("text"));
+	    		
+	    		items.add(doc.get("wid"));
+	    	}
+	    	
+	    	return items;
+	    	
+    	} catch (IOException e) {
+    		 e.printStackTrace();
+    	} catch (ParseException e) {
+    		 e.printStackTrace();
+    	}
+    	return null;
+    }
+    
     /**
      * Adds a document to the index 
      * 

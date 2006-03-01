@@ -7,7 +7,7 @@ import at.generic.eventmodel.Event;
 
 /**
  * @author szabolcs
- * @version $Id: EventAgg.java,v 1.1 2006/02/27 14:58:25 szabolcs Exp $
+ * @version $Id: EventAgg.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
  * $Author: szabolcs $  
  * $Revision:
  * 
@@ -17,6 +17,7 @@ import at.generic.eventmodel.Event;
 public class EventAgg {
 	private Event event;
 	private List eventAttributes;
+	private String eventTypeName;
 	
 	/**
 	 * @return Returns the event.
@@ -41,6 +42,19 @@ public class EventAgg {
 	 */
 	public void setEventAttributes(List eventAttributes) {
 		this.eventAttributes = eventAttributes;
+	}
+	
+	/**
+	 * @return Returns the eventTypeName.
+	 */
+	public String getEventTypeName() {
+		return eventTypeName;
+	}
+	/**
+	 * @param eventTypeName The eventTypeName to set.
+	 */
+	public void setEventTypeName(String eventTypeName) {
+		this.eventTypeName = eventTypeName;
 	}
 	
 	

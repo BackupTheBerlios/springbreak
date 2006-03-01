@@ -20,9 +20,9 @@ import at.generic.service.SearchService;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.1 2006/02/27 14:58:25 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Search service
  * 
@@ -32,6 +32,7 @@ public class SearchServiceImpl implements SearchService {
 	private static Log log = LogFactory.getLog(SearchServiceImpl.class);
 	
 	private IndexingService indexingServiceCorrEvents;
+	private IndexingService indexingServiceEvents;
 	private EventPersistenceService eventPersistenceService;
 	private CorrelatingEventsPersistenceService corrPersistenceService;
 	
@@ -60,6 +61,7 @@ public class SearchServiceImpl implements SearchService {
 			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);
 			
 			List eventAggList = new Vector();
+			List widList = new Vector();
 			String correlationSetDef = new String();
 			// go through the correlated sets and retrieve the events 
 			Iterator eventIt = corrEventList.iterator();
@@ -68,14 +70,26 @@ public class SearchServiceImpl implements SearchService {
 				
 				correlationSetDef = corrSet.getCorrelationSetDef();
 				
+				// get the event and its attributes
 				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
+				widList.add(event.getEventid());
 				List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());
 				
 				EventAgg eventAgg = new EventAgg();
 				eventAgg.setEvent(event);
 				eventAgg.setEventAttributes(eventAttribs);
+				eventAgg.setEventTypeName(corrSet.getEventType());
 				
 				eventAggList.add(eventAgg);
+			}
+			
+			// search inside events to generate a score
+			
+			Vector eventIds = indexingServiceEvents.search(searchString,maxSearchResults, widList);
+			Iterator eventIdsAfterSearchIt = eventIds.iterator();
+			while (eventIdsAfterSearchIt.hasNext()) {
+				String eventIdsStr = (String)eventIdsAfterSearchIt.next();
+				log.debug("### eventIdsStr " + eventIdsStr);
 			}
 			
 			FoundCorrSet foundCorrSet = new FoundCorrSet();
@@ -88,6 +102,7 @@ public class SearchServiceImpl implements SearchService {
 		
 		long end = new Date().getTime();
 		long duration = end - start;
+		
 		
 		CorrResultModel corrModel = new CorrResultModel();
 		corrModel.setFoundCorrSet(foundCorrSetList);
@@ -157,6 +172,20 @@ public class SearchServiceImpl implements SearchService {
 	 */
 	public void setMaxSearchResults(int maxSearchResults) {
 		this.maxSearchResults = maxSearchResults;
+	}
+
+	/**
+	 * @return Returns the indexingServiceEvents.
+	 */
+	public IndexingService getIndexingServiceEvents() {
+		return indexingServiceEvents;
+	}
+
+	/**
+	 * @param indexingServiceEvents The indexingServiceEvents to set.
+	 */
+	public void setIndexingServiceEvents(IndexingService indexingServiceEvents) {
+		this.indexingServiceEvents = indexingServiceEvents;
 	}
 	
 	

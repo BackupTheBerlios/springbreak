@@ -173,6 +173,9 @@
     	<property name="indexingServiceCorrEvents">
     		<ref bean="indexingServiceCorrEvents"/>
     	</property> 
+    	<property name="indexingServiceEvents">
+    		<ref bean="indexingServiceEvents"/>
+    	</property> 
     	 <property name="eventPersistenceService">
     		<ref bean="eventPersistenceService"/>
     	</property> 
