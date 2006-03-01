@@ -1,0 +1,97 @@
+<head>
+<title>Event Google</title>
+</head>
+<body>
+<%@ include file="/head.jsp"%>
+<center><h2>> Search Results <</h2></center>
+<br/>
+<table border="0">
+	<tr>
+		<td valign="top">
+			<table border="0">
+				<tr>
+					<td bgcolor="#E5ECF9">
+						<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+							<tr>
+								<td>
+									<b><c:out value="${searchResult.numberOfResults}"/> Results from Event Space</b>
+								</td>
+								<td align="right">
+									Results <b>1 - *</b> (<b>0.22</b> seconds) 
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<c:forEach items="${searchResult.resultList}" var="result" >
+				<tr>
+					<td bgcolor="#ECECEC">
+						
+						<table border="0">
+							<tr><td  valign="top"><img src="images/corrPlusButton.jpg"/></td>
+							<td  valign="top">
+							<c:if test="${param.showEventId eq result.event.eventid}">
+								<c:set var="xmlcontent" value="${result.event.xmlcontent}"/>
+								<c:set var="attributeListForOutput" value="${result.attributeList}"/>
+							</c:if> 
+							<b><a href="search.html?showEventId=<c:out value="${result.event.eventid}"/>&viewType=styled"><c:out value="${result.eventTypeName}"/></a></b>(
+							<c:forEach items="${result.attributeList}" var="attribs" varStatus="status">
+								<c:choose>
+									<c:when test="${result.eventAttribute.value eq attribs.value}">
+										<c:out value="${attribs.attributename}"/>:<b><c:out value="${attribs.value}"/></b>
+									</c:when>
+									<c:otherwise>
+										<c:out value="${attribs.attributename}"/>:<c:out value="${attribs.value}"/>
+									</c:otherwise>
+								</c:choose>
+								<c:if test="${status.last != true}">,</c:if>
+							</c:forEach>
+							)
+							</td></tr>
+						</table>
+					</td>
+				</tr>
+				</c:forEach>
+			</table>	
+		</td>
+		<td valign="top">
+			<c:if test="${not empty param.showEventId}">
+				<%@ include file="/upperBorder.jsp"%>
+				<table border="0" cellspacing="0" cellpadding="3" width="100%" >
+					<tr>
+						<td>
+							<table width="100%" cellspacing="0" cellpadding="0">
+							<tr>
+								<td align="left">
+									<a href="search.html?showEventId=<c:out value="${param.showEventId}"/>&viewType=raw">Raw</a> | <a href="search.html?showEventId=<c:out value="${param.showEventId}"/>&viewType=styled">Styled</a>
+								</td>
+								<td align="right">
+									<a href="search.html"><img src="images/corrCloseButton.jpg" border="0"/></a>
+								</td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<c:if test="${param.viewType eq 'raw'}">
+								<textarea name="user_eingabe" readonly  cols="70" rows="30" ><c:out value="${xmlcontent}" escapeXml="true"/></textarea>
+							</c:if>
+							<c:if test="${param.viewType eq 'styled'}">
+								<table border="0" cellspacing="0" cellpadding="2">
+									<c:forEach items="${attributeListForOutput}" var="attribs" varStatus="status">
+											<tr>
+												<td><b><c:out value="${attribs.attributename}"/>:</b></td>
+												<td><c:out value="${attribs.value}"/></td>
+											</tr>
+									</c:forEach>
+								</table>
+							</c:if>
+				    	</td>
+			    	</tr>
+		    	</table>
+				<%@ include file="/lowerBorder.jsp"%>
+			</c:if>
+		</td>
+	</tr>
+</body>
