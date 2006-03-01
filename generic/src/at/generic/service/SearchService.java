@@ -4,9 +4,9 @@ import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.1 2006/02/27 14:59:03 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.2 2006/03/01 12:17:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Search service
  * 
@@ -64,4 +64,15 @@ public interface SearchService {
 	 * @param maxSearchResults The maxSearchResults to set.
 	 */
 	public void setMaxSearchResults(int maxSearchResults);
+	
+
+	/**
+	 * @return Returns the indexingServiceEvents.
+	 */
+	public IndexingService getIndexingServiceEvents();
+
+	/**
+	 * @param indexingServiceEvents The indexingServiceEvents to set.
+	 */
+	public void setIndexingServiceEvents(IndexingService indexingServiceEvents);
 }

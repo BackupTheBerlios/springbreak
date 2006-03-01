@@ -23,9 +23,9 @@ import at.generic.web.commandObj.SearchResultCommand;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.2 2006/02/27 15:00:20 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.3 2006/03/01 12:17:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Controller for the Event Search
  * 
@@ -40,7 +40,7 @@ public class SearchController implements Controller {
 		HttpSession session = request.getSession(true);
 		// if a new search has been initiated then create search parameters
 		if (request.getParameter("newSearch") != null) {
-			List resultList = eventSearch.getEventsForFoundAttribs(request.getParameter("searchstring"));
+			/*List resultList = eventSearch.getEventsForFoundAttribs(request.getParameter("searchstring"));
 			log.debug("### resultList.size(): " + resultList.size());
 			SearchResultCommand searchResultCmd = new SearchResultCommand();
 			searchResultCmd.setNumberOfResults(resultList.size());
@@ -60,14 +60,19 @@ public class SearchController implements Controller {
 				FoundCorrSet foundCorrSet = (FoundCorrSet) it.next();
 				log.debug("### foundCorrSet.getGuid(): " + foundCorrSet.getGuid());
 			}
+			*/
 			
+			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"));
+			session.setAttribute("corrResultModel", corrResultModel);
 			
-			return new ModelAndView("search", "searchResult", searchResultCmd); 
+			return new ModelAndView("search", "searchResult", corrResultModel); 
 		} else {
 			// if search button has NOT been clicked then reuse the data
-			SearchResultCommand searchResultCmd = (SearchResultCommand)session.getAttribute("searchResultCmd");
+			//SearchResultCommand searchResultCmd = (SearchResultCommand)session.getAttribute("searchResultCmd");
+			CorrResultModel corrResultModel = (CorrResultModel)session.getAttribute("corrResultModel");
 			
-			return new ModelAndView("search", "searchResult", searchResultCmd); 
+			
+			return new ModelAndView("search", "searchResult", corrResultModel); 
 		}
 	}
 

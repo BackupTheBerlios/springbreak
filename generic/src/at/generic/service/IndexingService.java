@@ -1,13 +1,14 @@
 package at.generic.service;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: IndexingService.java,v 1.1 2006/02/27 14:59:03 szabolcs Exp $
+ * @version $Id: IndexingService.java,v 1.2 2006/03/01 12:17:34 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Fulltext index service
  * 
@@ -18,7 +19,24 @@ public interface IndexingService {
 	
 	public void removeDocument(String key);
 	
+	/**
+	 * Search whole index for something
+	 * 
+	 * @param search
+	 * @param numberOfResults
+	 * @return
+	 */
 	public Vector search(String search, int numberOfResults);
+	
+	   /**
+     * Search whole index using a list of wids to filter for
+     * 
+     * @param search
+     * @param numberOfResults
+     * @param widList
+     * @return
+     */
+    public Vector search(String search, int numberOfResults, List widList);
 	
 	// ================ Getters and Setters ==================
 	
