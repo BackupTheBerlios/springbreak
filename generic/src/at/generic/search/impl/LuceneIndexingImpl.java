@@ -1,6 +1,7 @@
 package at.generic.search.impl;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -16,11 +17,9 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -29,9 +28,9 @@ import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.3 2006/03/03 15:25:12 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Fulltext index service
  * 
@@ -55,22 +54,44 @@ public class LuceneIndexingImpl implements IndexingService {
 	private IndexWriter writer;
 	private boolean init = false;
 	
+	/**
+	 * Tries to create an index at the given location
+	 *
+	 */
 	public void init() {
 		if (init == false) {
-			IndexWriter writer = null;
 			try {
-				writer = new IndexWriter(indexLocation, analyzer, false);
-				
-				numberOfIndexedIems = writer.docCount();
-				indexCreated = true;
-				init = true;
-			} catch (IOException e) {
-			    log.error("Error opening index location " + indexLocation, e);
-			} finally {
+				this.createIndexLocation();
+			} catch (IOException e1) {
+			    log.info("Error opening index location " + indexLocation);
+			    log.info("Trying to create an index at location " + indexLocation);
+			    
+			    try {
+			    	this.createIndexLocation();
+			    } catch (IOException e2) {
+			    	log.error("Giving up creating that damn lucene index at " + indexLocation, e2 );
+			    }
+			} 
+			finally {
 			    closeWriter(writer);
 			}
 			
 		}
+	}
+	
+	/**
+	 * Creates an index at given location
+	 * 
+	 * @throws IOException
+	 */
+	private void createIndexLocation() throws IOException {
+		IndexWriter writer = null;
+		
+		writer = new IndexWriter(indexLocation, analyzer, false);
+		
+		numberOfIndexedIems = writer.docCount();
+		indexCreated = true;
+		init = true;
 	}
 	
 	 /**
@@ -111,7 +132,6 @@ public class LuceneIndexingImpl implements IndexingService {
 	    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
 	    	IndexSearcher is = new IndexSearcher(fsDir);
 	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
-
 	    	Hits hits = is.search(query);
 	    	
 	    	Vector items = new Vector();
@@ -163,10 +183,9 @@ public class LuceneIndexingImpl implements IndexingService {
 	    	TermsFilter filter = new TermsFilter();
 	    	Iterator widIt = widList.iterator();
 			while (widIt.hasNext()) {
-				String id = (String)widIt.next();
-				filter.addTerm(new Term("wid", id)); 
+				Long id = (Long)widIt.next();
+				filter.addTerm(new Term("wid", id.toString())); 
 			} 
-	    	
 	    	
 	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
 
@@ -180,15 +199,14 @@ public class LuceneIndexingImpl implements IndexingService {
 	    		maxHitSize = hits.length();
 	    	else 
 	    		maxHitSize = numberOfResults;
-	    			
-	    	//for (int i = 0; i < hits.length(); i++) {
+	    	
 	    	for (int i = 0; i < maxHitSize; i++) {
 	    		Document doc = hits.doc(i);
 	    		log.debug("#### found object wid = " + doc.get("wid"));
 	    		log.debug("#### found object type = " + doc.get("type"));
 	    		log.debug("#### found object text = " + doc.get("text"));
 	    		
-	    		items.add(doc.get("wid"));
+	    		items.add(new Long(doc.get("wid")));
 	    	}
 	    	
 	    	return items;
@@ -256,6 +274,30 @@ public class LuceneIndexingImpl implements IndexingService {
             closeReader(reader);
         }
     }
+	 
+	 /**
+	  * Returns a Hashset extracting the search terms
+	  * 
+	  * @param search
+	  * @return
+	  */
+	 public HashSet extractSearchTerms (String search) {
+		 HashSet terms = new HashSet();
+		 
+		 try {
+			 Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
+			 IndexSearcher is = new IndexSearcher(fsDir);
+			 Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
+			 
+			 terms = new HashSet(); 
+			 query.extractTerms(terms);
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		 } catch (ParseException e) {
+			 e.printStackTrace();
+		 }
+		 return terms;
+	 }
 	
 	private void closeWriter(IndexWriter writer) {
 	    if (null != writer) {

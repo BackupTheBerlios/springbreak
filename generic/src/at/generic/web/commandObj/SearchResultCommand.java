@@ -3,59 +3,58 @@ package at.generic.web.commandObj;
 
 import java.util.List;
 
+import at.generic.search.resultmodel.CorrResultModel;
+
 /**
 * @author szabolcs
-* @version $Id: SearchResultCommand.java,v 1.1 2006/02/14 10:10:08 szabolcs Exp $
+* @version $Id: SearchResultCommand.java,v 1.2 2006/03/03 15:25:32 szabolcs Exp $
 * $Author: szabolcs $  
-* $Revision: 1.1 $
+* $Revision: 1.2 $
 * 
 * Capsulates search results for presentation
 * 
 */
 public class SearchResultCommand {
-	private List resultList;
-	private int numberOfResults;
-	private String searchString;
+	private CorrResultModel corrResultModel;
+	private String showEventId;
+	private List openedCorrs;
 	
 	/**
-	 * @return Returns the numberOfResults.
+	 * @return Returns the corrResultModel.
 	 */
-	public int getNumberOfResults() {
-		return numberOfResults;
+	public CorrResultModel getCorrResultModel() {
+		return corrResultModel;
 	}
 	/**
-	 * @param numberOfResults The numberOfResults to set.
+	 * @param corrResultModel The corrResultModel to set.
 	 */
-	public void setNumberOfResults(int numberOfResults) {
-		this.numberOfResults = numberOfResults;
+	public void setCorrResultModel(CorrResultModel corrResultModel) {
+		this.corrResultModel = corrResultModel;
 	}
 	/**
-	 * @return Returns the resultList.
+	 * @return Returns the openedCorrs.
 	 */
-	public List getResultList() {
-		return resultList;
+	public List getOpenedCorrs() {
+		return openedCorrs;
 	}
 	/**
-	 * @param resultList The resultList to set.
+	 * @param openedCorrs The openedCorrs to set.
 	 */
-	public void setResultList(List resultList) {
-		this.resultList = resultList;
+	public void setOpenedCorrs(List openedCorrs) {
+		this.openedCorrs = openedCorrs;
 	}
 	/**
-	 * @return Returns the searchString.
+	 * @return Returns the showEventId.
 	 */
-	public String getSearchString() {
-		return searchString;
+	public String getShowEventId() {
+		return showEventId;
 	}
 	/**
-	 * @param searchString The searchString to set.
+	 * @param showEventId The showEventId to set.
 	 */
-	public void setSearchString(String searchString) {
-		this.searchString = searchString;
+	public void setShowEventId(String showEventId) {
+		this.showEventId = showEventId;
 	}
-	
-	
-	
 	
 	
 }

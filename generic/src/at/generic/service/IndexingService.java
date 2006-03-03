@@ -1,14 +1,15 @@
 package at.generic.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: IndexingService.java,v 1.2 2006/03/01 12:17:34 szabolcs Exp $
+ * @version $Id: IndexingService.java,v 1.3 2006/03/03 15:25:32 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Fulltext index service
  * 
@@ -28,7 +29,7 @@ public interface IndexingService {
 	 */
 	public Vector search(String search, int numberOfResults);
 	
-	   /**
+	/**
      * Search whole index using a list of wids to filter for
      * 
      * @param search
@@ -37,6 +38,14 @@ public interface IndexingService {
      * @return
      */
     public Vector search(String search, int numberOfResults, List widList);
+    
+    /**
+	  * Returns a Hashset extracting the search terms
+	  * 
+	  * @param search
+	  * @return
+	  */
+	 public HashSet extractSearchTerms (String search);
 	
 	// ================ Getters and Setters ==================
 	

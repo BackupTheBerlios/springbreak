@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: FoundCorrSet.java,v 1.1 2006/02/27 14:58:25 szabolcs Exp $
+ * @version $Id: FoundCorrSet.java,v 1.2 2006/03/03 15:25:12 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision:
+ * $Revision: 1.2 $
  * 
  * Infos about the correlation set
  * 
@@ -16,6 +16,7 @@ public class FoundCorrSet {
 	private List eventAgg;
 	private String guid;
 	private String correlationSetDef;
+	private List eventRank;
 	
 	/**
 	 * @return Returns the eventAgg.
@@ -52,6 +53,18 @@ public class FoundCorrSet {
 	 */
 	public void setCorrelationSetDef(String correlationSetDef) {
 		this.correlationSetDef = correlationSetDef;
+	}
+	/**
+	 * @return Returns the eventRank.
+	 */
+	public List getEventRank() {
+		return eventRank;
+	}
+	/**
+	 * @param eventRank The eventRank to set.
+	 */
+	public void setEventRank(List eventRank) {
+		this.eventRank = eventRank;
 	}
 	
 	

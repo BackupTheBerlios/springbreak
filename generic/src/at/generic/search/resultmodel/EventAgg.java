@@ -7,9 +7,9 @@ import at.generic.eventmodel.Event;
 
 /**
  * @author szabolcs
- * @version $Id: EventAgg.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
+ * @version $Id: EventAgg.java,v 1.3 2006/03/03 15:25:12 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision:
+ * $Revision: 1.3 $
  * 
  * Found Event and Eventattributes
  * 

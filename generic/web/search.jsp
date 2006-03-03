@@ -1,38 +1,12 @@
 <head>
 <title>Event Google</title>
-<script language=javascript type='text/javascript'>
-function hidediv(pass) {
-var divs = document.getElementsByTagName('div');
-for(i=0;i<divs.length;i++){
-if(divs[i].id.match(pass)){//if they are 'see' divs
-if (document.getElementById) // DOM3 = IE5, NS6
-divs[i].style.display="none";// show/hide
-else
-if (document.layers) // Netscape 4
-document.layers[divs[i]].display = 'hidden';
-else // IE 4
-document.all.hideShow.divs[i].visibility = 'hidden';
-}
-}
-}
 
-function showdiv(pass) {
-var divs = document.getElementsByTagName('div');
-for(i=0;i<divs.length;i++){
-if(divs[i].id.match(pass)){
-if (document.getElementById)
-divs[i].style.display="block";
-else
-if (document.layers) // Netscape 4
-document.layers[divs[i]].display = 'visible';
-else // IE 4
-document.all.hideShow.divs[i].visibility = 'visible';
-}
-}
-}
+<script language=javascript type='text/javascript' src='jscripts/wordHighlighter.js'>
+
 </script> 
 </head>
-<body>
+<%@ include file="/taglibs.jsp"%>
+<body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');">
 <%@ include file="/head.jsp"%>
 <center><h2>> Search Results <</h2></center>
 <br/>

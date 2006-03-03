@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.index.Term;
 
 import at.generic.eventmodel.Event;
 import at.generic.model.Correlationset;
@@ -17,12 +18,13 @@ import at.generic.service.CorrelatingEventsPersistenceService;
 import at.generic.service.EventPersistenceService;
 import at.generic.service.IndexingService;
 import at.generic.service.SearchService;
+import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.2 2006/03/01 11:44:52 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.3 2006/03/03 15:25:12 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Search service
  * 
@@ -49,6 +51,7 @@ public class SearchServiceImpl implements SearchService {
 		long start = new Date().getTime();
 		
 		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults);
+		// TODO: create less sql statements
 		
 		// go through the guid list provided by the search
 		List foundCorrSetList = new Vector();
@@ -75,6 +78,9 @@ public class SearchServiceImpl implements SearchService {
 				widList.add(event.getEventid());
 				List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());
 				
+				// pretty print xml
+				event.setXmlcontent(new XMLUtils().convertDocToPretty(event.getXmlcontent()));
+				
 				EventAgg eventAgg = new EventAgg();
 				eventAgg.setEvent(event);
 				eventAgg.setEventAttributes(eventAttribs);
@@ -84,19 +90,20 @@ public class SearchServiceImpl implements SearchService {
 			}
 			
 			// search inside events to generate a score
-			
-			Vector eventIds = indexingServiceEvents.search(searchString,maxSearchResults, widList);
-			Iterator eventIdsAfterSearchIt = eventIds.iterator();
+
+	    	log.debug("---------------------- Event Search -----------------------------");
+			Vector eventRank = indexingServiceEvents.search(searchString,maxSearchResults, widList);
+			/*Iterator eventIdsAfterSearchIt = eventIds.iterator();
 			while (eventIdsAfterSearchIt.hasNext()) {
 				String eventIdsStr = (String)eventIdsAfterSearchIt.next();
 				log.debug("### eventIdsStr " + eventIdsStr);
-			}
+			}*/
 			
 			FoundCorrSet foundCorrSet = new FoundCorrSet();
 			foundCorrSet.setGuid(guid);
 			foundCorrSet.setEventAgg(eventAggList);
 			foundCorrSet.setCorrelationSetDef(correlationSetDef);
-			
+			foundCorrSet.setEventRank(eventRank);
 			foundCorrSetList.add(foundCorrSet);
 		}
 		
@@ -109,6 +116,15 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setQueryTime(Long.toString(duration));
 		corrModel.setNumberOfResults(numberOfResults);
 		corrModel.setSearchString(searchString);
+		
+		String termAry = new String();
+		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(searchString).iterator();
+		while (itTerms.hasNext()) {
+			Term term = (Term)itTerms.next();
+			termAry = termAry + " " + term.text();
+		}
+		
+		corrModel.setTermList(termAry.trim());
 		
 		return corrModel;
 	}
