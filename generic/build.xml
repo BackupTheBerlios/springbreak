@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.10 $ 
-		$Id: build.xml,v 1.10 2006/02/27 15:00:52 szabolcs Exp $ 
+		$Revision: 1.11 $ 
+		$Id: build.xml,v 1.11 2006/03/03 15:26:54 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -160,7 +160,7 @@
 			<fileset dir="${lib.dir}/xerces-2.7.1">
                 <include name="*.jar"/>
             </fileset>	
-			<fileset dir="${lib.dir}/lucene-1.4.3">
+			<fileset dir="${lib.dir}/lucene-1.9.1">
                 <include name="*.jar"/>
             </fileset>	
 		</copy>	
