@@ -5,20 +5,25 @@
 <node CREATED="1140098125093" ID="Freemind_Link_847796441" MODIFIED="1140098573046" POSITION="right" TEXT="Einf&#xfc;hrung">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="full-1"/>
-<node CREATED="1140098055718" ID="_" MODIFIED="1140098062578" TEXT="Bedeutung von Events"/>
+<node CREATED="1140098055718" ID="_" MODIFIED="1140098062578" TEXT="Bedeutung von Events">
+<node CREATED="1141426342000" ID="Freemind_Link_580159673" MODIFIED="1141426352796" TEXT="bezug &quot;Power of Events&quot;"/>
+</node>
 <node CREATED="1140098111750" ID="Freemind_Link_1957745656" MODIFIED="1140098140796" TEXT="Bedeutung der Auffindung von Daten">
 <node CREATED="1140098336718" ID="Freemind_Link_1345148021" MODIFIED="1140098366796" TEXT="Probleme"/>
 <node CREATED="1140098369296" ID="Freemind_Link_1843524986" MODIFIED="1140098399343" TEXT="L&#xf6;sungsans&#xe4;tze">
 <node CREATED="1140098400515" ID="Freemind_Link_1634826686" MODIFIED="1140098401625" TEXT="Google"/>
 </node>
-<node CREATED="1140098406796" ID="Freemind_Link_633003820" MODIFIED="1140098420859" TEXT="Konkrete Technologien/Architekturen"/>
+<node CREATED="1140098406796" ID="Freemind_Link_633003820" MODIFIED="1140098420859" TEXT="Konkrete Technologien/Architekturen">
+<node CREATED="1141426392187" ID="Freemind_Link_1912990270" MODIFIED="1141426394609" TEXT="Lucene"/>
+<node CREATED="1141426400312" ID="Freemind_Link_1881163245" MODIFIED="1141426402906" TEXT="..."/>
+</node>
 </node>
 <node CREATED="1140098147312" ID="Freemind_Link_509936434" MODIFIED="1140098241843" TEXT="aktuelle Forschung/Arbeiten">
 <node CREATED="1140098083890" ID="Freemind_Link_748765300" MODIFIED="1140098094406" TEXT="Vorstellung des Senactive Konzeptes"/>
 <node CREATED="1140098248109" ID="Freemind_Link_513671466" MODIFIED="1140098257562" TEXT="Das Zeug was die in Stanford machen"/>
 <node CREATED="1140098425562" ID="Freemind_Link_1944109159" MODIFIED="1140098432000" TEXT="... &lt;recherchieren&gt;"/>
 </node>
-<node CREATED="1140098155046" ID="Freemind_Link_841435694" MODIFIED="1140098161281" TEXT="Anwendungsgebiete"/>
+<node CREATED="1140098155046" ID="Freemind_Link_841435694" MODIFIED="1141426474484" TEXT="Anwendungsgebiete von Eventbasierten Systemen"/>
 </node>
 <node CREATED="1140098221734" ID="Freemind_Link_978760588" MODIFIED="1140098575265" POSITION="left" TEXT="Event Google">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
