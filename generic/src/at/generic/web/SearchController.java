@@ -1,7 +1,6 @@
 package at.generic.web;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,18 +13,16 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import at.generic.search.SearchForAttribs;
 import at.generic.search.resultmodel.CorrResultModel;
-import at.generic.search.resultmodel.FoundCorrSet;
 import at.generic.service.SearchService;
-import at.generic.web.commandObj.SearchResultCommand;
 
 
 
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.3 2006/03/01 12:17:34 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.4 2006/03/03 13:34:50 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Controller for the Event Search
  * 
@@ -63,14 +60,38 @@ public class SearchController implements Controller {
 			*/
 			
 			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"));
-			session.setAttribute("corrResultModel", corrResultModel);
+			
+			session.setAttribute("resultModel", corrResultModel);
 			
 			return new ModelAndView("search", "searchResult", corrResultModel); 
 		} else {
 			// if search button has NOT been clicked then reuse the data
 			//SearchResultCommand searchResultCmd = (SearchResultCommand)session.getAttribute("searchResultCmd");
-			CorrResultModel corrResultModel = (CorrResultModel)session.getAttribute("corrResultModel");
+			CorrResultModel corrResultModel = (CorrResultModel)session.getAttribute("resultModel");
+			if (request.getParameter("showEventId") != null && !request.getParameter("showEventId").equals("")) {
+				log.debug("### if 1");
+				corrResultModel.setShowEventId(request.getParameter("showEventId"));
+				corrResultModel.setShowEventViewType(request.getParameter("showEventViewType"));
+			} else if (request.getParameter("closeShowEventId") != null && !request.getParameter("closeShowEventId").equals("")) {
+				log.debug("### if 2");
+				corrResultModel.setShowEventId(null);
+			}
 			
+			if (request.getParameter("showCorrEventId") != null && !request.getParameter("showCorrEventId").equals("")) {
+				HashMap corrEventIdMap = corrResultModel.getShowCorrEventId();
+				String corrEventId = (String)corrEventIdMap.get(request.getParameter("showCorrEventId"));
+				// if the given Corr id is null then add the id to list --> means the subtree has to be opned
+				if (corrEventId == null) {
+					corrEventIdMap.put(request.getParameter("showCorrEventId"),request.getParameter("showCorrEventId"));
+				} else {
+					// if the Corr id has a value delete the id from the list --> means the subtree is closed
+					corrEventIdMap.remove(corrEventId);
+				}
+				
+				corrResultModel.setShowCorrEventId(corrEventIdMap);
+			}
+			
+			session.setAttribute("resultModel", corrResultModel);
 			
 			return new ModelAndView("search", "searchResult", corrResultModel); 
 		}
