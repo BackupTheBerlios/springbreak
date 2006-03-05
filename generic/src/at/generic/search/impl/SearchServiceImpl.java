@@ -22,9 +22,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.3 2006/03/03 15:25:12 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.4 2006/03/05 00:44:40 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Search service
  * 
@@ -61,22 +61,34 @@ public class SearchServiceImpl implements SearchService {
 			numberOfResults++;
 			
 			// get Correlatedsets with guid
+			long startcorrEventList = new Date().getTime();
 			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);
+			long endcorrEventList = new Date().getTime();
+			log.debug("### TIME corrPersistenceService.getCorrelatedsetByGuid(guid); took " + (endcorrEventList - startcorrEventList));
 			
 			List eventAggList = new Vector();
 			List widList = new Vector();
 			String correlationSetDef = new String();
 			// go through the correlated sets and retrieve the events 
 			Iterator eventIt = corrEventList.iterator();
+			
+			long startWalkThroughEventsOfCorr = new Date().getTime();
 			while (eventIt.hasNext()) {
 				Correlationset corrSet = (Correlationset)eventIt.next();
 				
 				correlationSetDef = corrSet.getCorrelationSetDef();
 				
 				// get the event and its attributes
+				long startGetEvent = new Date().getTime();
 				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
+				long endGetEvent = new Date().getTime();
+				log.debug("### TIME GetEvent took " + (endGetEvent - startGetEvent));
+				
 				widList.add(event.getEventid());
+				long startGetAttribs = new Date().getTime();
 				List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());
+				long endGetAttribs = new Date().getTime();
+				log.debug("### TIME GetAttributes took " + (endGetAttribs - startGetAttribs));
 				
 				// pretty print xml
 				event.setXmlcontent(new XMLUtils().convertDocToPretty(event.getXmlcontent()));
@@ -88,7 +100,8 @@ public class SearchServiceImpl implements SearchService {
 				
 				eventAggList.add(eventAgg);
 			}
-			
+			long endWalkThroughEventsOfCorr = new Date().getTime();
+			log.debug("### TIME WalkThroughEventsOfCorr took " + (endWalkThroughEventsOfCorr - startWalkThroughEventsOfCorr));
 			// search inside events to generate a score
 
 	    	log.debug("---------------------- Event Search -----------------------------");
