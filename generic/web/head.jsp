@@ -1,7 +1,67 @@
 <head>
 <%@ include file="/taglibs.jsp"%>
 <title>Events</title>
-<link REL="stylesheet" HREF="styles/style.css" TYPE="text/css">
+<!--  somehow it doesn't work to include all defined css definitioins - some work and some work not -->
+<!--link REL="stylesheet" HREF="styles/style.css" TYPE="text/css"-->
+<style>
+FONT
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px
+}
+BODY
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px
+}
+TD
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px
+}
+TABLE
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px;
+}
+B
+{
+    FONT-FAMILY: Verdana;
+    FONT-WEIGHT: bold
+}
+A:link
+{
+    COLOR: #000000;
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px;
+    TEXT-DECORATION: none;
+    text-weight: bold;
+}
+A:visited
+{
+    COLOR: #000000;
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px;
+    TEXT-DECORATION: none;
+    text-weight: bold;
+}
+A:active
+{
+    COLOR: #000000;
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px;
+    TEXT-DECORATION: none;
+    text-weight: bold;
+}
+A:hover
+{
+    COLOR: #808080;
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12px;
+    TEXT-DECORATION: underline;
+    text-weight: bold;
+}
+</style>
 </head>
 <body>
 <center>
