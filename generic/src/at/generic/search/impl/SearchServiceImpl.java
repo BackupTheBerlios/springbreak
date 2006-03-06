@@ -1,6 +1,7 @@
 package at.generic.search.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -22,9 +23,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.4 2006/03/05 00:44:40 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.5 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Search service
  * 
@@ -38,7 +39,7 @@ public class SearchServiceImpl implements SearchService {
 	private EventPersistenceService eventPersistenceService;
 	private CorrelatingEventsPersistenceService corrPersistenceService;
 	
-	private int maxSearchResults; 
+	private int maxSearchResults; // number of items to be displayed
 	
 	/**
 	 * Searches Index of correlating sets for a given query
@@ -46,12 +47,11 @@ public class SearchServiceImpl implements SearchService {
 	 * @param searchString
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString) {
+	public CorrResultModel searchForCorrEvents(String searchString, int page) {
 		int numberOfResults = 0;
 		long start = new Date().getTime();
 		
-		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults);
-		// TODO: create less sql statements
+		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page);
 		
 		// go through the guid list provided by the search
 		List foundCorrSetList = new Vector();
@@ -61,56 +61,47 @@ public class SearchServiceImpl implements SearchService {
 			numberOfResults++;
 			
 			// get Correlatedsets with guid
-			long startcorrEventList = new Date().getTime();
-			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);
-			long endcorrEventList = new Date().getTime();
-			log.debug("### TIME corrPersistenceService.getCorrelatedsetByGuid(guid); took " + (endcorrEventList - startcorrEventList));
+			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);	// ***** DB Access
 			
-			List eventAggList = new Vector();
 			List widList = new Vector();
 			String correlationSetDef = new String();
 			// go through the correlated sets and retrieve the events 
-			Iterator eventIt = corrEventList.iterator();
 			
-			long startWalkThroughEventsOfCorr = new Date().getTime();
+			// create list with eventids
+			List eventIdList = new Vector();
+			HashMap eventTypeList = new HashMap();
+			Iterator eventIt = corrEventList.iterator();
 			while (eventIt.hasNext()) {
 				Correlationset corrSet = (Correlationset)eventIt.next();
-				
 				correlationSetDef = corrSet.getCorrelationSetDef();
-				
-				// get the event and its attributes
-				long startGetEvent = new Date().getTime();
-				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
-				long endGetEvent = new Date().getTime();
-				log.debug("### TIME GetEvent took " + (endGetEvent - startGetEvent));
-				
-				widList.add(event.getEventid());
-				long startGetAttribs = new Date().getTime();
-				List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());
-				long endGetAttribs = new Date().getTime();
-				log.debug("### TIME GetAttributes took " + (endGetAttribs - startGetAttribs));
-				
-				// pretty print xml
+				eventTypeList.put(corrSet.getEventid(), corrSet.getEventType());
+				eventIdList.add(corrSet.getEventid()); 
+			}	
+			
+			// retrieve alle events for the current correlation
+			List events = eventPersistenceService.getEvents(eventIdList);		//  ***** DB Access
+			
+			log.debug("---------------------- Event Search -----------------------------");
+			
+			List eventAggList = new Vector();
+			Iterator retrievedEventsIt = events.iterator();
+			while (retrievedEventsIt.hasNext()) {
+				Event event = (Event)retrievedEventsIt.next();
 				event.setXmlcontent(new XMLUtils().convertDocToPretty(event.getXmlcontent()));
+				
+				// retrieve Attributes
+				//List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());		//  ***** DB Access
 				
 				EventAgg eventAgg = new EventAgg();
 				eventAgg.setEvent(event);
-				eventAgg.setEventAttributes(eventAttribs);
-				eventAgg.setEventTypeName(corrSet.getEventType());
+				//eventAgg.setEventAttributes(eventAttribs);
+				eventAgg.setEventAttributes(new XMLUtils().extractAtrributesFromEvent(event));
+				eventAgg.setEventTypeName((String)eventTypeList.get(event.getEventid()));
 				
 				eventAggList.add(eventAgg);
 			}
-			long endWalkThroughEventsOfCorr = new Date().getTime();
-			log.debug("### TIME WalkThroughEventsOfCorr took " + (endWalkThroughEventsOfCorr - startWalkThroughEventsOfCorr));
-			// search inside events to generate a score
-
-	    	log.debug("---------------------- Event Search -----------------------------");
-			Vector eventRank = indexingServiceEvents.search(searchString,maxSearchResults, widList);
-			/*Iterator eventIdsAfterSearchIt = eventIds.iterator();
-			while (eventIdsAfterSearchIt.hasNext()) {
-				String eventIdsStr = (String)eventIdsAfterSearchIt.next();
-				log.debug("### eventIdsStr " + eventIdsStr);
-			}*/
+			
+			Vector eventRank = indexingServiceEvents.search(searchString,maxSearchResults, eventIdList);
 			
 			FoundCorrSet foundCorrSet = new FoundCorrSet();
 			foundCorrSet.setGuid(guid);
@@ -118,6 +109,7 @@ public class SearchServiceImpl implements SearchService {
 			foundCorrSet.setCorrelationSetDef(correlationSetDef);
 			foundCorrSet.setEventRank(eventRank);
 			foundCorrSetList.add(foundCorrSet);
+			
 		}
 		
 		long end = new Date().getTime();
@@ -129,6 +121,7 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setQueryTime(Long.toString(duration));
 		corrModel.setNumberOfResults(numberOfResults);
 		corrModel.setSearchString(searchString);
+		corrModel.setNumberOfFoundCorrEvents(indexingServiceCorrEvents.getNumberOfFoundCorrEvents());
 		
 		String termAry = new String();
 		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(searchString).iterator();
@@ -216,7 +209,4 @@ public class SearchServiceImpl implements SearchService {
 	public void setIndexingServiceEvents(IndexingService indexingServiceEvents) {
 		this.indexingServiceEvents = indexingServiceEvents;
 	}
-	
-	
-	
 }

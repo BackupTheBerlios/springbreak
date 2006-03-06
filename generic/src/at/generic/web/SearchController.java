@@ -20,9 +20,9 @@ import at.generic.service.SearchService;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.4 2006/03/03 13:34:50 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.5 2006/03/06 23:21:13 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Controller for the Event Search
  * 
@@ -35,8 +35,10 @@ public class SearchController implements Controller {
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession(true);
+		if ((request.getParameter("searchstring") == null || request.getParameter("searchstring").trim().equals(""))  && request.getParameter("newSearch") != null) 
+			return new ModelAndView("index"); 
 		// if a new search has been initiated then create search parameters
-		if (request.getParameter("newSearch") != null) {
+		if (request.getParameter("newSearch") != null || request.getParameter("browserPage") != null) {
 			/*List resultList = eventSearch.getEventsForFoundAttribs(request.getParameter("searchstring"));
 			log.debug("### resultList.size(): " + resultList.size());
 			SearchResultCommand searchResultCmd = new SearchResultCommand();
@@ -58,8 +60,14 @@ public class SearchController implements Controller {
 				log.debug("### foundCorrSet.getGuid(): " + foundCorrSet.getGuid());
 			}
 			*/
+			int page = 1;
+			if (request.getParameter("browserPage") != null ) 
+				page = Integer.parseInt(request.getParameter("browserPage"));
 			
-			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"));
+			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"), page);
+			corrResultModel.setCurrentPage(page);
+			corrResultModel.setMaxPageSize(corrResultModel.getNumberOfFoundCorrEvents()/searchService.getMaxSearchResults()+1);
+			corrResultModel.setMaxSearchResults(searchService.getMaxSearchResults());
 			
 			session.setAttribute("resultModel", corrResultModel);
 			

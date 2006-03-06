@@ -4,9 +4,9 @@ import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.2 2006/03/01 12:17:34 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.3 2006/03/06 23:20:53 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Search service
  * 
@@ -17,9 +17,10 @@ public interface SearchService {
 	 * Searches Index of correlating sets for a given query
 	 * 
 	 * @param searchString
+	 * @param page
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString);
+	public CorrResultModel searchForCorrEvents(String searchString, int page);
 	
 	
 	

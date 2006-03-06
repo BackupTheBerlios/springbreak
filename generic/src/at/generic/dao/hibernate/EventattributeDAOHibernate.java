@@ -1,5 +1,6 @@
 package at.generic.dao.hibernate;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -12,14 +13,13 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import at.generic.dao.EventattributeDAO;
-import at.generic.eventmodel.Event;
 import at.generic.eventmodel.Eventattribute;
 
 /**
  * @author szabolcs
- * @version $Id: EventattributeDAOHibernate.java,v 1.1 2006/02/27 14:57:34 szabolcs Exp $
+ * @version $Id: EventattributeDAOHibernate.java,v 1.2 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * DAO interface for Eventattribute
  * 
@@ -61,6 +61,34 @@ public class EventattributeDAOHibernate extends HibernateDaoSupport implements E
 	 */
 	public List getEventattributesForEvent(Long id) {
 		return getHibernateTemplate().find("from Eventattribute where eventid = " + id);
+	}
+	
+	/**
+	 * Retrieves Eventattributes by a list of event ids
+	 * 
+	 * @param ids
+	 * @return Eventattribute
+	 */
+	public List getEventattributesForEvent(List ids) {
+		Iterator it =ids.iterator();
+		String idStr = new String();
+		boolean first = true;
+		while(it.hasNext()) {
+			if (first == true) {
+				idStr = "eventid = " + (String) it.next();
+				first = false;
+			} else {
+				idStr = idStr + " OR eventid = " + (String) it.next();
+			}
+				
+		}
+		
+		log.debug("### idStr: " + idStr);
+		
+		if (idStr != null && !idStr.equals(""))
+			return getHibernateTemplate().find("from Eventattribute where " + idStr);
+		else 
+			return null;
 	}
 	
 	/**

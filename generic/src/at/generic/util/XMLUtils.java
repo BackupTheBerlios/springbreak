@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,18 +18,20 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import at.generic.etl.impl.GranSourceEvent;
+import at.generic.eventmodel.Event;
+import at.generic.eventmodel.Eventattribute;
 	
 /**
  * @author szabolcs
- * @version $Id: XMLUtils.java,v 1.2 2006/02/27 15:00:02 szabolcs Exp $
+ * @version $Id: XMLUtils.java,v 1.3 2006/03/06 23:21:13 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Misc utils for Event XMLs
  * 
@@ -96,4 +101,65 @@ public class XMLUtils {
         org.dom4j.Document document = reader.read(file);
         return document;
     }
+	
+	/**
+	 * Creates an Eventattribute out of an Event unsing only the xml provided
+	 * No datatype is set with this method
+	 * 
+	 * @param event
+	 * @return List with Eventattributes
+	 */
+	public List extractAtrributesFromEvent(Event event) {
+		 org.dom4j.Document corrEvent = new XMLUtils().convertXMLStringToDocument(event.getXmlcontent());
+		 Element root = corrEvent.getRootElement();
+		 
+		 List eventAttribList = new Vector();
+		 for ( Iterator i = root.elementIterator(); i.hasNext(); ) {
+	            Element element = (Element) i.next();
+	            
+	            Eventattribute eventAttrib = new Eventattribute();
+	            if (!element.getText().trim().equals("")) {
+		    		eventAttrib.setEventid(event.getEventid());
+		    		eventAttrib.setAttributename(element.getName());
+		    		eventAttrib.setValue(element.getText());
+		    		eventAttrib.setXmluri(element.getUniquePath());
+		    		
+		    		// store event attribute
+		    		eventAttribList.add(eventAttrib);
+	            }
+	            
+	            
+	            if (element.getText() == null || element.getText().trim().equals("")) {
+	             	for ( Iterator i1 = element.elementIterator(); i1.hasNext(); ) {
+	             		Element el = (Element) i1.next();
+	             		
+	             		for ( Iterator i2 = el.elementIterator(); i2.hasNext(); ) {
+	                 		Element el2 = (Element) i2.next();
+	                 		
+	                 		// store this value as EventAttribute
+	                		// create event attribute
+	                		eventAttrib = new Eventattribute();
+	                		eventAttrib.setEventid(event.getEventid());
+	                		eventAttrib.setAttributename(el2.getName());
+	                		eventAttrib.setValue(el2.getText());
+	                		eventAttrib.setXmluri(el2.getUniquePath());
+	                		
+	                		// save event attribute
+	                		eventAttribList.add(eventAttrib);
+	                		
+	             		}
+	    			}
+	             }
+		 }
+		 
+       
+	            
+		 return eventAttribList;
+	}
+		 
+		 
+		 
+		 
+		 
+		 
 }

@@ -6,9 +6,9 @@ import at.generic.eventmodel.Eventattribute;
 
 /**
  * @author szabolcs
- * @version $Id: EventattributeDAO.java,v 1.1 2006/02/27 14:57:34 szabolcs Exp $
+ * @version $Id: EventattributeDAO.java,v 1.2 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * DAO interface for Eventattribute
  * 
@@ -40,6 +40,14 @@ public interface EventattributeDAO extends DAO
 	 * @return Eventattribute
 	 */
 	public List getEventattributesForEvent(Long id);
+	
+	/**
+	 * Retrieves Eventattributes by a list of event ids
+	 * 
+	 * @param ids
+	 * @return Eventattribute
+	 */
+	public List getEventattributesForEvent(List ids);
 	
 	/**
 	 * Saves an eventattribute

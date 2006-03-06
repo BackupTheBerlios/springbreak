@@ -25,9 +25,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.6 2006/02/27 14:57:57 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.7 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -93,8 +93,13 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		
 		public void run() {
 			log.debug("### Transformthread.start()");
+			//indexingServiceEvents.startBatchInsert();
 			transformSourceEvents();
+			//indexingServiceEvents.stopBatchInsert();
+			
+			//indexingServiceCorrEvents.startBatchInsert();
 			extractCorrelatedEventsForIndex();
+			//indexingServiceCorrEvents.stopBatchInsert();
 		}
 		
 		public void extractCorrelatedEventsForIndex() {
@@ -116,7 +121,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 				if (!guid.equals(corrSet.getCorrelationSetGuid())) {
 					indexingServiceCorrEvents.addDocument(guid,words,"Corr");
 					guid = corrSet.getCorrelationSetGuid();
-					words = new String(); 
+					words = corrSet.getEventType() + " ";
 				} 
 				
 				// retrieve event 
@@ -197,7 +202,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		
 		Element root = corrEvent.getRootElement();
 		
-		String indexText = new String();
+		String indexText = root.getName() + " ";
 		
 		// iterate through the top level elements
 		// map them on event attribute facts and EventObjectAttributes

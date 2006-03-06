@@ -7,9 +7,9 @@ import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: IndexingService.java,v 1.3 2006/03/03 15:25:32 szabolcs Exp $
+ * @version $Id: IndexingService.java,v 1.4 2006/03/06 23:20:53 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Fulltext index service
  * 
@@ -25,9 +25,10 @@ public interface IndexingService {
 	 * 
 	 * @param search
 	 * @param numberOfResults
+	 * @param page
 	 * @return
 	 */
-	public Vector search(String search, int numberOfResults);
+	public Vector search(String search, int numberOfResults, int page);
 	
 	/**
      * Search whole index using a list of wids to filter for
@@ -46,6 +47,16 @@ public interface IndexingService {
 	  * @return
 	  */
 	 public HashSet extractSearchTerms (String search);
+	 
+	/**
+	 * Opens an IndexWriter for a Batch index operation on the Index
+	 */
+	public void startBatchInsert();
+	
+	/**
+	 * Stops a batch index operation 
+	 */
+	public void stopBatchInsert();
 	
 	// ================ Getters and Setters ==================
 	
@@ -78,4 +89,14 @@ public interface IndexingService {
 	 * @param numberOfIndexedIems The numberOfIndexedIems to set.
 	 */
 	public void setNumberOfIndexedIems(int numberOfIndexedIems);
+	
+	/**
+	 * @return Returns the numberOfFoundCorrEvents.
+	 */
+	public int getNumberOfFoundCorrEvents();
+
+	/**
+	 * @param numberOfFoundCorrEvents The numberOfFoundCorrEvents to set.
+	 */
+	public void setNumberOfFoundCorrEvents(int numberOfFoundCorrEvents);
 }

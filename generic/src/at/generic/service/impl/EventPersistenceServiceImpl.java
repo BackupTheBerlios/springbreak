@@ -27,9 +27,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceServiceImpl.java,v 1.1 2006/02/27 14:59:03 szabolcs Exp $
+ * @version $Id: EventPersistenceServiceImpl.java,v 1.2 2006/03/06 23:20:53 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Facade for event persitence operations
  */
@@ -51,6 +51,17 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 	public List getEvents() {
 		return eventDAO.getEvents();
 	}
+	
+	/**
+	 * Retrieves Events by a list of event ids
+	 * 
+	 * @param ids
+	 * @return Eventattribute
+	 */
+	public List getEvents(List ids) {
+		return eventDAO.getEvents(ids);
+	}
+	
 	
 	/**
 	 * Returns a list of events using pagination
@@ -212,9 +223,22 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 	}
 	
 	/**
-	 * @return List with Eventattributes
+	 * Retrieves Eventattributes by a given id
+	 * 
+	 * @param ids
+	 * @return List with eventattributes
 	 */
 	public List getEventattributesForEvent(Long id) {
+		return eventattributeDAO.getEventattributesForEvent(id);
+	}
+	
+	/**
+	 * Retrieves Eventattributes by a list of event ids
+	 * 
+	 * @param ids
+	 * @return List with eventattributes
+	 */
+	public List getEventattributesForEvent(List id) {
 		return eventattributeDAO.getEventattributesForEvent(id);
 	}
 	

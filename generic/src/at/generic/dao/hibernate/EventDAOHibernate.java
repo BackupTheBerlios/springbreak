@@ -1,5 +1,6 @@
 package at.generic.dao.hibernate;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -16,9 +17,9 @@ import at.generic.eventmodel.Event;
 
 /**
  * @author szabolcs
- * @version $Id: EventDAOHibernate.java,v 1.1 2006/02/27 14:57:34 szabolcs Exp $
+ * @version $Id: EventDAOHibernate.java,v 1.2 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -31,6 +32,33 @@ public class EventDAOHibernate extends HibernateDaoSupport implements EventDAO {
 	 */
 	public List getEvents() {
 		return getHibernateTemplate().find("from Event");
+	}
+	
+	/**
+	 * Retrieves Events by a list of event ids
+	 * 
+	 * @param ids
+	 * @return Eventattribute
+	 */
+	public List getEvents(List ids) {
+		Iterator it =ids.iterator();
+		String idStr = new String();
+		boolean first = true;
+		while(it.hasNext()) {
+			if (first == true) {
+				idStr = "eventid = " + (Long) it.next();
+				first = false;
+			} else {
+				idStr = idStr + " OR eventid = " + (Long) it.next();
+			}
+				
+		}
+		
+		log.debug("### idStr: " + idStr);
+		if (idStr != null && !idStr.equals(""))
+			return getHibernateTemplate().find("from Event where " + idStr);
+		else 
+			return null;
 	}
 	
 	/**

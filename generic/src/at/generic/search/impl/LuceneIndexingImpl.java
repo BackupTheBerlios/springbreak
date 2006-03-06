@@ -28,9 +28,9 @@ import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.3 2006/03/03 15:25:12 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.4 2006/03/06 23:20:19 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Fulltext index service
  * 
@@ -51,8 +51,10 @@ public class LuceneIndexingImpl implements IndexingService {
 	private int numberOfIndexedIems = 0;
 	private boolean indexCreated = false;
 	private final Analyzer analyzer = new StandardAnalyzer();
-	private IndexWriter writer;
+	private IndexWriter indexWriter;
+	private IndexSearcher indexSearcher;
 	private boolean init = false;
+	private int numberOfFoundCorrEvents;
 	
 	/**
 	 * Tries to create an index at the given location
@@ -61,21 +63,21 @@ public class LuceneIndexingImpl implements IndexingService {
 	public void init() {
 		if (init == false) {
 			try {
-				this.createIndexLocation();
+				IndexWriter writer = new IndexWriter(indexLocation, analyzer, false);
+				numberOfIndexedIems = writer.docCount();
+				indexCreated = true;
+				init = true;
+				writer.close();
+				writer = null;
 			} catch (IOException e1) {
 			    log.info("Error opening index location " + indexLocation);
-			    log.info("Trying to create an index at location " + indexLocation);
-			    
 			    try {
+			    	log.info("Trying to create an index at location " + indexLocation);
 			    	this.createIndexLocation();
 			    } catch (IOException e2) {
 			    	log.error("Giving up creating that damn lucene index at " + indexLocation, e2 );
 			    }
 			} 
-			finally {
-			    closeWriter(writer);
-			}
-			
 		}
 	}
 	
@@ -87,11 +89,15 @@ public class LuceneIndexingImpl implements IndexingService {
 	private void createIndexLocation() throws IOException {
 		IndexWriter writer = null;
 		
-		writer = new IndexWriter(indexLocation, analyzer, false);
+		writer = new IndexWriter(indexLocation, analyzer, true);
 		
 		numberOfIndexedIems = writer.docCount();
 		indexCreated = true;
 		init = true;
+		
+	    writer.close();
+
+	    writer = null;
 	}
 	
 	 /**
@@ -123,38 +129,52 @@ public class LuceneIndexingImpl implements IndexingService {
      * 
      * @param search SearchString
      * @param numberOfResults 
+     * @param page
      */
-    public Vector search(String search, int numberOfResults) {
-    	log.debug("#### searchQuery=" + search);
-    	log.debug("### numberOfResults " + numberOfResults);
+    public Vector search(String search, int numberOfResults, int page) {
+    	//log.debug("#### searchQuery=" + search);
+    	//log.debug("### numberOfResults " + numberOfResults);
     	
     	try {
-	    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
-	    	IndexSearcher is = new IndexSearcher(fsDir);
+    		if (indexSearcher == null) {
+		    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
+    			indexSearcher = new IndexSearcher(fsDir);
+    		}
+    	
 	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
-	    	Hits hits = is.search(query);
+	    	Hits hits = indexSearcher.search(query);
+	    	this.numberOfFoundCorrEvents =  hits.length();
 	    	
-	    	Vector items = new Vector();
-	    	log.debug("#### hits.length() " + hits.length());
-	    	
-	    	int maxHitSize = 0;
-	    	if (numberOfResults > hits.length()) 
-	    		maxHitSize = hits.length();
-	    	else 
-	    		maxHitSize = numberOfResults;
-	    			
-	    	//for (int i = 0; i < hits.length(); i++) {
-	    	for (int i = 0; i < maxHitSize; i++) {
-	    		Document doc = hits.doc(i);
-	    		log.debug("#### found object wid = " + doc.get("wid"));
-	    		log.debug("#### found object type = " + doc.get("type"));
-	    		log.debug("#### found object text = " + doc.get("text"));
-	    		
-	    		items.add(doc.get("wid"));
+	    	log.debug("### page * numberOfResults - numberOfResults:" + (page * numberOfResults - numberOfResults));
+	    	log.debug("### hits.length():" + hits.length());
+	    	// if the chosen page exceeds the hit numbers just do nothing
+	    	if (!(page * numberOfResults - numberOfResults  > hits.length())) {
+		    	Vector items = new Vector();
+		    	//log.debug("#### hits.length() " + hits.length());
+		    	
+		    	
+		    	int start = page * numberOfResults - numberOfResults;
+		    	int maxHitSize = 0;
+		    	if (page * numberOfResults >= hits.length())
+		    		maxHitSize = hits.length();
+		    	else 
+		    		maxHitSize = page * numberOfResults;
+		    	
+		    	log.debug("### start:" + start);
+		    	log.debug("### maxHitSize:" + maxHitSize);
+		    	
+		    	
+		    	for (; start < maxHitSize; start++) {
+		    		Document doc = hits.doc(start);
+		    		//log.debug("#### found object wid = " + doc.get("wid"));
+		    		//log.debug("#### found object type = " + doc.get("type"));
+		    		//log.debug("#### found object text = " + doc.get("text"));
+		    		
+		    		items.add(doc.get("wid"));
+		    	}
+		    	
+		    	return items;
 	    	}
-	    	
-	    	return items;
-	    	
     	} catch (IOException e) {
     		 e.printStackTrace();
     	} catch (ParseException e) {
@@ -172,12 +192,14 @@ public class LuceneIndexingImpl implements IndexingService {
      * @return
      */
     public Vector search(String search, int numberOfResults, List widList) {
-    	log.debug("#### searchQuery=" + search);
-    	log.debug("### numberOfResults " + numberOfResults);
+    	//log.debug("#### searchQuery=" + search);
+    	//log.debug("### numberOfResults " + numberOfResults);
     	
     	try {
-	    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
-	    	IndexSearcher is = new IndexSearcher(fsDir);
+    		if (indexSearcher == null) {
+		    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
+    			indexSearcher = new IndexSearcher(fsDir);
+    		}
 	    	
 	    	// build a filter
 	    	TermsFilter filter = new TermsFilter();
@@ -189,10 +211,10 @@ public class LuceneIndexingImpl implements IndexingService {
 	    	
 	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
 
-	    	Hits hits = is.search(query, filter);
+	    	Hits hits = indexSearcher.search(query, filter);
 	    	
 	    	Vector items = new Vector();
-	    	log.debug("#### hits.length() " + hits.length());
+	    	//log.debug("#### hits.length() " + hits.length());
 	    	
 	    	int maxHitSize = 0;
 	    	if (numberOfResults > hits.length()) 
@@ -202,9 +224,9 @@ public class LuceneIndexingImpl implements IndexingService {
 	    	
 	    	for (int i = 0; i < maxHitSize; i++) {
 	    		Document doc = hits.doc(i);
-	    		log.debug("#### found object wid = " + doc.get("wid"));
-	    		log.debug("#### found object type = " + doc.get("type"));
-	    		log.debug("#### found object text = " + doc.get("text"));
+	    		//log.debug("#### found object wid = " + doc.get("wid"));
+	    		//log.debug("#### found object type = " + doc.get("type"));
+	    		//log.debug("#### found object text = " + doc.get("text"));
 	    		
 	    		items.add(new Long(doc.get("wid")));
 	    	}
@@ -219,6 +241,14 @@ public class LuceneIndexingImpl implements IndexingService {
     	return null;
     }
     
+    public void addDocument (String key, String text, String type) {
+    	indexSearcher = null;
+    	if (indexWriter == null)
+    		this.addDocumentSingleStyle(key,text,type);
+    	else
+    		this.addDocumentBatchStyle(key,text,type);
+    }
+    
     /**
      * Adds a document to the index 
      * 
@@ -226,24 +256,30 @@ public class LuceneIndexingImpl implements IndexingService {
      * @param text
      * @param type
      */
-	public void addDocument(String key, String text, String type) {
+	private void addDocumentSingleStyle(String key, String text, String type) {
+		
 		IndexWriter writer = null;
+		
 		try {
-			if (indexCreated == false) {
+			/*if (indexCreated == false) {
 				writer = new IndexWriter(indexLocation, analyzer, true);
 				indexCreated = true;
 			} else {
 				removeDocument(key);
 				writer = new IndexWriter(indexLocation, analyzer, false);
-			}
+			}*/
+			
+			removeDocument(key);
+			writer = new IndexWriter(indexLocation, analyzer, false);
+			
 		    Document document = new Document();
 		    document.add(Field.Keyword("wid", key));
 		    document.add(Field.Keyword("type", type));
 		    document.add(Field.Text("text",text));
 		    
-		    log.debug("### creating index for wid=" + key + ", type=" + type + ", text=" + text);
+		    //log.debug("### creating index for wid=" + key + ", type=" + type + ", text=" + text);
 		    
-		    log.debug("### addDocument writer.docCount() " + writer.docCount());
+		    //log.debug("### addDocument writer.docCount() " + writer.docCount());
 		    
 		    writer.optimize();
 		    writer.addDocument(document);
@@ -254,6 +290,37 @@ public class LuceneIndexingImpl implements IndexingService {
 		    closeWriter(writer);
 		}
 	}
+	
+	/**
+     * Adds a document to the index in batch mode
+     * 
+     * @param key
+     * @param text
+     * @param type
+     */
+	private void addDocumentBatchStyle(String key, String text, String type) {
+		try {
+			removeDocument(key);
+			
+		    Document document = new Document();
+		    document.add(Field.Keyword("wid", key));
+		    document.add(Field.Keyword("type", type));
+		    document.add(Field.Text("text",text));
+		    
+		    //log.debug("### creating index for wid=" + key + ", type=" + type + ", text=" + text);
+		    //log.debug("### addDocument writer.docCount() " + indexWriter.docCount());
+		    
+		    indexWriter.addDocument(document);
+		} catch (IOException e) {
+		    log.error("Error updating index for wid=" + key + ", type=" + type , e);
+		} finally {
+		    closeWriter(indexWriter);
+		}
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Removes a document from index 
@@ -299,16 +366,27 @@ public class LuceneIndexingImpl implements IndexingService {
 		 return terms;
 	 }
 	
+	 /**
+	  * Closes the given IndexWriter and calls optimize()
+	  * @param writer
+	  */
 	private void closeWriter(IndexWriter writer) {
 	    if (null != writer) {
 	        try {
+	        	writer.optimize();
 	            writer.close();
+	            writer = null;
 	        } catch (IOException e) {
 	            log.warn("Error while closing index writer", e);
 	        }
 	    }
 	}
 	
+	/**
+	 * Closes the given IndexReader
+	 * 
+	 * @param reader
+	 */
 	private void closeReader(IndexReader reader) {
         if (null != reader) {
             try {
@@ -320,38 +398,24 @@ public class LuceneIndexingImpl implements IndexingService {
     }
 
 	
-	/*public void startBatchInsert() {
-	try {
-		if (indexCreated == false) {
-			writer = new IndexWriter(indexLocation, analyzer, true);
-			indexCreated = true;
-		} else {
-			writer = new IndexWriter(indexLocation, analyzer, false);
-		}
-	} catch (IOException e) {
-	    log.error("Error creating/accessing index", e);
-	}
-	}
-	
-	public void stopBatchInsert() {
-		closeWriter(writer);
-	}*/
-	
-	/*public void addDocument(String key, String text, String type) {
+	/**
+	 * Opens an IndexWriter for a Batch index operation on the Index
+	 */
+	public void startBatchInsert() {
 		try {
-		    Document document = new Document();
-		    document.add(Field.Keyword("wid", key));
-		    document.add(Field.Keyword("type", type));
-		    document.add(Field.Text("text",text));
-		    
-		    log.debug("### creating index for wid=" + key + ", type=" + type + ", text=" + text);
-		    
-		    writer.addDocument(document);
+			indexWriter = new IndexWriter(indexLocation, analyzer, false);
 		} catch (IOException e) {
-		    log.error("Error updating index for wid=" + key + ", type=" + type , e);
-		} 
+		    log.error("Error creating/accessing index", e);
+		}
+	}
 	
-	}*/
+	/**
+	 * Stops a batch index operation 
+	 */
+	public void stopBatchInsert() {
+		numberOfIndexedIems = indexWriter.docCount();
+		this.closeWriter(indexWriter);
+	}
 	
 	// ================ Getters and Setters ==================
 	
@@ -396,4 +460,20 @@ public class LuceneIndexingImpl implements IndexingService {
 	public void setNumberOfIndexedIems(int numberOfIndexedIems) {
 		this.numberOfIndexedIems = numberOfIndexedIems;
 	}
+
+	/**
+	 * @return Returns the numberOfFoundCorrEvents.
+	 */
+	public int getNumberOfFoundCorrEvents() {
+		return numberOfFoundCorrEvents;
+	}
+
+	/**
+	 * @param numberOfFoundCorrEvents The numberOfFoundCorrEvents to set.
+	 */
+	public void setNumberOfFoundCorrEvents(int numberOfFoundCorrEvents) {
+		this.numberOfFoundCorrEvents = numberOfFoundCorrEvents;
+	}
+	
+	
 }
