@@ -10,19 +10,47 @@
 <%@ include file="/head.jsp"%>
 <center><h2>> Search Results <</h2></center>
 <br/>
-<table border="0">
+<!-- Navigation Bar -->
+<center>
+<c:if test="${searchResult.numberOfFoundCorrEvents >= searchResult.maxSearchResults}">
+
+	<c:if test="${searchResult.prevPage > 0}">
+		<a href="search.html?browserPage=1&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
+	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeft.gif" border="0"></a>
+	</c:if>
+	<c:forEach begin="1" end="${searchResult.maxPageSize}" var="runner">
+		<c:if test="${runner != searchResult.currentPage}">
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><c:out value="${runner}"/></a>&nbsp;
+		</c:if>
+		<c:if test="${runner == searchResult.currentPage}">
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
+		</c:if>
+	</c:forEach> 
+	<c:if test="${searchResult.currentPage < searchResult.maxPageSize}">
+		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRight.gif" border="0"></a>
+		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
+	</c:if>
+</c:if>
+</center>
+<!-- Navigation Bar -->
+<table border="0" width="100%">
 	<tr>
 		<td valign="top">
-			<table border="0">
+			<table border="0" width="100%">
 				<tr>
 					<td bgcolor="#E5ECF9">
 						<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
 							<tr>
 								<td>
-									<b><c:out value="${searchResult.numberOfResults}"/> Results from Event Space</b>
+									<b><c:out value="${searchResult.numberOfFoundCorrEvents}"/> Results from Event Space</b>
 								</td>
 								<td align="right">
-									Results <b>1 - *</b> (<b><c:out value="${searchResult.queryTime}"/></b> mseconds) 
+									<c:if test="${searchResult.currentPage >= searchResult.maxPageSize}">
+										Results <b><c:out value="${searchResult.currentPage * searchResult.maxSearchResults - searchResult.maxSearchResults + 1}"/> - <c:out value="${searchResult.numberOfFoundCorrEvents}"/></b> (<b><c:out value="${searchResult.queryTime/1000}"/></b> seconds) 
+									</c:if>
+									<c:if test="${searchResult.currentPage < searchResult.maxPageSize}">	
+										Results <b><c:out value="${searchResult.currentPage * searchResult.maxSearchResults - searchResult.maxSearchResults + 1}"/> - <c:out value="${searchResult.currentPage * searchResult.maxSearchResults}"/></b> (<b><c:out value="${searchResult.queryTime/1000}"/></b> seconds) 
+									</c:if>
 								</td>
 							</tr>
 						</table>
@@ -129,5 +157,28 @@
 			</c:if>
 		</td>
 	</tr>
+</table>
+<!-- Navigation Bar -->
+<center>
+<c:if test="${searchResult.numberOfFoundCorrEvents >= searchResult.maxSearchResults}">
+	<c:if test="${searchResult.prevPage > 0}">
+		<a href="search.html?browserPage=1&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
+	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeft.gif" border="0"></a>
+	</c:if>
+	<c:forEach begin="1" end="${searchResult.maxPageSize}" var="runner">
+		<c:if test="${runner != searchResult.currentPage}">
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><c:out value="${runner}"/></a>&nbsp;
+		</c:if>
+		<c:if test="${runner == searchResult.currentPage}">
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
+		</c:if>
+	</c:forEach> 
+	<c:if test="${searchResult.currentPage < searchResult.maxPageSize}">
+		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRight.gif" border="0"></a>
+		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
+	</c:if>
+</c:if>
+</center>
+<!-- Navigation Bar -->
 </body>
 	
