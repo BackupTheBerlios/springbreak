@@ -6,31 +6,27 @@
 	<!-- Database Connection Configs															-->
 	<!-- ====================================================================================	-->
     
-    <bean id="postgresSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!-- DriverManagerDataSource is not a pooled connection -->
+    <!-- @see http://www.springframework.org/docs/api/org/springframework/jdbc/datasource/DriverManagerDataSource.html -->
+    <!-- <bean id="postgresSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+    <bean id="postgresSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
         <property name="username"><value>postgres</value></property>
-        <property name="password"><value>postgres</value></property>
+        <property name="password"><value>letmein</value></property>
     </bean>
-    
-    <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   
+     <!--<bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+     <bean id="msSqlSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
         <property name="url"><value>jdbc:postgresql://localhost/intimedb</value></property>
         <property name="username"><value>postgres</value></property>
-        <property name="password"><value>postgres</value></property>
-    </bean>
+        <property name="password"><value>letmein</value></property>
+    </bean> 
     
-    <!-- 
-    <bean id="msSqlSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName"><value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value></property>
-        <property name="url"><value>jdbc:sqlserver://192.168.0.10/database=InTimeAdminDB</value></property>
-        <property name="username"><value>sa</value></property>
-        <property name="password"><value>senactive</value></property>
-    </bean>  
-    -->
-
 	<!-- ====================================================================================	-->
 	<!-- Hibernate Configs																	 	-->
+	<!-- @look http://forum.springframework.org/showthread.php?t=20803&highlight=commit+transaction   -->
 	<!-- ====================================================================================	-->
     
     <bean id="sessionFactoryForPostgresSource" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
@@ -54,7 +50,9 @@
         </props>
         </property>
     </bean> 
-    <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+    
+    
+   <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
 		<property name="dataSource">
 			<ref bean="msSqlSource"/>
 		</property>
@@ -72,28 +70,8 @@
 			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
         </props>
         </property>
-    </bean>     
-   <!-- 
-   <bean id="sessionFactoryForSQLServer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
-		<property name="dataSource">
-			<ref bean="msSqlSource"/>
-		</property>
-        <property name="mappingResources">
-            <list>
-                 <value>Correlatedevent.hbm.xml</value>
-                 <value>Correlationset.hbm.xml</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-        <props>
-            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
-            <prop key="hibernate.hbm2ddl.auto">update</prop> 
-			<prop key="hibernate.show_sql">true</prop>
-			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
-        </props>
-        </property>
-    </bean>     
-	 -->
+    </bean>      
+    
 	<!-- ====================================================================================	-->
 	<!-- Transaction Manager																 	-->
 	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA)			-->
@@ -138,7 +116,7 @@
     		<ref bean="txtimeDAOTarget"/>
     	</property> 
     	<property name="correlatedEventDAO">
-    		<ref bean="correlatedEventDAO"/>
+    		<ref bean="correlatedEventDAOTarget"/>
     	</property> 
     </bean>
     
@@ -159,13 +137,13 @@
     
 	<bean id="indexingServiceEvents" class="at.generic.search.impl.LuceneIndexingImpl" init-method="init"> 
     	<property name="indexLocation">
-    		<value>d:/luceneindex/events</value>
+    		<value>e:/luceneindex/events</value>
     	</property> 
     </bean>    
     
     <bean id="indexingServiceCorrEvents" class="at.generic.search.impl.LuceneIndexingImpl" init-method="init"> 
     	<property name="indexLocation">
-    		<value>d:/luceneindex/correvents</value>
+    		<value>e:/luceneindex/correvents</value>
     	</property> 
     </bean>    
     
@@ -183,7 +161,7 @@
     		<ref bean="correlatingEventsPersistenceService"/>
     	</property>
     	<property name="maxSearchResults">
-    		<value>100</value>
+    		<value>10</value>
     	</property>
     </bean>    
 
@@ -224,69 +202,69 @@
     	<property name="identifiedEvents">
     		<map>
     			<entry key="OrderReceived">
-    				<value>d:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/OrderReceivedEventType.xml</value>    			
     			</entry>
 				<entry key="OrderConfirmed">
-    				<value>d:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/OrderComfirmedEventType.xml</value>    			
     			</entry>
     			
     			<entry key="DataLoggerConfigured">
-    				<value>d:/jDev/generic/eventDefinitions/DataLoggerConfiguredEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/DataLoggerConfiguredEventType.xml</value>    			
     			</entry>
     			<entry key="DataLoggerRead">
-    				<value>d:/jDev/generic/eventDefinitions/DataLoggerReadEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/DataLoggerReadEventType.xml</value>    			
     			</entry>
     			<entry key="ErrorEvent">
-    				<value>d:/jDev/generic/eventDefinitions/ErrorEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ErrorEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentAudit">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentAuditEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentAuditEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentCreated">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentCreatedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentCreatedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentDelivered">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentDeliveredEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentDeliveredEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentExpedited">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentExpeditedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentExpeditedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentStarted">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentStartedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentStartedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderAccepted">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderAcceptedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderAcceptedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderIssued">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderIssuedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderIssuedEventType.xml</value>    			
     			</entry>
     			<entry key="ShipmentTenderRejected">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentTenderRejectedEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentTenderRejectedEventType.xml</value>    			
     			</entry>
     			<entry key="TransportEnd">
-    				<value>d:/jDev/generic/eventDefinitions/TransportEndEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/TransportEndEventType.xml</value>    			
     			</entry>
     			<entry key="TransportStart">
-    				<value>d:/jDev/generic/eventDefinitions/TransportStartEventType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/TransportStartEventType.xml</value>    			
     			</entry> 
     		</map>
     	</property> 
     	<property name="identifiedEventObjects">
     		<map>
     			<entry key="Product">
-    				<value>d:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
     			<entry key="LogEntry">
-    				<value>d:/jDev/generic/eventDefinitions/LogEntryEventObjectType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/LogEntryEventObjectType.xml</value>    			
     			</entry>
     			<entry key="Product">
-    				<value>d:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ProductEventObjectType.xml</value>    			
     			</entry>
     			<entry key="ShipmentInfo">
-    				<value>d:/jDev/generic/eventDefinitions/ShipmentInfoEventObjectType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/ShipmentInfoEventObjectType.xml</value>    			
     			</entry>
     			<entry key="TransportInfo">
-    				<value>d:/jDev/generic/eventDefinitions/TransportInfoEventObjectType.xml</value>    			
+    				<value>e:/jDev/generic/eventDefinitions/TransportInfoEventObjectType.xml</value>    			
     			</entry>
     		</map>
     	</property> 

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- ====================================================================================	-->
+	<!-- Remove the file from web.xml if you don't want to use the importer						-->
+	<!-- ====================================================================================	-->
+	
+	
+	<bean id="msSqlSourceOrgin" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value></property>
+        <property name="url"><value>jdbc:sqlserver://192.168.0.9/database=InTimeAdminDB</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value>senactive</value></property>
+    </bean>  
+
+   <bean id="sessionFactoryForSQLServerOrgin" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource">
+			<ref bean="msSqlSourceOrgin"/>
+		</property>
+        <property name="mappingResources">
+            <list>
+                 <value>Correlatedevent.hbm.xml</value>
+                 <value>Correlationset.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop> 
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+        </props>
+        </property>
+    </bean>     
+    
+    <bean id="transactionManagerForSQLServerSourceOrigin" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+        	<ref bean="sessionFactoryForSQLServerOrgin"/>
+        </property>
+    </bean>
+    
+    	<!-- Correlatedevent -->
+	<bean id="correlatedEventDAOTargetOrigin" class="at.generic.dao.hibernate.CorrelatedeventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServerOrgin"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedEventDAOOrigin" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSourceOrigin" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="correlatedEventDAOTargetOrigin" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+	<!-- Correlatedset -->    
+    <bean id="correlatedSetDAOTargetOrigin" class="at.generic.dao.hibernate.CorrelatedsetDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServerOrgin"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedSetDAOOrigin" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSourceOrigin" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="correlatedSetDAOTargetOrigin" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+         </props> 
+      </property>
+    </bean>
+    
+
+    
+    <bean id="dataImport" class="at.generic.etl.impl.DataImportImpl" init-method="startImport"> 
+    	<property name="corrSourceDAO">
+    		<ref bean="correlatedEventDAOTargetOrigin"/>
+    	</property> 
+    	<property name="setSourceDAO">
+    		<ref bean="correlatedSetDAOTargetOrigin"/>
+    	</property> 
+    	<property name="corrTargetDAO">
+    		<ref bean="correlatedEventDAOTarget"/>
+    	</property> 
+    	<property name="setTargetDAO">
+    		<ref bean="correlatedSetDAOTarget"/>
+    	</property> 
+    </bean>    
+</beans>
