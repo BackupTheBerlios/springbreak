@@ -78,7 +78,7 @@ public class RssDbIndexer {
                      Document doc = new Document();
                      doc.add(Field.Text("id",  Long.toString(rssItem.getId())));
                      doc.add(Field.Text("title", rssItem.getTitle()));
-                     doc.add(Field.Text("description", rssItem.getTitle()));
+                     doc.add(Field.Text("description", rssItem.getDescription()));
                      writer.addDocument(doc);
                      indexCreated = true;
                  }
