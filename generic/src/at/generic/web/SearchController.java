@@ -20,9 +20,9 @@ import at.generic.service.SearchService;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.5 2006/03/06 23:21:13 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.6 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Controller for the Event Search
  * 
@@ -35,43 +35,63 @@ public class SearchController implements Controller {
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession(true);
+		
+		// if no searchstring has been entered
 		if ((request.getParameter("searchstring") == null || request.getParameter("searchstring").trim().equals(""))  && request.getParameter("newSearch") != null) 
 			return new ModelAndView("index"); 
+		
 		// if a new search has been initiated then create search parameters
-		if (request.getParameter("newSearch") != null || request.getParameter("browserPage") != null) {
-			/*List resultList = eventSearch.getEventsForFoundAttribs(request.getParameter("searchstring"));
-			log.debug("### resultList.size(): " + resultList.size());
-			SearchResultCommand searchResultCmd = new SearchResultCommand();
-			searchResultCmd.setNumberOfResults(resultList.size());
-			searchResultCmd.setResultList(resultList);
-			
-			searchResultCmd.setSearchString(request.getParameter("searchstring"));
-			session.setAttribute("searchResultCmd", searchResultCmd);
-			
-			//indexingService.search(request.getParameter("searchstring"),100);
-			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"));
-			log.debug("### corrResultModel.getNumberOfResults(): " + corrResultModel.getNumberOfResults());
-			
-			List corrSetList = corrResultModel.getFoundCorrSet();
-			
-			Iterator it = corrSetList.iterator();
-			while (it.hasNext()) {
-				FoundCorrSet foundCorrSet = (FoundCorrSet) it.next();
-				log.debug("### foundCorrSet.getGuid(): " + foundCorrSet.getGuid());
-			}
-			*/
+		if (request.getParameter("newSearch") != null || request.getParameter("browserPage") != null || request.getParameter("showContextForId") != null) {
+			String searchStr = request.getParameter("searchstring");
 			int page = 1;
-			if (request.getParameter("browserPage") != null ) 
+			if (request.getParameter("browserPage") != null ) {
+				log.debug("### start Rank");
 				page = Integer.parseInt(request.getParameter("browserPage"));
+				CorrResultModel corrResultModelTmp = (CorrResultModel)session.getAttribute("resultModel");
+				searchStr = corrResultModelTmp.getSearchString();
+			}
 			
-			CorrResultModel corrResultModel = searchService.searchForCorrEvents(request.getParameter("searchstring"), page);
+			// check search rank type!
+			CorrResultModel corrResultModel = new CorrResultModel();
+			if (request.getParameter("showContextForId") != null && !request.getParameter("showContextForId").trim().equals("")) {
+				// event context is chosen
+				log.debug("### context search");
+				corrResultModel = searchService.searchCorrContext(new Long(request.getParameter("showContextForId")), page);
+				log.debug("### context search stop");
+			} else if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) {
+				// rank 2 search
+				log.debug("### Rank 2 Search");
+				if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true")) {
+					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true);
+					log.debug("### exactMatch == true");
+				} else {
+					corrResultModel = searchService.searchForCorrEvents(searchStr, page, false);
+					log.debug("### exactMatch == false");
+				}
+			} else {
+				// rank 1 search
+				log.debug("### Rank 1 Search");
+				corrResultModel = searchService.searchForEvents(searchStr, page);
+				log.debug("### Rank 1 Search end");
+			}
+			
 			corrResultModel.setCurrentPage(page);
 			corrResultModel.setMaxPageSize(corrResultModel.getNumberOfFoundCorrEvents()/searchService.getMaxSearchResults()+1);
 			corrResultModel.setMaxSearchResults(searchService.getMaxSearchResults());
 			
-			session.setAttribute("resultModel", corrResultModel);
+			// check if exact match
+			if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true"))
+				corrResultModel.setExactSearch("true");
+			else
+				corrResultModel.setExactSearch("false");
 			
-			return new ModelAndView("search", "searchResult", corrResultModel); 
+			session.setAttribute("resultModel", corrResultModel);
+			// check search rank type!
+			if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) {
+				return new ModelAndView("search", "searchResult", corrResultModel);
+			} else {
+				return new ModelAndView("searchRankOne", "searchResult", corrResultModel);
+			}
 		} else {
 			// if search button has NOT been clicked then reuse the data
 			//SearchResultCommand searchResultCmd = (SearchResultCommand)session.getAttribute("searchResultCmd");
@@ -100,9 +120,14 @@ public class SearchController implements Controller {
 			}
 			
 			session.setAttribute("resultModel", corrResultModel);
-			
-			return new ModelAndView("search", "searchResult", corrResultModel); 
+			if (request.getParameter("showContextForId") != null && !request.getParameter("showContextForId").trim().equals("")) { 
+				return new ModelAndView("search", "searchContext", corrResultModel);
+			} else if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) 
+				return new ModelAndView("search", "searchResult", corrResultModel);
+			else
+				return new ModelAndView("searchRankOne", "searchResult", corrResultModel);
 		}
+		
 	}
 
 	/**

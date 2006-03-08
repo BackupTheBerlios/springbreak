@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.11 $ 
-		$Id: build.xml,v 1.11 2006/03/03 15:26:54 szabolcs Exp $ 
+		$Revision: 1.12 $ 
+		$Id: build.xml,v 1.12 2006/03/08 16:49:05 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -161,6 +161,9 @@
                 <include name="*.jar"/>
             </fileset>	
 			<fileset dir="${lib.dir}/lucene-1.9.1">
+                <include name="*.jar"/>
+            </fileset>	
+			<fileset dir="${lib.dir}/dbcp-1.2.1">
                 <include name="*.jar"/>
             </fileset>	
 		</copy>	

@@ -42,7 +42,7 @@
     <!-- Associations -->
   
     <!-- bi-directional one-to-many association to Correlationset -->
-    <set
+  <!--   <set
         name="correlationsets"
         lazy="true"
         inverse="true"
@@ -54,7 +54,7 @@
         <one-to-many 
             class="at.generic.model.Correlationset"
         />
-    </set> 
+    </set>  -->
 
 </class>
 </hibernate-mapping>

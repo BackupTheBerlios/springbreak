@@ -28,9 +28,9 @@ import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.4 2006/03/06 23:20:19 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.5 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Fulltext index service
  * 
@@ -191,6 +191,7 @@ public class LuceneIndexingImpl implements IndexingService {
      * @param widList
      * @return
      */
+    
     public Vector search(String search, int numberOfResults, List widList) {
     	//log.debug("#### searchQuery=" + search);
     	//log.debug("### numberOfResults " + numberOfResults);

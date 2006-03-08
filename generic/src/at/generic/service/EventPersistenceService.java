@@ -17,9 +17,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceService.java,v 1.2 2006/03/06 23:20:53 szabolcs Exp $
+ * @version $Id: EventPersistenceService.java,v 1.3 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for event persitence operations
  */
@@ -100,6 +100,21 @@ public interface EventPersistenceService {
 	 * @return number if identified items
 	 */
 	public List getIdentifiedEventTypes();
+	
+	 // ========== eventtye  ===========	
+	
+	/**
+	 * @param id eventtypes id
+	 * @return Eventtype eventtype
+	 */
+	public Eventtype getEventtype(Integer id);
+	
+	/**
+	 * Retrieves eventtype its name
+	 * 
+	 * @param eventname
+	 */
+	public Eventtype getEventtypeByName(String eventname);
 	
     // ========== correlated event stuff  ===========	
 		

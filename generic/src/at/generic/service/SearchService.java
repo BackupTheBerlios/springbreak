@@ -4,9 +4,9 @@ import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.3 2006/03/06 23:20:53 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.4 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Search service
  * 
@@ -18,11 +18,28 @@ public interface SearchService {
 	 * 
 	 * @param searchString
 	 * @param page
+	 * @param exactMatch
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page);
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch);
 	
+	/**
+	 * Search index for matching events
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @return
+	 */
+	public CorrResultModel searchForEvents(String searchString, int page);
 	
+	/**
+	 * Search for Correlated context of an event
+	 * 
+	 * @param eventid
+	 * @param page
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchCorrContext(Long eventid, int page);
 	
 	
 	// ============== Getters and Setters =====================

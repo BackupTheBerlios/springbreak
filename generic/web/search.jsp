@@ -46,7 +46,14 @@
 						<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
 							<tr>
 								<td>
-									<b><c:out value="${searchResult.numberOfFoundCorrEvents}"/> Results from Event Space</b>
+									<c:choose>
+									<c:when test="${empty param.showContextForEvent}">
+										<b><c:out value="${searchResult.numberOfFoundCorrEvents}"/> Results from Event Space</b>
+									</c:when>
+									<c:otherwise>
+										<b><c:out value="${searchResult.numberOfFoundCorrEvents}"/> Context Results from Event Space for the Event <c:out value="${param.showContextForEvent}"/> </b>
+									</c:otherwise>
+									</c:choose>
 								</td>
 								<td align="right">
 									<c:if test="${searchResult.currentPage >= searchResult.maxPageSize}">
@@ -75,8 +82,6 @@
 										</c:otherwise>
 									</c:choose>
 								</td>
-								foundCorrSet.eventRankSize:<c:out value="${foundCorrSet.eventRankSize}"/>
-								<c:if test="${ !(searchResult.exactSearch eq 'true') or  (foundCorrSet.eventRankSize > 0)}">
 									<td  valign="top">
 										Correlated Events by <c:out value="${foundCorrSet.correlationSetDef}"/><br/>
 										<hr/>
@@ -116,7 +121,6 @@
 											</c:choose>
 										</c:forEach>		
 									</td>
-								</c:if>
 							</tr>
 						</table>
 					</td>

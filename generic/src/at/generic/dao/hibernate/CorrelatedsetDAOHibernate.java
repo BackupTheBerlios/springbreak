@@ -13,9 +13,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedsetDAOHibernate.java,v 1.4 2006/03/03 15:24:34 szabolcs Exp $
+ * @version $Id: CorrelatedsetDAOHibernate.java,v 1.5 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -81,5 +81,15 @@ public class CorrelatedsetDAOHibernate extends HibernateDaoSupport implements Co
 	 */
 	public List getCorrelatedsetByGuid (String guid) {
 		return getHibernateTemplate().find("from Correlationset where correlationsetguid = '" + guid.trim() + "' order by correlationsetguid");
+	}
+	
+	/**
+	 * Returns a list with correlatedsets according to the given eventid
+	 * 
+	 * @param guid
+	 * @return List with unique correlationsetguids
+	 */
+	public List getCorrelatedsetByEvent (Long eventid) {
+		return getHibernateTemplate().find("select distinct a.correlationSetGuid  from Correlationset a where a.eventid = " + eventid + " order by a.correlationSetGuid");
 	}
 }

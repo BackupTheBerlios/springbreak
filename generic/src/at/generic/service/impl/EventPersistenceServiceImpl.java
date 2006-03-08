@@ -27,9 +27,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceServiceImpl.java,v 1.2 2006/03/06 23:20:53 szabolcs Exp $
+ * @version $Id: EventPersistenceServiceImpl.java,v 1.3 2006/03/08 16:48:35 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for event persitence operations
  */
@@ -211,6 +211,25 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 		}
 		
 		return identifiedTypes; 
+	}
+	
+	// ========== eventtye  ===========	
+	
+	/**
+	 * @param id eventtypes id
+	 * @return Eventtype eventtype
+	 */
+	public Eventtype getEventtype(Integer id) {
+		return eventtypeDAO.getEventtype(id);
+	}
+	
+	/**
+	 * Retrieves eventtype its name
+	 * 
+	 * @param eventname
+	 */
+	public Eventtype getEventtypeByName(String eventname) {
+		return eventtypeDAO.getEventtypeByName(eventname);
 	}
 
 // ========== eventattribute stuff  =========== 
