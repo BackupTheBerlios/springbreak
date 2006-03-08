@@ -62,6 +62,7 @@ A:hover
     text-weight: bold;
 }
 </style>
+<script language="javascript" type='text/javascript' src='jscripts/showHideVisibility.js'></script>
 </head>
 <body>
 <center>
@@ -77,7 +78,7 @@ A:hover
 			<table border="0">
 				<tr>
 					<td>
-						<a href="browseEvents.html">Browse Events</a> | <a href="admin.html">Admin</a> | ... | ...
+						<center><a href="browseEvents.html">Browse Events</a> | <a href="admin.html">Admin</a> | <a href="admin.html">Help</a></center>
 					</td>
 				</tr>
 				<tr>
@@ -85,10 +86,37 @@ A:hover
 						<form action="search.html" method="post">
 							<center><input type="text" name="searchstring" size="55" value="<c:out value="${searchResult.searchString}"/>"/><br/>
 							<input type="hidden" name="newSearch" value="true"/>
-							<input type="submit" value="Event-Search"/> </center>
+							<input type="submit" value="Event-Search"/> <br/>
+							<c:choose>
+								<c:when test="${empty param.ranksearchtype or param.ranksearchtype eq 'ranktwosearch'}">
+									Search:<input type="radio" name="ranksearchtype" value="ranktwosearch" onclick="javascript:showdiv('exactSearchDiv')" checked>over correlation sets
+							  	 	<input type="radio" name="ranksearchtype" value="rankonesearch" onclick="javascript:hidediv('exactSearchDiv')">only events
+							  	 	<c:choose>
+										<c:when test="${searchResult.exactSearch eq 'true'}">
+								  	 		<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true" checked>exact match</div>
+								  	 	</c:when>
+								  	 	<c:otherwise>
+									  	 	<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true">exact match</div>
+								  	 	</c:otherwise>
+									</c:choose>
+								</c:when>
+       							<c:otherwise>
+									Search:<input type="radio" name="ranksearchtype" value="ranktwosearch" onclick="javascript:showdiv('exactSearchDiv')">over correlation sets
+									<input type="radio" name="ranksearchtype" value="rankonesearch" onclick="javascript:hidediv('exactSearchDiv')" checked>only events
+							  	 	<c:choose>
+										<c:when test="${searchResult.exactSearch eq 'true'}">
+								  	 		<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true" checked>exact match</div>
+								  	 	</c:when>
+								  	 	<c:otherwise>
+									  	 	<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true">exact match</div>
+								  	 	</c:otherwise>
+									</c:choose>
+							   	</c:otherwise>
+   							 </c:choose> 
+							</center>
 						</form>
 					</td>
-				</tr>		
+				</tr>	
 			</table>
 		</td>
 	</tr>

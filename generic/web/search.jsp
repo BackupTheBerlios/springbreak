@@ -1,34 +1,38 @@
 <head>
 <title>Event Google</title>
 
-<script language=javascript type='text/javascript' src='jscripts/wordHighlighter.js'>
+<script language="javascript" type='text/javascript' src='jscripts/wordHighlighter.js'>
 
 </script> 
 </head>
 <%@ include file="/taglibs.jsp"%>
+<c:if test="${not empty searchResult.termList}">
 <body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');">
+</c:if>
+<c:if test="${empty searchResult.termList}">
+<body>
+</c:if>
 <%@ include file="/head.jsp"%>
 <center><h2>> Search Results <</h2></center>
 <br/>
 <!-- Navigation Bar -->
 <center>
 <c:if test="${searchResult.numberOfFoundCorrEvents >= searchResult.maxSearchResults}">
-
 	<c:if test="${searchResult.prevPage > 0}">
-		<a href="search.html?browserPage=1&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
-	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeft.gif" border="0"></a>
+		<a href="search.html?browserPage=1&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
+	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowLeft.gif" border="0"></a>
 	</c:if>
 	<c:forEach begin="1" end="${searchResult.maxPageSize}" var="runner">
 		<c:if test="${runner != searchResult.currentPage}">
-			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><c:out value="${runner}"/></a>&nbsp;
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><c:out value="${runner}"/></a>&nbsp;
 		</c:if>
 		<c:if test="${runner == searchResult.currentPage}">
-			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
 		</c:if>
 	</c:forEach> 
 	<c:if test="${searchResult.currentPage < searchResult.maxPageSize}">
-		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRight.gif" border="0"></a>
-		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
+		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowRight.gif" border="0"></a>
+		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
 	</c:if>
 </c:if>
 </center>
@@ -56,7 +60,7 @@
 						</table>
 					</td>
 				</tr>
-				<c:forEach items="${searchResult.foundCorrSet}" var="foundCorrSet" >
+				<c:forEach items="${searchResult.foundCorrSet}" var="foundCorrSet" varStatus="foundCorrSetStatus" >
 				<tr>
 					<td bgcolor="#ECECEC">
 						<table border="0">
@@ -71,45 +75,48 @@
 										</c:otherwise>
 									</c:choose>
 								</td>
-								<td  valign="top">
-									Correlated Events by <c:out value="${foundCorrSet.correlationSetDef}"/><br/>
-									<hr/>
-									<c:out value="${eventAgg.eventTypeName}"/>
-									<c:forEach items="${foundCorrSet.eventAgg}" var="eventAgg" varStatus="eventAggStatus">  
-										<c:choose>
-											<c:when test="${searchResult.showCorrEventId[foundCorrSet.guid] eq foundCorrSet.guid}">
-												<c:if test="${searchResult.showEventId eq eventAgg.event.eventid}">
-													<c:set var="xmlcontent" value="${eventAgg.event.xmlcontent}"/>
-													<c:set var="attributeListForOutput" value="${eventAgg.eventAttributes}"/>
-												</c:if> 
-												<a href="search.html?showEventId=<c:out value="${eventAgg.event.eventid}"/>&showEventViewType=styled">
-												<b><c:out value="${eventAgg.eventTypeName}"/></b></a>
-												(
-												<c:forEach items="${eventAgg.eventAttributes}" var="attrib" varStatus="attribStatus">
-													<c:out value="${attrib.attributename}"/>:<c:out value="${attrib.value}"/><c:if test="${attribStatus.last != true}">,</c:if>
-												</c:forEach>	
-												)
-											</c:when>
-											<c:otherwise>
-												<c:forEach items="${foundCorrSet.eventRank}" var="eventRank">
-													<c:if test="${eventRank eq eventAgg.event.eventid}">
-														<c:if test="${searchResult.showEventId eq eventAgg.event.eventid}">
-															<c:set var="xmlcontent" value="${eventAgg.event.xmlcontent}"/>
-															<c:set var="attributeListForOutput" value="${eventAgg.eventAttributes}"/>
-														</c:if> 
-														<a href="search.html?showEventId=<c:out value="${eventAgg.event.eventid}"/>&showEventViewType=styled">
-														<b><c:out value="${eventAgg.eventTypeName}"/></b></a>
-														(
-														<c:forEach items="${eventAgg.eventAttributes}" var="attrib" varStatus="attribStatus">
-															<c:out value="${attrib.attributename}"/>:<c:out value="${attrib.value}"/><c:if test="${attribStatus.last != true}">,</c:if>
-														</c:forEach>	
-														)
-													</c:if>
-												</c:forEach>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach>		
-								</td>
+								foundCorrSet.eventRankSize:<c:out value="${foundCorrSet.eventRankSize}"/>
+								<c:if test="${ !(searchResult.exactSearch eq 'true') or  (foundCorrSet.eventRankSize > 0)}">
+									<td  valign="top">
+										Correlated Events by <c:out value="${foundCorrSet.correlationSetDef}"/><br/>
+										<hr/>
+										<c:out value="${eventAgg.eventTypeName}"/>
+										<c:forEach items="${foundCorrSet.eventAgg}" var="eventAgg" varStatus="eventAggStatus">  
+											<c:choose>
+												<c:when test="${searchResult.showCorrEventId[foundCorrSet.guid] eq foundCorrSet.guid}">
+													<c:if test="${searchResult.showEventId eq eventAgg.event.eventid}">
+														<c:set var="xmlcontent" value="${eventAgg.event.xmlcontent}"/>
+														<c:set var="attributeListForOutput" value="${eventAgg.eventAttributes}"/>
+													</c:if> 
+													<a href="search.html?showEventId=<c:out value="${eventAgg.event.eventid}"/>&showEventViewType=styled">
+													<b><c:out value="${eventAgg.eventTypeName}"/></b></a>
+													(
+													<c:forEach items="${eventAgg.eventAttributes}" var="attrib" varStatus="attribStatus">
+														<c:out value="${attrib.attributename}"/>:<c:out value="${attrib.value}"/><c:if test="${attribStatus.last != true}">,</c:if>
+													</c:forEach>	
+													)
+												</c:when>
+												<c:otherwise>
+													<c:forEach items="${foundCorrSet.eventRank}" var="eventRank">
+														<c:if test="${eventRank eq eventAgg.event.eventid}">
+															<c:if test="${searchResult.showEventId eq eventAgg.event.eventid}">
+																<c:set var="xmlcontent" value="${eventAgg.event.xmlcontent}"/>
+																<c:set var="attributeListForOutput" value="${eventAgg.eventAttributes}"/>
+															</c:if> 
+															<a href="search.html?showEventId=<c:out value="${eventAgg.event.eventid}"/>&showEventViewType=styled">
+															<b><c:out value="${eventAgg.eventTypeName}"/></b></a>
+															(
+															<c:forEach items="${eventAgg.eventAttributes}" var="attrib" varStatus="attribStatus">
+																<c:out value="${attrib.attributename}"/>:<c:out value="${attrib.value}"/><c:if test="${attribStatus.last != true}">,</c:if>
+															</c:forEach>	
+															)
+														</c:if>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>		
+									</td>
+								</c:if>
 							</tr>
 						</table>
 					</td>
@@ -162,20 +169,20 @@
 <center>
 <c:if test="${searchResult.numberOfFoundCorrEvents >= searchResult.maxSearchResults}">
 	<c:if test="${searchResult.prevPage > 0}">
-		<a href="search.html?browserPage=1&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
-	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowLeft.gif" border="0"></a>
+		<a href="search.html?browserPage=1&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowLeftStop.gif" border="0"></a>&nbsp;
+	 	<a href="search.html?browserPage=<c:out value="${searchResult.prevPage}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowLeft.gif" border="0"></a>
 	</c:if>
 	<c:forEach begin="1" end="${searchResult.maxPageSize}" var="runner">
 		<c:if test="${runner != searchResult.currentPage}">
-			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><c:out value="${runner}"/></a>&nbsp;
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><c:out value="${runner}"/></a>&nbsp;
 		</c:if>
 		<c:if test="${runner == searchResult.currentPage}">
-			<a href="search.html?browserPage=<c:out value="${runner}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
+			<a href="search.html?browserPage=<c:out value="${runner}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><font color="red"><b><c:out value="${runner}"/></b></font></a>&nbsp;
 		</c:if>
 	</c:forEach> 
 	<c:if test="${searchResult.currentPage < searchResult.maxPageSize}">
-		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRight.gif" border="0"></a>
-		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&searchstring=<c:out value="${searchResult.searchString}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
+		&nbsp;&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.nextPage}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowRight.gif" border="0"></a>
+		&nbsp;<a href="search.html?browserPage=<c:out value="${searchResult.maxPageSize}"/>&exactSearch=<c:out value="${searchResult.exactSearch}"/>"><img src="images/arrowRightStop.gif" border="0"></a>
 	</c:if>
 </c:if>
 </center>
