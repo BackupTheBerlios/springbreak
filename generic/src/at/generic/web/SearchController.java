@@ -20,9 +20,9 @@ import at.generic.service.SearchService;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.6 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.7 2006/03/14 10:38:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Controller for the Event Search
  * 
@@ -37,18 +37,38 @@ public class SearchController implements Controller {
 		HttpSession session = request.getSession(true);
 		
 		// if no searchstring has been entered
-		if ((request.getParameter("searchstring") == null || request.getParameter("searchstring").trim().equals(""))  && request.getParameter("newSearch") != null) 
+		if ((request.getParameter("searchstring") == null || request.getParameter("searchstring").trim().equals(""))  
+				&& request.getParameter("newSearch") != null) 
 			return new ModelAndView("index"); 
 		
-		// if a new search has been initiated then create search parameters
+		// if a new search has been initiated or a browser page has been requested then create search parameters
 		if (request.getParameter("newSearch") != null || request.getParameter("browserPage") != null || request.getParameter("showContextForId") != null) {
 			String searchStr = request.getParameter("searchstring");
 			int page = 1;
+			boolean showRefineQuery = false;
+			
+			// retrieve display infos only if NO new search has been activated
+			CorrResultModel corrResultModelTmp = (CorrResultModel)session.getAttribute("resultModel");
+			if (corrResultModelTmp != null && request.getParameter("newSearch") != null )
+				showRefineQuery = corrResultModelTmp.isShowRefineQuery();
+			
+			// if user is browsing e.g. selecting a new page you have to retrieve the current page status from the last result model 
 			if (request.getParameter("browserPage") != null ) {
 				log.debug("### start Rank");
 				page = Integer.parseInt(request.getParameter("browserPage"));
-				CorrResultModel corrResultModelTmp = (CorrResultModel)session.getAttribute("resultModel");
 				searchStr = corrResultModelTmp.getSearchString();
+			}
+			
+			// check if refinement filter has been applied and update it
+			HashMap foundEventtypes = new HashMap();
+			if (corrResultModelTmp != null)
+				foundEventtypes = corrResultModelTmp.getFoundEventtypes();
+			
+			if (request.getParameter("changeEventFilter") != null 
+					&& !request.getParameter("changeEventFilter").equals("")
+					&& request.getParameter("changeEventFilterTo") != null 
+					&& !request.getParameter("changeEventFilterTo").equals("")) {
+				foundEventtypes.put(request.getParameter("changeEventFilter"), new Boolean(request.getParameter("changeEventFilterTo")));
 			}
 			
 			// check search rank type!
@@ -59,7 +79,7 @@ public class SearchController implements Controller {
 				corrResultModel = searchService.searchCorrContext(new Long(request.getParameter("showContextForId")), page);
 				log.debug("### context search stop");
 			} else if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) {
-				// rank 2 search
+				// RANK 2 search
 				log.debug("### Rank 2 Search");
 				if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true")) {
 					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true);
@@ -69,15 +89,23 @@ public class SearchController implements Controller {
 					log.debug("### exactMatch == false");
 				}
 			} else {
-				// rank 1 search
+				// RANK 1 search
 				log.debug("### Rank 1 Search");
-				corrResultModel = searchService.searchForEvents(searchStr, page);
+				// check if a refinement has been created
+				if (foundEventtypes.size() > 0) {
+					corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes);
+					corrResultModel.setFoundEventtypes(foundEventtypes);
+				} else {
+					corrResultModel = searchService.searchForEvents(searchStr, page);
+				}
+					
 				log.debug("### Rank 1 Search end");
 			}
 			
 			corrResultModel.setCurrentPage(page);
 			corrResultModel.setMaxPageSize(corrResultModel.getNumberOfFoundCorrEvents()/searchService.getMaxSearchResults()+1);
 			corrResultModel.setMaxSearchResults(searchService.getMaxSearchResults());
+			corrResultModel.setShowRefineQuery(showRefineQuery);
 			
 			// check if exact match
 			if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true"))
@@ -96,6 +124,8 @@ public class SearchController implements Controller {
 			// if search button has NOT been clicked then reuse the data
 			//SearchResultCommand searchResultCmd = (SearchResultCommand)session.getAttribute("searchResultCmd");
 			CorrResultModel corrResultModel = (CorrResultModel)session.getAttribute("resultModel");
+			
+			// showevent details
 			if (request.getParameter("showEventId") != null && !request.getParameter("showEventId").equals("")) {
 				log.debug("### if 1");
 				corrResultModel.setShowEventId(request.getParameter("showEventId"));
@@ -105,6 +135,7 @@ public class SearchController implements Controller {
 				corrResultModel.setShowEventId(null);
 			}
 			
+			// open correlation 
 			if (request.getParameter("showCorrEventId") != null && !request.getParameter("showCorrEventId").equals("")) {
 				HashMap corrEventIdMap = corrResultModel.getShowCorrEventId();
 				String corrEventId = (String)corrEventIdMap.get(request.getParameter("showCorrEventId"));
@@ -117,6 +148,15 @@ public class SearchController implements Controller {
 				}
 				
 				corrResultModel.setShowCorrEventId(corrEventIdMap);
+			}
+			
+			// open-close query refinement
+			if (request.getParameter("showRefineQuery") != null && request.getParameter("showRefineQuery").equals("false")) {
+				log.debug("### showrefinement=false");
+				corrResultModel.setShowRefineQuery(false);
+			} else if (request.getParameter("showRefineQuery") != null && request.getParameter("showRefineQuery").equals("true")) {
+				log.debug("### showrefinement=true");
+				corrResultModel.setShowRefineQuery(true);
 			}
 			
 			session.setAttribute("resultModel", corrResultModel);
