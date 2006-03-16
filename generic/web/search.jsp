@@ -39,9 +39,49 @@
 <!-- Navigation Bar -->
 <table border="0" width="100%">
 	<tr>
+		<!-- Filter Bar--> 
+		<td valign="top" width="*">
+			<c:if test="${searchResult.showRefineQuery == true}">
+				<table border="0" width="250px">
+					<tr>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tr>
+											<td><b>Refine Query...</b></td>
+												<td align="right"><a href="search.html?showRefineQuery=false"><img src="images/corrCloseButton.jpg" border="0"/></a></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ECECEC">
+							<c:forEach items="${searchResult.foundEventtypes}" var="eventTypes" >
+								<c:if test="${eventTypes.value == false}">
+									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=true"><img src="images/corrMinusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+								</c:if>
+								<c:if test="${eventTypes.value == true}">
+									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=false"><img src="images/corrPlusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+								</c:if>
+								<br/>
+							</c:forEach>
+						</td>
+					</tr>
+				</table>
+			</c:if>
+		</td>
+		<!-- Filter Bar--> 
 		<td valign="top">
 			<table border="0" width="100%">
 				<tr>
+					<c:if test="${searchResult.showRefineQuery == false and searchResult.showRefineQueryOption == true}">
+						<a href="search.html?showRefineQuery=true"><font size="8px">more options...</font></a>
+					</c:if>
 					<td bgcolor="#E5ECF9">
 						<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
 							<tr>

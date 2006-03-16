@@ -1,5 +1,8 @@
 package at.generic.etl.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +16,9 @@ import org.dom4j.Node;
 
 import at.generic.etl.SourceEventEtl;
 import at.generic.eventmodel.Dbinfo;
+import at.generic.eventmodel.Event;
 import at.generic.eventmodel.Eventattribute;
-import at.generic.eventmodel.Wordindex;
+import at.generic.eventmodel.Rwtime;
 import at.generic.model.Correlatedevent;
 import at.generic.model.Correlationset;
 import at.generic.service.AdminPersistenceService;
@@ -25,9 +29,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.7 2006/03/06 23:20:19 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.8 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -119,23 +123,21 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 					guid = corrSet.getCorrelationSetGuid();
 				
 				if (!guid.equals(corrSet.getCorrelationSetGuid())) {
-					indexingServiceCorrEvents.addDocument(guid,words,"Corr");
+					indexingServiceCorrEvents.addDocument(guid,words,corrSet.getCorrelationSetDef(),new String());
 					guid = corrSet.getCorrelationSetGuid();
 					words = corrSet.getEventType() + " ";
+					words = words + corrSet.getCorrelationSetDef();
 				} 
 				
 				// retrieve event 
 				List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
 				
+				//  iterate over attributes
 				Iterator iattrib = attribsForEvent.iterator();
-				
 				while (iattrib.hasNext()) {
 					Eventattribute eventAttrib = (Eventattribute) iattrib.next();
 					words = words + " " + eventAttrib.getValue();
 				}
-				
-				
-				// iterate over event attributes
 			}
 					
 			
@@ -275,7 +277,36 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
         }
 		
 		// add to index
-		indexingServiceEvents.addDocument(correlatedEvent.getId().toString(),indexText,"Event");
+		Event event = eventPersistenceService.getEvent(new Long(correlatedEvent.getId().longValue()));
+		
+		Rwtime rwtime = eventPersistenceService.getRwtimeDAO().getRwtime(event.getRwtimeid());
+		String date = new String();
+		date = rwtime.getRwyear().toString();
+		
+		if (rwtime.getRwmonth().intValue() < 10)
+			date = date + "0" + rwtime.getRwmonth();
+		else
+			date = date + rwtime.getRwmonth();
+		
+		if (rwtime.getRwday().intValue() < 10)
+			date = date + "0" + rwtime.getRwday();
+		else
+			date = date + rwtime.getRwday();
+		
+		/*
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+		Date date = new Date();
+		try {
+			date = df.parse(rwtime.getRwyear().toString() + rwtime.getRwmonth().toString() + rwtime.getRwday().toString());
+		} catch (ParseException e) {
+			log.error("Something went wrong parsing the rwtime for indexing ", e);
+		}*/
+		indexingServiceEvents.addDocument(
+				correlatedEvent.getId().toString(),
+				indexText,
+				eventPersistenceService.getEventtype(event.getEventtypeid()).getEventname(),
+				date
+			);
 		
 	}
 	

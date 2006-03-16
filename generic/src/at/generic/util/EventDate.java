@@ -9,9 +9,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author szabolcs
- * @version $Id: EventDate.java,v 1.1 2006/01/31 20:15:15 szabolcs Exp $
+ * @version $Id: EventDate.java,v 1.2 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Creates usefull Date representation of an event date string and provides some services
  * Original Format looks like this: 2005-12-28T12:06:07.0305000+01:00
@@ -88,6 +88,27 @@ public class EventDate {
 	       new java.sql.Date( cal.getTime().getTime() );
 		
 		return date;
+	}
+	
+	public static String getBoundFormatForLucene(int day, int month, int year) {
+		String sDay;
+		String sMonth;
+		String sYear;
+		
+		if (day < 10)
+			sDay = "0" + Integer.toString(day);
+		else 
+			sDay = Integer.toString(day);
+		
+		if (month < 10)
+			sMonth = "0" +Integer.toString(month);
+		else 
+			sMonth = Integer.toString(month);
+		
+		sYear = Integer.toString( year);
+		
+		return sYear + sMonth + sDay; 
+		
 	}
 
 	/**

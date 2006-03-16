@@ -6,7 +6,7 @@
 </script> 
 </head>
 <%@ include file="/taglibs.jsp"%>
-<body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');">
+<!-- body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');" -->
 <%@ include file="/head.jsp"%>
 <center><h2>> Search Results <</h2></center>
 <br/>
@@ -34,9 +34,74 @@
 <!-- Navigation Bar -->
 <table border="0" width="100%">
 	<tr>
-		<td valign="top">
+		<!-- Filter Bar--> 
+		<td valign="top" width="*">
+			<c:if test="${searchResult.showRefineQuery == true}">
+				<table border="0" width="250px">
+					<tr>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tr>
+											<td><b>Refine Query...</b></td>
+												<td align="right"><a href="search.html?showRefineQuery=false&ranksearchtype=rankonesearch"><img src="images/corrCloseButton.jpg" border="0"/></a></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ECECEC">
+							<c:forEach items="${searchResult.foundEventtypes}" var="eventTypes" >
+								<c:if test="${eventTypes.value == false}">
+									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=true&ranksearchtype=rankonesearch"><img src="images/corrMinusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+								</c:if>
+								<c:if test="${eventTypes.value == true}">
+									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=false&ranksearchtype=rankonesearch"><img src="images/corrPlusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+								</c:if>
+								<br/>
+							</c:forEach>
+						</td>
+					</tr>
+				</table>
+				<table border="0" width="250px">
+					<tr>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<b>Date Range...</b></td>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ECECEC">	
+							<form action="search.html" method="get" >
+								<%@ include file="/dateselector.jsp"%>
+								<br/>
+								<input type="hidden" name="browserPage" value="1">
+								<input type="hidden" name="dateRangeChanged" value="true">
+								<input type="hidden" name="ranksearchtype" value="rankonesearch">
+								<input type="submit" value="Go">
+							</form>
+						</td>
+					</tr>
+				</table>
+			</c:if>
+		</td>
+		<!-- Filter Bar--> 
+		<td valign="top" width="100%">
 			<table border="0" width="100%">
 				<tr>
+					<c:if test="${searchResult.showRefineQuery == false}">
+						<a href="search.html?showRefineQuery=true&ranksearchtype=rankonesearch"><font size="8px">more options...</font></a>
+					</c:if>
 					<td bgcolor="#E5ECF9">
 						<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
 							<tr>
@@ -87,24 +152,32 @@
 		</td>
 		<td valign="top">
 			<c:if test="${not empty searchResult.showEventId}">
-				<%@ include file="/upperBorder.jsp"%>
-				<table border="0" cellspacing="0" cellpadding="3" width="100%" >
+				<c:if test="${searchResult.showRefineQuery == false}">
+					<br/>
+				</c:if>
+				<table border="0" width="100%">
 					<tr>
-						<td>
-							<table width="100%" cellspacing="0" cellpadding="0">
-							<tr>
-								<td align="left">
-									<a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=raw&ranksearchtype=rankonesearch">Raw</a> | <a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=styled&ranksearchtype=rankonesearch">Styled</a>
-								</td>
-								<td align="right">
-									<a href="search.html?closeShowEventId=true&ranksearchtype=rankonesearch"><img src="images/corrCloseButton.jpg" border="0"/></a>
-								</td>
-							</tr>
-						</table>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table width="100%" cellspacing="0" cellpadding="0">
+											<tr>
+												<td align="left">
+													<a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=raw&ranksearchtype=rankonesearch">Raw</a> | <a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=styled&ranksearchtype=rankonesearch">Styled</a>
+												</td>
+												<td align="right">
+													<a href="search.html?closeShowEventId=true&ranksearchtype=rankonesearch"><img src="images/corrCloseButton.jpg" border="0"/></a>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td bgcolor="#ECECEC">	
 							<c:if test="${searchResult.showEventViewType eq 'raw'}">
 								<textarea name="user_eingabe" readonly  cols="70" rows="30" ><c:out value="${xmlcontent}" escapeXml="true"/></textarea>
 							</c:if>
@@ -118,10 +191,9 @@
 									</c:forEach>
 								</table>
 							</c:if>
-				    	</td>
-			    	</tr>
-		    	</table>
-				<%@ include file="/lowerBorder.jsp"%>
+						</td>
+					</tr>
+				</table>
 			</c:if>
 		</td>
 	</tr>

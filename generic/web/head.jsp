@@ -91,19 +91,10 @@ A:hover
 								<c:when test="${(empty param.ranksearchtype or param.ranksearchtype eq 'ranktwosearch') and empty param.showContextForId}">
 									Search:<input type="radio" name="ranksearchtype" value="ranktwosearch" onclick="javascript:showdiv('exactSearchDiv')" checked>over correlation sets
 							  	 	<input type="radio" name="ranksearchtype" value="rankonesearch" onclick="javascript:hidediv('exactSearchDiv')">only events
-							  	 	<c:choose>
-										<c:when test="${searchResult.exactSearch eq 'true'}">
-								  	 		<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true" checked>exact match</div>
-								  	 	</c:when>
-								  	 	<c:otherwise>
-									  	 	<div id="exactSearchDiv"><br/><input type="checkbox" name="exactSearch" value="true">exact match</div>
-								  	 	</c:otherwise>
-									</c:choose>
 								</c:when>
        							<c:otherwise>
 									Search:<input type="radio" name="ranksearchtype" value="ranktwosearch" onclick="javascript:showdiv('exactSearchDiv')">over correlation sets
 									<input type="radio" name="ranksearchtype" value="rankonesearch" onclick="javascript:hidediv('exactSearchDiv')" checked>only events
-								 	<div id="exactSearchDiv"  style="display:none"><br/><input type="checkbox" name="exactSearch" value="true">exact match</div>
 							   	</c:otherwise>
    							 </c:choose> 
 							</center>

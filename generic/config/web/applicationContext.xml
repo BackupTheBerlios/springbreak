@@ -139,11 +139,23 @@
     	<property name="indexLocation">
     		<value>e:/luceneindex/events</value>
     	</property> 
+    	<property name="indexLocationType">
+    		<value>event</value>
+    	</property>
+    	<property name="maxNumberOfLookAhead">
+    		<value>300</value>
+    	</property>
     </bean>    
     
     <bean id="indexingServiceCorrEvents" class="at.generic.search.impl.LuceneIndexingImpl" init-method="init"> 
     	<property name="indexLocation">
     		<value>e:/luceneindex/correvents</value>
+    	</property> 
+    	<property name="indexLocationType">
+    		<value>correvent</value>
+    	</property> 
+    	<property name="maxNumberOfLookAhead">
+    		<value>300</value>
     	</property> 
     </bean>    
     

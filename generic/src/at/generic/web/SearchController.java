@@ -14,15 +14,16 @@ import org.springframework.web.servlet.mvc.Controller;
 import at.generic.search.SearchForAttribs;
 import at.generic.search.resultmodel.CorrResultModel;
 import at.generic.service.SearchService;
+import at.generic.util.EventDate;
 
 
 
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.7 2006/03/14 10:38:02 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.8 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * 
  * Controller for the Event Search
  * 
@@ -42,50 +43,111 @@ public class SearchController implements Controller {
 			return new ModelAndView("index"); 
 		
 		// if a new search has been initiated or a browser page has been requested then create search parameters
-		if (request.getParameter("newSearch") != null || request.getParameter("browserPage") != null || request.getParameter("showContextForId") != null) {
+		if (request.getParameter("newSearch") != null 
+				|| request.getParameter("browserPage") != null 
+				|| request.getParameter("showContextForId") != null) {
 			String searchStr = request.getParameter("searchstring");
 			int page = 1;
 			boolean showRefineQuery = false;
+			boolean dateRangeActive = false;
+			/*String lowerBoundDay = new String();
+			String lowerBoundMonth = new String();
+			String lowerBoundYear = new String();
+			String upperBoundDay = new String();
+			String upperBoundMonth = new String();
+			String upperBoundYear = new String();*/
+			String lowerRange = new String();
+			String upperRange = new String();
+			
+			int lowerBoundDay = 0;
+			int lowerBoundMonth = 0;
+			int lowerBoundYear = 0;
+			int upperBoundDay = 0;
+			int upperBoundMonth = 0; 
+			int upperBoundYear = 0;
+			
 			
 			// retrieve display infos only if NO new search has been activated
 			CorrResultModel corrResultModelTmp = (CorrResultModel)session.getAttribute("resultModel");
-			if (corrResultModelTmp != null && request.getParameter("newSearch") != null )
+			if (corrResultModelTmp != null && request.getParameter("newSearch") == null ) {
 				showRefineQuery = corrResultModelTmp.isShowRefineQuery();
+			}
 			
-			// if user is browsing e.g. selecting a new page you have to retrieve the current page status from the last result model 
+			// if user is browsing e.g. selecting a new page you have to retrieve the current page status from the last result model
+			HashMap foundEventtypes = new HashMap();
 			if (request.getParameter("browserPage") != null ) {
 				log.debug("### start Rank");
 				page = Integer.parseInt(request.getParameter("browserPage"));
 				searchStr = corrResultModelTmp.getSearchString();
-			}
-			
-			// check if refinement filter has been applied and update it
-			HashMap foundEventtypes = new HashMap();
-			if (corrResultModelTmp != null)
-				foundEventtypes = corrResultModelTmp.getFoundEventtypes();
-			
-			if (request.getParameter("changeEventFilter") != null 
-					&& !request.getParameter("changeEventFilter").equals("")
-					&& request.getParameter("changeEventFilterTo") != null 
-					&& !request.getParameter("changeEventFilterTo").equals("")) {
-				foundEventtypes.put(request.getParameter("changeEventFilter"), new Boolean(request.getParameter("changeEventFilterTo")));
+				
+				// check if refinement filter has been applied and update it
+				if (corrResultModelTmp != null) {
+					foundEventtypes = corrResultModelTmp.getFoundEventtypes();
+					
+					if (corrResultModelTmp.isDateRangeActive() == true) {
+						lowerBoundDay = corrResultModelTmp.getLowerBoundDay();
+						lowerBoundMonth = corrResultModelTmp.getLowerBoundMonth();
+						lowerBoundYear = corrResultModelTmp.getLowerBoundYear();
+						//lowerRange = lowerBoundYear + lowerBoundMonth + lowerBoundDay;
+						lowerRange = EventDate.getBoundFormatForLucene(lowerBoundDay,lowerBoundMonth,lowerBoundYear);
+						upperBoundDay = corrResultModelTmp.getUpperBoundDay();
+						upperBoundMonth = corrResultModelTmp.getUpperBoundMonth();
+						upperBoundYear = corrResultModelTmp.getUpperBoundYear();
+						//upperRange = upperBoundYear + upperBoundMonth + upperBoundDay;
+						upperRange =  EventDate.getBoundFormatForLucene(upperBoundDay,upperBoundMonth,upperBoundYear);
+						dateRangeActive = true;
+					}
+					
+				}
+				
+				if (request.getParameter("changeEventFilter") != null 
+						&& !request.getParameter("changeEventFilter").equals("")
+						&& request.getParameter("changeEventFilterTo") != null 
+						&& !request.getParameter("changeEventFilterTo").equals("")) {
+					foundEventtypes.put(request.getParameter("changeEventFilter"), new Boolean(request.getParameter("changeEventFilterTo")));
+				}
+				
+				// check if dateRange filter has been applied and update it
+				if (request.getParameter("dateRangeChanged") != null 
+						&& request.getParameter("dateRangeChanged").equals("true")) {
+					lowerBoundDay = Integer.parseInt(request.getParameter("lowerBoundDay"));
+					lowerBoundMonth = Integer.parseInt(request.getParameter("lowerBoundMonth"));
+					lowerBoundYear = Integer.parseInt(request.getParameter("lowerBoundYear"));
+					//lowerRange = lowerBoundYear + lowerBoundMonth + lowerBoundDay;
+					lowerRange = EventDate.getBoundFormatForLucene(lowerBoundDay,lowerBoundMonth,lowerBoundYear);
+					upperBoundDay =  Integer.parseInt(request.getParameter("upperBoundDay"));
+					upperBoundMonth = Integer.parseInt(request.getParameter("upperBoundMonth"));
+					upperBoundYear = Integer.parseInt(request.getParameter("upperBoundYear"));
+					//upperRange = upperBoundYear + upperBoundMonth + upperBoundDay;
+					upperRange =  EventDate.getBoundFormatForLucene(upperBoundDay,upperBoundMonth,upperBoundYear);
+					dateRangeActive = true;
+				}
 			}
 			
 			// check search rank type!
 			CorrResultModel corrResultModel = new CorrResultModel();
 			if (request.getParameter("showContextForId") != null && !request.getParameter("showContextForId").trim().equals("")) {
-				// event context is chosen
+				// event CONTEXT is chosen
 				log.debug("### context search");
-				corrResultModel = searchService.searchCorrContext(new Long(request.getParameter("showContextForId")), page);
+				corrResultModel = searchService.searchCorrContext(new Long(request.getParameter("showContextForId")), page, foundEventtypes);
+				corrResultModel.setShowRefineQueryOption(false);
 				log.debug("### context search stop");
 			} else if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) {
 				// RANK 2 search
 				log.debug("### Rank 2 Search");
 				if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true")) {
+					// exact match
 					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true);
 					log.debug("### exactMatch == true");
 				} else {
-					corrResultModel = searchService.searchForCorrEvents(searchStr, page, false);
+					// normal rank 2 search
+					// check if a refinement has been created
+					if (foundEventtypes.size() > 0) {
+						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes);
+						corrResultModel.setFoundEventtypes(foundEventtypes);
+					} else {
+						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false);
+					}
 					log.debug("### exactMatch == false");
 				}
 			} else {
@@ -93,19 +155,28 @@ public class SearchController implements Controller {
 				log.debug("### Rank 1 Search");
 				// check if a refinement has been created
 				if (foundEventtypes.size() > 0) {
-					corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes);
+					corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes, lowerRange, upperRange);
 					corrResultModel.setFoundEventtypes(foundEventtypes);
 				} else {
-					corrResultModel = searchService.searchForEvents(searchStr, page);
+					corrResultModel = searchService.searchForEvents(searchStr, page, lowerRange, upperRange);
 				}
 					
 				log.debug("### Rank 1 Search end");
 			}
 			
+			log.debug("### setting result model");
 			corrResultModel.setCurrentPage(page);
 			corrResultModel.setMaxPageSize(corrResultModel.getNumberOfFoundCorrEvents()/searchService.getMaxSearchResults()+1);
 			corrResultModel.setMaxSearchResults(searchService.getMaxSearchResults());
 			corrResultModel.setShowRefineQuery(showRefineQuery);
+			
+			corrResultModel.setDateRangeActive(dateRangeActive);
+			corrResultModel.setLowerBoundDay(lowerBoundDay);
+			corrResultModel.setLowerBoundMonth(lowerBoundMonth);
+			corrResultModel.setLowerBoundYear(lowerBoundYear);
+			corrResultModel.setUpperBoundDay(upperBoundDay);
+			corrResultModel.setUpperBoundMonth(upperBoundMonth);
+			corrResultModel.setUpperBoundYear(upperBoundYear);
 			
 			// check if exact match
 			if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true"))
@@ -113,11 +184,14 @@ public class SearchController implements Controller {
 			else
 				corrResultModel.setExactSearch("false");
 			
+			log.debug("### create session for result model");
 			session.setAttribute("resultModel", corrResultModel);
 			// check search rank type!
 			if (request.getParameter("ranksearchtype") == null || !request.getParameter("ranksearchtype").equals("rankonesearch")) {
+				log.debug("### return search");
 				return new ModelAndView("search", "searchResult", corrResultModel);
 			} else {
+				log.debug("### return searchRankOne");
 				return new ModelAndView("searchRankOne", "searchResult", corrResultModel);
 			}
 		} else {

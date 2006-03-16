@@ -1,12 +1,14 @@
 package at.generic.service;
 
+import java.util.HashMap;
+
 import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.4 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.5 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Search service
  * 
@@ -24,22 +26,45 @@ public interface SearchService {
 	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch);
 	
 	/**
-	 * Search index for matching events
+	 * Searches Index of correlated events and expands the search queries by given criteria
 	 * 
 	 * @param searchString
 	 * @param page
-	 * @return
+	 * @param foundEventtypes HashMap
+	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page);
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes);
 	
 	/**
 	 * Search for Correlated context of an event
 	 * 
 	 * @param eventid
 	 * @param page
+	 * @param foundEventtypes
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchCorrContext(Long eventid, int page);
+	public CorrResultModel searchCorrContext(Long eventid, int page, HashMap foundEventtypes);
+	
+	/**
+	 * Searches Index of events and expands the search queries by given criteria
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @param foundEventtypes HashMap
+	 * @param lowerBound
+     * @param upperBound
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound);
+	
+	/**
+	 * Search index for matching events
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @return
+	 */
+	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound);
 	
 	
 	// ============== Getters and Setters =====================

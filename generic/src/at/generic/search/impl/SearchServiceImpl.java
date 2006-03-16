@@ -23,9 +23,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.6 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.7 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Search service
  * 
@@ -53,8 +53,7 @@ public class SearchServiceImpl implements SearchService {
 		
 		long start = new Date().getTime();
 		
-		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page);
-
+		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page, new String(), new String());		// **** Search
 
 		int numberOfResults = 0;
 		// go through the guid list provided by the search
@@ -62,7 +61,6 @@ public class SearchServiceImpl implements SearchService {
 		Iterator widIt = wids.iterator();
 		while (widIt.hasNext()) {
 			String guid = (String) widIt.next();
-			numberOfResults++;
 			
 			// get Correlatedsets with guid
 			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);	// ***** DB Access
@@ -105,7 +103,7 @@ public class SearchServiceImpl implements SearchService {
 				eventAggList.add(eventAgg);
 			}
 			
-			Vector eventRank = indexingServiceEvents.search(searchString,maxSearchResults, eventIdList);
+			Vector eventRank = indexingServiceEvents.search(searchString,maxSearchResults, eventIdList);		// **** Search
 			
 			FoundCorrSet foundCorrSet = new FoundCorrSet();
 			foundCorrSet.setGuid(guid);
@@ -116,14 +114,14 @@ public class SearchServiceImpl implements SearchService {
 			if (exactMatch == false) {
 				log.debug("### exactMatch == false");
 				foundCorrSetList.add(foundCorrSet);
-			} else if (eventRank.size() == 0){
-				log.debug("### numberOfResults--;");
-				numberOfResults--;
-			} else {
-				log.debug("### foundCorrSetList.add(foundCorrSet);");
+			} else if (exactMatch == true && eventRank.size() > 0){
 				foundCorrSetList.add(foundCorrSet);
+			} else {
+				indexingServiceCorrEvents.setNumberOfFoundCorrEvents(indexingServiceCorrEvents.getNumberOfFoundCorrEvents() - 1);
 			}
 		}
+		
+		numberOfResults = foundCorrSetList.size();
 		
 		long end = new Date().getTime();
 		long duration = end - start;
@@ -135,15 +133,7 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setNumberOfResults(numberOfResults);
 		corrModel.setSearchString(searchString);
 		corrModel.setNumberOfFoundCorrEvents(indexingServiceCorrEvents.getNumberOfFoundCorrEvents());
-		
-		String termAry = new String();
-		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(searchString).iterator();
-		while (itTerms.hasNext()) {
-			Term term = (Term)itTerms.next();
-			termAry = termAry + " " + term.text();
-		}
-		
-		corrModel.setTermList(termAry.trim());
+		corrModel.setFoundEventtypes(indexingServiceCorrEvents.getFoundEventtypes());
 		
 		return corrModel;
 	}
@@ -155,45 +145,61 @@ public class SearchServiceImpl implements SearchService {
 	 * @param page
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchCorrContext(Long eventid, int page) {
+	public CorrResultModel searchCorrContext(Long eventid, int page, HashMap foundEventtypes) {
 		int numberOfResults = 0;
 		long start = new Date().getTime();
 		
 		List wids = this.corrPersistenceService.getCorrelatedsetByEvent(eventid);				//  ***** DB Access
 		log.debug("### search 0.1 wids.size():" + wids.size());
 		// go through the guid list provided by the search
+		boolean createNew = false;
+		if (foundEventtypes.size() > 0) 
+			createNew = true;
 		List foundCorrSetList = new Vector();
 		Iterator widIt = wids.iterator();
 		while (widIt.hasNext()) {
-			log.debug("### search 1");
 			String guid = (String) widIt.next();
-			log.debug("### search 2 guid: " + guid);
-			numberOfResults++;
-			log.debug("### search 3 numberOfResults: " + numberOfResults);
 			
 			// get Correlatedsets with guid
 			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);	// ***** DB Access
-			log.debug("### search 3 corrEventList.size():" + corrEventList.size());
 			List widList = new Vector();
 			String correlationSetDef = new String();
+			
 			// go through the correlated sets and retrieve the events 
-			log.debug("### search 4");
 			// create list with eventids
 			List eventIdList = new Vector();
 			HashMap eventTypeList = new HashMap();
 			Iterator eventIt = corrEventList.iterator();
-			log.debug("### search 5");
-			while (eventIt.hasNext()) {
-				log.debug("### search 6");
-				Correlationset corrSet = (Correlationset)eventIt.next();
-				correlationSetDef = corrSet.getCorrelationSetDef();
-				eventTypeList.put(corrSet.getEventid(), corrSet.getEventType());
-				eventIdList.add(corrSet.getEventid()); 
-			}	
+			log.debug("### foundEventtypes.size() " + foundEventtypes.size());
+				
+			// check if something is in foundEventtypes
+			if (createNew == true) {
+				// If there is something in it it means that the context search has already been executed and this is
+				// just a filter process.
+				// So check if set to false or true. If it is true skip this Correlation/Event construct
+				while (eventIt.hasNext()) {
+					Correlationset corrSet = (Correlationset)eventIt.next();
+					Boolean setDefMinus = (Boolean)foundEventtypes.get(corrSet.getCorrelationSetDef());
+					if (setDefMinus.booleanValue() == false) {
+						correlationSetDef = corrSet.getCorrelationSetDef();
+						eventTypeList.put(corrSet.getEventid(), corrSet.getEventType());
+						eventIdList.add(corrSet.getEventid());
+					}
+				}
+			} else {
+				while (eventIt.hasNext()) {
+					Correlationset corrSet = (Correlationset)eventIt.next();
+					// If nothing is in the HashMap it means that the ContextSearch is executed for the first time
+					// So just go on AND ADD the types to the Hashmap with the default false value
+					correlationSetDef = corrSet.getCorrelationSetDef();
+					eventTypeList.put(corrSet.getEventid(), corrSet.getEventType());
+					eventIdList.add(corrSet.getEventid());
+					foundEventtypes.put(correlationSetDef, new Boolean(false));
+				}
+			}
 			
 			// retrieve alle events for the current correlation
 			List events = eventPersistenceService.getEvents(eventIdList);		//  ***** DB Access
-			log.debug("### search 7 events.size():" + events.size());
 			log.debug("---------------------- Event Search -----------------------------");
 			
 			List eventAggList = new Vector();
@@ -201,7 +207,6 @@ public class SearchServiceImpl implements SearchService {
 			while (retrievedEventsIt.hasNext()) {
 				Event event = (Event)retrievedEventsIt.next();
 				event.setXmlcontent(new XMLUtils().convertDocToPretty(event.getXmlcontent()));
-				log.debug("### search 8");
 				// retrieve Attributes
 				//List eventAttribs = eventPersistenceService.getEventattributesForEvent(event.getEventid());		//  ***** DB Access
 				
@@ -210,18 +215,18 @@ public class SearchServiceImpl implements SearchService {
 				//eventAgg.setEventAttributes(eventAttribs);
 				eventAgg.setEventAttributes(new XMLUtils().extractAtrributesFromEvent(event));
 				eventAgg.setEventTypeName((String)eventTypeList.get(event.getEventid()));
-				log.debug("### search 9");
 				eventAggList.add(eventAgg);
 			}
-			log.debug("### search 10");
+			
 			FoundCorrSet foundCorrSet = new FoundCorrSet();
 			foundCorrSet.setGuid(guid);
 			foundCorrSet.setEventAgg(eventAggList);
 			foundCorrSet.setCorrelationSetDef(correlationSetDef);
 			foundCorrSet.setEventRank(null);
 			foundCorrSetList.add(foundCorrSet);
-			log.debug("### search 11");
 		}
+		
+		numberOfResults = foundCorrSetList.size();
 		
 		long end = new Date().getTime();
 		long duration = end - start;
@@ -233,9 +238,49 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setNumberOfResults(numberOfResults);
 		corrModel.setSearchString(null);
 		corrModel.setNumberOfFoundCorrEvents(numberOfResults);
+		corrModel.setFoundEventtypes(foundEventtypes);
 		log.debug("### search 13");
 		
 		return corrModel;
+	}
+	
+	/**
+	 * Searches Index of correlated events and expands the search queries by given criteria
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @param foundEventtypes HashMap
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes) {
+		String origSearchString = searchString;
+		// iterate through foundEventtypes and append new criterias to query string
+		Iterator it = foundEventtypes.keySet().iterator();
+		while (it.hasNext()) {
+			String key = (String)it.next();
+			Boolean value = (Boolean)foundEventtypes.get(key);
+			
+			if (value.booleanValue() == true) {
+				searchString = searchString + " -" + key;
+			}
+		}
+		
+		log.debug("### searchString:" + searchString);
+		
+		CorrResultModel corrResultModel = this.searchForCorrEvents(searchString, page, exactMatch);
+		corrResultModel.setSearchString(origSearchString);
+		
+		
+		String termAry = new String();
+		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(origSearchString).iterator();
+		while (itTerms.hasNext()) {
+			Term term = (Term)itTerms.next();
+			termAry = termAry + " " + term.text();
+		}
+		
+		corrResultModel.setTermList(termAry.trim());
+		
+		return corrResultModel;
 	}
 	
 	
@@ -245,19 +290,20 @@ public class SearchServiceImpl implements SearchService {
 	 * 
 	 * @param searchString
 	 * @param page
+	 * @param lowerBound
+     * @param upperBound
 	 * @return
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page) {
+	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound) {
 		int numberOfResults = 0;
 		long start = new Date().getTime();
 		
-		Vector wids = indexingServiceEvents.search(searchString, maxSearchResults, page);
+		Vector wids = indexingServiceEvents.search(searchString, maxSearchResults, page, lowerBound, upperBound);		// ***** Search
 		
 		List eventAggList = new Vector();
 		Iterator widIt = wids.iterator();
 		while (widIt.hasNext()) {
 			String eventId = (String) widIt.next();
-			numberOfResults++;
 			
 			log.debug("### eventId:" + eventId);
 			
@@ -270,6 +316,9 @@ public class SearchServiceImpl implements SearchService {
 			eventAgg.setEventTypeName(eventPersistenceService.getEventtype(event.getEventtypeid()).getEventname());	//  ***** DB Access
 			eventAggList.add(eventAgg);
 		}
+		
+		numberOfResults = eventAggList.size();
+		
 		long end = new Date().getTime();
 		long duration = end - start;
 		
@@ -279,6 +328,8 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setNumberOfResults(numberOfResults);
 		corrModel.setSearchString(searchString);
 		corrModel.setNumberOfFoundCorrEvents(indexingServiceEvents.getNumberOfFoundCorrEvents());
+		corrModel.setFoundEventtypes(indexingServiceEvents.getFoundEventtypes());
+		
 		String termAry = new String();
 		Iterator itTerms = indexingServiceEvents.extractSearchTerms(searchString).iterator();
 		while (itTerms.hasNext()) {
@@ -291,6 +342,45 @@ public class SearchServiceImpl implements SearchService {
 		return corrModel;
 	}
 	
+	/**
+	 * Searches Index of events and expands the search queries by given criteria
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @param foundEventtypes HashMap
+	 * @param lowerBound
+     * @param upperBound
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound) {
+		String origSearchString = searchString;
+		// iterate through foundEventtypes and append new criterias to query string
+		Iterator it = foundEventtypes.keySet().iterator();
+		while (it.hasNext()) {
+			String key = (String)it.next();
+			Boolean value = (Boolean)foundEventtypes.get(key);
+			
+			if (value.booleanValue() == true) {
+				searchString = searchString + " -" + key;
+			}
+		}
+		
+		log.debug("### searchString:" + searchString);
+		
+		CorrResultModel corrResultModel = this.searchForEvents(searchString, page, lowerBound, upperBound);
+		corrResultModel.setSearchString(origSearchString);
+		
+		String termAry = new String();
+		Iterator itTerms = indexingServiceEvents.extractSearchTerms(origSearchString).iterator();
+		while (itTerms.hasNext()) {
+			Term term = (Term)itTerms.next();
+			termAry = termAry + " " + term.text();
+		}
+		
+		corrResultModel.setTermList(termAry.trim());
+		
+		return corrResultModel;
+	}
 	
 	// =========== Getters and Setters ========================
 

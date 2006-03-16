@@ -1,5 +1,6 @@
 package at.generic.service;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -7,16 +8,24 @@ import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: IndexingService.java,v 1.4 2006/03/06 23:20:53 szabolcs Exp $
+ * @version $Id: IndexingService.java,v 1.5 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Fulltext index service
  * 
  */
 public interface IndexingService {
 
-	public void addDocument(String key, String text, String type);
+	/**
+     * Adds a document to the index either using batch mode or single mode
+     * 
+     * @param key
+     * @param text
+     * @param type
+     * @param date
+     */
+    public void addDocument (String key, String text, String type, String date);
 	
 	public void removeDocument(String key);
 	
@@ -28,7 +37,7 @@ public interface IndexingService {
 	 * @param page
 	 * @return
 	 */
-	public Vector search(String search, int numberOfResults, int page);
+	  public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound);
 	
 	/**
      * Search whole index using a list of wids to filter for
@@ -36,6 +45,8 @@ public interface IndexingService {
      * @param search
      * @param numberOfResults
      * @param widList
+     * @param lowerBound
+     * @param upperBound
      * @return
      */
     public Vector search(String search, int numberOfResults, List widList);
@@ -99,4 +110,34 @@ public interface IndexingService {
 	 * @param numberOfFoundCorrEvents The numberOfFoundCorrEvents to set.
 	 */
 	public void setNumberOfFoundCorrEvents(int numberOfFoundCorrEvents);
+	
+	/**
+	 * @return Returns the foundEventtypes.
+	 */
+	public HashMap getFoundEventtypes();
+
+	/**
+	 * @param foundEventtypes The foundEventtypes to set.
+	 */
+	public void setFoundEventtypes(HashMap foundEventtypes);
+	
+	/**
+	 * @return Returns the indexLocationType.
+	 */
+	public String getIndexLocationType();
+
+	/**
+	 * @param indexLocationType The indexLocationType to set.
+	 */
+	public void setIndexLocationType(String indexLocationType);
+	
+	/**
+	 * @return Returns the maxNumberOfLookAhead.
+	 */
+	public int getMaxNumberOfLookAhead();
+
+	/**
+	 * @param maxNumberOfLookAhead The maxNumberOfLookAhead to set.
+	 */
+	public void setMaxNumberOfLookAhead(int maxNumberOfLookAhead);
 }

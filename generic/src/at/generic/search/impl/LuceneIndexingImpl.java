@@ -1,6 +1,7 @@
 package at.generic.search.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +18,11 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.RangeFilter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -28,9 +31,9 @@ import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.5 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.6 2006/03/16 11:11:29 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Fulltext index service
  * 
@@ -48,6 +51,7 @@ public class LuceneIndexingImpl implements IndexingService {
 	private static Log log = LogFactory.getLog(LuceneIndexingImpl.class);
 	
 	private String indexLocation;
+	private String indexLocationType; // event or correvent - used to determine on which index location this instance is pointing 
 	private int numberOfIndexedIems = 0;
 	private boolean indexCreated = false;
 	private final Analyzer analyzer = new StandardAnalyzer();
@@ -55,6 +59,8 @@ public class LuceneIndexingImpl implements IndexingService {
 	private IndexSearcher indexSearcher;
 	private boolean init = false;
 	private int numberOfFoundCorrEvents;
+	private HashMap foundEventtypes = new HashMap();
+	private int maxNumberOfLookAhead = 0;	// determines how far the search should look ahead to determine the Eventtype or Correlationtype  
 	
 	/**
 	 * Tries to create an index at the given location
@@ -126,23 +132,41 @@ public class LuceneIndexingImpl implements IndexingService {
 	 * Don’t prematurely optimize your paging implementations with caching or
 	 * persistence. First implement your paging feature with a straightforward requery;
 	 * chances are you’ll find this sufficient for your needs.
+	 * 
+	 * == Datefilter == p.96
+	 * 
+	 * using DateFormat.SHORT style YYYYMMDD
      * 
      * @param search SearchString
      * @param numberOfResults 
      * @param page
+     * @param lowerBound
+     * @param upperBound
      */
-    public Vector search(String search, int numberOfResults, int page) {
+    public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound) {
     	//log.debug("#### searchQuery=" + search);
     	//log.debug("### numberOfResults " + numberOfResults);
+    	
+    	this.foundEventtypes = new HashMap();
     	
     	try {
     		if (indexSearcher == null) {
 		    	Directory fsDir = FSDirectory.getDirectory(this.indexLocation, false);
     			indexSearcher = new IndexSearcher(fsDir);
     		}
-    	
-	    	Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
-	    	Hits hits = indexSearcher.search(query);
+    		
+    		// build a filter
+    		/*TermsFilter filter = new TermsFilter();
+			filter.addTerm(new Term("date", "20060304 TO 20060304"));*/
+    		Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
+    		Hits hits = null;
+    		if (lowerBound != null && upperBound != null && lowerBound.length() > 0 && upperBound.length() > 0) {
+    			Filter filter = new RangeFilter("date", lowerBound, upperBound, true, true);
+    			hits = indexSearcher.search(query, filter);
+    		} else {
+    			hits = indexSearcher.search(query);
+    		}
+	    	
 	    	this.numberOfFoundCorrEvents =  hits.length();
 	    	
 	    	log.debug("### page * numberOfResults - numberOfResults:" + (page * numberOfResults - numberOfResults));
@@ -160,17 +184,38 @@ public class LuceneIndexingImpl implements IndexingService {
 		    	else 
 		    		maxHitSize = page * numberOfResults;
 		    	
+		    	int stopRetrieving = 0;
+		    	if (this.maxNumberOfLookAhead >= hits.length())
+		    		stopRetrieving = hits.length();
+		    	else
+		    		stopRetrieving = this.maxNumberOfLookAhead;
+		    	
 		    	log.debug("### start:" + start);
 		    	log.debug("### maxHitSize:" + maxHitSize);
+		    	log.debug("### maxNumberOfLookAhead:" + maxNumberOfLookAhead);
+		    	log.debug("### stoptrieving:" + stopRetrieving);
+		    	log.debug("### search:" + search);
 		    	
-		    	
-		    	for (; start < maxHitSize; start++) {
-		    		Document doc = hits.doc(start);
+		    	//for (; start < maxHitSize; start++) {
+		    	for (int i = 0; i < stopRetrieving; i++) {
+		    		Document doc = hits.doc(i);
 		    		//log.debug("#### found object wid = " + doc.get("wid"));
 		    		//log.debug("#### found object type = " + doc.get("type"));
 		    		//log.debug("#### found object text = " + doc.get("text"));
 		    		
-		    		items.add(doc.get("wid"));
+		    		// just add results according to page
+		    		if (start == i && start < maxHitSize) {
+		    			items.add(doc.get("wid"));
+		    			start++;
+		    		}
+		    		
+		    		log.debug("### doc.get('wid')" + doc.get("wid"));
+		    		log.debug("### doc.get('type')" + doc.get("type"));
+		    		log.debug("### doc.get('date')" + doc.get("date"));
+		    		
+		    		// if this is set on event index
+		    		//if (this.indexLocationType.equals("event"))
+		    		foundEventtypes.put(doc.get("type"), new Boolean(false));	
 		    	}
 		    	
 		    	return items;
@@ -230,6 +275,7 @@ public class LuceneIndexingImpl implements IndexingService {
 	    		//log.debug("#### found object text = " + doc.get("text"));
 	    		
 	    		items.add(new Long(doc.get("wid")));
+	    		foundEventtypes.put(doc.get("type"),doc.get("type"));
 	    	}
 	    	
 	    	return items;
@@ -242,10 +288,18 @@ public class LuceneIndexingImpl implements IndexingService {
     	return null;
     }
     
-    public void addDocument (String key, String text, String type) {
+    /**
+     * Adds a document to the index either using batch mode or single mode
+     * 
+     * @param key
+     * @param text
+     * @param type
+     * @param date
+     */
+    public void addDocument (String key, String text, String type, String date) {
     	indexSearcher = null;
     	if (indexWriter == null)
-    		this.addDocumentSingleStyle(key,text,type);
+    		this.addDocumentSingleStyle(key,text,type,date);
     	else
     		this.addDocumentBatchStyle(key,text,type);
     }
@@ -262,14 +316,6 @@ public class LuceneIndexingImpl implements IndexingService {
 		IndexWriter writer = null;
 		
 		try {
-			/*if (indexCreated == false) {
-				writer = new IndexWriter(indexLocation, analyzer, true);
-				indexCreated = true;
-			} else {
-				removeDocument(key);
-				writer = new IndexWriter(indexLocation, analyzer, false);
-			}*/
-			
 			removeDocument(key);
 			writer = new IndexWriter(indexLocation, analyzer, false);
 			
@@ -278,9 +324,37 @@ public class LuceneIndexingImpl implements IndexingService {
 		    document.add(Field.Keyword("type", type));
 		    document.add(Field.Text("text",text));
 		    
-		    //log.debug("### creating index for wid=" + key + ", type=" + type + ", text=" + text);
-		    
-		    //log.debug("### addDocument writer.docCount() " + writer.docCount());
+		    writer.optimize();
+		    writer.addDocument(document);
+		    numberOfIndexedIems = writer.docCount();
+		} catch (IOException e) {
+		    log.error("Error updating index for wid=" + key + ", type=" + type , e);
+		} finally {
+		    closeWriter(writer);
+		}
+	}
+	
+	 /**
+     * Adds a document to the index with a date field
+     * 
+     * @param key
+     * @param text
+     * @param type
+     * @param date
+     */
+	private void addDocumentSingleStyle(String key, String text, String type, String date) {
+		
+		IndexWriter writer = null;
+		
+		try {
+			removeDocument(key);
+			writer = new IndexWriter(indexLocation, analyzer, false);
+			
+		    Document document = new Document();
+		    document.add(Field.Keyword("wid", key));
+		    document.add(Field.Keyword("type", type));
+		    document.add(Field.Text("text",text));
+		    document.add(Field.Text("date",date));
 		    
 		    writer.optimize();
 		    writer.addDocument(document);
@@ -358,6 +432,7 @@ public class LuceneIndexingImpl implements IndexingService {
 			 Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
 			 
 			 terms = new HashSet(); 
+			 // TODO: put back after date search works
 			 query.extractTerms(terms);
 		 } catch (IOException e) {
 			 e.printStackTrace();
@@ -474,6 +549,48 @@ public class LuceneIndexingImpl implements IndexingService {
 	 */
 	public void setNumberOfFoundCorrEvents(int numberOfFoundCorrEvents) {
 		this.numberOfFoundCorrEvents = numberOfFoundCorrEvents;
+	}
+
+	/**
+	 * @return Returns the foundEventtypes.
+	 */
+	public HashMap getFoundEventtypes() {
+		return foundEventtypes;
+	}
+
+	/**
+	 * @param foundEventtypes The foundEventtypes to set.
+	 */
+	public void setFoundEventtypes(HashMap foundEventtypes) {
+		this.foundEventtypes = foundEventtypes;
+	}
+
+	/**
+	 * @return Returns the indexLocationType.
+	 */
+	public String getIndexLocationType() {
+		return indexLocationType;
+	}
+
+	/**
+	 * @param indexLocationType The indexLocationType to set.
+	 */
+	public void setIndexLocationType(String indexLocationType) {
+		this.indexLocationType = indexLocationType;
+	}
+
+	/**
+	 * @return Returns the maxNumberOfLookAhead.
+	 */
+	public int getMaxNumberOfLookAhead() {
+		return maxNumberOfLookAhead;
+	}
+
+	/**
+	 * @param maxNumberOfLookAhead The maxNumberOfLookAhead to set.
+	 */
+	public void setMaxNumberOfLookAhead(int maxNumberOfLookAhead) {
+		this.maxNumberOfLookAhead = maxNumberOfLookAhead;
 	}
 	
 	
