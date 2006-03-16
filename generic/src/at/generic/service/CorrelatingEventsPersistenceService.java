@@ -16,9 +16,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatingEventsPersistenceService.java,v 1.2 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: CorrelatingEventsPersistenceService.java,v 1.3 2006/03/16 23:35:50 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for correlating events persitence operations
  */
@@ -99,6 +99,12 @@ public interface CorrelatingEventsPersistenceService {
 	 * @return List with correlatedsets or null if nothing found
 	 */
 	public List getCorrelatedsetByEvent (Long eventid);
+	
+	/**
+	 * Creates a list of all occuring correlationsettypes
+	 * @return List with unique correlation types
+	 */
+	public List getCorrelationsSetTypes ();
 	
 	//	 ========== Getters and Setters  ===========
 	

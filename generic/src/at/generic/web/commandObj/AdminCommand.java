@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.5 2006/02/27 14:59:47 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.6 2006/03/16 23:35:50 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Data Object for the ETL Admin section
  * 
@@ -18,6 +18,7 @@ public class AdminCommand {
 	private String updatestop;
 	private String etlThreadStartedAt;
 	private List identifiedEvents;
+	private List identifiedCorrs;
 	private int numberOfIdentifiedEvents;
 	private int numberOfProcessedEvents;
 	private int numberOfEventsInSource;
@@ -34,7 +35,12 @@ public class AdminCommand {
 	private int numberOfIndexedIemsForCorrEvents = 0;
 	private boolean indexCreatedForCorrEvents = false;
 	
-	
+	// profile navigation stuff
+	private int profileMenue = 1;		// menu item to be shown
+	private String msg = new String();	// Status messages
+	private List profileList;			// Holding a List of ProfileCons
+	private ProfileCons profileCons;	// for editing a Profile
+	private boolean editingProfile = false; 	// indicates if a Profile is opened for edit
 	
 	
 	/**
@@ -219,6 +225,82 @@ public class AdminCommand {
 	public void setNumberOfIndexedIemsForEvents(int numberOfIndexedIemsForEvents) {
 		this.numberOfIndexedIemsForEvents = numberOfIndexedIemsForEvents;
 	}
+	
+	/**
+	 * @return Returns the profileMenue.
+	 */
+	public int getProfileMenue() {
+		return profileMenue;
+	}
+	/**
+	 * @param profileMenue The profileMenue to set.
+	 */
+	public void setProfileMenue(int profileMenue) {
+		this.profileMenue = profileMenue;
+	}
+	/**
+	 * @return Returns the identifiedCorrs.
+	 */
+	public List getIdentifiedCorrs() {
+		return identifiedCorrs;
+	}
+	/**
+	 * @param identifiedCorrs The identifiedCorrs to set.
+	 */
+	public void setIdentifiedCorrs(List identifiedCorrs) {
+		this.identifiedCorrs = identifiedCorrs;
+	}
+	/**
+	 * @return Returns the msg.
+	 */
+	public String getMsg() {
+		return msg;
+	}
+	/**
+	 * @param msg The msg to set.
+	 */
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	/**
+	 * @return Returns the profileList.
+	 */
+	public List getProfileList() {
+		return profileList;
+	}
+	/**
+	 * @param profileList The profileList to set.
+	 */
+	public void setProfileList(List profileList) {
+		this.profileList = profileList;
+	}
+	/**
+	 * @return Returns the profileCons.
+	 */
+	public ProfileCons getProfileCons() {
+		return profileCons;
+	}
+	/**
+	 * @param profileCons The profileCons to set.
+	 */
+	public void setProfileCons(ProfileCons profileCons) {
+		this.profileCons = profileCons;
+	}
+	
+	/**
+	 * @return Returns the editingProfile.
+	 */
+	public boolean isEditingProfile() {
+		return editingProfile;
+	}
+	/**
+	 * @param editingProfile The editingProfile to set.
+	 */
+	public void setEditingProfile(boolean editingProfile) {
+		this.editingProfile = editingProfile;
+	}
+	
+	
 	
 	
 }

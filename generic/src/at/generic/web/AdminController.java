@@ -1,5 +1,10 @@
 package at.generic.web;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +16,7 @@ import org.springframework.web.servlet.mvc.Controller;
 import at.generic.etl.SourceEventEtl;
 import at.generic.eventmodel.Dbinfo;
 import at.generic.service.AdminPersistenceService;
+import at.generic.service.CorrelatingEventsPersistenceService;
 import at.generic.service.EventPersistenceService;
 import at.generic.service.IndexingService;
 import at.generic.web.commandObj.AdminCommand;
@@ -18,11 +24,11 @@ import at.generic.web.commandObj.AdminCommand;
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.6 2006/02/27 15:00:19 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.7 2006/03/16 23:35:50 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
- * Controller for the ETL Process
+ * <p>Controller for the ETL Process</p>
  * 
  */
 public class AdminController implements Controller { 
@@ -30,6 +36,7 @@ public class AdminController implements Controller {
 	
 	private SourceEventEtl sourceEventEtl;
 	private EventPersistenceService eventPersistenceService;
+	private CorrelatingEventsPersistenceService corrPersistenceService;
 	private AdminPersistenceService adminPersistenceService;
 	private IndexingService indexingServiceEvents;
 	private IndexingService indexingServiceCorrEvents;
@@ -74,9 +81,117 @@ public class AdminController implements Controller {
 		adminData.setNumberOfIndexedIemsForCorrEvents(indexingServiceCorrEvents.getNumberOfIndexedIems());
 		adminData.setIndexCreatedForCorrEvents(indexingServiceCorrEvents.isIndexCreated());
 		
+		// check which Profile Menue is selected if nothing then its 1
+		// 1... List Profiles
+		// 2... Add Profile
+		// 666... message View
+		if (request.getParameter("profileMenue") != null && !request.getParameter("profileMenue").equals(""))
+			adminData.setProfileMenue(Integer.parseInt(request.getParameter("profileMenue")));
+		else 
+			adminData.setProfileMenue(1);
+		
+		// if 1 "List Profiles"
+		if (adminData.getProfileMenue() == 1) {
+			List profileList = adminPersistenceService.getProfiles();
+			adminData.setProfileList(profileList);
+		}
+		
+		// if 2 "Add Profile"
+		if (adminData.getProfileMenue() == 2) {
+			adminData.setIdentifiedCorrs(corrPersistenceService.getCorrelationsSetTypes());
+		}
+		
+		// if a profile wants to be saved 
+		if (request.getParameter("saveProfile") != null && request.getParameter("saveProfile").equals("true")) {
+			log.debug("### profilename:" + request.getParameter("profilename"));
+			//log.debug("### profileCorrelationSet:" + request.getParameterValues("profileCorrelationSet"));
+			//log.debug("### profileEventSet:" + request.getParameter("profileEventSet"));
+			
+			List profileCorrelationSet = this.createListOutOfMultipleOptionField(request.getParameterValues("profileCorrelationSet"));
+			List profileEventSet = this.createListOutOfMultipleOptionField(request.getParameterValues("profileEventSet"));
+			
+			// save new profile but check if everything is filled out correctly
+			if ( profileCorrelationSet.size() == 0 && profileEventSet.size() == 0 ) {
+				adminData.setProfileMenue(666);
+				adminData.setMsg("Could not save! You must select at least one Eventtype from the list!");
+			} else if (request.getParameter("profilename") == null || request.getParameter("profilename").equals("")) { 
+				adminData.setProfileMenue(666);
+				adminData.setMsg("Could not save! You have to enter a profile name!");
+			} else {
+				if (request.getParameter("origprofilename") != null 
+						&& !request.getParameter("origprofilename").trim().equals("") 
+						&& request.getParameter("origprofilename").trim().equals(request.getParameter("profilename").trim())) 
+					this.adminPersistenceService.saveProfile(request.getParameter("origprofilename").trim(), request.getParameter("profilename").trim(), profileCorrelationSet, profileEventSet);
+				else
+					this.adminPersistenceService.saveProfile( request.getParameter("profilename").trim(), profileCorrelationSet, profileEventSet);
+				adminData.setProfileMenue(666);
+				adminData.setMsg("Profile Saved!");
+			}
+		}
+		
+		// if profile wants to be edited
+		if (request.getParameter("editProfile") != null && !request.getParameter("editProfile").equals("")) {
+			// load profile and filters into ProfileCons contruct
+			adminData.setProfileCons(adminPersistenceService.getProfileCons(new Integer(request.getParameter("editProfile"))));
+			adminData.setEditingProfile(true);
+			adminData.setIdentifiedCorrs(corrPersistenceService.getCorrelationsSetTypes());
+			adminData.setProfileMenue(2);
+			log.debug("### getFilters().size(): " + adminData.getProfileCons().getFilters().size());
+			log.debug("### getFilters().size(): " + adminData.getIdentifiedCorrs().size());
+			
+		}
+		
+		// if profile wants to be deleted
+		if (request.getParameter("deleteProfile") != null && !request.getParameter("deleteProfile").equals("")) {
+			this.adminPersistenceService.removeProfile(new Integer(request.getParameter("deleteProfile")));
+			adminData.setProfileMenue(666);
+			adminData.setMsg("Profile Deleted!");
+		}
+		
 		//sourceEventEtl.transformSourceEvents();
 		return new ModelAndView("admin", "adminData", adminData);
 	}
+	
+	
+	/**
+	 * <p>An HTML option field set to multiple can return several strings 
+	 * put together by ":". This function creates a List containing those
+	 * elements as Strings.</p>
+	 * 
+	 * @param opt String with ":"
+	 * @return sep 
+	 */
+	private List createListOutOfMultipleOptionField(String opt) {
+		Vector sep = new Vector();
+		try {
+			StringTokenizer st = new StringTokenizer(opt,":");
+			while (st.hasMoreTokens()) {
+				sep.add((String)st.nextToken());
+			}
+		} catch (NullPointerException e) {
+			return sep;
+		}
+		
+		return sep;
+	}
+	
+	/**
+	 * <p>This function creates a List out of String[].</p>
+	 * 
+	 * @param opt String with ":"
+	 * @return sep 
+	 */
+	private List createListOutOfMultipleOptionField(String[] opt) {
+		List sep = null;
+		try {
+			sep = Arrays.asList(opt);
+		} catch (NullPointerException e) {
+			return new Vector();
+		}
+		return sep;
+	}
+	
+	// ************** Getters and Setters *********************
 
 	/**
 	 * @return Returns the sourceEventEtl.
@@ -149,6 +264,21 @@ public class AdminController implements Controller {
 	 */
 	public void setIndexingServiceEvents(IndexingService indexingServiceEvents) {
 		this.indexingServiceEvents = indexingServiceEvents;
+	}
+
+	/**
+	 * @return Returns the corrPersistenceService.
+	 */
+	public CorrelatingEventsPersistenceService getCorrPersistenceService() {
+		return corrPersistenceService;
+	}
+
+	/**
+	 * @param corrPersistenceService The corrPersistenceService to set.
+	 */
+	public void setCorrPersistenceService(
+			CorrelatingEventsPersistenceService corrPersistenceService) {
+		this.corrPersistenceService = corrPersistenceService;
 	}
 
 	

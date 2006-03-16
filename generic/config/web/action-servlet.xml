@@ -84,6 +84,9 @@
 		<property name="indexingServiceCorrEvents">
 			<ref bean="indexingServiceCorrEvents"/>
 		</property>
+		<property name="corrPersistenceService">
+			<ref bean="correlatingEventsPersistenceService"/>
+		</property>
   	</bean>
   	
   	<bean name="searchController" class="at.generic.web.SearchController">

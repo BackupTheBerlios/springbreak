@@ -2,8 +2,8 @@
 <project name="generic" basedir="." default="help">
 	<!--
 	============================================================================
-		$Revision: 1.12 $ 
-		$Id: build.xml,v 1.12 2006/03/08 16:49:05 szabolcs Exp $ 
+		$Revision: 1.13 $ 
+		$Id: build.xml,v 1.13 2006/03/16 23:36:15 szabolcs Exp $ 
 		$Author: szabolcs $  
 	============================================================================
 	-->
@@ -331,8 +331,8 @@
 				<table name="eventtype"/>
 				<table name="dbinfos"/>
 				-->
-				<table name="wordindex"/>
-				
+				<table name="profiles"/>
+				<table name="filter"/>
 				<hibernate destination="${config.dir}" package="at.generic.eventmodel"/> 
 			</middlegen>
 		 </target>
@@ -353,8 +353,10 @@
 			<include name="**/Eventattribute.hbm.xml"/>
 			<include name="**/Eventtype.hbm.xml"/>
 			<include name="**/Dbinfo.hbm.xml"/>
-			<include name="**/Wordindex.hbm.xml"/-->
-			<include name="**/Correlationset.hbm.xml"/>
+			<include name="**/Wordindex.hbm.xml"/>
+			<include name="**/Correlationset.hbm.xml"/-->
+			<include name="**/Filter.hbm.xml"/>
+			<include name="**/Profile.hbm.xml"/>
 		</fileset> 
 		</hbm2java> 
 	</target> 

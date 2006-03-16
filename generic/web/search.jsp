@@ -1,8 +1,6 @@
 <head>
 <title>Event Google</title>
-
 <script language="javascript" type='text/javascript' src='jscripts/wordHighlighter.js'>
-
 </script> 
 </head>
 <%@ include file="/taglibs.jsp"%>

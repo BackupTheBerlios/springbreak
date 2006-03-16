@@ -39,6 +39,8 @@
 				<value>Eventattribute.hbm.xml</value>
 				<value>Eventtype.hbm.xml</value>
 				<value>Dbinfo.hbm.xml</value>				
+				<value>Filter.hbm.xml</value>	
+				<value>Profile.hbm.xml</value>	
             </list>
         </property>
         <property name="hibernateProperties">
@@ -132,6 +134,12 @@
     <bean id="adminPersistenceService" class="at.generic.service.impl.AdminPersistenceServiceImpl"> 
     	<property name="dbInfoDAO">
     		<ref bean="dbInfoDAOTarget"/>
+    	</property> 
+    	<property name="profileDAO">
+    		<ref bean="profileDAOTarget"/>
+    	</property> 
+    	<property name="filterDAO">
+    		<ref bean="filterDAOTarget"/>
     	</property> 
     </bean>
     

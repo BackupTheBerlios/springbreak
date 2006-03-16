@@ -198,6 +198,54 @@
       </property>
     </bean>
     
+    <!-- Profile -->    
+    <bean id="profileDAOTarget" class="at.generic.dao.hibernate.ProfileDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="profileDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="profileDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
+         </props> 
+      </property>
+    </bean>
+    
+    <!-- Filter -->    
+    <bean id="filterDAOTarget" class="at.generic.dao.hibernate.FilterDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForPostgresSource"/> 
+    	</property> 
+    </bean>
+    
+    <bean id="filterDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForPostgresSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="filterDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
+         </props> 
+      </property>
+    </bean>
+    
     <!-- ********************************************************************  -->
     <!-- Generic Service Postgres -->
 	<bean id="genericDAOTargetTarget" class="at.generic.dao.hibernate.GenericServiceDAOTarget"> 
