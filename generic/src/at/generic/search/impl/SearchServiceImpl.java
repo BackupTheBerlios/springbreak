@@ -23,9 +23,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.7 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.8 2006/03/16 13:48:44 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * 
  * Search service
  * 
@@ -42,18 +42,61 @@ public class SearchServiceImpl implements SearchService {
 	private int maxSearchResults; // number of items to be displayed
 	
 	/**
+	 * Searches Index of correlated events and expands the search queries by given criteria
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @param foundEventtypes HashMap
+	 * @param lowerBound
+	 * @param upperBound
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes, String lowerBound, String upperBound) {
+		String origSearchString = searchString;
+		// iterate through foundEventtypes and append new criterias to query string
+		Iterator it = foundEventtypes.keySet().iterator();
+		while (it.hasNext()) {
+			String key = (String)it.next();
+			Boolean value = (Boolean)foundEventtypes.get(key);
+			
+			if (value.booleanValue() == true) {
+				searchString = searchString + " -" + key;
+			}
+		}
+		
+		log.debug("### searchString:" + searchString);
+		
+		CorrResultModel corrResultModel = this.searchForCorrEvents(searchString, page, exactMatch, lowerBound, upperBound);
+		corrResultModel.setSearchString(origSearchString);
+		
+		
+		String termAry = new String();
+		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(origSearchString).iterator();
+		while (itTerms.hasNext()) {
+			Term term = (Term)itTerms.next();
+			termAry = termAry + " " + term.text();
+		}
+		
+		corrResultModel.setTermList(termAry.trim());
+		
+		return corrResultModel;
+	}
+	
+	/**
 	 * Searches Index of correlating sets for a given query
 	 * 
 	 * @param searchString
 	 * @param page
 	 * @param exactMatch
+	 * @param lowerBound
+	 * @param upperBound
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch) {
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, String lowerBound, String upperBound) {
 		
 		long start = new Date().getTime();
 		
-		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page, new String(), new String());		// **** Search
+		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page, lowerBound,upperBound);		// **** Search
 
 		int numberOfResults = 0;
 		// go through the guid list provided by the search
@@ -134,6 +177,15 @@ public class SearchServiceImpl implements SearchService {
 		corrModel.setSearchString(searchString);
 		corrModel.setNumberOfFoundCorrEvents(indexingServiceCorrEvents.getNumberOfFoundCorrEvents());
 		corrModel.setFoundEventtypes(indexingServiceCorrEvents.getFoundEventtypes());
+		
+		String termAry = new String();
+		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(searchString).iterator();
+		while (itTerms.hasNext()) {
+			Term term = (Term)itTerms.next();
+			termAry = termAry + " " + term.text();
+		}
+		
+		corrModel.setTermList(termAry.trim());
 		
 		return corrModel;
 	}
@@ -243,47 +295,6 @@ public class SearchServiceImpl implements SearchService {
 		
 		return corrModel;
 	}
-	
-	/**
-	 * Searches Index of correlated events and expands the search queries by given criteria
-	 * 
-	 * @param searchString
-	 * @param page
-	 * @param foundEventtypes HashMap
-	 * @return CorrResultModel
-	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes) {
-		String origSearchString = searchString;
-		// iterate through foundEventtypes and append new criterias to query string
-		Iterator it = foundEventtypes.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String)it.next();
-			Boolean value = (Boolean)foundEventtypes.get(key);
-			
-			if (value.booleanValue() == true) {
-				searchString = searchString + " -" + key;
-			}
-		}
-		
-		log.debug("### searchString:" + searchString);
-		
-		CorrResultModel corrResultModel = this.searchForCorrEvents(searchString, page, exactMatch);
-		corrResultModel.setSearchString(origSearchString);
-		
-		
-		String termAry = new String();
-		Iterator itTerms = indexingServiceCorrEvents.extractSearchTerms(origSearchString).iterator();
-		while (itTerms.hasNext()) {
-			Term term = (Term)itTerms.next();
-			termAry = termAry + " " + term.text();
-		}
-		
-		corrResultModel.setTermList(termAry.trim());
-		
-		return corrResultModel;
-	}
-	
-	
 	
 	/**
 	 * Search index for matching events

@@ -6,7 +6,7 @@
 </script> 
 </head>
 <%@ include file="/taglibs.jsp"%>
-<!-- body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');" -->
+<body onload="highlightSearchTerms('<c:out value="${searchResult.termList}"/>');">
 <%@ include file="/head.jsp"%>
 <center><h2>> Search Results <</h2></center>
 <br/>
@@ -34,7 +34,7 @@
 <!-- Navigation Bar -->
 <table border="0" width="100%">
 	<tr>
-		<!-- Filter Bar--> 
+		<!-- Filter Bar START --> 
 		<td valign="top" width="*">
 			<c:if test="${searchResult.showRefineQuery == true}">
 				<table border="0" width="250px">
@@ -68,13 +68,26 @@
 						</td>
 					</tr>
 				</table>
+				<!--  Date selector START -->
 				<table border="0" width="250px">
 					<tr>
 						<td bgcolor="#E5ECF9">
 							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
 								<tr>
 									<td bgcolor="#E5ECF9">
-										<b>Date Range...</b></td>
+										<table border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tr>
+												<td><b>Date Range...</b></td>
+												<td align="right">
+													<c:if test="${searchResult.dateRangeActive == true}">
+														<font color="red">
+														<a href="search.html?browserPage=1&dateRangeChanged=false&ranksearchtype=rankonesearch">remove filter</a>
+														</font>
+														
+													</c:if>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 							</table>
@@ -93,9 +106,10 @@
 						</td>
 					</tr>
 				</table>
+				<!--  Date selector END-->
 			</c:if>
 		</td>
-		<!-- Filter Bar--> 
+		<!-- Filter Bar END --> 
 		<td valign="top" width="100%">
 			<table border="0" width="100%">
 				<tr>

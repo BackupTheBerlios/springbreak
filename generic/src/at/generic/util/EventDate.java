@@ -9,9 +9,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author szabolcs
- * @version $Id: EventDate.java,v 1.2 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: EventDate.java,v 1.3 2006/03/16 13:48:44 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Creates usefull Date representation of an event date string and provides some services
  * Original Format looks like this: 2005-12-28T12:06:07.0305000+01:00
@@ -90,6 +90,17 @@ public class EventDate {
 		return date;
 	}
 	
+	/**
+	 * <p>Creates a formatted Date String according to DateFormat.SHORT for the Lucene 
+	 * index out of day, month and year.</p>
+	 * 
+	 * <p>Return String is in Format YYYYMMDD</p>
+	 * 
+	 * @param day
+	 * @param month
+	 * @param year
+	 * @return
+	 */
 	public static String getBoundFormatForLucene(int day, int month, int year) {
 		String sDay;
 		String sMonth;

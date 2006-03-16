@@ -73,6 +73,44 @@
 						</td>
 					</tr>
 				</table>
+				<!--  Date selector START -->
+				<table border="0" width="250px">
+					<tr>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tr>
+												<td><b>Date Range...</b></td>
+												<td align="right">
+													<c:if test="${searchResult.dateRangeActive == true}">
+														<font color="red">
+														<a href="search.html?browserPage=1&dateRangeChanged=false">remove filter</a>
+														</font>
+														
+													</c:if>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ECECEC">	
+							<form action="search.html" method="get" >
+								<%@ include file="/dateselector.jsp"%>
+								<br/>
+								<input type="hidden" name="browserPage" value="1">
+								<input type="hidden" name="dateRangeChanged" value="true">
+								<input type="submit" value="Go">
+							</form>
+						</td>
+					</tr>
+				</table>
+				<!--  Date selector END-->
 			</c:if>
 		</td>
 		<!-- Filter Bar--> 
@@ -170,24 +208,32 @@
 		</td>
 		<td valign="top">
 			<c:if test="${not empty searchResult.showEventId}">
-				<%@ include file="/upperBorder.jsp"%>
-				<table border="0" cellspacing="0" cellpadding="3" width="100%" >
+				<c:if test="${searchResult.showRefineQuery == false}">
+					<br/>
+				</c:if>
+				<table border="0" width="100%">
 					<tr>
-						<td>
-							<table width="100%" cellspacing="0" cellpadding="0">
-							<tr>
-								<td align="left">
-									<a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=raw">Raw</a> | <a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=styled">Styled</a>
-								</td>
-								<td align="right">
-									<a href="search.html?closeShowEventId=true"><img src="images/corrCloseButton.jpg" border="0"/></a>
-								</td>
-							</tr>
-						</table>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table width="100%" cellspacing="0" cellpadding="0">
+											<tr>
+												<td align="left">
+													<a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=raw">Raw</a> | <a href="search.html?showEventId=<c:out value="${searchResult.showEventId}"/>&showEventViewType=styled">Styled</a>
+												</td>
+												<td align="right">
+													<a href="search.html?closeShowEventId=true"><img src="images/corrCloseButton.jpg" border="0"/></a>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td bgcolor="#ECECEC">	
 							<c:if test="${searchResult.showEventViewType eq 'raw'}">
 								<textarea name="user_eingabe" readonly  cols="70" rows="30" ><c:out value="${xmlcontent}" escapeXml="true"/></textarea>
 							</c:if>
@@ -201,10 +247,9 @@
 									</c:forEach>
 								</table>
 							</c:if>
-				    	</td>
-			    	</tr>
-		    	</table>
-				<%@ include file="/lowerBorder.jsp"%>
+						</td>
+					</tr>
+				</table>
 			</c:if>
 		</td>
 	</tr>

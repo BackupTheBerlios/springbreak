@@ -21,9 +21,9 @@ import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.8 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.9 2006/03/16 13:48:44 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * 
  * Controller for the Event Search
  * 
@@ -96,6 +96,7 @@ public class SearchController implements Controller {
 						//upperRange = upperBoundYear + upperBoundMonth + upperBoundDay;
 						upperRange =  EventDate.getBoundFormatForLucene(upperBoundDay,upperBoundMonth,upperBoundYear);
 						dateRangeActive = true;
+						log.debug("### dateRangeActive = true");
 					}
 					
 				}
@@ -105,6 +106,14 @@ public class SearchController implements Controller {
 						&& request.getParameter("changeEventFilterTo") != null 
 						&& !request.getParameter("changeEventFilterTo").equals("")) {
 					foundEventtypes.put(request.getParameter("changeEventFilter"), new Boolean(request.getParameter("changeEventFilterTo")));
+				}
+				
+				if (request.getParameter("dateRangeChanged") != null 
+						&& request.getParameter("dateRangeChanged").equals("false")) {
+					dateRangeActive = false;
+					lowerRange = new String();
+					upperRange = new String();
+					log.debug("### dateRangeActive = false");
 				}
 				
 				// check if dateRange filter has been applied and update it
@@ -121,6 +130,7 @@ public class SearchController implements Controller {
 					//upperRange = upperBoundYear + upperBoundMonth + upperBoundDay;
 					upperRange =  EventDate.getBoundFormatForLucene(upperBoundDay,upperBoundMonth,upperBoundYear);
 					dateRangeActive = true;
+					log.debug("### dateRangeActive = true");
 				}
 			}
 			
@@ -137,16 +147,16 @@ public class SearchController implements Controller {
 				log.debug("### Rank 2 Search");
 				if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true")) {
 					// exact match
-					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true);
+					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true, lowerRange, upperRange);
 					log.debug("### exactMatch == true");
 				} else {
-					// normal rank 2 search
+					// normal Rank 2 search
 					// check if a refinement has been created
 					if (foundEventtypes.size() > 0) {
-						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes);
+						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes, lowerRange, upperRange);
 						corrResultModel.setFoundEventtypes(foundEventtypes);
 					} else {
-						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false);
+						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, lowerRange, upperRange);
 					}
 					log.debug("### exactMatch == false");
 				}

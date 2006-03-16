@@ -1,8 +1,5 @@
 package at.generic.etl.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +22,14 @@ import at.generic.service.AdminPersistenceService;
 import at.generic.service.CorrelatingEventsPersistenceService;
 import at.generic.service.EventPersistenceService;
 import at.generic.service.IndexingService;
+import at.generic.util.EventDate;
 import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.8 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.9 2006/03/16 13:48:44 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -115,6 +113,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 			Iterator i = corrSetList.iterator();
 			String guid = new String();
 			String words = new String();
+			String date = new String();
 			
 			while (i.hasNext()) {
 				Correlationset corrSet = (Correlationset) i.next();
@@ -122,25 +121,32 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 				if (guid == null || guid.equals("")) 
 					guid = corrSet.getCorrelationSetGuid();
 				
+				// if guid changed in loop it means that a new correlation is coming around
+				// so save it to index
 				if (!guid.equals(corrSet.getCorrelationSetGuid())) {
-					indexingServiceCorrEvents.addDocument(guid,words,corrSet.getCorrelationSetDef(),new String());
+					indexingServiceCorrEvents.addDocument(guid,words,corrSet.getCorrelationSetDef(),date);
 					guid = corrSet.getCorrelationSetGuid();
 					words = corrSet.getEventType() + " ";
 					words = words + corrSet.getCorrelationSetDef();
+					date = new String();
 				} 
 				
-				// retrieve event 
-				List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
+				// retrieve Event and Rwtime from Db
+				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
+				Rwtime rwtime = eventPersistenceService.getRwtimeDAO().getRwtime(event.getRwtimeid());
 				
-				//  iterate over attributes
+				// extract rwtime and create a list of dates
+				date = date +  " " + EventDate.getBoundFormatForLucene(rwtime.getRwday().intValue(), rwtime.getRwmonth().intValue(), rwtime.getRwyear().intValue());
+				
+				// retrieve event attributes 
+				List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
+				// iterate over attributes
 				Iterator iattrib = attribsForEvent.iterator();
 				while (iattrib.hasNext()) {
 					Eventattribute eventAttrib = (Eventattribute) iattrib.next();
 					words = words + " " + eventAttrib.getValue();
 				}
 			}
-					
-			
 		}
 		
 		
@@ -280,9 +286,10 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		Event event = eventPersistenceService.getEvent(new Long(correlatedEvent.getId().longValue()));
 		
 		Rwtime rwtime = eventPersistenceService.getRwtimeDAO().getRwtime(event.getRwtimeid());
-		String date = new String();
-		date = rwtime.getRwyear().toString();
 		
+		String date  = EventDate.getBoundFormatForLucene(rwtime.getRwday().intValue(), rwtime.getRwmonth().intValue(), rwtime.getRwyear().intValue());
+
+		/*date = rwtime.getRwyear().toString();
 		if (rwtime.getRwmonth().intValue() < 10)
 			date = date + "0" + rwtime.getRwmonth();
 		else
@@ -291,7 +298,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		if (rwtime.getRwday().intValue() < 10)
 			date = date + "0" + rwtime.getRwday();
 		else
-			date = date + rwtime.getRwday();
+			date = date + rwtime.getRwday();*/
 		
 		/*
 		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);

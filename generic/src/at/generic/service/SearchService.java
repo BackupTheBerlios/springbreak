@@ -6,9 +6,9 @@ import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.5 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.6 2006/03/16 13:48:44 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Search service
  * 
@@ -16,24 +16,28 @@ import at.generic.search.resultmodel.CorrResultModel;
 public interface SearchService {
 	
 	/**
-	 * Searches Index of correlating sets for a given query
-	 * 
-	 * @param searchString
-	 * @param page
-	 * @param exactMatch
-	 * @return CorrResultModel
-	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch);
-	
-	/**
 	 * Searches Index of correlated events and expands the search queries by given criteria
 	 * 
 	 * @param searchString
 	 * @param page
 	 * @param foundEventtypes HashMap
+	 * @param lowerBound
+	 * @param upperBound
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes);
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes, String lowerBound, String upperBound);
+	
+	/**
+	 * Searches Index of correlating sets for a given query
+	 * 
+	 * @param searchString
+	 * @param page
+	 * @param exactMatch
+	 * @param lowerBound
+	 * @param upperBound
+	 * @return CorrResultModel
+	 */
+	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, String lowerBound, String upperBound);
 	
 	/**
 	 * Search for Correlated context of an event
