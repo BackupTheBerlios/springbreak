@@ -18,9 +18,9 @@ import at.generic.web.commandObj.ProfileCons;
 
 /**
  * @author szabolcs
- * @version $Id: AdminPersistenceServiceImpl.java,v 1.2 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: AdminPersistenceServiceImpl.java,v 1.3 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for event persitence operations
  */
@@ -130,7 +130,7 @@ public class AdminPersistenceServiceImpl implements AdminPersistenceService {
 			Filter filter = new Filter();
 			filter.setPid(Integer.parseInt(profile.getPid().toString()));
 			filter.setName(filtername);
-			filter.setRanktype("event");
+			filter.setRanktype("corr");
 			filterDAO.saveOrUpdateFilter(filter);
 		}
 		
@@ -140,7 +140,7 @@ public class AdminPersistenceServiceImpl implements AdminPersistenceService {
 			Filter filter = new Filter();
 			filter.setPid(Integer.parseInt(profile.getPid().toString()));
 			filter.setName(filtername);
-			filter.setRanktype("corr");
+			filter.setRanktype("event");
 			filterDAO.saveOrUpdateFilter(filter);
 		}
 	}
@@ -200,6 +200,7 @@ public class AdminPersistenceServiceImpl implements AdminPersistenceService {
 		return profileCons;
 	}
 	
+	
 	/**
 	 * Removes a Profile
 	 * 
@@ -209,6 +210,26 @@ public class AdminPersistenceServiceImpl implements AdminPersistenceService {
 		profileDAO.removeProfile(id);
 		
 		//TODO: remove the Filters too!!
+	}
+	
+	/**
+	 * Returns a List with Filternames for a Profile
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public List getFiltersForProfile(String name) {
+		Profile profile = profileDAO.getProfileByName(name);
+		List filters = filterDAO.getAllFiltersByProfile(profile.getPid());
+		
+		List filterList = new Vector();
+		Iterator filterIt = filters.iterator();
+		while (filterIt.hasNext()) {
+			Filter filter = (Filter) filterIt.next();
+			filterList.add(filter.getName());
+		}
+		
+		return filterList;
 	}
 	
 	

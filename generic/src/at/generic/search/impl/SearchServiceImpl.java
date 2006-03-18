@@ -20,12 +20,13 @@ import at.generic.service.EventPersistenceService;
 import at.generic.service.IndexingService;
 import at.generic.service.SearchService;
 import at.generic.util.XMLUtils;
+import at.generic.web.commandObj.ProfileCons;
 
 /**
  * @author szabolcs
- * @version $Id: SearchServiceImpl.java,v 1.8 2006/03/16 13:48:44 szabolcs Exp $
+ * @version $Id: SearchServiceImpl.java,v 1.9 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * 
  * Search service
  * 
@@ -49,24 +50,35 @@ public class SearchServiceImpl implements SearchService {
 	 * @param foundEventtypes HashMap
 	 * @param lowerBound
 	 * @param upperBound
+	 * @param fitlerNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes, String lowerBound, String upperBound) {
+	public CorrResultModel searchForCorrEvents(
+			String searchString, 
+			int page, 
+			boolean exactMatch, 
+			HashMap foundEventtypes, 
+			String lowerBound, 
+			String upperBound, 
+			List filterNames) {
+		
 		String origSearchString = searchString;
 		// iterate through foundEventtypes and append new criterias to query string
-		Iterator it = foundEventtypes.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String)it.next();
-			Boolean value = (Boolean)foundEventtypes.get(key);
-			
-			if (value.booleanValue() == true) {
-				searchString = searchString + " -" + key;
+		if (filterNames == null) {
+			Iterator it = foundEventtypes.keySet().iterator();
+			while (it.hasNext()) {
+				String key = (String)it.next();
+				Boolean value = (Boolean)foundEventtypes.get(key);
+				
+				if (value.booleanValue() == true) {
+					searchString = searchString + " -" + key;
+				}
 			}
 		}
 		
 		log.debug("### searchString:" + searchString);
 		
-		CorrResultModel corrResultModel = this.searchForCorrEvents(searchString, page, exactMatch, lowerBound, upperBound);
+		CorrResultModel corrResultModel = this.searchForCorrEvents(searchString, page, exactMatch, lowerBound, upperBound, filterNames);
 		corrResultModel.setSearchString(origSearchString);
 		
 		
@@ -90,13 +102,20 @@ public class SearchServiceImpl implements SearchService {
 	 * @param exactMatch
 	 * @param lowerBound
 	 * @param upperBound
+	 * @param fitlerNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, String lowerBound, String upperBound) {
+	public CorrResultModel searchForCorrEvents(
+			String searchString, 
+			int page, 
+			boolean exactMatch, 
+			String lowerBound, 
+			String upperBound, 
+			List filterNames) {
 		
 		long start = new Date().getTime();
 		
-		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page, lowerBound,upperBound);		// **** Search
+		Vector wids = indexingServiceCorrEvents.search(searchString, maxSearchResults, page, lowerBound,upperBound, filterNames);		// **** Search
 
 		int numberOfResults = 0;
 		// go through the guid list provided by the search
@@ -104,6 +123,7 @@ public class SearchServiceImpl implements SearchService {
 		Iterator widIt = wids.iterator();
 		while (widIt.hasNext()) {
 			String guid = (String) widIt.next();
+			log.debug("#### guid: " + guid);
 			
 			// get Correlatedsets with guid
 			List corrEventList = corrPersistenceService.getCorrelatedsetByGuid(guid);	// ***** DB Access
@@ -122,6 +142,7 @@ public class SearchServiceImpl implements SearchService {
 				eventTypeList.put(corrSet.getEventid(), corrSet.getEventType());
 				eventIdList.add(corrSet.getEventid()); 
 			}	
+			log.debug("#### correlationSetDef: " + correlationSetDef);
 			
 			// retrieve alle events for the current correlation
 			List events = eventPersistenceService.getEvents(eventIdList);		//  ***** DB Access
@@ -303,13 +324,14 @@ public class SearchServiceImpl implements SearchService {
 	 * @param page
 	 * @param lowerBound
      * @param upperBound
+     * @param filterNames
 	 * @return
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound) {
+	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound, List filterNames) {
 		int numberOfResults = 0;
 		long start = new Date().getTime();
-		
-		Vector wids = indexingServiceEvents.search(searchString, maxSearchResults, page, lowerBound, upperBound);		// ***** Search
+
+		Vector wids = indexingServiceEvents.search(searchString, maxSearchResults, page, lowerBound, upperBound, filterNames);		// ***** Search
 		
 		List eventAggList = new Vector();
 		Iterator widIt = wids.iterator();
@@ -361,24 +383,38 @@ public class SearchServiceImpl implements SearchService {
 	 * @param foundEventtypes HashMap
 	 * @param lowerBound
      * @param upperBound
+     * @param filterNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound) {
+	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound, List filterNames) {
 		String origSearchString = searchString;
+		
+		// remove eventtypes from hashmap according to the filterNames
+		/*if (filterNames != null && filterNames.size() > 0) {
+			Iterator it = filterNames.iterator();
+			while (it.hasNext()) {
+				String key = (String)it.next();
+				foundEventtypes.remove(key);
+			}
+		}*/
+		
 		// iterate through foundEventtypes and append new criterias to query string
-		Iterator it = foundEventtypes.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String)it.next();
-			Boolean value = (Boolean)foundEventtypes.get(key);
-			
-			if (value.booleanValue() == true) {
-				searchString = searchString + " -" + key;
+		
+		if (filterNames == null) {
+			Iterator it = foundEventtypes.keySet().iterator();
+			while (it.hasNext()) {
+				String key = (String)it.next();
+				Boolean value = (Boolean)foundEventtypes.get(key);
+				
+				if (value.booleanValue() == true) {
+					searchString = searchString + " -" + key;
+				}
 			}
 		}
 		
 		log.debug("### searchString:" + searchString);
 		
-		CorrResultModel corrResultModel = this.searchForEvents(searchString, page, lowerBound, upperBound);
+		CorrResultModel corrResultModel = this.searchForEvents(searchString, page, lowerBound, upperBound, filterNames);
 		corrResultModel.setSearchString(origSearchString);
 		
 		String termAry = new String();

@@ -27,9 +27,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.9 2006/03/16 13:48:44 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.10 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.9 $
+ * $Revision: 1.10 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -114,6 +114,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 			String guid = new String();
 			String words = new String();
 			String date = new String();
+			String corrSetDef = new String();
 			
 			while (i.hasNext()) {
 				Correlationset corrSet = (Correlationset) i.next();
@@ -124,12 +125,20 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 				// if guid changed in loop it means that a new correlation is coming around
 				// so save it to index
 				if (!guid.equals(corrSet.getCorrelationSetGuid())) {
-					indexingServiceCorrEvents.addDocument(guid,words,corrSet.getCorrelationSetDef(),date);
+					log.debug("### guid: " + guid);
+					log.debug("### words: " + words);
+					log.debug("### corrSetDef: " + corrSetDef);
+					log.debug("### date: " + date);
+					indexingServiceCorrEvents.addDocument(guid,words,corrSetDef,date);
 					guid = corrSet.getCorrelationSetGuid();
-					words = corrSet.getEventType() + " ";
-					words = words + corrSet.getCorrelationSetDef();
 					date = new String();
+					words = new String();
+					corrSetDef = corrSet.getCorrelationSetDef();
+					
+					words = words + corrSetDef;
 				} 
+				
+				words = words + corrSet.getEventType() + " ";
 				
 				// retrieve Event and Rwtime from Db
 				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
@@ -141,10 +150,13 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 				// retrieve event attributes 
 				List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
 				// iterate over attributes
+				log.debug("### corrSet.getEventid(): " + corrSet.getEventid());
+				log.debug("### attribsForEvent.size(): " + attribsForEvent.size());
 				Iterator iattrib = attribsForEvent.iterator();
 				while (iattrib.hasNext()) {
 					Eventattribute eventAttrib = (Eventattribute) iattrib.next();
 					words = words + " " + eventAttrib.getValue();
+					log.debug("### words = words + ' ' + eventAttrib.getValue()" + words);
 				}
 			}
 		}

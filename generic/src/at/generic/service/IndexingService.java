@@ -8,9 +8,9 @@ import java.util.Vector;
 
 /**
  * @author szabolcs
- * @version $Id: IndexingService.java,v 1.5 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: IndexingService.java,v 1.6 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * Fulltext index service
  * 
@@ -32,12 +32,15 @@ public interface IndexingService {
 	/**
 	 * Search whole index for something
 	 * 
-	 * @param search
-	 * @param numberOfResults
-	 * @param page
-	 * @return
+	 * @param search SearchString
+     * @param numberOfResults 
+     * @param page
+     * @param lowerBound
+     * @param upperBound
+     * @param filterNames
+     * @return vector
 	 */
-	  public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound);
+	 public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound, List filterNames);
 	
 	/**
      * Search whole index using a list of wids to filter for

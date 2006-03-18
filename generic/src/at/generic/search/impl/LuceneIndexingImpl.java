@@ -26,25 +26,17 @@ import org.apache.lucene.search.RangeFilter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import at.generic.search.lucene.ChainedFilter;
 import at.generic.search.lucene.TermsFilter;
 import at.generic.service.IndexingService;
 
 /**
  * @author szabolcs
- * @version $Id: LuceneIndexingImpl.java,v 1.6 2006/03/16 11:11:29 szabolcs Exp $
+ * @version $Id: LuceneIndexingImpl.java,v 1.7 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Fulltext index service
- * 
- * TODO:
- * - create batch update for documents --> speed much better
- * - IndexSearcher is capable of caching if you create one instance!! p.177
- *   But you have to recreate the instance if the index changes. 
- *   A possible solution would be to make a batch update for bigger inserts
- *   and when closing the batch update to create a new instance of IndexSearcher.
- *   If a normal index update has been performed then the IndexSearch will be recreated.
- * - check out CachingWrappingFilter when using ChainedFilter p. 307 
  * 
  */
 public class LuceneIndexingImpl implements IndexingService {
@@ -142,8 +134,9 @@ public class LuceneIndexingImpl implements IndexingService {
      * @param page
      * @param lowerBound
      * @param upperBound
+     * @param filterNames
      */
-    public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound) {
+    public Vector search(String search, int numberOfResults, int page, String lowerBound, String upperBound, List filterNames) {
     	//log.debug("#### searchQuery=" + search);
     	//log.debug("### numberOfResults " + numberOfResults);
     	
@@ -160,10 +153,35 @@ public class LuceneIndexingImpl implements IndexingService {
 			filter.addTerm(new Term("date", "20060304 TO 20060304"));*/
     		Query query = QueryParser.parse(search.trim(), "text", new StandardAnalyzer());
     		Hits hits = null;
+    		Filter dateFilter = null;
+    		TermsFilter profileFilter = null;
     		if (lowerBound != null && upperBound != null && lowerBound.length() > 0 && upperBound.length() > 0) {
-    			Filter filter = new RangeFilter("date", lowerBound, upperBound, true, true);
-    			hits = indexSearcher.search(query, filter);
+    			dateFilter = new RangeFilter("date", lowerBound, upperBound, true, true);
+    			//hits = indexSearcher.search(query, filter);
+    		} 
+    		
+    		if (filterNames != null && filterNames.size() > 0) {
+    			profileFilter = new TermsFilter();
+    	    	Iterator nameIt = filterNames.iterator();
+    			while (nameIt.hasNext()) {
+    				String name = (String)nameIt.next();
+    				log.debug("### profileFilter addTerm:" + name);
+    				profileFilter.addTerm(new Term("type", name)); 
+    			} 
+    		}
+    		
+    		if (dateFilter != null && profileFilter == null) {
+    			log.debug("### only dateFilter");
+    			hits = indexSearcher.search(query, dateFilter);
+    		} else if (dateFilter == null && profileFilter != null) {
+    			log.debug("### only profileFilter");
+    			hits = indexSearcher.search(query, profileFilter);
+    		} else if (dateFilter != null && profileFilter != null) {
+    			log.debug("### chainFilter");
+    			ChainedFilter chain = new ChainedFilter(new Filter[] {dateFilter, profileFilter}, ChainedFilter.AND); 
+    			hits = indexSearcher.search(query, chain);
     		} else {
+    			log.debug("### no filter");
     			hits = indexSearcher.search(query);
     		}
 	    	

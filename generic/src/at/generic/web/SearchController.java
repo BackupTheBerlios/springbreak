@@ -1,6 +1,7 @@
 package at.generic.web;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.Controller;
 import at.generic.search.SearchForAttribs;
 import at.generic.search.resultmodel.CorrResultModel;
 import at.generic.service.SearchService;
+import at.generic.service.impl.AdminPersistenceServiceImpl;
 import at.generic.util.EventDate;
 
 
@@ -21,9 +23,9 @@ import at.generic.util.EventDate;
 
 /**
  * @author szabolcs
- * @version $Id: SearchController.java,v 1.9 2006/03/16 13:48:44 szabolcs Exp $
+ * @version $Id: SearchController.java,v 1.10 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.9 $
+ * $Revision: 1.10 $
  * 
  * Controller for the Event Search
  * 
@@ -33,6 +35,7 @@ public class SearchController implements Controller {
 	
 	private SearchForAttribs eventSearch;
 	private SearchService searchService;
+	private AdminPersistenceServiceImpl adminPersistenceService;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession(true);
@@ -49,16 +52,11 @@ public class SearchController implements Controller {
 			String searchStr = request.getParameter("searchstring");
 			int page = 1;
 			boolean showRefineQuery = false;
+			
+			// date range stuff
 			boolean dateRangeActive = false;
-			/*String lowerBoundDay = new String();
-			String lowerBoundMonth = new String();
-			String lowerBoundYear = new String();
-			String upperBoundDay = new String();
-			String upperBoundMonth = new String();
-			String upperBoundYear = new String();*/
 			String lowerRange = new String();
 			String upperRange = new String();
-			
 			int lowerBoundDay = 0;
 			int lowerBoundMonth = 0;
 			int lowerBoundYear = 0;
@@ -66,6 +64,10 @@ public class SearchController implements Controller {
 			int upperBoundMonth = 0; 
 			int upperBoundYear = 0;
 			
+			// profile stuff
+			boolean profileChanged = false;
+			String profileName = new String();
+			List profileCons = adminPersistenceService.getProfiles();
 			
 			// retrieve display infos only if NO new search has been activated
 			CorrResultModel corrResultModelTmp = (CorrResultModel)session.getAttribute("resultModel");
@@ -99,6 +101,13 @@ public class SearchController implements Controller {
 						log.debug("### dateRangeActive = true");
 					}
 					
+					// retrieve selected profile
+					if (corrResultModelTmp.isProfileChanged() == true) {
+						profileName = corrResultModelTmp.getProfileName();
+						profileChanged = true;
+						log.debug("### profileChanged = true");
+					}
+					
 				}
 				
 				if (request.getParameter("changeEventFilter") != null 
@@ -114,6 +123,14 @@ public class SearchController implements Controller {
 					lowerRange = new String();
 					upperRange = new String();
 					log.debug("### dateRangeActive = false");
+				}
+				
+				if (request.getParameter("profileChanged") != null 
+						&& request.getParameter("profileChanged").equals("false")) {
+					profileChanged = false;
+					profileName = new String();
+					foundEventtypes = new HashMap();
+					log.debug("### profileChanged = false");
 				}
 				
 				// check if dateRange filter has been applied and update it
@@ -132,6 +149,13 @@ public class SearchController implements Controller {
 					dateRangeActive = true;
 					log.debug("### dateRangeActive = true");
 				}
+				
+				if (request.getParameter("profileChanged") != null 
+						&& request.getParameter("profileChanged").equals("true")) {
+					profileChanged = true;
+					profileName = request.getParameter("profileName");
+					log.debug("### profileChanged = true");
+				}
 			}
 			
 			// check search rank type!
@@ -147,16 +171,20 @@ public class SearchController implements Controller {
 				log.debug("### Rank 2 Search");
 				if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true")) {
 					// exact match
-					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true, lowerRange, upperRange);
+					corrResultModel = searchService.searchForCorrEvents(searchStr, page, true, lowerRange, upperRange, null);
 					log.debug("### exactMatch == true");
 				} else {
 					// normal Rank 2 search
 					// check if a refinement has been created
 					if (foundEventtypes.size() > 0) {
-						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes, lowerRange, upperRange);
-						corrResultModel.setFoundEventtypes(foundEventtypes);
+						if (profileChanged == true) {
+							corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes, lowerRange, upperRange, adminPersistenceService.getFiltersForProfile(profileName));
+						} else {
+							corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, foundEventtypes, lowerRange, upperRange, null);
+							corrResultModel.setFoundEventtypes(foundEventtypes);
+						}
 					} else {
-						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, lowerRange, upperRange);
+						corrResultModel = searchService.searchForCorrEvents(searchStr, page, false, lowerRange, upperRange, null);
 					}
 					log.debug("### exactMatch == false");
 				}
@@ -165,10 +193,15 @@ public class SearchController implements Controller {
 				log.debug("### Rank 1 Search");
 				// check if a refinement has been created
 				if (foundEventtypes.size() > 0) {
-					corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes, lowerRange, upperRange);
-					corrResultModel.setFoundEventtypes(foundEventtypes);
+					if (profileChanged == true) {
+						corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes, lowerRange, upperRange, adminPersistenceService.getFiltersForProfile(profileName));
+					} else {
+						corrResultModel = searchService.searchForEvents(searchStr, page, foundEventtypes, lowerRange, upperRange, null);
+						corrResultModel.setFoundEventtypes(foundEventtypes);
+					}
 				} else {
-					corrResultModel = searchService.searchForEvents(searchStr, page, lowerRange, upperRange);
+					// create list of eventfilters
+					corrResultModel = searchService.searchForEvents(searchStr, page, lowerRange, upperRange, null);
 				}
 					
 				log.debug("### Rank 1 Search end");
@@ -187,6 +220,11 @@ public class SearchController implements Controller {
 			corrResultModel.setUpperBoundDay(upperBoundDay);
 			corrResultModel.setUpperBoundMonth(upperBoundMonth);
 			corrResultModel.setUpperBoundYear(upperBoundYear);
+			
+			corrResultModel.setProfileName(profileName);
+			corrResultModel.setProfileChanged(profileChanged);
+			
+			corrResultModel.setProfileCons(profileCons);
 			
 			// check if exact match
 			if (request.getParameter("exactSearch") != null && request.getParameter("exactSearch").equals("true"))
@@ -280,6 +318,21 @@ public class SearchController implements Controller {
 	 */
 	public void setSearchService(SearchService searchService) {
 		this.searchService = searchService;
+	}
+
+	/**
+	 * @return Returns the adminPersistenceService.
+	 */
+	public AdminPersistenceServiceImpl getAdminPersistenceService() {
+		return adminPersistenceService;
+	}
+
+	/**
+	 * @param adminPersistenceService The adminPersistenceService to set.
+	 */
+	public void setAdminPersistenceService(
+			AdminPersistenceServiceImpl adminPersistenceService) {
+		this.adminPersistenceService = adminPersistenceService;
 	}
 	
 	

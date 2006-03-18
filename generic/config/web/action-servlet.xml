@@ -55,6 +55,7 @@
 				<prop key="/browseEvents.html">BrowseEventsController</prop>
 				<prop key="/admin.html">adminController</prop>
 				<prop key="/search.html">searchController</prop>
+				<prop key="/help.html">helpController</prop>
 			</props>
 		</property>
 	</bean>
@@ -87,6 +88,9 @@
 		<property name="corrPersistenceService">
 			<ref bean="correlatingEventsPersistenceService"/>
 		</property>
+		<property name="searchService">
+    		<ref bean="searchService"/>
+    	</property>
   	</bean>
   	
   	<bean name="searchController" class="at.generic.web.SearchController">
@@ -96,6 +100,13 @@
 		<property name="searchService">
     		<ref bean="searchService"/>
     	</property>
+    	<property name="adminPersistenceService">
+			<ref bean="adminPersistenceService"/>
+		</property>
+  	</bean>
+  	
+  	<bean name="helpController" class="at.generic.web.HelpController">
+  		
   	</bean>
 	
 	<!-- ====================================================================================	-->

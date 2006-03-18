@@ -186,9 +186,44 @@
 					</tr>
 					<tr valign="top">
 						<td bgcolor="#ECECEC">
-							<table border="0">
-								not implemented yet
-							</table>	
+							<font color="red"><b><c:out value="${adminData.msg}"/></b></font>
+							<form action="admin.html" method="get" >
+								<input type="hidden" name="updateSearchInfos" value="true">
+								<table border="0">
+									<tr>
+										<td>
+											Look ahead Rank 1:
+										</td>
+										<td>
+											<input type="text" size="10" name="lookAheadRank1" value="<c:out value="${adminData.lookAheadRank1}"/>">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Look ahead Rank 2:
+										</td>
+										<td>
+											<input type="text" size="10" name="lookAheadRank2" value="<c:out value="${adminData.lookAheadRank2}"/>">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Page size:
+										</td>
+										<td>
+											<input type="text" size="10" name="pageSize" value="<c:out value="${adminData.pageSize}"/>">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											&nbsp;
+										</td>
+										<td>
+											<input type="submit" value="Update">
+										</td>
+									</tr>
+								</table>	
+							</form>
 						</td>
 					</tr>
 				</table>

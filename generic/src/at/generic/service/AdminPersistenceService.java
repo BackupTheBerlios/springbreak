@@ -21,9 +21,9 @@ import at.generic.web.commandObj.ProfileCons;
 
 /**
  * @author szabolcs
- * @version $Id: AdminPersistenceService.java,v 1.2 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: AdminPersistenceService.java,v 1.3 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Facade for correlating events persitence operations
  */
@@ -111,6 +111,14 @@ public interface AdminPersistenceService {
 	 * @param id
 	 */
 	public void removeProfile(Integer id);
+	
+	/**
+	 * Returns a List with Filternames for a Profile
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public List getFiltersForProfile(String name);
 	
 	//	 =============== Getters and Setters ==================
 	

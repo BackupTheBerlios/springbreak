@@ -1,14 +1,15 @@
 package at.generic.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import at.generic.search.resultmodel.CorrResultModel;
 
 /**
  * @author szabolcs
- * @version $Id: SearchService.java,v 1.6 2006/03/16 13:48:44 szabolcs Exp $
+ * @version $Id: SearchService.java,v 1.7 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Search service
  * 
@@ -23,9 +24,17 @@ public interface SearchService {
 	 * @param foundEventtypes HashMap
 	 * @param lowerBound
 	 * @param upperBound
+	 * @param fitlerNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, HashMap foundEventtypes, String lowerBound, String upperBound);
+	public CorrResultModel searchForCorrEvents(
+			String searchString, 
+			int page, 
+			boolean exactMatch, 
+			HashMap foundEventtypes, 
+			String lowerBound, 
+			String upperBound, 
+			List filterNames);
 	
 	/**
 	 * Searches Index of correlating sets for a given query
@@ -35,9 +44,16 @@ public interface SearchService {
 	 * @param exactMatch
 	 * @param lowerBound
 	 * @param upperBound
+	 * @param fitlerNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForCorrEvents(String searchString, int page, boolean exactMatch, String lowerBound, String upperBound);
+	public CorrResultModel searchForCorrEvents(
+			String searchString, 
+			int page, 
+			boolean exactMatch, 
+			String lowerBound, 
+			String upperBound, 
+			List filterNames);
 	
 	/**
 	 * Search for Correlated context of an event
@@ -57,18 +73,22 @@ public interface SearchService {
 	 * @param foundEventtypes HashMap
 	 * @param lowerBound
      * @param upperBound
+     * @param filterNames
 	 * @return CorrResultModel
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound);
+	public CorrResultModel searchForEvents(String searchString, int page, HashMap foundEventtypes, String lowerBound, String upperBound, List filterNames);
 	
 	/**
 	 * Search index for matching events
 	 * 
 	 * @param searchString
 	 * @param page
+	 * @param lowerBound
+     * @param upperBound
+     * @param filterNames
 	 * @return
 	 */
-	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound);
+	public CorrResultModel searchForEvents(String searchString, int page, String lowerBound, String upperBound, List filterNames);
 	
 	
 	// ============== Getters and Setters =====================

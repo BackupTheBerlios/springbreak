@@ -59,15 +59,25 @@
 					</tr>
 					<tr>
 						<td bgcolor="#ECECEC">
-							<c:forEach items="${searchResult.foundEventtypes}" var="eventTypes" >
-								<c:if test="${eventTypes.value == false}">
-									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=true"><img src="images/corrMinusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
-								</c:if>
-								<c:if test="${eventTypes.value == true}">
-									<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=false"><img src="images/corrPlusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
-								</c:if>
-								<br/>
-							</c:forEach>
+							<c:choose>
+								<c:when test="${searchResult.profileChanged == true}">
+									<c:forEach items="${searchResult.foundEventtypes}" var="eventTypes" >
+											<c:out value="${eventTypes.key}"/>
+										<br/>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${searchResult.foundEventtypes}" var="eventTypes" >
+										<c:if test="${eventTypes.value == false}">
+											<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=true"><img src="images/corrMinusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+										</c:if>
+										<c:if test="${eventTypes.value == true}">
+											<a href="search.html?browserPage=1&changeEventFilter=<c:out value="${eventTypes.key}"/>&changeEventFilterTo=false"><img src="images/corrPlusButton.jpg" border="0"/><c:out value="${eventTypes.key}"/></a>
+										</c:if>
+										<br/>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</table>
@@ -109,6 +119,46 @@
 					</tr>
 				</table>
 				<!--  Date selector END-->
+				<!-- Profile START -->
+				<table border="0" width="250px">
+					<tr>
+						<td bgcolor="#E5ECF9">
+							<table width="100%" cellspacing="0" cellpadding="5" style="border-top:solid #3366CC 1px">
+								<tr>
+									<td bgcolor="#E5ECF9">
+										<table border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tr>
+												<td><b>Profiles...</b></td>
+												<td align="right">
+													<c:if test="${searchResult.profileChanged == true}">
+														<a href="search.html?browserPage=1&profileChanged=false">remove profile</a>
+													</c:if>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ECECEC">	
+							<form action="search.html" method="get" >
+								<br/>
+								<input type="hidden" name="browserPage" value="1">
+								<input type="hidden" name="profileChanged" value="true">
+								
+								<select name="profileName" size="1">
+									<c:forEach items="${searchResult.profileCons}" var="profiles" >
+										<option <c:if test="${searchResult.profileName == profiles.profile.name}">selected</c:if>><c:out value="${profiles.profile.name}"/></option>
+									</c:forEach>
+								</select>
+								<input type="submit" value="Go">
+							</form>
+						</td>
+					</tr>
+				</table>
+				<!-- Profile END -->				
 			</c:if>
 		</td>
 		<!-- Filter Bar--> 

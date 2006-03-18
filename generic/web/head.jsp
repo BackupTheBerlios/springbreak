@@ -78,7 +78,7 @@ A:hover
 			<table border="0">
 				<tr>
 					<td>
-						<center><a href="browseEvents.html">Browse Events</a> | <a href="admin.html">Admin</a> | <a href="admin.html">Help</a></center>
+						<center><a href="browseEvents.html">Browse Events</a> | <a href="admin.html">Admin</a> | <a href="help.html">Help</a></center>
 					</td>
 				</tr>
 				<tr>

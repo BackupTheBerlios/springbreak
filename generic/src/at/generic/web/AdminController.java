@@ -19,14 +19,15 @@ import at.generic.service.AdminPersistenceService;
 import at.generic.service.CorrelatingEventsPersistenceService;
 import at.generic.service.EventPersistenceService;
 import at.generic.service.IndexingService;
+import at.generic.service.SearchService;
 import at.generic.web.commandObj.AdminCommand;
 
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.7 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.8 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * 
  * <p>Controller for the ETL Process</p>
  * 
@@ -40,6 +41,7 @@ public class AdminController implements Controller {
 	private AdminPersistenceService adminPersistenceService;
 	private IndexingService indexingServiceEvents;
 	private IndexingService indexingServiceCorrEvents;
+	private SearchService searchService;
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception { 
 		if (request.getParameter("startTransformation") != null && request.getParameter("startTransformation").equals("true")) {
@@ -147,6 +149,33 @@ public class AdminController implements Controller {
 			adminData.setProfileMenue(666);
 			adminData.setMsg("Profile Deleted!");
 		}
+		
+		// retrieve data for Search Admin
+		if (request.getParameter("updateSearchInfos") != null && !request.getParameter("updateSearchInfos").equals("")) {
+			if (request.getParameter("lookAheadRank1").equals("")
+					|| request.getParameter("lookAheadRank2").equals("")
+					|| request.getParameter("pageSize").equals("")
+				) {
+				adminData.setMsg("Don't leave anything empty");
+			} else {
+				try {
+					int la1 = Integer.parseInt(request.getParameter("lookAheadRank1"));
+					int la2 = Integer.parseInt(request.getParameter("lookAheadRank2"));
+					int pS = Integer.parseInt(request.getParameter("pageSize"));
+					
+					indexingServiceEvents.setMaxNumberOfLookAhead(la1);
+					indexingServiceCorrEvents.setMaxNumberOfLookAhead(la2);
+					searchService.setMaxSearchResults(pS);
+					
+				} catch (NumberFormatException e) {
+					adminData.setMsg("only numeric values!");
+				}
+			}
+		}
+		
+		adminData.setLookAheadRank1(indexingServiceEvents.getMaxNumberOfLookAhead());
+		adminData.setLookAheadRank2(indexingServiceCorrEvents.getMaxNumberOfLookAhead());
+		adminData.setPageSize(searchService.getMaxSearchResults());
 		
 		//sourceEventEtl.transformSourceEvents();
 		return new ModelAndView("admin", "adminData", adminData);
@@ -279,6 +308,22 @@ public class AdminController implements Controller {
 	public void setCorrPersistenceService(
 			CorrelatingEventsPersistenceService corrPersistenceService) {
 		this.corrPersistenceService = corrPersistenceService;
+	}
+
+
+	/**
+	 * @return Returns the searchService.
+	 */
+	public SearchService getSearchService() {
+		return searchService;
+	}
+
+
+	/**
+	 * @param searchService The searchService to set.
+	 */
+	public void setSearchService(SearchService searchService) {
+		this.searchService = searchService;
 	}
 
 	

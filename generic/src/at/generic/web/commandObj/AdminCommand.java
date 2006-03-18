@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author szabolcs
- * @version $Id: AdminCommand.java,v 1.6 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: AdminCommand.java,v 1.7 2006/03/18 15:24:09 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * Data Object for the ETL Admin section
  * 
@@ -41,6 +41,11 @@ public class AdminCommand {
 	private List profileList;			// Holding a List of ProfileCons
 	private ProfileCons profileCons;	// for editing a Profile
 	private boolean editingProfile = false; 	// indicates if a Profile is opened for edit
+	
+	//Search Admin stuff
+	private int lookAheadRank1;
+	private int lookAheadRank2;
+	private int pageSize;
 	
 	
 	/**
@@ -298,6 +303,48 @@ public class AdminCommand {
 	 */
 	public void setEditingProfile(boolean editingProfile) {
 		this.editingProfile = editingProfile;
+	}
+	
+	/**
+	 * @return Returns the lookAheadRank1.
+	 */
+	public int getLookAheadRank1() {
+		return lookAheadRank1;
+	}
+	
+	/**
+	 * @param lookAheadRank1 The lookAheadRank1 to set.
+	 */
+	public void setLookAheadRank1(int lookAheadRank1) {
+		this.lookAheadRank1 = lookAheadRank1;
+	}
+	
+	/**
+	 * @return Returns the lookAheadRank2.
+	 */
+	public int getLookAheadRank2() {
+		return lookAheadRank2;
+	}
+	
+	/**
+	 * @param lookAheadRank2 The lookAheadRank2 to set.
+	 */
+	public void setLookAheadRank2(int lookAheadRank2) {
+		this.lookAheadRank2 = lookAheadRank2;
+	}
+	
+	/**
+	 * @return Returns the pageSize.
+	 */
+	public int getPageSize() {
+		return pageSize;
+	}
+	
+	/**
+	 * @param pageSize The pageSize to set.
+	 */
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 	
 	
