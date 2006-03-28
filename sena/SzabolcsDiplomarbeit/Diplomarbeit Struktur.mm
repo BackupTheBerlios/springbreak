@@ -7,7 +7,7 @@
 <icon BUILTIN="full-1"/>
 <node CREATED="1143038835734" ID="Freemind_Link_1569510968" MODIFIED="1143038847370" TEXT="Introduction">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1143038848622" ID="Freemind_Link_1698741348" MODIFIED="1143209330100" TEXT="Current IT landscape">
+<node CREATED="1143038848622" FOLDED="true" ID="Freemind_Link_1698741348" MODIFIED="1143209330100" TEXT="Current IT landscape">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1143038889090" ID="Freemind_Link_612671510" MODIFIED="1143209328228" TEXT="distributed and connected through Internet"/>
 <node CREATED="1143038924551" ID="Freemind_Link_1724365718" MODIFIED="1143209326125" TEXT="automated workflow">
@@ -35,7 +35,7 @@
 </node>
 <node CREATED="1143039041079" ID="Freemind_Link_156358598" MODIFIED="1143039064112" TEXT="Example Government and military information systems next to commerical"/>
 </node>
-<node CREATED="1143039302715" ID="Freemind_Link_1802423830" MODIFIED="1143209319135" TEXT="Problems">
+<node CREATED="1143039302715" FOLDED="true" ID="Freemind_Link_1802423830" MODIFIED="1143209319135" TEXT="Problems">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1143038867219" ID="Freemind_Link_303854197" MODIFIED="1143039268626" TEXT="Problem of monitoring and managing information">
 <node CREATED="1143039100284" ID="Freemind_Link_365347976" MODIFIED="1143039116798" TEXT="billions of events running throug those systems"/>
@@ -95,7 +95,8 @@
 <node CREATED="1140098055718" ID="_" MODIFIED="1141928833219" TEXT="Bedeutung von Events">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
-<node CREATED="1143036394083" ID="Freemind_Link_978903069" MODIFIED="1143036396757" TEXT="Events">
+<node CREATED="1143036394083" FOLDED="true" ID="Freemind_Link_978903069" MODIFIED="1143454257375" TEXT="Events">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1143036397858" ID="Freemind_Link_1397872395" MODIFIED="1143036401854" TEXT="Definitions">
 <node CREATED="1143036596995" ID="Freemind_Link_552532721" MODIFIED="1143036611666" TEXT="Difference between message and event"/>
 <node CREATED="1143036469331" ID="Freemind_Link_1857557131" MODIFIED="1143036473126" TEXT="Three aspects">
@@ -174,11 +175,9 @@
 <node CREATED="1143037278825" ID="Freemind_Link_1284018423" MODIFIED="1143037284303" TEXT="Aggregation"/>
 </node>
 </node>
-<node CREATED="1141426342000" ID="Freemind_Link_580159673" MODIFIED="1141426352796" TEXT="bezug &quot;Power of Events&quot;"/>
 <node CREATED="1141928855411" ID="Freemind_Link_1234323669" MODIFIED="1141928862952" TEXT="Warum will ich Events suchen">
 <node CREATED="1141928878774" ID="Freemind_Link_1498090436" MODIFIED="1141928884903" TEXT="Szenarios"/>
 </node>
-<node CREATED="1141928918441" ID="Freemind_Link_1548270823" MODIFIED="1141928938330" TEXT="Abgrenzung dieser Arbeit neben dem gro&#xdf;en Bild"/>
 <node CREATED="1140098155046" ID="Freemind_Link_841435694" MODIFIED="1141426474484" TEXT="Anwendungsgebiete von Eventbasierten Systemen">
 <node CREATED="1143040631809" ID="Freemind_Link_46222021" MODIFIED="1143040638279" TEXT="Security"/>
 <node CREATED="1143040641463" ID="Freemind_Link_1180671015" MODIFIED="1143040642635" TEXT="BI"/>
@@ -187,6 +186,7 @@
 <node CREATED="1143040654432" ID="Freemind_Link_1009569333" MODIFIED="1143040655353" TEXT="ERP"/>
 <node CREATED="1143040657566" ID="Freemind_Link_1183981295" MODIFIED="1143040680399" TEXT="anything"/>
 </node>
+<node CREATED="1141928918441" ID="Freemind_Link_1548270823" MODIFIED="1141928938330" TEXT="Abgrenzung dieser Arbeit neben dem gro&#xdf;en Bild"/>
 </node>
 <node CREATED="1140098111750" ID="Freemind_Link_1957745656" MODIFIED="1140098140796" TEXT="Bedeutung der Auffindung von Daten">
 <node CREATED="1140098336718" ID="Freemind_Link_1345148021" MODIFIED="1140098366796" TEXT="Probleme"/>
