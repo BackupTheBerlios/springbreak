@@ -1,10 +1,12 @@
-\documentclass[a4paper,titlepage,11pt,DIV10,BCOR0.5cm,headinclude]{article}
+%\documentclass[a4paper,titlepage,12pt,DIV10,BCOR0.5cm,headinclude]{scrbook}
+\documentclass[a4paper,titlepage,12pt,DIV10,BCOR0.5cm,headinclude]{article}
 \DeclareFixedFont{\MyCode}{T1}{pcr}{m}{n}{10pt}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{eurosym}
 \usepackage[pdftex]{graphicx}
 \usepackage{ae}
+%\usepackage{a4}	for scrbook
 \usepackage{lscape}
 % \usepackage{url}
 \usepackage{listings}
@@ -13,6 +15,8 @@
 
 \pagestyle{plain}
 \pagenumbering{arabic}
+
+
 \begin{document}
 \parindent 0pt
 
@@ -361,15 +365,236 @@ Events can be passed through intermediate nodes in a circuite that provides diff
 \end{itemize}
 
 HP-ECS has a major flaw because it is not usable for generic event correlation as it only supports correlation for SNMP and CMIP events.
+
 %**************************************************************************************
 \section{Scope of this diploma thesis}
 %**************************************************************************************
 
+We have seen in the previous chapters which impact events have got in todays decision making processes and what value it creates for process managment especially in large and global oriented enterprises. E-Business and E-Markets have created a global playground for automated workflow systems which results in a huge traffic flow of information between corporate networks and department systems. The lack of monitoring these events in a sense of correlating them, creating causal relationships or aggregate them to high level events is still a problem that is currently challenged by academic and commerical oriented institutions. Some of them like Senactive's Sense and Response Architecture provides the ability to monitor event flows and proactivly react on them to change the business processes based on real-time information provided by the various enterprise systems. This is a major step towards real-time enabled enterprises that can challenge the requirements of todays highly dynamic business world. 
+\\\\
+The core of this diploma thesis does not go in first place into event-based processing problems like creating sophisticated causal trackings or correlation algorithms. This thesis is about a system that enables the historic view of collected historic event streams that have been preprocessed by Senactives InTime Sense and Response Architecture. As Intime can react proactivly on given business situations based on event constellations and defined rules it can rearrange business processes to stear the business environment and processes into a given direction. This will result in a chain of newly triggered event flows which join back to the control loop. InTime is capable or correlating events according to predefined rules and delivers causal tracking of events. 
+\\\\
+The system developed in this diploma thesis is collecting those \textit{catched} events and creates a full text index over them to enable a Google like search experience for investigation purposes. The major application of this system is to offer the user a toolset to discover different aspects of business processes based on event correlations. This system has evolved over several stages to clarify which architecture would be the best solution to provide this kind of search and discovery experience to a user and at the same time to lay the foundation for further work in the area of event mining and correlation discovery. 
+%**************************************************************************************
+\newpage
+\section{Searching for correlated business information}
+%**************************************************************************************
+
+%**************************************************************************************
+\subsection{Information Findability}
+%**************************************************************************************
+According to \cite{Morville05} findability is described by following aspects:
+
+\begin{itemize}
+	\item \textit{The quality of being locatable or navigable.}
+	\item \textit{The degree to which a particular object is easy to discover or locate.}
+	\item \textit{The degree to which a system or environment supports navigation and retrieval.}
+\end{itemize}
+
+Google has shown the world that searching the web does not have to be based on simple keyword matchings or word frequency countings. It introduced a completle new way of rating weppage contents and to calculate the best hits out of some search terms provided by the user. Google's commercial success has proven the world that this way of finding information is the right one at least for the moment as long as noone else comes with a better idea. 
+\\\\
+The look and feel of Google like finding and retrieving information has become a defacto standard and numerous applications integrate full text indexing algorithms and methods into their applications to provide a search based access to information and data. These applications don't necessarliy concentrate on finding webpages it's applied on a variety of information like office documents, products, flight schedeules or even free available source code. People tend to go away from the classic topologic of classifying information into tree like catalogous and let the user to navigate through these structures to get their desired information. A good indexing and retrieval mechanism allows the users to find and access information by typing some terms into a textbox and a ranking algorithm calculates the best hits out of the found information to present the most relevant information. This way of organising the access to information has become a great success as numerous applications has proven like koders.com, Google Desktop Search and Apple's Spotlight for instance. 
+\\\\
+\textit{Of course, access doesn't simply require us to make decisions in more areas of our lives. It also changes the game by inviting us to make informed decisions more often.} \cite{Morville05}
+
+%**************************************************************************************
+\newpage
+\subsection{Background}
+%**************************************************************************************
+
+% welchen bedeutung hat event cloud? siehe scope
+% was kann der Benutzer damit machen?
+% Grundlage für Eventmining und correlation finding
+% Geeignete Architektur für so eine Anwendung finden
+% Fokus auf freie Technologien
+
+Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occured events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired managable pool of events and correlations. Event Cloud provides the user the option to to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
+\\\\
+Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the Spring framework to bind the components together.
+\\\\
+Basically Event Cloud consists of three main functions: 
+
+\begin{itemize}
+	\item Extracting and transforming event data from the source system and integrate them into Event Cloud's own data structure.
+	\item Full text index over simple and correlated events.
+	\item Search functionality including a sophisticated query syntax and various filter functions
+\end{itemize}
+
+This functionalitie should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a Google like experience. 
+\\\\
+This diploma thesis was supported by Josef Schiefer and Senactive by providing Intime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the Intime product.
+
+%**************************************************************************************
+\newpage
+\subsection{Search Concepts}
+%**************************************************************************************
+% Das Suchen ist der zentrale Teil daher muss man bestimmte Suchkonzepte unterscheiden die
+% vom System unterstützt werden.
+The subsequent chapters will give an conceptual overview of the search type features provided by Event Cloud.
+
+%**************************************************************************************
+\subsubsection{Rank 1}
+%**************************************************************************************
+The Rank 1 search is simple full text search over all searchable attributes of an event. The user is able to put down a search query consisting of several search terms and boolean operators according to Lucenes BNF query syntax. The result will be a list of events that matched the given query. 
+\\\\
+The Rank 1 search is pretty straight forward like you would search documents on the internet using any search engine available. 
+\\\\
+Take a look at the example (Figure \ref{fig:rank1searchExample}) where we have several events in our repository. The user queries for the terms "Paris London Szabolcs" and gets back the events TransportEnd and TransportStart as these terms occured in those events ordered by the most relevant hits. No boolean operators have been applied in this query example. If the user would have entered a query like "szabolcs AND Paris" he would have received events where the terms Paris and Szabolcs would have occured. For more details take a look at the query syntax as this is not in the scope of this chapter.
+%***********************
+\begin{figure}[ht]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/rankOneSearchExample.jpg}
+	\caption{Rank 1 search example}             
+	\label{fig:rank1searchExample}
+\end{figure}            
+%***********************      
+%**************************************************************************************
+\subsubsection{Rank 2}
+%**************************************************************************************
+At the current point the heart of Event Cloud is the Rank 2 search which is an extension of the Rank 1 search. The difference between Rank 1 and Rank 2 search is that this search type is not looking at events at an atomic level rather it searches over whole correlations of events (Figure \ref{fig:rank2correlation}). By executing a Rank 2 search the query will go over whole correlationsets of events instead of looking only at events like in the Rank 1 search type. 
+\\\\
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=0.7\textwidth]{pics/rankTwoSearchExample.jpg}
+	\caption{Rank 2 search example}             
+	\label{fig:rank2searchExample}
+\end{figure}            
+%***********************   
+If a user puts down a search query consisting of terms like "Paris London Szabolcs" the search engine will retrieve correlations consisting of events that matched these terms (Figure \ref{fig:rank1searchExample}). That means that you will get back a correlation whose event attributes contain either Paris, London or Szabolcs. Correlationsets whose Events would not contain the terms "Paris London Szabolcs" would not be considered. If for instance a correlationset is consisting of eigth events and only one event contains the search terms it would be still a hit but maybe a bad one depending on the other found hits.
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/rankTwoCorrelation.jpg}
+	\caption{Event correlation}             
+	\label{fig:rank2correlation}
+\end{figure}            
+%*********************** 
+   
+%**************************************************************************************
+\subsubsection{Rank 3}
+%**************************************************************************************
+This type of search is not implemented in the current work as it is a very complex topic and beyond the scope of this diploma thesis. For the sake of completness I want to give a brief overview about this event search type. The Rank 3 is searching over correlations like the Rank 2 search but instead of using direct correlations between events it searches over indirect correlations between correlationsets. It is actually the same like the Rank 2 but one aggregation level higher and the result hits are additionally evaluated by a distance factor of these indirect correlations.
+\\\\
+The challenge behind this type of correlation search is to discover indirect correlations between events and to implement an effective search alorithm to rank the most relevant hits. This technique could become a performance eating task as you have to find a way to consider a higher aggregation level when querying for events.
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=0.5\textwidth]{pics/rankThreeSearchExample.jpg}
+	\caption{Rank 3 search}             
+	\label{fig:rank3searchExample}
+\end{figure}            
+%***********************  
+%**************************************************************************************
+\newpage
+\subsection{Architecture}
+%**************************************************************************************
+% Hier fangen jetzt die Details an! High level Architektur + Technologien genau beschreiben
+% High Level overview mit Bild und kurz die Komponenten beschreiben und wie sie zusammenspielen
+% simulator für eventsimulation kurz erwähnen und details dann beim Simulator abschnitt selber schreiben.
+%**************************************************************************************
+\begin{landscape}
+\subsubsection{High level overview}
+%**************************************************************************************
+%***********************
+\begin{figure}[ht]                                  
+	\centering                                           
+	\includegraphics[width=1.2\textwidth]{pics/EventCloudHighLevelOverview.jpg}
+	\caption{Event Cloud High Level Overview}             
+	\label{fig:eventCloudHighLevel}
+\end{figure}            
+%***********************                       
+\end{landscape}
+%**************************************************************************************
+\subsection{Searching}
+%**************************************************************************************
+%**************************************************************************************
+\subsubsection{Query Syntax}
+%**************************************************************************************
+Event Cloud is using Lucene's sophisticated query parser to provide a full featured query syntax to allow the creation of complex queries for searching and retrieving events and their correlations. 
+\\\\
+The formal query grammar definition \cite{LuceneQueryParserAPI}:
+\begin{lstlisting}
+Query  ::= ( Clause )*
+Clause ::= ["+", "-"] [<TERM> ":"] ( <TERM> | "(" Query ")" )
+\end{lstlisting}
+A clause can contain either a Term expression or another nested Query. There are two distinctions between terms. There can exist a \textit{single term} like "hello" or "test" or a term can be a \textit{phrase} like "hello world" enclosed by double quotes. It is possible to combine multiple terms with boolean operators \cite{LuceneQueryDescriptionPage}. The predefined Boolean connector configured in Event Cloud for Terms is the OR operator.
+\\\\
+Some basic query examples are described in the table \ref{fig:rank1LuceneQueryExamples} for getting started.
+\\\\
+However the QueryParser is capable of much richer functionality like Fuzzy Searches and and Proximity Searches. They don't have a big importance in querying but it can be powerful tool. For example it is possible to create a fuzzy search based on the Levenshtein distance using the tilde ~ symbol plus a proximity number. For example you can search for "\textit{java~}" and it will return documents that are similar to java like lava. You can adjust the proximity by adding a value next to the tilde symbol like java~0.8. The default proximity number is 0.5.
+\\\\
+Another noticeable minor future is the possibility to define the relevance of search terms in a query with the carot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
+\\\\
+Further details on this topic can be found here \cite{LuceneQueryDescriptionPage} and here \cite{LuceneQueryParserAPI}
+
+\begin{table}[!hp]
+	\begin{tabular}{|p{4cm}|p{8cm}|}
+		\hline \textbf{Example} & \textbf{Description} \\
+		\hline \textit{Paris} & Query will return events containing "Paris" in an Attribute. \\
+		\hline  \textit{Paris London} & Query will return events containing either "Paris" or "London" in an Attribute. \\
+		\hline  \textit{Paris OR London} & Query will return events containing either "Paris" or "London" in an Attribute. \\
+		\hline  \textit{Paris AND London} & Query will return events containing "Paris" and "London" in an Attribute.\\
+		\hline  \textit{(Paris OR London) AND Szabolcs} & Query will return events containing "Paris" or "London" but they must contain "Szabolcs".\\
+		\hline  \textit{+Paris +London} & Query will return events containing "Paris" and "London" in an Attribute.\\
+		\hline  \textit{+Paris -London} & Query will return events that must contain "Paris" and it is not allowed that this event contains "London" in an Attribute.\\
+		\hline  \textit{+Paris NOT London} & Query will return events that must contain "Paris" and it is not allowed that this event contains "London" in an Attribute.\\
+		\hline  \textit{Par*} & Query will return events containing words that start with "Par" - for instance Paris.\\
+		\hline 
+	\end{tabular}
+	\caption{Query Examples}
+	\label{tab:LuceneQueryExamples}
+\end{table} 
+
+% Verwendete Patterns beschreiben
+%	Facade Pattern
+% 	Inversion of Control
+%	Code injection
+
+% verwendete Technologien beschreiben:
+% Tomcat
+% Hibernate als OR Mapping
+% Datenbank Postgres
+% Spring
+% MVC Konzept
+% Spring MVC
+% Lucene
 
 
-%aktuelle forschungsarbeiten
 
-%Sense and response architektur
+% ETL Prozess
+% 	Hibernate als OR Mapping
+%		Wie schauen definition files aus
+%	Datenbank Postgres
+
+% Indexing 
+%	Lucene index structur
+%	Verwendung von Lucene als Codebeispiel
+%	Caching Themen
+%	Darauf eingehen wie man
+
+% Suche
+% 	web interface 
+%	Spring framework
+%	Spring MVC - MVC Konzept im allgemeinen
+
+% Beschreibung der API
+%	UML Bilder und beschreiben was was macht
+
+%**************************************************************************************
+%\newpage
+%\subsubsection{Evolution}
+%**************************************************************************************
+
+%**************************************************************************************
+%\newpage
+%\subsection{Performance}
+%**************************************************************************************
+
+%**************************************************************************************
+%\newpage
+%\subsection{Simulation}
+%**************************************************************************************
 
 \newpage
 \bibliographystyle{alpha}
