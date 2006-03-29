@@ -9,9 +9,13 @@
 %\usepackage{a4}	for scrbook
 \usepackage{lscape}
 % \usepackage{url}
+\newenvironment{mytinylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
+{\end{list}}
+
 \usepackage{listings}
 \usepackage{setspace}
-\lstset{numbers=none, numberstyle=\tiny, numbersep=5pt}
+\lstset{numbers=none, numberstyle=\tiny, numbersep=2pt, basicstyle=\footnotesize}
 \lstset{language=xml}
 
 \pagestyle{plain}
@@ -188,9 +192,7 @@ Furthermore an event ussually contains an unqiue id and a timestamp to mark the 
 \\\\
 An example for events used in our system as a simulation model would be an OrderReceived event that signifies the activity of a posted order for some products:
 \\\\
-%{\MyCode 
-\begin{figure}
-\begin{lstlisting}[caption=OrderReceivedEvent]{OrderReceivedEvent}
+\begin{lstlisting}[caption=OrderReceivedEvent, label=lst:OrderReceivedEvent]{OrderReceivedEvent}
 <OrderReceived>
 	<OrderId>14765</OrderId>
 	<DateTime>2005-10-31T11:31:02</DateTime>
@@ -204,9 +206,7 @@ An example for events used in our system as a simulation model would be an Order
 	</ProductCollection>
 </OrderReceived>
 \end{lstlisting}
-\label{lst:OrderReceivedEvent}
-\end{figure}
-%} 
+
 Events are generated from different sources and different types. Normally they use some standard like the XML format. The received events must be transformed into higher level form in order to be able to work with them. This transformation is provided by adapter compontents.
 %**************************************************************************************
 \subsubsection{Relationsships}
@@ -534,13 +534,10 @@ A representation in the eventattributes relation would look like provided in Fig
 The relation dbinfo is used to some information about the loading process and profiles is used to store profile information about filters for the search functionality.
 
 The Index functionality of Postgres is a vital function that has been applied to the Even Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
-\begin{figure} [h]
-\begin{lstlisting}[caption=Create an index]{Create an index}
+\begin{lstlisting}[caption=Create an index, label=lst:CreateIndexForGeneric]{Create an index}
 CREATE INDEX tablename_attributename_index 
 	ON tablename (attributename);
 \end{lstlisting}
-\label{lst:CreateIndexForGeneric}
-\end{figure}
 Once the index has been created it will be updated automatically, but VACUUM ANALYSE has to be executed in regular intervals to update statistical data for the query planner. This has to be done especially when big amounts of data have been inserted into the database. Regular analysis can be executed by creating cron jobs over night for instance. 
 \\\\
 VACUUMing is important as rows are not physically deleted by Postgres if they are removed so this is necessary to reclaim storage space. VACUUming can be performed while reading and writing to tables as no lock is obtained but it will need some performance while running. 
@@ -639,10 +636,54 @@ The main features provided by ORM approach are:
 \end{itemize}
 There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
 \\\\
-Event Cloud uses the Spring Framework IoC container to 
+Event Cloud uses the Spring Framework to manage the components of this application by applying the Factory Pattern, IoC and code injection. More on this topic later on. What's important is to be aware of, that the Spring Framework is taking over a lot of work handling Hibernate and data access. Spring supports declearive definition of the Factory pattern and a dependeny injection.
 \\\\
+The Spring Framework brings a Data Access Object (DAO) support with it that is applied in Event Cloud. The idea behind DAO is to follow object orieted principles and thus to programm agains interfaces. You define a DAO interface and a concrete implementation of this DAO. The application now can access the DAO interface through higher level services (Figure \ref{fig:DAOconcept}). Spring binds the DAO implementation to the interface. This enables a loosly coupled design, improves maintainability and speeds up testing processes.
+\\\\
+%***********************
+\begin{figure}[ht]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/DAOConcept.jpg}
+	\caption{DAO concept}             
+	\label{fig:DAOconcept}
+\end{figure}            
+%*********************** 
+The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the DAOs.
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/SessionFactory.jpg}
+	\caption{Database integration}             
+	\label{fig:SessionFactory}
+\end{figure}            
+%*********************** 
+\\\\
+The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing \ref{lst:DatabaseConnection}).
+
+%\begin{lstlisting}[caption=Database connection, label=lst:DatabaseConnection]{Database connection}
+\begin{mytinylisting}
+\begin{verbatim}
+<bean id="postgresSource" class="org.apache.commons.dbcp.BasicDataSource">
+  <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+  <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
+  <property name="username"><value>postgres</value></property>
+  <property name="password"><value>postgres</value></property>
+</bean>
+
+<bean id="msSqlSource" class="org.apache.commons.dbcp.BasicDataSource">
+  <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+  <property name="url"><value>jdbc:postgresql://localhost/intimedb</value></property>
+  <property name="username"><value>postgres</value></property>
+  <property name="password"><value>postgres</value></property>
+</bean> 
+\end{verbatim}
+\end{mytinylisting}
+%\end{lstlisting}
+
+
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % TODO: DAO Pattern erklären
+% Object generation
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % Layer architecture - wo passt das hier rein? Presentation layer, business Layer, Persistence Layer
 %**************************************************************************************
@@ -654,7 +695,7 @@ Event Cloud uses the Spring Framework IoC container to
 Event Cloud is using Lucene's sophisticated query parser to provide a full featured query syntax to allow the creation of complex queries for searching and retrieving events and their correlations. 
 \\\\
 The formal query grammar definition \cite{LuceneQueryParserAPI}:
-\begin{lstlisting}
+\begin{lstlisting} [basicstyle=\ttfamily\fontsize{8}{8}\selectfont]]
 Query  ::= ( Clause )*
 Clause ::= ["+", "-"] [<TERM> ":"] ( <TERM> | "(" Query ")" )
 \end{lstlisting}
@@ -737,6 +778,7 @@ Further details on this topic can be found here \cite{LuceneQueryDescriptionPage
 %**************************************************************************************
 
 \newpage
+%\lstlistoflistings
 \bibliographystyle{alpha}
 \bibliography{eventcloud}
 
