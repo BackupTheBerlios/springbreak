@@ -10,6 +10,7 @@
 \usepackage{lscape}
 % \usepackage{url}
 \usepackage{listings}
+\usepackage{setspace}
 \lstset{numbers=none, numberstyle=\tiny, numbersep=5pt}
 \lstset{language=xml}
 
@@ -18,6 +19,7 @@
 
 
 \begin{document}
+\onehalfspacing
 \parindent 0pt
 
 \tableofcontents
@@ -136,7 +138,6 @@ As messages can contain any form of data the integration into a distributed syst
 The layering according to [Tannenbaum1] is a very simple point of view as he only wants to show how a middleware can enable a transparent and single coherent view of a system. David Luckham introduces a slightly deeper granularity of the high level overview of an distributed, event-driven system in order to be able to understand the importance of events for an enterprise.
 \\\\
 \textit{Layered IT systems present another dimension in the search for new ways to understand the events that happen in them.} [Luckham05]
-\\\\
 %**********************
 \begin{figure} [h]                        
 	\centering                                           
@@ -401,7 +402,6 @@ The look and feel of Google like finding and retrieving information has become a
 \textit{Of course, access doesn't simply require us to make decisions in more areas of our lives. It also changes the game by inviting us to make informed decisions more often.} \cite{Morville05}
 
 %**************************************************************************************
-\newpage
 \subsection{Background}
 %**************************************************************************************
 
@@ -498,6 +498,10 @@ The challenge behind this type of correlation search is to discover indirect cor
 % High Level overview mit Bild und kurz die Komponenten beschreiben und wie sie zusammenspielen
 % simulator für eventsimulation kurz erwähnen und details dann beim Simulator abschnitt selber schreiben.
 Event Cloud is a webbased application based on the lightweight Spring Framework IoC container and is deployed inside Apaches Tomcat. The core technologies for O/R Mapping and Indexing/Searching are Hibernate and Apache Lucene (Figure \ref{fig:eventCloudHighLevel}). 
+
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO: System layering!! siehe OSWP!!!
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 %**************************************************************************************
 \subsubsection{Database and Schemas}
 %**************************************************************************************
@@ -526,6 +530,8 @@ A representation in the eventattributes relation would look like provided in Fig
 	\label{fig:OrderReceivedInEventattributes}
 \end{figure}            
 %***********************  
+
+The relation dbinfo is used to some information about the loading process and profiles is used to store profile information about filters for the search functionality.
 
 The Index functionality of Postgres is a vital function that has been applied to the Even Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
 \begin{figure} [h]
@@ -598,6 +604,47 @@ Indexes are set on relation attributes according to Table \ref{tab:indexedAttrib
 %**************************************************************************************
 \subsubsection{Object Relational Mapping}
 %**************************************************************************************
+We have seen in the previous chapter that the event sources and the transformed events are stored into relational databases. The whole data structure is based on a relational modeling paradigm which has proven itself over many years. The relational database technology has been originally introduces by E. Codd out of growing needs to structure data under specific standpoints and his works influence is still noticable. Almost every application needs a way to make its data persistent after shut down so a variety of products emerged over the years to provide a persistent and structured way to persist application data.
+\\\\
+Codd firstly introduced the relational model in his paper "A Relational Model of Data for Large Shared Data Banks": 
+\\\\
+\textit{It provides a means of describing data with its natural structure only--that is, without superimposing any additional structure for machine representation purpose. Accordingly, it provides a basis for a high level data language which will yield maximal independence between programs on the one hand and machine representation on the other.} \cite{Codd70} 
+\\\\
+A relational database is mainly characterized by of following terms \cite{Codd99}:
+\begin{itemize}
+	\item data independence from hardware and storage implementation
+	\item automatic navigation
+	\item nonprocedural language for accessing data
+\end{itemize}
+
+This had a big impact and changed the way how data has been processed. Instead of manipulating record by record it was possible to describe the datasets for processing and to store data in an efficent way. Today a database managment system is more than a formal description of how to organise and structure information. It provides a full blown information managment system that allows applications to access large amounts of data in a fast manor. It supports transactions, user managment, issues security topics and much more. Moreover the relational world has been and is still under academic discussions which helps to evolve the algorithms and technologies powering those technologies. A lot of work has been invested to mathematicaly formalize relational model and to develop a structured query language. Currently there is a wide range of commercial and open source database managment systems available like DB2, Orcale, Ms SQL Server, MySQL or PostgreSQL.
+\\\\
+As time goes by people realized that procedureal programing paradigms create too much overhead which makes systems difficult to maintain, components hard to reuse and the world could be described in better ways for problemsolving. As a result the object oriented paradigm has evolved and Smalltalk was the first noticeable programming language that introduced the object oriented programming paradigm together with cutting edge features (at least for that time). During the mid eighties C++ established the object oriented paradigm into eveybodies minds. Programming languages evolved over time and todays most widely spread languages are C++, Java and .Net derivates. Especially Java has proven itself for developing distributed applications. Today we have a sophisticated toolset available like modelling languages such as UML or a rich set of design patterns for different purposes we can use more or less out of the box (for more details take a look at \cite{DesignPatterns97} and \cite{Fowler97}).
+\\\\
+Today we are facing the problem of a \textit{paradigm mismatch}. We started to use object oriented techniques to model and develop our applications, but almost all of our  systems have the requirement that they need to persist their data. Following the object oriented paradigm we create domain models about the subjects we need to work with. Sometimes these models are named business models in a layered application context. This object oriented style of modeling our data clashes with the well known relational \textit{row and column world}. The problem is that object oriented domain models are simply the better choice as it helps to improves code reuseability and the maintainability significantly. 
+\\\\
+The first approaches that addressed this problem were to create sql support to enable a link between the relations stored in a database and the business models to benefit from their advantages. This approach is very expensive as the developers have to write low level SQL statements using database APIs into the source code directly not to speak about the almost unchallengable task to implement sophisticated algorithms like lazy-loading of object graphs that represent 1:n relations in a relation model or caching techniques to improve performance. You never would have thought about changing the database at the back end of such an implementation and even a schema change can get out of hand. Developers face huge problems that don't belong to the given business domain problem at all in order to create a clean and object oriented application.
+\\\\
+The solution to this problems is the object relational mapping (ORM) approach that keeps the developers away from the underlying persistence mechanisms. Developers only need to create a persistence layer that declerativly wires the business models to their relational counterparts. The underlying persistence mechanism does the rest for the developer including sophisticated techniques to boost performance for instance.
+\\\\
+\textit{In a nutshell, object/relational mapping is the automated (and transparent) persistence of objects in a Java application to the tables in a relational database, using metadata that describes the mapping between the objects and the database. ORM, in essence, works by (reversibly) transforming data from one representation to another.} \cite{HibernateInAction05}
+\\\\
+The main features provided by ORM approach are:
+\begin{itemize}
+	\item It shields developers from low level sql coding.
+	\item It let the developers concentrate on bussiness problems.
+	\item It reduces development time significantly.
+	\item It produces less lines of code that makes understanding a system and refactoring easier.
+	\item It is database independent.
+\end{itemize}
+There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
+\\\\
+Event Cloud uses the Spring Framework IoC container to 
+\\\\
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO: DAO Pattern erklären
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% Layer architecture - wo passt das hier rein? Presentation layer, business Layer, Persistence Layer
 %**************************************************************************************
 \subsection{Searching}
 %**************************************************************************************
