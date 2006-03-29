@@ -188,6 +188,7 @@ Furthermore an event ussually contains an unqiue id and a timestamp to mark the 
 An example for events used in our system as a simulation model would be an OrderReceived event that signifies the activity of a posted order for some products:
 \\\\
 %{\MyCode 
+\begin{figure}
 \begin{lstlisting}[caption=OrderReceivedEvent]{OrderReceivedEvent}
 <OrderReceived>
 	<OrderId>14765</OrderId>
@@ -202,6 +203,8 @@ An example for events used in our system as a simulation model would be an Order
 	</ProductCollection>
 </OrderReceived>
 \end{lstlisting}
+\label{lst:OrderReceivedEvent}
+\end{figure}
 %} 
 Events are generated from different sources and different types. Normally they use some standard like the XML format. The received events must be transformed into higher level form in order to be able to work with them. This transformation is provided by adapter compontents.
 %**************************************************************************************
@@ -410,7 +413,7 @@ The look and feel of Google like finding and retrieving information has become a
 
 Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occured events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired managable pool of events and correlations. Event Cloud provides the user the option to to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
 \\\\
-Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the Spring framework to bind the components together.
+Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweigt IoC Spring framework to bind the components together. A special focus has been set on using only non-proprietary and open source technologies as this an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
 \\\\
 Basically Event Cloud consists of three main functions: 
 
@@ -420,9 +423,11 @@ Basically Event Cloud consists of three main functions:
 	\item Search functionality including a sophisticated query syntax and various filter functions
 \end{itemize}
 
-This functionalitie should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a Google like experience. 
+These functionalities should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a Google like search experience. 
 \\\\
-This diploma thesis was supported by Josef Schiefer and Senactive by providing Intime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the Intime product.
+This diploma thesis was especially supported by Josef Schiefer and Senactive by providing InTime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the InTime product. Plenty of time has been invested to create interesting and meaningful simulations of business procesess based on a logistics company. The event simulation has been broadend by according stories for showcases to display exceptional situations and to show how InTime can react on such situations. The simulation definition process has been co-developed by Roland Vecera and is available as an Appendix in the diploma thesis to get a comprehensive view of what happens beneath the fact that events exits for this project.
+\\\\
+As we talk about source systems or the source database throughout the next sections it is always the InTime database meant. This is a Ms Sql Server database that contains the raw event information from the InTime simulator. As InTime is settled in the .Net world, Event Cloud provides an import functionality to duplicate the database on a desired machine as usually InTime has been deployed in a VMWare for developing purposes which is not a performance wonder.
 
 %**************************************************************************************
 \newpage
@@ -430,7 +435,7 @@ This diploma thesis was supported by Josef Schiefer and Senactive by providing I
 %**************************************************************************************
 % Das Suchen ist der zentrale Teil daher muss man bestimmte Suchkonzepte unterscheiden die
 % vom System unterstützt werden.
-The subsequent chapters will give an conceptual overview of the search type features provided by Event Cloud.
+The subsequent chapters will give an conceptual overview of the search type features provided by Event Cloud. These are the basic concepts behind the Event Cloud and no further technical details are provided in this section.
 
 %**************************************************************************************
 \subsubsection{Rank 1}
@@ -492,9 +497,94 @@ The challenge behind this type of correlation search is to discover indirect cor
 % Hier fangen jetzt die Details an! High level Architektur + Technologien genau beschreiben
 % High Level overview mit Bild und kurz die Komponenten beschreiben und wie sie zusammenspielen
 % simulator für eventsimulation kurz erwähnen und details dann beim Simulator abschnitt selber schreiben.
+Event Cloud is a webbased application based on the lightweight Spring Framework IoC container and is deployed inside Apaches Tomcat. The core technologies for O/R Mapping and Indexing/Searching are Hibernate and Apache Lucene (Figure \ref{fig:eventCloudHighLevel}). 
+%**************************************************************************************
+\subsubsection{Database and Schemas}
+%**************************************************************************************
+There are two databases used by this system. The first one is the source database provided by InTime which contains the raw source events and the found correlationsets for those events. This is an Ms SQL Server database that requires the sqljdbc drivers in order to establish a connection from hibernate. As the second database there is a currently a Postgres 8.1 database in use as it is open source and a powerful technology that fits the needs for this project. However using Hibernate as the O/R mapping facility it is possible to change the database backend with only minor changes. Only sequence definition changes have to be done at the mapping level as Postgres is using sequence tables for id generation. The source schemas are pretty straight forward flat tables (Figure \ref{fig:intimeschema}) and the final target schema created out of the source events is bit more complex as Event Cloud decomposes the events and stores them into a relational form (Figure \ref{fig:eventCloudSchema}). 
+\\\\
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/intimedb.jpg}
+	\caption{Intime schema}             
+	\label{fig:intimeschema}
+\end{figure}            
+%***********************
+The rwtime and txtime tables represent the realworld dates of events (rwtime) e.g. when they really occured in some system.  The timepoint when events have been recognized by the system are decomposed and stored in the txtime table. During the ETL process the event timestamps are decomposed to a day, month and year granularity. The rwtime and the txtime tables hold every possible combination of day, month and year as the event numbers grow and only the ids are assigned to the event. This allows an efficient indexing of the dates and thus a fast way to create constrained date queries.
+\\\\
+The events and eventattributes relations are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can get a complex structure. The logical XML strucuture is flattend in the relational form but to preserve the original substructures a URI is required. 
+\\\\
+Consider for example the mentioned OrderReceived Event (Listing \ref{lst:OrderReceivedEvent}) where you have got basic information provided with a Productcollection containing a subtree of several products. 
+\\\\
+A representation in the eventattributes relation would look like provided in Figure \ref{fig:OrderReceivedInEventattributes}.
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=1.2\textwidth]{pics/OrderReceivedInEventattributes.jpg}
+	\caption{OrderReceived in eventattributes}             
+	\label{fig:OrderReceivedInEventattributes}
+\end{figure}            
+%***********************  
+
+The Index functionality of Postgres is a vital function that has been applied to the Even Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
+\begin{figure} [h]
+\begin{lstlisting}[caption=Create an index]{Create an index}
+CREATE INDEX tablename_attributename_index 
+	ON tablename (attributename);
+\end{lstlisting}
+\label{lst:CreateIndexForGeneric}
+\end{figure}
+Once the index has been created it will be updated automatically, but VACUUM ANALYSE has to be executed in regular intervals to update statistical data for the query planner. This has to be done especially when big amounts of data have been inserted into the database. Regular analysis can be executed by creating cron jobs over night for instance. 
+\\\\
+VACUUMing is important as rows are not physically deleted by Postgres if they are removed so this is necessary to reclaim storage space. VACUUming can be performed while reading and writing to tables as no lock is obtained but it will need some performance while running. 
+\\\\
+At this point it should be mentioned that Postgres is capable of handling different sorts of indexes found in \cite{PostgresDoc06} like partial indexing which could be useful to index only a subset of data stored in a table. This can be done by creating an index with a WHERE clause to specify the desired dataset. 
+\\\\
+Indexes are set on relation attributes according to Table \ref{tab:indexedAttributes}.
+
+\begin{table} [h]
+	\begin{tabular}{ll}
+	 \textbf{Tablename} &  \textbf{Attribute} \\
+	
+	   	dbinfos &         id \\
+	
+		eventattributes & attributename \\
+		
+		eventattributes &    eventid \\
+		
+		eventattributes &      value \\
+	
+	 	eventtype & eventtypeid \\
+	
+	    rwtime &      rwday \\
+	
+	    rwtime &    rwmonth \\
+	
+	    rwtime &     rwyear \\
+	
+	    txtime &      txday \\
+	
+	    txtime &    txmonth \\
+	
+	    txtime &     txyear \\
+	\end{tabular}  
+	\caption{Indexed Attributes}
+	\label{tab:indexedAttributes}
+\end{table} 
+     
+%***********************
+\begin{figure}[h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/genericdb.jpg}
+	\caption{Event Cloud schema}             
+	\label{fig:eventCloudSchema}
+\end{figure}            
+%***********************     
+
 %**************************************************************************************
 \begin{landscape}
-\subsubsection{High level overview}
+%\subsubsection{High level overview}
 %**************************************************************************************
 %***********************
 \begin{figure}[ht]                                  
@@ -505,6 +595,9 @@ The challenge behind this type of correlation search is to discover indirect cor
 \end{figure}            
 %***********************                       
 \end{landscape}
+%**************************************************************************************
+\subsubsection{Object Relational Mapping}
+%**************************************************************************************
 %**************************************************************************************
 \subsection{Searching}
 %**************************************************************************************
@@ -526,7 +619,7 @@ However the QueryParser is capable of much richer functionality like Fuzzy Searc
 \\\\
 Another noticeable minor future is the possibility to define the relevance of search terms in a query with the carot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
 \\\\
-Further details on this topic can be found here \cite{LuceneQueryDescriptionPage} and here \cite{LuceneQueryParserAPI}
+Further details on this topic can be found here \cite{LuceneQueryDescriptionPage}, here \cite{LuceneQueryParserAPI} and \cite{LuceneInAction05}.
 
 \begin{table}[!hp]
 	\begin{tabular}{|p{4cm}|p{8cm}|}
