@@ -6,7 +6,7 @@
 \usepackage{eurosym}
 \usepackage[pdftex]{graphicx}
 \usepackage{ae}
-%\usepackage{a4}	for scrbook
+%\usepackage{a4}	%for scrbook
 \usepackage{lscape}
 % \usepackage{url}
 \newenvironment{mytinylisting}
@@ -635,10 +635,14 @@ The main features provided by ORM approach are:
 	\item It is database independent.
 \end{itemize}
 There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
-\\\\
+
+%**************************************************************************************
+\subsubsection{Data access object}
+%**************************************************************************************
+
 Event Cloud uses the Spring Framework to manage the components of this application by applying the Factory Pattern, IoC and code injection. More on this topic later on. What's important is to be aware of, that the Spring Framework is taking over a lot of work handling Hibernate and data access. Spring supports declearive definition of the Factory pattern and a dependeny injection.
 \\\\
-The Spring Framework brings a Data Access Object (DAO) support with it that is applied in Event Cloud. The idea behind DAO is to follow object orieted principles and thus to programm agains interfaces. You define a DAO interface and a concrete implementation of this DAO. The application now can access the DAO interface through higher level services (Figure \ref{fig:DAOconcept}). Spring binds the DAO implementation to the interface. This enables a loosly coupled design, improves maintainability and speeds up testing processes.
+The Spring Framework brings a Data Access Object (DAO) support with it that is applied in Event Cloud. The idea behind DAO is to follow object orieted principles and thus to programm agains interfaces. You define a DAO interface and a concrete implementation of this DAO. The application now can access the DAO interface through higher level services (Figure \ref{fig:DAOconcept}). Spring binds the DAO implementation to the interface. This enables a loosly coupled design, improves maintainability and speeds up testing processes. Moreover the DAO pattern has the advantage that is easily possible to change the underlying data access even much faster.
 \\\\
 %***********************
 \begin{figure}[ht]                                  
@@ -648,42 +652,150 @@ The Spring Framework brings a Data Access Object (DAO) support with it that is a
 	\label{fig:DAOconcept}
 \end{figure}            
 %*********************** 
-The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the DAOs.
+
+%**************************************************************************************
+\subsubsection{Integrating Data Access}
+%**************************************************************************************
+
+The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the data access into the application. The centerpiece of the data access in Spring Framework managed applications is the SessionFactory. The SessionFactory serves as a session factory for dependency injections on thread safe DAOs. Event Cloud uses the LocalSessionFactoryBean as a concrete implementation which is appropriate for most types of scenarios even to deploy distributed transaction support or JNDI support. It is all just a matter of configuration. For example if we would want to change the database connection to a JNDI resource we just change the LocalSessionFactoryBean implementation to JndiObjectFactoryBean and readjust the connection string. 
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
 	\includegraphics[width=1.0\textwidth]{pics/SessionFactory.jpg}
-	\caption{Database integration}             
+	\caption{Data Access integration}             
 	\label{fig:SessionFactory}
 \end{figure}            
 %*********************** 
+The listing figure \ref{lst:SessionFactoryConfiguration} shows a bunch of configuration options that have to be applied. Important note is to specify the SQL dialect according to you database managment system and create an injection link to you database connection bean (<ref bean="postgresSource"/>) which will be wired in by the Spring Framework. The hibernateProperties allow some finetuning options like caching options and switches to turn on and off to help debugging.
 \\\\
-The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing \ref{lst:DatabaseConnection}).
+%***************************************
+\begin{figure}[h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	<bean id="sessionFactoryForPostgresSource" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">   
+		<property name="dataSource"><ref bean="postgresSource"/></property>
+        <property name="mappingResources">
+            <list>
+            	<value>Event.hbm.xml</value>
+				<value>Rwtime.hbm.xml</value>
+				<value>Txtime.hbm.xml</value>
+				<value>Eventattribute.hbm.xml</value>
+				<value>Eventtype.hbm.xml</value>
+				<value>Dbinfo.hbm.xml</value>				
+            </list>
+        </property>
+        <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop> 
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+        </props>
+        </property>
+    </bean> 
+   	\end{verbatim}
+	\end{mytinylisting}
+	\caption{The data access heart the SessionFactory configuration}             
+	\label{lst:SessionFactoryConfiguration}
+\end{figure} 
+%***************************************
+An important property is the mappingResources as it defines the mapping resources for the application. The mapping resource files are ending with a *.hbm.xml by standard and they provide the mapping definitions between the relational and the object oriented world. Creating and parametrizing the mapping resources is far out of scope in this diplom thesis as there is an excellent documentation available on the Hibernate webpage. Important is that there are tools and techniques available that can generate these mapping configuration files for your application. In this project a top-down approach has been chosen to create data access. The idea is to create the relational database schema and define various contraints. The next step is to apply a tool name Middlegen which is capable to read in the database schema and provide a user interface to create the object relationl mapping resources. When this has been done a tiny program can be integrated using Jakarta's Ant to generate the object oriented models including object graphs for representing relationships. Afterwards all that have to be done is add the mapping resource names to the SessionFactory.
+\\\\
+The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing figure \ref{lst:DatabaseConnection}). As we have two databases another SessionFactory instance for the second database has to be created too. For means of simplicity there is only one example provided just to show how the basic concept works if changes have to applied and how this is all wired together. Event Cloud makes use of the commons pooling package to provide basic connection pooling for the application. I someone would like to use a more sophisticated implementation like C3PO it is again just a matter of changing the class. 
 
-%\begin{lstlisting}[caption=Database connection, label=lst:DatabaseConnection]{Database connection}
-\begin{mytinylisting}
-\begin{verbatim}
-<bean id="postgresSource" class="org.apache.commons.dbcp.BasicDataSource">
-  <property name="driverClassName"><value>org.postgresql.Driver</value></property>
-  <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
-  <property name="username"><value>postgres</value></property>
-  <property name="password"><value>postgres</value></property>
-</bean>
+%***************************************
+\begin{figure}[h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	<bean id="postgresSource" class="org.apache.commons.dbcp.BasicDataSource">
+	  <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+	  <property name="url"><value>jdbc:postgresql://localhost/generic</value></property>
+	  <property name="username"><value>postgres</value></property>
+	  <property name="password"><value>postgres</value></property>
+	</bean>
+	\end{verbatim}
+	\end{mytinylisting}
+	\caption{Database Connection}             
+	\label{lst:DatabaseConnection}
+\end{figure} 
+%***************************************
 
-<bean id="msSqlSource" class="org.apache.commons.dbcp.BasicDataSource">
-  <property name="driverClassName"><value>org.postgresql.Driver</value></property>
-  <property name="url"><value>jdbc:postgresql://localhost/intimedb</value></property>
-  <property name="username"><value>postgres</value></property>
-  <property name="password"><value>postgres</value></property>
-</bean> 
-\end{verbatim}
-\end{mytinylisting}
-%\end{lstlisting}
 
+%**************************************************************************************
+\subsubsection{Transaction Managment}
+%**************************************************************************************
+
+Now it comes an important topic: the transaction managment. Spring Framework supports a wide range of transaction managers and the transaction managment itself can be configured in a declerative way for each DAO and each method of the data access objects used in the application. Event Cloud makes use of the HibernateTransactionManager that is wired to the SessionFactory (Listing figure \ref{lst:TransactionManagment}). Note that this is a huge step! For long declerative transaction managment was only supported by EJB which had to be deployed inside heavy weight application servers with a wide range of drawbacks. The Spring Framework comes with declerative transaction support implemented through Spring's AOP framework. 
+\\\\
+%***************************************
+\begin{figure}[h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	<bean id="transactionManagerForPostgresSource" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+        	<ref bean="sessionFactoryForPostgresSource"/>
+        </property>
+	</bean>
+	\end{verbatim}
+	\end{mytinylisting}
+	\caption{Transaction Managment}             
+	\label{lst:TransactionManagment}
+\end{figure} 
+%***************************************
+
+The DAO, created by the user, references the previously defined SessionFactory and has to extend the HibernateDaoSupport. The TransactionProxyFactoryBean is used to enable the declerative transaction managment for a DAO. It needs three properties to be defined:
+
+\begin{itemize}
+	\item The transaction manager - in this case it is the HibernateTransactionManager
+	\item The transaction target - this is a reference to the DAO that includes the SessionFactory
+	\item The transaction attributes - decleares which type of transaction type to apply to which methods including options.
+\end{itemize}
+
+%***************************************
+\begin{figure}[h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	<bean id="correlatedEventDAOTarget" class="at.generic.dao.hibernate.CorrelatedeventDAOHibernate"> 
+    	<property name="sessionFactory"> 
+    		<ref bean="sessionFactoryForSQLServer"/> 
+    	</property> 
+    </bean>
+	
+	<bean id="correlatedEventDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"> 
+    	<property name="transactionManager"> 
+        	<ref bean="transactionManagerForSQLServerSource" /> 
+      	</property> 
+		<property name="target"> 
+		   <ref bean="correlatedEventDAOTarget" /> 
+		</property> 
+      <property name="transactionAttributes"> 
+         <props> 
+            <prop key="save*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop> 
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
+         </props> 
+      </property>
+    </bean>
+	\end{verbatim}
+	\end{mytinylisting}
+	\caption{Integrating transaction managment for a DAO}             
+	\label{lst:TransactionManagmentDAO}
+\end{figure} 
+
+The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties defines on which methods they should be applied. For example on methods starting with "save*" Propagation is required.
+\\\\
+Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAGATION NEVER, PROPAGATION NOT SUPPORTED, PROPAGATION REQUIRED, PROPAGATION REQUIRES NEW and PROPAGATION SUPPORTS (detailed explanation is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimization options that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. These levels are ISOLATION DEFAULT, ISOLATION READ UNCOMMITTED, ISOLATION READ COMMITTED, ISOLATION REPEATABLE READ and ISOLATION SERIALIZABLE.
+
+%***************************************
+
+%**************************************************************************************
+\subsubsection{Event Clouds Persistence Layer}
+%**************************************************************************************
 
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO: DAO Pattern erklären
-% Object generation
+% TODO:
+% - Aufbau des Datenzugriffs DAOs und Modelle beschreiben inkl. UML Diagramme zeichnen
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % Layer architecture - wo passt das hier rein? Presentation layer, business Layer, Persistence Layer
 %**************************************************************************************
@@ -707,7 +819,7 @@ However the QueryParser is capable of much richer functionality like Fuzzy Searc
 \\\\
 Another noticeable minor future is the possibility to define the relevance of search terms in a query with the carot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
 \\\\
-Further details on this topic can be found here \cite{LuceneQueryDescriptionPage}, here \cite{LuceneQueryParserAPI} and \cite{LuceneInAction05}.
+Further details on this topic can be found here \cite{LuceneQueryDescriptionPage}, here \cite{LuceneQueryParserAPI} and here \cite{LuceneInAction05}.
 
 \begin{table}[!hp]
 	\begin{tabular}{|p{4cm}|p{8cm}|}
