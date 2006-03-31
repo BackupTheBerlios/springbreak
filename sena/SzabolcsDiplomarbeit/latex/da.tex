@@ -947,6 +947,14 @@ The AdminService provides a service for misc. admin oeprations that has to be pe
 \newpage
 \subsection{Loading Process}
 %**************************************************************************************
+%***********************
+\begin{figure}[!h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/ETLProcess.png}
+	\caption{Loading process}             
+	\label{fig:LoadingProcess}
+\end{figure}            
+%***************************************
 The Intime database provides the events with different information (Listing Figure \ref{lst:SourceEvent}). Each event comes with a unique id, a creation time and the event itself as an xml. The attributes from the OrderReceived root node are basic key-value pairs that are stored straight forward into the events relation. 
 \\\\
 The more tricky part is the extraction of each attribute and their validation against its definiton. The datatypes of each attribute are extracted and stored into the database as well. A lot of work in this process is done by the EventPeristenceServices as it autmatically takes care about saving eventtypes and timepoints. 
@@ -1035,7 +1043,6 @@ The Spring Framework is composed of several main components:
 The core of Spring Framwork is undisputable the core container and the the application context module. The core containers heart is the BeanFactory which lets the user wire the components together. It uses the Factory Pattern to realize dependency injections and to control the objects life cycles. The BeanFactory supports two types of objects: Singelton and Prototype. The singelton creates a shared instance of an object which is addressed by a name and mostly used as an stateless object. The prototype allows to create an independent instace for each reference of this class.
 \\\\
 The O/R and DAO modules have been discussed in detail in the previous sections.
-\\\\
 \\\\
 The business logic should always be laid inside simple Java Beans with according getters and setters to its dependent objects to enable the dependency injection by the BeanFactory. These beans are implemented against a previously defined interface. For example the SearchService is an interface to a Java Bean that has got references to other beans with according getters and setters. These beans are defined in the application context and their implementations and dependecies are wired together using the Spring Framework (Listing Figure \ref{lst:wiringbeanstogether}).
 
@@ -1156,7 +1163,7 @@ The openSessionInViewInterceptor used in this excerpt is a workaround to provide
 %********************
 
 %********************
-\begin{figure}[h!]  
+\begin{figure}[!h]  
 \begin{mytinylisting}
 \begin{verbatim}
 	return new ModelAndView("admin", "adminData", adminData);
@@ -1171,8 +1178,113 @@ The openSessionInViewInterceptor used in this excerpt is a workaround to provide
 \subsection{Indexing and Searching Events}
 %**************************************************************************************
 %**************************************************************************************
-\subsubsection{Indexing Events using Lucene }
+\subsubsection{Indexing Events with Lucene }
 %**************************************************************************************
+Lucene is an open source high performance full text indexing and search library completle written in Java. Originally developed by Cutting 2001 it became a popular piece of software which is now maintained and extended by volunteers as a Jakarta project. During the development of Event Cloud, Lucene release its 1.9 version which was a major step in it development the group is looking forward to introduce the 2.0 version of its software. Lucene provides a high performance indexing implementation and offers a sophistacted search algorithm. The main power of Lucene is actually its search implementation including its Ranking algorithm which yields excellent search results. Lucene is suitable for almost every application that needs some kind of text indexing. Originally it was used to index data and information provided for example on webpages or documents. It provides several libraries to parse different formats like pdf, doc or XMLs. However people started to use Lucene to index their databases as well to provide an efficient and fast full text search for their applications. Lucene provides the possibility to store metadata with the given documents which can be indexed by choice such as author, title or date of creation. This provides a powerfull alternative of managing and saving data for search centric applications. Lucene can create an index either on disk or it can build an extremly fast transient index in memory. 
+\\\\
+The real benefit developers can take from Lucene is its extremly well designed architecture. The developer has to be familiar with only a handful of classes in order to implement a rudimentary index and search application. 
+\\\\
+There are basically two core classes of Lucene that the developer has to know in detail:
+\begin{itemize}
+	\item \textbf{IndexWriter} for creating and upating an index
+	\item \textbf{IndexSearcher} for searching an index
+\end{itemize}
+
+How simple it can be to create a basic index and add a document to it is shown in the Listing Figure \ref{lst:SimpleIndexWithLucene}. A simple search example is presented in the Listing Figure \ref{lst:SimpleSearchWithLucene}
+%********************
+\begin{figure}[!h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	IndexWriter writer = new IndexWriter(indexLocation, analyzer, false);
+	writer = new IndexWriter(indexLocation, analyzer, false);
+			
+	Document document = new Document();
+	document.add(Field.Keyword("author", author));
+	document.add(Field.Keyword("title", title));
+	document.add(Field.Text("content",content));
+		    
+	writer.addDocument(document);
+	writer.optimize();
+	writer.close();
+    \end{verbatim}
+    \end{mytinylisting}
+	\caption{Example of creating a simple index with Lucene.}             
+	\label{lst:SimpleIndexWithLucene}
+\end{figure} 
+%********************
+
+%********************
+\begin{figure}[!h]  
+	\begin{mytinylisting}
+	\begin{verbatim}
+	
+	Directory fsDir = FSDirectory.getDirectory(indexLocation, false);
+    IndexSearcher indexSearcher = new IndexSearcher(fsDir);
+    
+    Query query = QueryParser.parse(searchString.trim(), "content", new StandardAnalyzer());
+    Hits hits = indexSearcher.search(query);
+	
+	\end{verbatim}
+    \end{mytinylisting}
+	\caption{Example of searching through an index with Lucene.}             
+	\label{lst:SimpleSearchWithLucene}
+\end{figure} 
+%********************
+
+However indexing and searching for events and their correlations in Event Cloud requires a bit more complex algorithms. The next sections will provide the main concepts implemented for searching and retrieving those events. Event Cloud provides another API service, like the persistence service classes, for indexing and retrieving event information to simplify the use of Event Clouds underlying mechanisms and to provide another layer of abstraction. 
+\\\\
+A central role in the indexing process has the IndexingService interface that provides the common methods to EventCloud and the LuceneIndexingImpl for the concrete Lucene implementation (Figure \ref{fig:IndexingService}). These classes are wired together using Spring's application context like everywhere else in Event Cloud. 
+
+%***********************
+\begin{figure}[!h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/IndexingService.png}
+	\caption{IndexingService}             
+	\label{fig:IndexingService}
+\end{figure}            
+%***************************************
+
+In the provided Figure \ref{fig:IndexingService} the AdminController is inserted to show that there are two instances of  the IndexingService created. This is because there is one index only for events and one index for retrieving correlations. The decision has been made to boost up search performance as one index powers the Rank 1 search type and the other index powers the Rank 2 search. Putting both information into one index would result in an unnecessary overhead. 
+\\\\
+The index locations are provided by as parameters in the Event Clouds context configuration. 
+\\\\
+The index creation itself is performed during the loading and transformation process triggered by the user. While the etl process is transforming and storing the events to the database it creates the index for the events. When the event processing is finished a correlation index is built out of the correlation information provided by the Intime database (Figure \ref{fig:LoadingProcess})
+\\\\
+%***********************
+\begin{figure}[!h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/indexingProcessFromEtl.jpg}
+	\caption{Indexing an Event.}             
+	\label{fig:IndexingAnEvent}
+\end{figure}    
+%***************************************        
+The event lucene document that is added to the event index, is consisting of four attributes (Figure \ref{fig:IndexingAnEvent}):
+
+\begin{itemize}
+	\item \textbf{content:} While the event attributes are processed by the transformation service each value of the attributes are extracted and appended to a string variable. This string contains every value from the event's attributes and is compareable to a document's text. This string is indexed.
+	\item \textbf{eventtype:} This contains the eventype that is extracted during the transformation process. This field is not indexed.
+	\item \textbf{date:} This field contains the events date and is indexed.
+	\item \textbf{id:} This field is not indexed and is stored to the document to preserve the connection to the event and its attributes in the database. This is used for various operations during the search process. If an event has been found through its content and the document is retrieved it is possible to step into the relational world and retrieve other information or make use of the relational databases advantages for other purposes.
+\end{itemize}
+
+%***********************
+\begin{figure}[!h]                                  
+	\centering                                           
+	\includegraphics[width=1.0\textwidth]{pics/indexingProcessFromEtlCorrEvents.jpg}
+	\caption{Indexing a Correlation.}             
+	\label{fig:IndexingACorrelatioin}
+\end{figure}    
+%***************************************    
+
+The correlation index is slightly different then the event index created. The document types are the same but have different contents (Figure \ref{fig:IndexingACorrelatioin}):
+
+\begin{itemize}
+	\item \textbf{content:} The content contains, in contrast to the event's content field, all attribute values from the events that belong to a correlation. These correlations are fetched from the source database and all events belonging to a correlation are retrieved from Event Cloud's database and their attributes are extracted and stored into a string. This time every event attributes value, belonging to the currently processed correlation, is stored into the content string which is then indexed.
+	\item \textbf{eventtype:} The eventtype field is unindexed and this time it contains the correlation type. 
+	\item \textbf{date:} This field is different too as every events date is appended to the date field that belongs to a correlation. This is done the same way as the content field is create, but this time event date information are stored and not attribute values. This is necessary for the date filter used in the search process. Lucene comes with a filter features that allows to create a date filter on those kind of stored dates as they are stored internally as coded character streams.
+	\item \textbf{id:} The id references the original correlation in the source database and is not indexed in here as well.
+\end{itemize}
+
 %**************************************************************************************
 \subsubsection{Searching for events}
 %**************************************************************************************
