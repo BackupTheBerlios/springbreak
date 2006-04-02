@@ -321,7 +321,7 @@ A useful feature of Senactives InTime is an event simulator that can generate ev
 %**************************************************************************************
 \subsubsection{RAPIDE}
 %**************************************************************************************
-RAPIDE is an event pattern language developed at Stanford University by the Program Analysis and Verification Group under the lead of David Luckham. RAPIDE is a declerative computer language that enables the specification of patterns of events. The syntax of of RAPIDE is basically like todays languages like Java or C\#. RAPIDE allows the specification of patterns that form relationships between events by causal, content or temporal constraints. This language has the feature to add pattern rules during runtime while events are collected according to the given pattern rules and processed by given action statements. Rapide is capable of aggregating high level events out of a collection of correlated events.
+RAPIDE is an event pattern language developed at Stanford University by the Program Analysis and Verification Group under the lead of David Luckham. RAPIDE is a declarative computer language that enables the specification of patterns of events. The syntax of of RAPIDE is basically like todays languages like Java or C\#. RAPIDE allows the specification of patterns that form relationships between events by causal, content or temporal constraints. This language has the feature to add pattern rules during runtime while events are collected according to the given pattern rules and processed by given action statements. Rapide is capable of aggregating high level events out of a collection of correlated events.
 \\\\
 It has a rich set of features \cite{Luckham05} like:
 
@@ -410,23 +410,23 @@ The look and feel of Google like finding and retrieving information has become a
 % Geeignete Architektur für so eine Anwendung finden
 % Fokus auf freie Technologien
 
-Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occured events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
+Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occured events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
 \\\\
-Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweigt IoC Spring framework to bind the components together. A special focus has been set on using only non-proprietary and open source technologies as this an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
+Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweight IoC Spring framework to bind the components together. A special focus has been set on using only non-proprietary and open source technologies as this is an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
 \\\\
-Basically Event Cloud consists of three main functions: 
+Event Cloud consists of three main functions: 
 
 \begin{itemize}
 	\item Extracting and transforming event data from the source system and integrate them into Event Cloud's own data structure.
 	\item Full text index over simple and correlated events.
-	\item Search functionality including a sophisticated query syntax and various filter functions
+	\item Search functionality including a sophisticated query syntax and various filter functions.
 \end{itemize}
 
 These functionalities should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a Google like search experience. 
 \\\\
-This diploma thesis was especially supported by Josef Schiefer and Senactive by providing InTime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the InTime product. Plenty of time has been invested to create interesting and meaningful simulations of business procesess based on a logistics company. The event simulation has been broadend by according stories for showcases to display exceptional situations and to show how InTime can react on such situations. The simulation definition process has been co-developed by Roland Vecera and is available as an Appendix in the diploma thesis to get a comprehensive view of what happens beneath the fact that events exits for this project.
+This diploma thesis was especially supported by Josef Schiefer and Senactive, by providing InTime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the InTime product. Plenty of time has been invested to create interesting and meaningful simulations of business processes based on a logistics company. The event simulation has been broadened by according stories for showcases to display exceptional situations and to show how InTime can react on such situations. The simulation definition process has been co-developed by Roland Vecera and is available as an Appendix in the diploma thesis to get a comprehensive view of what happens beneath the fact that events exists for this project.
 \\\\
-As we talk about source systems or the source database throughout the next sections it is always the InTime database meant. This is a Ms Sql Server database that contains the raw event information from the InTime simulator. As InTime is settled in the .Net world, Event Cloud provides an import functionality to duplicate the database on a desired machine as usually InTime has been deployed in a VMWare for developing purposes which is not a performance wonder.
+As we talk about source systems or the source database throughout the next sections it is always the InTime database meant. This is a Ms Sql Server database that contains the raw event information from the InTime simulator. As InTime is settled in the .Net world, Event Cloud provides an import functionality to duplicate the database on a desired machine, because InTime has been deployed in a VMWare for developing purposes which is not a performance wonder.
 
 %**************************************************************************************
 \newpage
@@ -434,12 +434,12 @@ As we talk about source systems or the source database throughout the next secti
 %**************************************************************************************
 % Das Suchen ist der zentrale Teil daher muss man bestimmte Suchkonzepte unterscheiden die
 % vom System unterstützt werden.
-The subsequent chapters will give an conceptual overview of the search type features provided by Event Cloud. These are the basic concepts behind the Event Cloud and no further technical details are provided in this section.
+The subsequent chapters will give a conceptual overview of the search type features provided by Event Cloud. These are the basic concepts behind the Event Cloud and no further technical details are provided in this section.
 
 %**************************************************************************************
 \subsubsection{Rank 1}
 %**************************************************************************************
-The Rank 1 search is simple full text search over all searchable attributes of an event. The user is able to put down a search query consisting of several search terms and boolean operators according to Lucenes BNF query syntax. The result will be a list of events that matched the given query. 
+The Rank 1 search is a simple full text search over all searchable attributes of an event. The user is able to put down a search query consisting of several search terms and boolean operators according to Lucenes BNF query syntax. The result will be a list of events that matched the given query. 
 \\\\
 The Rank 1 search is pretty straight forward like you would search documents on the internet using any search engine available. 
 \\\\
@@ -478,7 +478,9 @@ If a user puts down a search query consisting of terms like "Paris London Szabol
 %**************************************************************************************
 \subsubsection{Rank 3}
 %**************************************************************************************
-This type of search is not implemented in the current work as it is a very complex topic and beyond the scope of this diploma thesis. For the sake of completness I want to give a brief overview about this event search type. The Rank 3 is searching over correlations like the Rank 2 search but instead of using direct correlations between events it searches over indirect correlations between correlationsets. It is actually the same like the Rank 2 but one aggregation level higher and the result hits are additionally evaluated by a distance factor of these indirect correlations.
+This type of search is not implemented in the current work as it is a very complex topic and beyond the scope of this diploma thesis. For the sake of completness I want to give a brief overview about this event search type. 
+\\\\
+The Rank 3 is searching over correlations like the Rank 2 search, but instead of using direct correlations between events it searches over indirect correlations between correlationsets. It is actually the same like the Rank 2 but one aggregation level higher and the result hits are additionally evaluated by a distance factor of these indirect correlations.
 \\\\
 The challenge behind this type of correlation search is to discover indirect correlations between events and to implement an effective search alorithm to rank the most relevant hits. This technique could become a performance eating task as you have to find a way to consider a higher aggregation level when querying for events.
 %***********************
@@ -498,10 +500,6 @@ The challenge behind this type of correlation search is to discover indirect cor
 % simulator für eventsimulation kurz erwähnen und details dann beim Simulator abschnitt selber schreiben.
 Event Cloud is a webbased application based on the lightweight Spring Framework IoC container and is deployed inside Apaches Tomcat. The core technologies for O/R Mapping and Indexing/Searching are Hibernate and Apache Lucene (Figure \ref{fig:eventCloudHighLevel}). 
 
-% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO: System layering!! siehe OSWP!!!
-% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 %**************************************************************************************
 \begin{landscape}
 %\subsubsection{High level overview}
@@ -519,19 +517,19 @@ Event Cloud is a webbased application based on the lightweight Spring Framework 
 %**************************************************************************************
 \subsection{Database and Schemas}
 %**************************************************************************************
-There are two databases used by this system. The first one is the source database provided by InTime which contains the raw source events and the found correlationsets for those events. This is an Ms SQL Server database that requires the sqljdbc drivers in order to establish a connection from hibernate. As the second database there is a currently a Postgres 8.1 database in use as it is open source and a powerful technology that fits the needs for this project. However using Hibernate as the O/R mapping facility it is possible to change the database backend with only minor changes. Only sequence definition changes have to be done at the mapping level as Postgres is using sequence tables for id generation. The source schemas are pretty straight forward flat tables (Figure \ref{fig:intimeschema}) and the final target schema created out of the source events is bit more complex as Event Cloud decomposes the events and stores them into a relational form (Figure \ref{fig:eventCloudSchema}). 
+There are two databases used by this system. The first one is the source database provided by InTime which contains the raw source events and the found correlationsets for those events. This is a Ms SQL Server database that requires the sqljdbc drivers in order to establish a connection from hibernate. As the second database there is currently a Postgres 8.1 database in use as it is open source and a powerful technology that fits the needs for this project. However using Hibernate as the O/R mapping facility it is possible to change the database backend with only minor changes. Only sequence definition changes have to be done at the mapping level as Postgres is using sequence tables for id generation. The source schemas are pretty straight forward flat tables (Figure \ref{fig:intimeschema}) and the final target schema created out of the source events is bit more complex as Event Cloud decomposes the events and stores them into a relational form (Figure \ref{fig:eventCloudSchema}). 
 \\\\
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
 	\includegraphics[width=1.0\textwidth]{pics/intimedb.jpg}
-	\caption{Intime schema}             
+	\caption{InTime schema}             
 	\label{fig:intimeschema}
 \end{figure}            
 %***********************
 The rwtime and txtime tables represent the realworld dates of events (rwtime) e.g. when they really occured in some system.  The timepoint when events have been recognized by the system are decomposed and stored in the txtime table. During the ETL process the event timestamps are decomposed to a day, month and year granularity. The rwtime and the txtime tables hold every possible combination of day, month and year as the event numbers grow and only the ids are assigned to the event. This allows an efficient indexing of the dates and thus a fast way to create constrained date queries.
 \\\\
-The events and eventattributes relations are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can get a complex structure. The logical XML strucuture is flattend in the relational form but to preserve the original substructures a URI is required. 
+The events and eventattributes relations are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can contain a complex structure. The logical XML structure is flattend in the relational form to preserve the original substructures a URI is saved to the database. 
 \\\\
 Consider for example the mentioned OrderReceived Event (Listing \ref{lst:OrderReceivedEvent}) where you have got basic information provided with a Productcollection containing a subtree of several products. 
 \\\\
@@ -545,20 +543,20 @@ A representation in the eventattributes relation would look like provided in Fig
 \end{figure}            
 %***********************  
 
-The relation dbinfo is used to some information about the loading process and profiles is used to store profile information about filters for the search functionality.
-
-The Index functionality of Postgres is a vital function that has been applied to the Even Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
+The relation dbinfo is used to save information about the loading process and profiles is needed to store profile information about filters for the search functionality.
+\\\\
+The Index functionality of Postgres is a vital function that has been applied to the Event Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using the psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
 \begin{lstlisting}[caption=Create an index, label=lst:CreateIndexForGeneric]{Create an index}
 CREATE INDEX tablename_attributename_index 
 	ON tablename (attributename);
 \end{lstlisting}
 Once the index has been created it will be updated automatically, but VACUUM ANALYSE has to be executed in regular intervals to update statistical data for the query planner. This has to be done especially when big amounts of data have been inserted into the database. Regular analysis can be executed by creating cron jobs over night for instance. 
 \\\\
-VACUUMing is important as rows are not physically deleted by Postgres if they are removed so this is necessary to reclaim storage space. VACUUming can be performed while reading and writing to tables as no lock is obtained but it will need some performance while running. 
+VACUUMing is important as rows are not physically deleted by Postgres, if they are removed, so this is necessary to reclaim storage space. VACUUming can be performed while reading and writing to tables as no lock is obtained but it will need some performance while running. 
 \\\\
 At this point it should be mentioned that Postgres is capable of handling different sorts of indexes found in \cite{PostgresDoc06} like partial indexing which could be useful to index only a subset of data stored in a table. This can be done by creating an index with a WHERE clause to specify the desired dataset. 
 \\\\
-Indexes are set on relation attributes according to Table \ref{tab:indexedAttributes}.
+Event Clouds indexes are set on relation attributes according to Table \ref{tab:indexedAttributes}.
 
 \begin{table} [h]
 	\begin{tabular}{ll}
@@ -603,7 +601,7 @@ Indexes are set on relation attributes according to Table \ref{tab:indexedAttrib
 %**************************************************************************************
 \subsection{Object Relational Mapping}
 %**************************************************************************************
-We have seen in the previous chapter that the event sources and the transformed events are stored into relational databases. The whole data structure is based on a relational modeling paradigm which has proven itself over many years. The relational database technology has been originally introduces by E. Codd out of growing needs to structure data under specific standpoints and his works influence is still noticable. Almost every application needs a way to make its data persistent after shut down so a variety of products emerged over the years to provide a persistent and structured way to persist application data.
+We have seen in the previous chapter that the event sources and the transformed events are stored into relational databases. The whole data structure is based on a relational modeling paradigm which has proven itself over many years. The relational database technology has been originally introduces by E. Codd out of growing needs to structure data under specific standpoints and his works influence is still noticable. Almost every application needs a way to make its data persistent after shut down, so a variety of products emerged over the years to provide a persistent and structured way to store application data.
 \\\\
 Codd firstly introduced the relational model in his paper "A Relational Model of Data for Large Shared Data Banks": 
 \\\\
@@ -618,9 +616,9 @@ A relational database is mainly characterized by of following terms \cite{Codd99
 
 This had a big impact and changed the way how data has been processed. Instead of manipulating record by record it was possible to describe the datasets for processing and to store data in an efficent way. Today a database management system is more than a formal description of how to organise and structure information. It provides a full blown information management system that allows applications to access large amounts of data in a fast manor. It supports transactions, user management, issues security topics and much more. Moreover the relational world has been and is still under academic discussions which helps to evolve the algorithms and technologies powering those technologies. A lot of work has been invested to mathematicaly formalize relational model and to develop a structured query language. Currently there is a wide range of commercial and open source database management systems available like DB2, Orcale, Ms SQL Server, MySQL or PostgreSQL.
 \\\\
-As time goes by people realized that procedureal programing paradigms create too much overhead which makes systems difficult to maintain, components hard to reuse and the world could be described in better ways for problemsolving. As a result the object oriented paradigm has evolved and Smalltalk was the first noticeable programming language that introduced the object oriented programming paradigm together with cutting edge features (at least for that time). During the mid eighties C++ established the object oriented paradigm into eveybodies minds. Programming languages evolved over time and todays most widely spread languages are C++, Java and .Net derivates. Especially Java has proven itself for developing distributed applications. Today we have a sophisticated toolset available like modelling languages such as UML or a rich set of design patterns for different purposes we can use more or less out of the box (for more details take a look at \cite{DesignPatterns97} and \cite{Fowler97}).
+As time goes by people realized that procedureal programing paradigms create too much overhead that makes systems difficult to maintain, components hard to reuse and the world could be described in better ways for problemsolving. As a result the object oriented paradigm has evolved and Smalltalk was the first noticeable programming language that introduced the object oriented programming paradigm together with cutting edge features (at least for that time). During the mid eighties C++ established the object oriented paradigm into eveybodies minds. Programming languages evolved over time and todays most widely spread languages are C++, Java and .Net derivates. Especially Java has proven itself for developing distributed applications. Today we have a sophisticated toolset available like modelling languages such as UML or a rich set of design patterns for different purposes we can use more or less out of the box (for more details take a look at \cite{DesignPatterns97} and \cite{Fowler97}).
 \\\\
-Today we are facing the problem of a \textit{paradigm mismatch}. We started to use object oriented techniques to model and develop our applications, but almost all of our  systems have the requirement that they need to persist their data. Following the object oriented paradigm we create domain models about the subjects we need to work with. Sometimes these models are named business models in a layered application context. This object oriented style of modeling our data clashes with the well known relational \textit{row and column world}. The problem is that object oriented domain models are simply the better choice as it helps to improves code reuseability and the maintainability significantly. 
+Today we are facing the problem of a \textit{paradigm mismatch}. We started to use object oriented techniques to model and develop our applications, but almost all of our  systems have the requirement that they need to persist their data. Following the object oriented paradigm we create domain models about the subjects we need to work with. Sometimes these models are named business models in a layered application context. This object oriented style of modeling our data clashes with the well known relational \textit{row and column world}. The problem is that object oriented domain models are simply the better choice as they help to improve code reuseability and the maintainability significantly. 
 \\\\
 The first approaches that addressed this problem were to create sql support to enable a link between the relations stored in a database and the business models to benefit from their advantages. This approach is very expensive as the developers have to write low level SQL statements using database APIs into the source code directly not to speak about the almost unchallengable task to implement sophisticated algorithms like lazy-loading of object graphs that represent 1:n relations in a relation model or caching techniques to improve performance. You never would have thought about changing the database at the back end of such an implementation and even a schema change can get out of hand. Developers face huge problems that don't belong to the given business domain problem at all in order to create a clean and object oriented application.
 \\\\
@@ -636,7 +634,7 @@ The main features provided by ORM approach are:
 	\item It produces less lines of code that makes understanding a system and refactoring easier.
 	\item It is database independent.
 \end{itemize}
-There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
+There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with a big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
 
 %**************************************************************************************
 \subsubsection{Data access object}
@@ -659,7 +657,8 @@ The Spring Framework brings a Data Access Object (DAO) support with it that is a
 \subsubsection{Integrating Data Access}
 %**************************************************************************************
 
-The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the data access into the application. The centerpiece of the data access in Spring Framework managed applications is the SessionFactory. The SessionFactory serves as a session factory for dependency injections on thread safe DAOs. Event Cloud uses the LocalSessionFactoryBean as a concrete implementation which is appropriate for most types of scenarios even to deploy distributed transaction support or JNDI support. It is all just a matter of configuration. For example if we would want to change the database connection to a JNDI resource we just change the LocalSessionFactoryBean implementation to JndiObjectFactoryBean and readjust the connection string. 
+The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the data access into the application. The centerpiece of the data access, in Spring Framework managed applications, is the SessionFactory. The SessionFactory serves as a factory for dependency injections on thread safe DAOs. Event Cloud uses the LocalSessionFactoryBean as a concrete implementation which is appropriate for most types of scenarios even to deploy distributed transaction support or JNDI support. It is all just a matter of configuration. For example if we would want to change the database connection to a JNDI resource we just change the LocalSessionFactoryBean implementation to JndiObjectFactoryBean and readjust the connection string. 
+\\\\
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
@@ -668,7 +667,7 @@ The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database
 	\label{fig:SessionFactory}
 \end{figure}            
 %*********************** 
-The listing figure \ref{lst:SessionFactoryConfiguration} shows a bunch of configuration options that have to be applied. Important note is to specify the SQL dialect according to you database management system and create an injection link to you database connection bean (<ref bean="postgresSource"/>) which will be wired in by the Spring Framework. The hibernateProperties allow some finetuning options like caching options and switches to turn on and off to help debugging.
+The listing figure \ref{lst:SessionFactoryConfiguration} shows a bunch of configuration options that have to be applied. Important to note is to specify the SQL dialect according to the database management system and create an injection link to you database connection bean (<ref bean="postgresSource"/>) which will be wired in by the Spring Framework. The hibernateProperties allow some finetuning options like caching options and switches to turn on and off to help debugging.
 \\\\
 %***************************************
 \begin{figure}[h]  
@@ -701,9 +700,9 @@ The listing figure \ref{lst:SessionFactoryConfiguration} shows a bunch of config
 	\label{lst:SessionFactoryConfiguration}
 \end{figure} 
 %***************************************
-An important property is the mappingResources as it defines the mapping resources for the application. The mapping resource files are ending with a *.hbm.xml by standard and they provide the mapping definitions between the relational and the object oriented world. Creating and parametrizing the mapping resources is far out of scope in this diplom thesis as there is an excellent documentation available on the Hibernate webpage. Important is that there are tools and techniques available that can generate these mapping configuration files for your application. In this project a top-down approach has been chosen to create data access. The idea is to create the relational database schema and define various contraints. The next step is to apply a tool name Middlegen which is capable to read in the database schema and provide a user interface to create the object relationl mapping resources. When this has been done a tiny program can be integrated using Jakarta's Ant to generate the object oriented models including object graphs for representing relationships. Afterwards all that have to be done is add the mapping resource names to the SessionFactory.
+An important property is the mappingResource as it defines the mapping resources for the application. The mapping resource files are ending with a *.hbm.xml by standard and they provide the mapping definitions between the relational and the object oriented world. Creating and parametrizing the mapping resources is far out of scope in this diploma thesis as there is an excellent documentation available on the Hibernate webpage. Important is that there are tools and techniques available that can generate these mapping configuration files for your application. In this project a top-down approach has been chosen to create data access. The idea is to create the relational database schema and define various contraints. The next step is to apply a tool name Middlegen which is capable of reading in the database schema and provide a user interface to create the object relationl mapping resources. When this has been done a tiny program can be integrated using Jakarta's Ant to generate the object oriented models including object graphs for representing relationships. Afterwards all that have to be done is add the mapping resource names to the SessionFactory.
 \\\\
-The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing figure \ref{lst:DatabaseConnection}). As we have two databases another SessionFactory instance for the second database has to be created too. For means of simplicity there is only one example provided just to show how the basic concept works if changes have to applied and how this is all wired together. Event Cloud makes use of the commons pooling package to provide basic connection pooling for the application. I someone would like to use a more sophisticated implementation like C3PO it is again just a matter of changing the class. 
+The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing figure \ref{lst:DatabaseConnection}). As we have two databases another SessionFactory instance for the second database has to be created too. For means of simplicity there is only one example provided just to show how the basic concept works if changes have to applied and how this is all wired together. Event Cloud makes use of the commons pooling package to provide basic connection pooling for the application. If someone would like to use a more sophisticated implementation like C3PO it is again just a matter of changing the class. 
 
 %***************************************
 \begin{figure}[h]  
@@ -727,7 +726,7 @@ The database connections are defined in the context defintions of the applicatio
 \subsubsection{Transaction Management}
 %**************************************************************************************
 
-Now it comes an important topic: the transaction management. Spring Framework supports a wide range of transaction managers and the transaction management itself can be configured in a declerative way for each DAO and each method of the data access objects used in the application. Event Cloud makes use of the HibernateTransactionManager that is wired to the SessionFactory (Listing figure \ref{lst:Transactionmanagement}). Note that this is a huge step! For long declerative transaction management was only supported by EJB which had to be deployed inside heavy weight application servers with a wide range of drawbacks. The Spring Framework comes with declerative transaction support implemented through Spring's AOP framework. 
+Now it comes an important topic: the transaction management. Spring Framework supports a wide range of transaction managers and the transaction management itself can be configured in a declarative way for each DAO and each method of the data access objects used in the application. Event Cloud makes use of the HibernateTransactionManager that is wired to the SessionFactory (Listing figure \ref{lst:Transactionmanagement}). Note that this is a huge step! For long declarative transaction management was only supported by EJB which had to be deployed inside heavy weight application servers with a wide range of drawbacks. The Spring Framework comes with declarative transaction support implemented through Spring's AOP framework. 
 \\\\
 %***************************************
 \begin{figure}[h]  
@@ -745,12 +744,12 @@ Now it comes an important topic: the transaction management. Spring Framework su
 \end{figure} 
 %***************************************
 
-The DAO, created by the user, references the previously defined SessionFactory and has to extend the HibernateDaoSupport. The TransactionProxyFactoryBean is used to enable the declerative transaction management for a DAO. It needs three properties to be defined:
+The DAO, created by the user, references the previously defined SessionFactory and has to extend the HibernateDaoSupport. The TransactionProxyFactoryBean is used to enable the declarative transaction management for a DAO. It needs three properties to be defined:
 
 \begin{itemize}
 	\item The transaction manager - in this case it is the HibernateTransactionManager
 	\item The transaction target - this is a reference to the DAO that includes the SessionFactory
-	\item The transaction attributes - decleares which type of transaction type to apply to which methods including options.
+	\item The transaction attributes - declares which transaction type to apply to which methods including options.
 \end{itemize}
 
 %***************************************
@@ -785,9 +784,9 @@ The DAO, created by the user, references the previously defined SessionFactory a
 	\label{lst:TransactionmanagementDAO}
 \end{figure} 
 
-The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties defines on which methods they should be applied. For example on methods starting with "save*" Propagation is required.
+The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties define on which methods they should be applied. For example on methods starting with "save*" Propagation is required (Figure \ref{lst:TransactionmanagementDAO}).
 \\\\
-Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAGATION NEVER, PROPAGATION NOT SUPPORTED, PROPAGATION REQUIRED, PROPAGATION REQUIRES NEW and PROPAGATION SUPPORTS (detailed explanation is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimization options that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. These levels are ISOLATION DEFAULT, ISOLATION READ UNCOMMITTED, ISOLATION READ COMMITTED, ISOLATION REPEATABLE READ and ISOLATION SERIALIZABLE.
+Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAGATION NEVER, PROPAGATION NOT SUPPORTED, PROPAGATION REQUIRED, PROPAGATION REQUIRES NEW and PROPAGATION SUPPORTS (detailed explanation is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimizations that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. These levels are ISOLATION DEFAULT, ISOLATION READ UNCOMMITTED, ISOLATION READ COMMITTED, ISOLATION REPEATABLE READ and ISOLATION SERIALIZABLE.
 
 %***************************************
 
@@ -795,7 +794,7 @@ Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAG
 \subsubsection{Event Clouds Persistence Layer}
 %**************************************************************************************
 
-Event Cloud's data access is following the data access object (DAO) pattern using Hibernate and Spring Frameworks support described in the previous sections. For each database there are models generated using a top-down approach. The resource mappings between the relational database and the business objects or models are generated by middlegen and out of these mappings codegen generates the models according to their relational structure. 
+Event Cloud's data access is following the data access object (DAO) pattern, using Hibernate and Spring Frameworks support, described in the previous sections. For each database there are models generated using a top-down approach. The resource mappings between the relational database and the business objects or models are generated by middlegen and out of these mappings codegen generates the models according to their relational structure. 
 \\\\
 There are 8 model classes available that represent Event Cloud's target schema:
 \begin{itemize}
@@ -822,9 +821,9 @@ And there are two model classes that represent Event Cloud's source schema from 
 	\label{fig:BasicDataAccess}
 \end{figure}            
 %*********************** 
-For each of these models there is a DAO interface defined with basic CRUD (create, read, update, delete) methods. Some of them require special methods for different purposes. As the DAO interface is pretty forward there is no need to get into details here. The Spring Framework and Hibernate is doing all the all the hard work. The developer can concentrate on problems situated in the business domain.
+For each of these models there is a DAO interface defined with basic CRUD (create, read, update, delete) methods. Some of them require special methods for different purposes. As the DAO interface is straight forward there is no need to get into details here. The Spring Framework and Hibernate is doing all the hard work. The developer can concentrate on problems situated in the business domain.
 \\\\
-As Javadoc in combination with UML diagrams is self explainatory, I want to introduce only the basic concepts like the DAO for the for the event model (Figure \ref{fig:BasicDataAccess}). The DAO forms the central interface from where every other DAO interface is extended. The implementation of the EventDAO is Hibernate specific and is instantiated through Spring's context configuration (Listing Figure \ref{lst:ImplementingDAOInterface})
+As Javadoc in combination with UML diagrams is self explainatory, I want to introduce only the basic concepts like the DAO for the event model (Figure \ref{fig:BasicDataAccess}). The DAO forms the central interface from where every other DAO interface is extended. The implementation of the EventDAO is Hibernate specific and is instantiated through Spring's context configuration (Listing Figure \ref{lst:ImplementingDAOInterface})
 
 %***************************************
 \begin{figure}[h]  
@@ -962,7 +961,7 @@ The Intime database provides the events with different information (Listing Figu
 \\\\
 The more tricky part is the extraction of each attribute and their validation against its definiton. The datatypes of each attribute are extracted and stored into the database as well. A lot of work in this process is done by the EventPeristenceServices as it autmatically takes care about saving eventtypes and timepoints. 
 \\\\
-This process is pretty forward as the user only has to provide event definitons and register the new events in Spring's context configuration. The user can controll and supervise the loading process from the web user interface in the admin section. By clicking the Button "Start Transformation" a thread is triggered that is collecting the events from it source and transforms them into the target database schema. During this process the full text index is created or update which is done by using the Indexer interface (Figure \ref{fig:etlProcess}).
+This process is pretty straight forward as the user only has to provide event definitons and register the new events in Spring's context configuration. The user can controll and supervise the loading process from the web user interface in the admin section. By clicking the button "Start Transformation" a thread is triggered that is collecting the events from it source and transforms them into the target database schema. During this process the full text index is created or update which is done by using the Indexer interface (Figure \ref{fig:etlProcess}).
 
 % TODO: screenshot vom adminteil reingeben 
 
@@ -1019,9 +1018,9 @@ As time went by the first enthusiasm had gone and experiences with EJB have show
 Rod Johnson propagets following major flaws of EJBs based on his experience \cite{Johnson02}:
 \begin{itemize}
 	\item It brings too much unnecessary complexity with it.
-	\item Through EJB's complexity provided the productivity is low and the probability of erros grow
-	\item Automated unit testing is poorly supported
-	\item Huge amounts of problem specifications have been worked in but only a slight percentage addresses common real world problems.
+	\item Through EJB's complexity provided the productivity is low and the probability of erros grow.
+	\item Automated unit testing is poorly supported.
+	\item Huge amounts of problem specifications have been worked out, but only a slight percentage addresses common real world problems.
 	\item Entity Beans have failed.
 	\item EJB system have a relativly poor performance and don't scale up well.
 	\item Too much code has to be produced which resulted in various code generators that make maintainability problematic.
@@ -1032,7 +1031,7 @@ The quesion arises "Why use J2EE and EJBs at all then?". The answer is that J2EE
 \\\\
 \textit{Spring is a lightweight inversion of control and aspect-oriented container framework.} \cite{SpringInAction05}
 \\\\
-Spring is acutally a lightweigt container that provides an inversion of control (IoC) which means that it is capable of managing the life cycle and configurations of its beans. The inversion of control pattern makes it possible to write the applications business logic completle unaware of its underlying technology. Spring provides means of creating dependcies without any intrusion into business code. That is a major feature which allows to develop loosly coupled and highly scalable components. The developer can concentrate only solving business problems and creating easily reusable components. It is possible to remove the complete Spring support from the application without affecting any business code written. Using the Spring Framework the developers are forced to program against interfaces and the concrete implementation of the code are wired in by configuration files using Spring. Another enriching feature is that Spring makes extensive use of the aspect oriented programing (AOP) paradigm which is used to seperate business logic from system services like transaction management seen the previous section. The transaction management of the data access is completely seperated from the code and even the Hibernate specific implementation parts can be changed in a minute using the configuration power of Spring. 
+Spring is acutally a lightweight container that provides an inversion of control (IoC). This means that it is capable of managing the life cycle and configuration of its beans. The inversion of control pattern makes it possible to write the applications business logic completle unaware of its underlying technology. Spring provides means of creating dependcies without any intrusion into business code. That is a major feature which allows to develop loosly coupled and highly scalable components. The developer can concentrate on solving business problems and creating easily reusable components. It is possible to remove the complete Spring support from the application without affecting any business code written. Using the Spring Framework the developers are forced to program against interfaces and the concrete implementation of the code is wired in, by configuration files, using Spring. Another enriching feature is that Spring makes extensive use of the aspect oriented programing (AOP) paradigm which is used to seperate business logic from system services like transaction management seen the previous section. The transaction management of the data access is completely seperated from the code and even the Hibernate specific implementation parts can be changed in a minute using the configuration power of Spring. 
 \\\\
 The Spring Framework is composed of several main components:
 \begin{itemize}
@@ -1043,7 +1042,7 @@ The Spring Framework is composed of several main components:
 	\item MVC Framework
 \end{itemize}
 
-The core of Spring Framwork is undisputable the core container and the the application context module. The core containers heart is the BeanFactory which lets the user wire the components together. It uses the Factory Pattern to realize dependency injections and to control the objects life cycles. The BeanFactory supports two types of objects: Singelton and Prototype. The singelton creates a shared instance of an object which is addressed by a name and mostly used as an stateless object. The prototype allows to create an independent instace for each reference of this class.
+The core of the Spring Framwork is undisputable the core container and the application context module. The core containers heart is the BeanFactory which lets the user wire the components together. It uses the Factory Pattern to realize dependency injections and to control the objects life cycles. The BeanFactory supports two types of objects: Singelton and Prototype. The Singelton creates a shared instance of an object which is addressed by a name and mostly used as an stateless object. The Prototype allows to create an independent instance for each reference of this class.
 \\\\
 The O/R and DAO modules have been discussed in detail in the previous sections.
 \\\\
@@ -1089,7 +1088,7 @@ The business logic should always be laid inside simple Java Beans with according
 %**************************************************************************************
 \subsection{Spring MVC}
 %**************************************************************************************
-The MVC pattern was originally introduced Smalltalk developed in the 70s at the Xerox Palo Alto Research Center. Its main purpose was to manage the GUI and user interactions for the first graphic-window based applications. The MVC pattern is used to seperate the representation, processing and data components to achieve a loosly couple design which results in a clean reusable and maintainable code. 
+The MVC pattern was originally introduced in Smalltalk developed in the 70s at the Xerox Palo Alto Research Center. Its main purpose was to manage the GUI and user interactions for the first graphic-window based applications. The MVC pattern is used to seperate the representation, processing and data components to achieve a loosly couple design which results in a clean reusable and maintainable code. 
 \\\\
 The three main seperations are:
 \begin{itemize}
@@ -1106,10 +1105,10 @@ Spring Framework brings a full blown MVC framework with it to help to develop we
 	\item workflow coordination
 \end{itemize}
 
-Spring's MVC life cycle is presented in the Figure \ref{fig:SpringMVC}. The DispatcherServlet is receiving the a user request and queries the according mapping for the specific request. The HandlerMapping is simply mapping URLs to controllers. The Dispatcher is delegating the request to the according controller once it resolved the mapping. The Controller job is to perform some business operations in sense that it delegates the workload to business objects like the service API provided by Event Cloud. After work has been done the Controller populates so called Command Models that hold all information that is needed to be shown to the user and returns a ModelAndView object to the Dispatcher that contains command model and a view name. The ViewResolver is then responsible to resolve the viewname and map it to the according view. In Event Clouds case this is a JSP page which only performs JSTL operations with display formatting routines to generate the desired HTML rendered information to its user. 
+Spring's MVC life cycle is presented in the Figure \ref{fig:SpringMVC}. The DispatcherServlet is receiving user requests and queries the according mapping for the specific request. The HandlerMapping is simply mapping URLs to controllers. The Dispatcher is delegating the request to the according controller once it resolved the mapping. The Controllers job is to perform some business operations in sense that it delegates the workload to business objects like the service API provided by Event Cloud. After work has been done the Controller populates so called "Command Models" that hold all information, that is needed to be shown to the user, and returns a ModelAndView object to the Dispatcher that contains the command model and a view name. The ViewResolver is then responsible to resolve the viewname and map it to the according view. In Event Clouds case this is a JSP page which only performs JSTL operations with display formatting routines to generate the desired HTML rendered information to its user. 
 \\\\
 An important feature that Spring MVC provides is that it is possible to create interceptors for specific mappings and controllers compareable to servlet filters. This allows to implement access control for instance in no time and without to touch any controller. This provides an extremly loosly coupled design as no code is touched when implementing such a thing.   
-
+\\\\
 %***********************
 \begin{figure}[!h]                                  
 	\centering                                           
@@ -1119,7 +1118,7 @@ An important feature that Spring MVC provides is that it is possible to create i
 \end{figure}            
 %***************************************
 
-To give a clear picture how this works in Event Cloud there is a Listing Figure \ref{lst:urlMapping} provided for understanding the principle of configuring Spring's MVC in Event Cloud. The first one shows how the controllers are mapped to a requested URLs. For matter of simplicity only the process of resolving the Event Clouds admin page is explained.  The admin's controller is bind to a specific object which takes several bean dependencies as arguments. The admin controller itself does not perform any business logic. It just determines what kind of request got in and decides which operation should be executed like the etl process or the creation of filter profile. Afterwards it creates an instance of a command object that holds the data to be displayed for example which Events have been indentified, when the last update process has been executed and stuff like that. When finished performing business operations it returns a ModelAndView object including the according view name to be resolved and the the name of the command object that is used by the jsp page to access it (Listing Figure \ref{lst:MVCByAdminController}). 
+To give a clear picture how this works in Event Cloud there is a Listing Figure \ref{lst:urlMapping} provided for understanding the principle of configuring Spring's MVC in Event Cloud. The first one shows how the controllers are mapped to a requested URLs. For matter of simplicity only the process of resolving the Event Clouds admin page is explained.  The admin's controller is bind to a specific object which takes several bean dependencies as arguments. The admin controller itself does not perform any business logic. It just determines what kind of request got in and decides which operation should be executed like the etl process or the creation of filter profile. Afterwards it creates an instance of a command object that holds the data to be displayed for example which Events have been indentified, when the last update process has been executed and stuff like that. When finished performing business operations it returns a ModelAndView object including the according view name to be resolved and the name of the command object that is used by the jsp page to access it (Listing Figure \ref{lst:MVCByAdminController}). 
 \\\\
 The openSessionInViewInterceptor used in this excerpt is a workaround to provide access for lacy loading in the view component.
 
@@ -1183,7 +1182,7 @@ The openSessionInViewInterceptor used in this excerpt is a workaround to provide
 %**************************************************************************************
 \subsubsection{Indexing Events with Lucene }
 %**************************************************************************************
-Lucene is an open source high performance full text indexing and search library completle written in Java. Originally developed by Cutting 2001 it became a popular piece of software which is now maintained and extended by volunteers as a Jakarta project. During the development of Event Cloud, Lucene release its 1.9 version which was a major step in it development the group is looking forward to introduce the 2.0 version of its software. Lucene provides a high performance indexing implementation and offers a sophistacted search algorithm. The main power of Lucene is actually its search implementation including its Ranking algorithm which yields excellent search results. Lucene is suitable for almost every application that needs some kind of text indexing. Originally it was used to index data and information provided for example on webpages or documents. It provides several libraries to parse different formats like pdf, doc or XMLs. However people started to use Lucene to index their databases as well to provide an efficient and fast full text search for their applications. Lucene provides the possibility to store metadata with the given documents which can be indexed by choice such as author, title or date of creation. This provides a powerfull alternative of managing and saving data for search centric applications. Lucene can create an index either on disk or it can build an extremly fast transient index in memory. 
+Lucene is an open source high performance full text indexing and search library completle written in Java. Originally developed by Cutting 2001 it became a popular piece of software which is now maintained and extended by volunteers as a Jakarta project. During the development of Event Cloud, Lucene release its 1.9 version which was a major step in its development. The group is looking forward to introduce the 2.0 version of its software. Lucene provides a high performance indexing implementation and offers a sophistacted search algorithm. The main power of Lucene is actually its search implementation including its Ranking algorithm that yields excellent search results. Lucene is suitable for almost every application that needs some kind of text indexing. Originally it was used to index data and information provided for example on webpages or documents. It provides several libraries to parse different formats like pdf, doc or XMLs. However people started to use Lucene to index their databases as well to provide an efficient and fast full text search for their applications. Lucene provides the possibility to store metadata with the given documents that can be indexed by choice such as author, title or date of creation. This provides a powerfull alternative of managing and saving data for search centric applications. Lucene can create an index either on disk or it can build an extremly fast transient index in memory. 
 \\\\
 The real benefit developers can take from Lucene is its extremly well designed architecture. The developer has to be familiar with only a handful of classes in order to implement a rudimentary index and search application. 
 \\\\
@@ -1237,7 +1236,7 @@ How simple it can be to create a basic index and add a document to it is shown i
 However indexing and searching for events and their correlations in Event Cloud requires a bit more complex algorithms. The next sections will provide the main concepts implemented for searching and retrieving those events. Event Cloud provides another API service, like the persistence service classes, for indexing and retrieving event information to simplify the use of Event Clouds underlying mechanisms and to provide another layer of abstraction. 
 \\\\
 A central role in the indexing process has the IndexingService interface that provides the common methods to EventCloud and the LuceneIndexingImpl for the concrete Lucene implementation (Figure \ref{fig:IndexingService}). These classes are wired together using Spring's application context like everywhere else in Event Cloud. 
-
+\\\\
 %***********************
 \begin{figure}[!h]                                  
 	\centering                                           
@@ -1279,7 +1278,7 @@ The event lucene document that is added to the event index, is consisting of fou
 \end{figure}    
 %***************************************    
 
-The correlation index is slightly different then the event index created. The document types are the same but have different contents (Figure \ref{fig:IndexingACorrelatioin}):
+The correlation index is slightly different than the event index created. The document types are the same but have different contents (Figure \ref{fig:IndexingACorrelatioin}):
 
 \begin{itemize}
 	\item \textbf{content:} The content contains, in contrast to the event's content field, all attribute values from the events that belong to a correlation. These correlations are fetched from the source database and all events belonging to a correlation are retrieved from Event Cloud's database and their attributes are extracted and stored into a string. This time every event attributes value, belonging to the currently processed correlation, is stored into the content string which is then indexed.
@@ -1305,7 +1304,8 @@ The Figure \ref{fig:mainView} shows two options and an input field for the searc
 \end{figure}    
 %*************************************** 
 
-The Figure \ref{fig:Rank2SearchScreenshot} shows how the a correlation results are represented. The middle frame shows the correlation search results order by their hit relevance which has been calculated bei Lucenes ranking algorithm and underneath there are several events presented that matched the search query. This is an important topic as there are actually two aggregation levels of results presents. The first level is the correlationset that best matched the search query and underneath the most relevant events are displayed that matched the query (Figure \ref{fig:Rank2SearchHits}). The other events belonging to that correlation are hidden as they didn't matched the query. By pressing the "plus" button next to correlation's name all events can be displayed that belong to that correlationset. By clicking on an event the right handed panel is displayed with details about the event. The event details can be represented either as the raw event xml or in a more human readable way as styled tables. The panel on the left hand side can be faded in by clicking on the "more options" button. This is the filter bar where the user can consequently remove correlationtypes from the result set, apply a date range filter or a previously created profile in the admin section. 
+The Figure \ref{fig:Rank2SearchScreenshot} shows how the correlation results are represented. The middle frame shows the correlation search results ordered by their hit relevance. The Hits have been calculated bei Lucenes ranking algorithm and underneath there are several events presented that matched the search query. This is an important topic as there are actually two aggregation levels of results presented. The first level is the correlationset that best matched the search query and underneath the most relevant events are displayed that matched the query (Figure \ref{fig:Rank2SearchHits}). The other events belonging to that correlation are hidden as they didn't matched the query. By pressing the "plus" button next to correlation's name all events can be displayed that belong to that correlationset. By clicking on an event the right handed panel is displayed with details about the event. The event details can be represented either as the raw event xml or in a more human readable way as styled tables. The panel on the left hand side can be faded in by clicking on the "more options" button. This is the filter bar where the user can consequently remove correlationtypes from the result set, apply a date range filter or a previously created profile in the admin section. 
+\\\\
 %***********************
 \begin{figure}[!h]                                  
 	\centering                                           
@@ -1325,6 +1325,7 @@ The Figure \ref{fig:Rank2SearchScreenshot} shows how the a correlation results a
 %*************************************** 
 
 The Rank 1 search provides the same features with the difference that there is only the Rank 1 search performed and thus only events are presented ranked by Lucene (Figure\ref{fig:Rank1SearchHits}). 
+\\\\
 %***********************
 \begin{figure}[!h]                                  
 	\centering                                           
@@ -1335,7 +1336,7 @@ The Rank 1 search provides the same features with the difference that there is o
 %*************************************** 
 
 The real interesting things happen in the background. Event Cloud provides another Service API which is used for searching the indexes. The search is triggered by the user and processed by the SearchController. The SearchController is the main class for coodrinating the search and managing the result interface which is currently quite complex to provide an interactive look and feel like many AJAX applications provide. There was a discussion about implementing the interface using AJAX but this idea has been dismissed as there is no defacto standard AJAX library around. You can find tons of free AJAX libraries that are more or less good. Event Cloud should provide the basic infrastructure for further work so it made no sense to apply volatile frameworks that could become absolete tomorrow. 
-
+\\\\
 %***********************
 \begin{figure}[!h]                                  
 	\centering                                           
@@ -1345,16 +1346,16 @@ The real interesting things happen in the background. Event Cloud provides anoth
 \end{figure}    
 %*************************************** 
 
-The SearchService uses the persistence service APIs, but the real search is done inside the IndexingService class as it should encapsulate everything Lucene specific if someone wants to change the underlying indexing technique. This can be done with changing one line in the context configuration as we program against interfaces like everywhere else in this project. SearchServices job is to manage the creation of the command object that is used by the SearchController to provide the necessary information for the display. The index search is performed by the IndexingService. 
+The SearchService uses the persistence service APIs, but the real search is done inside the IndexingService class as it should encapsulate everything Lucene specific if someone wants to change the underlying indexing technique. This can be done by changing one line in the context configuration as we program against interfaces like everywhere else in this project. The SearchService's job is to manage the creation of the command object that is used by the SearchController to provide the necessary information for the display. The index search is performed by the IndexingService. 
 \\\\
-Important to note is that Lucene makes extensive use of caching to boost its performance. This is done in a quite unintuitive way so it needs some explanation. Retrieving data from the database for displaying to the user is mostly done by using pagination like provided in Event Cloud. The common approach would be to apply the same paginiation principle in Lucene for the search results (in Lucene context called hits). The classic way would be to send a query and then retrieve the results according to the page size. This is not done that way with Lucene! Lucene caches these hits and other search related information and therefore it is recommended to requery everytime you switch to another page and display only the hits that are in line for the chosen page. 
+Important to note is that Lucene makes extensive use of caching to boost its performance. This is done in a quite unintuitive way so it needs some explanation. Retrieving data from the database, for displaying to the user, is mostly done by using pagination like provided in Event Cloud. The common approach would be to apply the same pagination principle in Lucene for the search results (in Lucene context called hits). The classic way would be to send a query and then retrieve the results according to the page size. This is not done that way with Lucene! Lucene caches these hits and other search related information and therefore it is recommended to requery everytime you switch to another page and display only the hits that are in line for the chosen page. 
 \\\\
 To be more clear consider following example! You submit a query and Lucene provides 100 results for instance. For page 1 you would show the results from 1 to 10, for page 2 you would requery again and display the results 20 to 30. 
 \\\\
-Lucene Scorings formula is provided in \ref{fig:LuceneInActionScoring}. Simply spoken the rank score is influenced by following factors:
+Lucene Scorings formula is provided in Figure \ref{fig:LuceneInActionScoring}. Simply spoken the rank score is influenced by following factors:
 
 \begin{itemize}
-	\item Documents are ranked higher that contain most or all of the search terms provided in the query
+	\item Documents that contain most or all of the search terms provided in the query are ranked higher.
 	\item Matched words that are rare in documents are more valuable than words that are less frequent. 
 	\item The scoring is based on the length of a document. A long document is less valuable than a short one.
 	\item The occurence of search terms in a document influences the score. Many matching search terms in a document result in a higher ranking.
@@ -1382,9 +1383,9 @@ Lucene Scorings formula is provided in \ref{fig:LuceneInActionScoring}. Simply s
 \end{figure}    
 %*************************************** 
 
-The SearchResultModel \ref{fig:SearchServiceAPI} is the core command class that is created by the SearchController and the SearchService. This model is used for both Rank 1 and Rank 2 search with the difference that for Rank 1 search there is no FoundCorrSet class. For Rank 1 search the EventAggs are saved into the HashMap instead of FoundCorrSet. Basically the CorrResultModel provides all found correlationsets (FoundCorrSet) and each correlationset has got a collection events (EventAgg) that have got attached an event object. 
+The SearchResultModel (Figure \ref{fig:SearchServiceAPI}) is the core command class and is created by the SearchController and the SearchService. This model is used for both Rank 1 and Rank 2 search with the difference that for Rank 1 search there is no FoundCorrSet class. For Rank 1 search the EventAggs are saved into the HashMap instead of FoundCorrSet. Basically the CorrResultModel provides all found correlationsets (FoundCorrSet) and each correlationset has got a collection of events (EventAgg) that have got attached an event object. 
 \\\\
-The SearchResultModel is also the main point where where browser logic, paginiation data and filter information is stored. 
+The SearchResultModel is also the main point where browser logic, paginiation data and filter information is stored. 
 
 %**************************************************************************************
 \subsubsection{Query Syntax}
@@ -1398,11 +1399,11 @@ Clause ::= ["+", "-"] [<TERM> ":"] ( <TERM> | "(" Query ")" )
 \end{lstlisting}
 A clause can contain either a Term expression or another nested Query. There are two distinctions between terms. There can exist a \textit{single term} like "hello" or "test" or a term can be a \textit{phrase} like "hello world" enclosed by double quotes. It is possible to combine multiple terms with boolean operators \cite{LuceneQueryDescriptionPage}. The predefined Boolean connector configured in Event Cloud for Terms is the OR operator.
 \\\\
-Some basic query examples are described in the table \ref{fig:rank1LuceneQueryExamples} for getting started.
+Some basic query examples are described in the table \ref{tab:LuceneQueryExamples} for getting started.
 \\\\
-However the QueryParser is capable of much richer functionality like Fuzzy Searches and and Proximity Searches. They don't have a big importance in querying but it can be powerful tool. For example it is possible to create a fuzzy search based on the Levenshtein distance using the tilde ~ symbol plus a proximity number. For example you can search for "\textit{java~}" and it will return documents that are similar to java like lava. You can adjust the proximity by adding a value next to the tilde symbol like java~0.8. The default proximity number is 0.5.
+However the QueryParser is capable of much richer functionality like Fuzzy Searches and Proximity Searches. They don't have a big importance in querying but it can be a powerful tool. For example it is possible to create a fuzzy search based on the Levenshtein distance using the tilde ~ symbol plus a proximity number. For example you can search for "\textit{java~}" and it will return documents that are similar to java like lava. You can adjust the proximity by adding a value next to the tilde symbol like java~0.8. The default proximity number is 0.5.
 \\\\
-Another noticeable minor future is the possibility to define the relevance of search terms in a query with the carot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
+Another noticeable, but minor feature, is the possibility to define the relevance of search terms in a query with the carot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
 \\\\
 Further details on this topic can be found here \cite{LuceneQueryDescriptionPage}, here \cite{LuceneQueryParserAPI} and here \cite{LuceneInAction05}.
 
@@ -1478,7 +1479,7 @@ The admin screen (Figure \ref{fig:AdminInterface}) is the main section where use
 %**************************************************************************************
 
 
-Event Cloud comes with a set of filters to shrink the size of the found results. As there are specific user groups that are not interested in a wide set of occured events there is a profile editor to shrink the size of occured events and correlationssets in the results. The user can create various profiles in the administration menue according to his needs (Figure \ref{fig:EditingAProfile} and Figure \ref{fig:AdminInterface}). For example for CRM evaluations you would only need customer specific events or for accounting you would only need order specific events of your result set. These profiles can be applied on the result screen by fading in the options frame on the left side.
+Event Cloud comes with a set of filters to shrink the size of the found results. As there are specific user groups that are not interested in a wide set of occured events,  there is a profile editor to shrink the size of occured events and correlationssets in the results. The user can create various profiles in the administration menue according to his needs (Figure \ref{fig:EditingAProfile} and Figure \ref{fig:AdminInterface}). For example for CRM evaluations you would only need customer specific events or for accounting you would only need order specific events of your result set. These profiles can be applied on the result screen by fading in the options frame on the left side.
 
 %***********************
 \begin{figure}[!h]                                  
@@ -1495,7 +1496,7 @@ Event Cloud comes with a set of filters to shrink the size of the found results.
 \section{Evolution and Performance Issues}
 %**************************************************************************************
 
-EventCloud has evolved over serveral design implementation steps. The first search implementation was based completle on the relational schema without full text indexing using only the provided Postgresql database indexes (Figure \ref{fig:eventCloudSchema}). These database schema including the indexes has been tested with a script (Listing Figure \ref{lst:TestdataGenerator}) that generates test data (insert statements) with weak selective event attributes . For testing 20.000.000 event attributes have been insertet with an event ratio of 1:20. 
+EventCloud has evolved over serveral design implementation steps. The first search implementation was based completle on the relational schema without full text indexing using only the provided Postgresql database indexes (Figure \ref{fig:eventCloudSchema}). These database schema including the indexes has been tested with a script (Listing Figure \ref{lst:TestdataGenerator}) that generates test data (insert statements) with less selective event attributes . For testing 20.000.000 event attributes have been inserted with an event ratio of 1:20. 
 \\\\
 %********************
 \begin{figure}[!h]  
@@ -1583,7 +1584,7 @@ The insertion of the testdata into database takes quite long as there are enormo
 \end{figure} 
 %********************
 
-A simple database query for retrieving eventattributes according to a give value takes quite long as there is a huge amount of data to be retrieved and displayed (Listing Figure \ref{lst:RetrievingAnAttribute}). The solution is to create a pagination on displaying such huge number of datasets (Listing Figure \ref{lst:RetrievingAnAttributeWithPagination}). This shows that the query itself is extremly fast but displaying or retrieving the datasets can take very long. The workaround is to apply pagination on the query.
+A simple database query for retrieving eventattributes according to a given value takes quite long as there is a huge amount of data to be retrieved and displayed (Listing Figure \ref{lst:RetrievingAnAttribute}). The solution is to create a pagination on displaying such huge number of datasets (Listing Figure \ref{lst:RetrievingAnAttributeWithPagination}). This shows that the query itself is extremly fast but displaying or retrieving the datasets can take very long. The workaround is to apply pagination on the query.
 
 %********************
 \begin{figure}[!h]  
@@ -1617,7 +1618,7 @@ A simple database query for retrieving eventattributes according to a give value
 \end{figure} 
 %********************
 
-The tests showed that PostgreSql and the database schema can perform in a fast way. Two problems emerged using the relational schema for the Rank 1 search. The first is that a sophisticated query parser has to be implemented. A rudimentary parse has been created for the first use. The second one is that using AND connections of search terms is a common way of searching data, but applying \textit{AND} connections with this schema would result in an extremly bad peformance behaviour. This is because searching for several event attributes would require to create a carthesian product that creates a huge overhead of datasets (Listing Figure \ref{lst:CarthesianProduct}).
+The tests showed that PostgreSql and the database schema can perform in a fast way. Two problems emerged using the relational schema for the Rank 1 search. The first is that a sophisticated query parser has to be implemented. A rudimentary parser has been created for the first use. The second one is that using AND connections of search terms is a common way of searching data, but applying \textit{AND} connections with this schema would result in an extremly bad peformance behaviour. This is because searching for several event attributes would require to create a carthesian product that creates a huge overhead of datasets (Listing Figure \ref{lst:CarthesianProduct}).
 
 %********************
 \begin{figure}[!h]  
@@ -1637,7 +1638,7 @@ The tests showed that PostgreSql and the database schema can perform in a fast w
 \end{figure} 
 %********************
 
-The main problem using this schema as the primary event search was the Rank 2 search that does not allow to search through the datasets in segments (by pages) like it would be possible with Rank 1. Executing a query with the Rank 1 search implementation would create a hits on 10.000 events for instance. These hits could be retrieved in a fast performing way using pagination apart from the carthesian product issue. This would not work out for the Rank 2 search as you would need every matching eventattributes to find and evaluate the causal relationships. This is because the search query is not restrained on one event, it has to consider every event that belongs to a correlation. 
+The main problem using this schema as the primary event search was the Rank 2 search that does not allow to search through the datasets in segments (by pages) like it would be possible with Rank 1. Executing a query with the Rank 1 search implementation would create a hits on 10.000 events for instance. These hits could be retrieved in a fast performing way using pagination apart from the carthesian product issue. This would not work out for the Rank 2 search as you would need every matching eventattributes to find and evaluate the causal relationships. This is because the search query is not restrained on one event. It has to consider every event that belongs to a correlation. 
 \\\\
 The Figure \ref{fig:Rank2problems} shows how the search would work using the database schema as the search infrastructure. The first step is to apply the query to eventattributes which results in a huge set of datasets that matched that query. The huge sets are common, as event attributes are less selective. The next step would be to retrieve the correlation sets for every found event and then recheck the occurences in the relating events. This way would perform very poor.
 \\\\
@@ -1663,7 +1664,7 @@ The test data for Event Cloud has been generated using Intime. The event definit
 \section{Conclusion}
 %**************************************************************************************
 
-Event Cloud has shown that it is possible to create an easy-to-use application to manage the access to the huge amounts of events in an efficient way. However there are some open issues that must be solved in the further projects. The Rank 3 search type is undisputable one of the essential features that are missing in the current version of Event Cloud. The scaleability of Lucene's index is limited to the physical borders of one machine. As there would be billions of events stored in the indexes there is physical limit of one machine. There is already discussion going on that Lucene should support clustering to distribute its indexes over several machines in order to scale up to large requirements. This could be done by distributing the indexes over serveral machines and let one machine control the retrieval process. Currently there is no concrete plan to implement such a feature.
+Event Cloud has shown that it is possible to create an easy-to-use application to manage the access to the huge amounts of events in an efficient way. However there are some open issues that must be solved in further projects. The Rank 3 search type is undisputable one of the essential features that is missing in the current version of Event Cloud. The scaleability of Lucene's index is limited to the physical borders of one machine. As there would be billions of events stored in the indexes there is physical limit of one machine. There is already discussion going on that Lucene should support clustering to distribute its indexes over several machines in order to scale up to large requirements. This could be done by distributing the indexes over serveral machines and let one machine control the retrieval process. Currently there is no concrete plan to implement such a feature.
 
 %**************************************************************************************
 \newpage
