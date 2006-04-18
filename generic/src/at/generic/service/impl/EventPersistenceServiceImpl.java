@@ -27,9 +27,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceServiceImpl.java,v 1.3 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: EventPersistenceServiceImpl.java,v 1.4 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Facade for event persitence operations
  */
@@ -190,9 +190,18 @@ public class EventPersistenceServiceImpl implements EventPersistenceService {
 	 * @return number if identified items
 	 */
 	public int getNumberOfIdentifiedEvents() {
-		List events = eventDAO.getEvents();
-		return events.size();
-		
+		//List events = eventDAO.getEvents();
+		return eventDAO.getCount();	
+	}
+	
+	/**
+	 * Counts the number of source Events
+	 * 
+	 * @return number if identified items
+	 */
+	public int getNumberOfSourceEvents() {
+		//List events = eventDAO.getEvents();
+		return this.correlatedEventDAO.getCount();	
 	}
 	
 	/**

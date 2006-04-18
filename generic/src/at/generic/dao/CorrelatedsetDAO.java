@@ -6,9 +6,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedsetDAO.java,v 1.4 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: CorrelatedsetDAO.java,v 1.5 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * DAO interface for Correlatedset
  * 
@@ -62,4 +62,11 @@ public interface CorrelatedsetDAO extends DAO
 	 * @return List with unique correlation types
 	 */
 	public List getCorrelationsSetTypes ();
+	
+	/**
+	 * Returns a List of Correlatedset objects using paging
+	 * 
+	 * @return List with Correlated Sets using pagination
+	 */
+	public List getCorrelatedeventsByPage(final int pageNumber, final int pageSize);
 }

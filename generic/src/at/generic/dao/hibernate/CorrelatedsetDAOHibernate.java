@@ -4,7 +4,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import at.generic.dao.CorrelatedsetDAO;
@@ -13,9 +18,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedsetDAOHibernate.java,v 1.6 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: CorrelatedsetDAOHibernate.java,v 1.7 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -99,5 +104,28 @@ public class CorrelatedsetDAOHibernate extends HibernateDaoSupport implements Co
 	 */
 	public List getCorrelationsSetTypes () {
 		return getHibernateTemplate().find("select distinct a.correlationSetDef  from Correlationset a order by a.correlationSetDef");
+	}
+	
+	/**
+	 * Returns a List of Correlatedset objects using paging
+	 * 
+	 * @return List with Correlated Sets using pagination
+	 */
+	public List getCorrelatedeventsByPage(final int pageNumber, final int pageSize) {
+		HibernateTemplate ht = getHibernateTemplate();
+		List correlatedSet = ht.executeFind(new HibernateCallback() {
+		
+			public Object doInHibernate(Session session) throws HibernateException {
+				//Query q = session.createQuery("from Correlatedevent order by id");
+				Query q = session.createQuery("from Correlationset order by correlationsetguid, eventid");
+				q.setMaxResults(pageSize);
+				q.setFirstResult(pageSize * pageNumber - pageSize);
+				List correlatedSet = q.list();
+				return correlatedSet;
+			}
+		});
+		
+		log.debug("Size: " + correlatedSet.size());
+		return correlatedSet;
 	}
 }

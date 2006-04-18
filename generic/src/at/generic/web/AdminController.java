@@ -25,9 +25,9 @@ import at.generic.web.commandObj.AdminCommand;
 
 /**
  * @author szabolcs
- * @version $Id: AdminController.java,v 1.8 2006/03/18 15:24:09 szabolcs Exp $
+ * @version $Id: AdminController.java,v 1.9 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * 
  * <p>Controller for the ETL Process</p>
  * 
@@ -72,7 +72,10 @@ public class AdminController implements Controller {
 			adminData.setEtlRunning(true);
 			
 			// if so then add time when process has been started
-			adminData.setEtlThreadStartedAt(sourceEventEtl.getEtlThreadStartedAt().toGMTString());
+			if (sourceEventEtl.getEtlThreadStartedAt() != null)
+				adminData.setEtlThreadStartedAt(sourceEventEtl.getEtlThreadStartedAt().toGMTString());
+			else 
+				adminData.setEtlThreadStartedAt("unknown");
 		}
 		
 		adminData.setIndexLocationForEvents(indexingServiceEvents.getIndexLocation());

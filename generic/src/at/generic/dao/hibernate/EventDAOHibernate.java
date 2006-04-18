@@ -17,15 +17,33 @@ import at.generic.eventmodel.Event;
 
 /**
  * @author szabolcs
- * @version $Id: EventDAOHibernate.java,v 1.2 2006/03/06 23:20:19 szabolcs Exp $
+ * @version $Id: EventDAOHibernate.java,v 1.3 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * DAO interface Hibernate implementation
  * 
  */
 public class EventDAOHibernate extends HibernateDaoSupport implements EventDAO { 
 	private Log log = LogFactory.getLog(EventDAOHibernate.class); 
+	
+	/**
+	 * Returns the size of the relation
+	 * see http://www.hibernate.org/hib_docs/reference/en/html/queryhql.html 11.13. Tips & Tricks
+	 * 
+	 * @return count
+	 */
+	public int getCount() {
+		//return ( (Integer) getHibernateTemplate().iterate("select count(*) from Event").next() ).intValue();
+		List eventCount = getHibernateTemplate().find("select count(*) from Event");
+		Iterator it = eventCount.iterator(); 
+		
+		while(it.hasNext()) {
+			return new Integer(it.next().toString()).intValue();
+		}
+		
+		return -1;
+	}
 	
 	/**
 	 * @return List with Events

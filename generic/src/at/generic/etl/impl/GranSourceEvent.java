@@ -27,9 +27,9 @@ import at.generic.util.XMLUtils;
 
 /**
  * @author szabolcs
- * @version $Id: GranSourceEvent.java,v 1.10 2006/03/18 15:24:09 szabolcs Exp $
+ * @version $Id: GranSourceEvent.java,v 1.11 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.10 $
+ * $Revision: 1.11 $
  * 
  * Main File for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -50,6 +50,7 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 	private AdminPersistenceService adminPersistenceService;
 	private IndexingService indexingServiceEvents;
 	private IndexingService indexingServiceCorrEvents;
+	private int batchSizeForPaging = 100;
 	
 	public void run() {
 		log.debug("### etl running... ");
@@ -79,9 +80,12 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 			this.numberOfProcessedEvents = 0;
 			
 			// get all Events from Source to determine the maximum size of events in the source db
-			List correlatedEventList = eventPersistenceService.getCorrelatedevents();
+			/*List correlatedEventList = eventPersistenceService.getCorrelatedevents();
 			this.numberOfIdentifiedEvents = eventPersistenceService.getNumberOfIdentifiedEvents();
-			this.numberOfProcessedEvents = correlatedEventList.size();
+			this.numberOfProcessedEvents = correlatedEventList.size();*/
+			
+			this.numberOfIdentifiedEvents = eventPersistenceService.getNumberOfIdentifiedEvents();
+			this.numberOfProcessedEvents = eventPersistenceService.getNumberOfSourceEvents();
 			
 			initDone = true;
 		} 
@@ -107,57 +111,61 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 		public void extractCorrelatedEventsForIndex() {
 			// retrieve correlationsets
 			//List corrSetList = genericServiceSource.getAllObjects(new Correlationset());
-			List corrSetList = corrEventsPersistenceService.getCorrelatedset();
+			//List corrSetList = corrEventsPersistenceService.getCorrelatedset();
 			
 			// iterate over correlationsets
-			Iterator i = corrSetList.iterator();
+			
 			String guid = new String();
 			String words = new String();
 			String date = new String();
 			String corrSetDef = new String();
 			
-			while (i.hasNext()) {
-				Correlationset corrSet = (Correlationset) i.next();
-				
-				if (guid == null || guid.equals("")) 
-					guid = corrSet.getCorrelationSetGuid();
-				
-				// if guid changed in loop it means that a new correlation is coming around
-				// so save it to index
-				if (!guid.equals(corrSet.getCorrelationSetGuid())) {
-					log.debug("### guid: " + guid);
-					log.debug("### words: " + words);
-					log.debug("### corrSetDef: " + corrSetDef);
-					log.debug("### date: " + date);
-					indexingServiceCorrEvents.addDocument(guid,words,corrSetDef,date);
-					guid = corrSet.getCorrelationSetGuid();
-					date = new String();
-					words = new String();
-					corrSetDef = corrSet.getCorrelationSetDef();
-					
-					words = words + corrSetDef;
-				} 
-				
-				words = words + corrSet.getEventType() + " ";
-				
-				// retrieve Event and Rwtime from Db
-				Event event = eventPersistenceService.getEvent(corrSet.getEventid());
-				Rwtime rwtime = eventPersistenceService.getRwtimeDAO().getRwtime(event.getRwtimeid());
-				
-				// extract rwtime and create a list of dates
-				date = date +  " " + EventDate.getBoundFormatForLucene(rwtime.getRwday().intValue(), rwtime.getRwmonth().intValue(), rwtime.getRwyear().intValue());
-				
-				// retrieve event attributes 
-				List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
-				// iterate over attributes
-				log.debug("### corrSet.getEventid(): " + corrSet.getEventid());
-				log.debug("### attribsForEvent.size(): " + attribsForEvent.size());
-				Iterator iattrib = attribsForEvent.iterator();
-				while (iattrib.hasNext()) {
-					Eventattribute eventAttrib = (Eventattribute) iattrib.next();
-					words = words + " " + eventAttrib.getValue();
-					log.debug("### words = words + ' ' + eventAttrib.getValue()" + words);
-				}
+			for (int pagenr = 0 ; pagenr <= (eventPersistenceService.getNumberOfSourceEvents() / batchSizeForPaging) + 1; pagenr++ ){
+				List corrSetList = corrEventsPersistenceService.getCorrelatedSetByPage(pagenr, batchSizeForPaging);
+				Iterator i = corrSetList.iterator();
+					while (i.hasNext()) {
+						Correlationset corrSet = (Correlationset) i.next();
+						
+						if (guid == null || guid.equals("")) 
+							guid = corrSet.getCorrelationSetGuid();
+						
+						// if guid changed in loop it means that a new correlation is coming around
+						// so save it to index
+						if (!guid.equals(corrSet.getCorrelationSetGuid())) {
+							log.debug("### guid: " + guid);
+							log.debug("### words: " + words);
+							log.debug("### corrSetDef: " + corrSetDef);
+							log.debug("### date: " + date);
+							indexingServiceCorrEvents.addDocument(guid,words,corrSetDef,date);
+							guid = corrSet.getCorrelationSetGuid();
+							date = new String();
+							words = new String();
+							corrSetDef = corrSet.getCorrelationSetDef();
+							
+							words = words + corrSetDef;
+						} 
+						
+						words = words + corrSet.getEventType() + " ";
+						
+						// retrieve Event and Rwtime from Db
+						Event event = eventPersistenceService.getEvent(corrSet.getEventid());
+						Rwtime rwtime = eventPersistenceService.getRwtimeDAO().getRwtime(event.getRwtimeid());
+						
+						// extract rwtime and create a list of dates
+						date = date +  " " + EventDate.getBoundFormatForLucene(rwtime.getRwday().intValue(), rwtime.getRwmonth().intValue(), rwtime.getRwyear().intValue());
+						
+						// retrieve event attributes 
+						List attribsForEvent = eventPersistenceService.getEventattributesForEvent(corrSet.getEventid());
+						// iterate over attributes
+						log.debug("### corrSet.getEventid(): " + corrSet.getEventid());
+						log.debug("### attribsForEvent.size(): " + attribsForEvent.size());
+						Iterator iattrib = attribsForEvent.iterator();
+						while (iattrib.hasNext()) {
+							Eventattribute eventAttrib = (Eventattribute) iattrib.next();
+							words = words + " " + eventAttrib.getValue();
+							log.debug("### words = words + ' ' + eventAttrib.getValue()" + words);
+						}
+					}
 			}
 		}
 		
@@ -174,38 +182,41 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 			Dbinfo dbInfo = new Dbinfo();
 			dbInfo.setUpdatestart(new java.util.Date(System.currentTimeMillis()).toGMTString());
 			
-			List correlatedEventList = corrEventsPersistenceService.getCorrelatedevents();
-			
-			Iterator i = correlatedEventList.iterator();
-			while (i.hasNext()) {
-				Correlatedevent correlatedEvent = (Correlatedevent) i.next();
-				numberOfProcessedEvents++;
+			//List correlatedEventList = corrEventsPersistenceService.getCorrelatedevents();
+			for (int pagenr = 0 ; pagenr <= (eventPersistenceService.getNumberOfSourceEvents() / batchSizeForPaging) + 1; pagenr++ ){
+				List correlatedEventList = corrEventsPersistenceService.getCorrelatedeventsByPage(pagenr, batchSizeForPaging);
 				
-				// determine the xml type e.g.: OrderReceived,...
-				try {
-					Document corrEvent = new XMLUtils().convertXMLStringToDocument(correlatedEvent.getEventXml());
-			        
-			        // retrieve Event Type xml location
-			        String eventTypeLocation = (String)identifiedEvents.get(corrEvent.getRootElement().getName());
-			        
-			        // parse Event Type xml if it is known
-			        if (eventTypeLocation != null) {
-				        Document eventType = new XMLUtils().parseXmlFile(eventTypeLocation);
-				        transformEvent(corrEvent, eventType, correlatedEvent);
-			        }
-			        
-				} catch (DocumentException e) {
-					e.printStackTrace();
+				Iterator i = correlatedEventList.iterator();
+				while (i.hasNext()) {
+					Correlatedevent correlatedEvent = (Correlatedevent) i.next();
+					numberOfProcessedEvents++;
+					// determine the xml type e.g.: OrderReceived,...
+					try {
+						Document corrEvent = new XMLUtils().convertXMLStringToDocument(correlatedEvent.getEventXml());
+				        // retrieve Event Type xml location
+				        String eventTypeLocation = (String)identifiedEvents.get(corrEvent.getRootElement().getName());
+				        
+				        // parse Event Type xml if it is known
+				        if (eventTypeLocation != null) {
+					        Document eventType = new XMLUtils().parseXmlFile(eventTypeLocation);
+					        transformEvent(corrEvent, eventType, correlatedEvent);
+				        }
+				        
+					} catch (DocumentException e) {
+						e.printStackTrace();
+						log.debug("################# DocumentException");
+					}
 				}
+				
+				// determine number of identified items
+				numberOfIdentifiedEvents = eventPersistenceService.getNumberOfIdentifiedEvents();
+				
+				dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
+				dbInfo.setProcesseditems(new Short((short)numberOfIdentifiedEvents));
+				adminPersistenceService.saveOrUpdateDbinfo(dbInfo);
 			}
-			
-			// determine number of identified items
-			numberOfIdentifiedEvents = eventPersistenceService.getNumberOfIdentifiedEvents();
-			
-			dbInfo.setUpdatestop(new java.util.Date(System.currentTimeMillis()).toGMTString());
-			dbInfo.setProcesseditems(new Short((short)numberOfIdentifiedEvents));
-			adminPersistenceService.saveOrUpdateDbinfo(dbInfo);
 			etlRunning = false;
+			numberOfProcessedEvents = eventPersistenceService.getNumberOfSourceEvents();
 		}
 	}
 	
@@ -534,6 +545,20 @@ public class GranSourceEvent implements SourceEventEtl, Runnable {
 	public void setIndexingServiceCorrEvents(
 			IndexingService indexingServiceCorrEvents) {
 		this.indexingServiceCorrEvents = indexingServiceCorrEvents;
+	}
+
+	/**
+	 * @return Returns the batchSizeForPaging.
+	 */
+	public int getBatchSizeForPaging() {
+		return batchSizeForPaging;
+	}
+
+	/**
+	 * @param batchSizeForPaging The batchSizeForPaging to set.
+	 */
+	public void setBatchSizeForPaging(int batchSizeForPaging) {
+		this.batchSizeForPaging = batchSizeForPaging;
 	}
 
 	

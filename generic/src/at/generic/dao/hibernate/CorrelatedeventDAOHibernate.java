@@ -1,5 +1,6 @@
 package at.generic.dao.hibernate;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -17,15 +18,35 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAOHibernate.java,v 1.5 2006/02/27 14:57:34 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAOHibernate.java,v 1.6 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * 
  * DAO interface Hibernate implementation
  * 
  */
 public class CorrelatedeventDAOHibernate extends HibernateDaoSupport implements CorrelatedeventDAO { 
 	private Log log = LogFactory.getLog(CorrelatedeventDAOHibernate.class); 
+	
+	/**
+	 * Returns the size of the relation
+	 * see http://www.hibernate.org/hib_docs/reference/en/html/queryhql.html 11.13. Tips & Tricks
+	 * 
+	 * @return count
+	 */
+	public int getCount() {
+		//return ( (Integer) getHibernateTemplate().iterate("select count(*) from Event").next() ).intValue();
+		List eventCount = getHibernateTemplate().find("select count(*) from Correlatedevent");
+		Iterator it = eventCount.iterator(); 
+		
+		while(it.hasNext()) {
+			return new Integer(it.next().toString()).intValue();
+		}
+		
+		return -1;
+	}
+	
+	
 	
 	/**
 	 * Return a List of Correlatedevents ordered by its id

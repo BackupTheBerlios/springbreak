@@ -218,6 +218,9 @@
     	<property name="indexingServiceCorrEvents">
     		<ref bean="indexingServiceCorrEvents"/>
     	</property>
+    	<property name="batchSizeForPaging">
+    		<value>100</value>
+    	</property>
     	
     	<property name="identifiedEvents">
     		<map>

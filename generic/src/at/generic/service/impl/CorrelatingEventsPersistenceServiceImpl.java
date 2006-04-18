@@ -19,9 +19,9 @@ import at.generic.service.CorrelatingEventsPersistenceService;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatingEventsPersistenceServiceImpl.java,v 1.3 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: CorrelatingEventsPersistenceServiceImpl.java,v 1.4 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Facade for event persitence operations
  */
@@ -29,8 +29,7 @@ public class CorrelatingEventsPersistenceServiceImpl implements CorrelatingEvent
 	private static Log log = LogFactory.getLog(CorrelatingEventsPersistenceServiceImpl.class);
 	
 	private CorrelatedeventDAO correlatedEventDAO;
-	private CorrelatedsetDAO correlatedSetDAO;
-	
+	private CorrelatedsetDAO correlatedSetDAO;	
 	
 	//	 ========== correlated events stuff  ===========
 	
@@ -163,6 +162,15 @@ public class CorrelatingEventsPersistenceServiceImpl implements CorrelatingEvent
 	 */
 	public List getCorrelationsSetTypes () {
 		return this.correlatedSetDAO.getCorrelationsSetTypes();
+	}
+	
+	/**
+	 * Returns a List of Correlatedevent objects using paging
+	 * 
+	 * @return List with Correlated Events using pagination
+	 */
+	public List getCorrelatedSetByPage(int pageNumber, int pageSize) {
+		return correlatedSetDAO.getCorrelatedeventsByPage(pageNumber, pageSize);
 	}
 
 	//	 ========== Getters and Setters  ===========

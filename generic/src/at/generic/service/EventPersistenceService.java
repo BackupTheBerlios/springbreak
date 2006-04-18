@@ -17,9 +17,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceService.java,v 1.3 2006/03/08 16:48:35 szabolcs Exp $
+ * @version $Id: EventPersistenceService.java,v 1.4 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Facade for event persitence operations
  */
@@ -93,6 +93,13 @@ public interface EventPersistenceService {
 	 * @return number if identified items
 	 */
 	public int getNumberOfIdentifiedEvents();
+	
+	/**
+	 * Counts the number of source Events
+	 * 
+	 * @return number if identified items
+	 */
+	public int getNumberOfSourceEvents();
 	
 	/**
 	 * Counts the number of itedentified items in the database

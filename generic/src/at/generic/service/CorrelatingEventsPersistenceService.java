@@ -16,9 +16,9 @@ import at.generic.model.Correlationset;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatingEventsPersistenceService.java,v 1.3 2006/03/16 23:35:50 szabolcs Exp $
+ * @version $Id: CorrelatingEventsPersistenceService.java,v 1.4 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Facade for correlating events persitence operations
  */
@@ -105,6 +105,13 @@ public interface CorrelatingEventsPersistenceService {
 	 * @return List with unique correlation types
 	 */
 	public List getCorrelationsSetTypes ();
+	
+	/**
+	 * Returns a List of Correlatedevent objects using paging
+	 * 
+	 * @return List with Correlated Events using pagination
+	 */
+	public List getCorrelatedSetByPage(int pageNumber, int pageSize);
 	
 	//	 ========== Getters and Setters  ===========
 	

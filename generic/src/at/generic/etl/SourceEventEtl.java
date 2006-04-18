@@ -14,9 +14,9 @@ import at.generic.service.EventPersistenceService;
 
 /**
  * @author szabolcs
- * @version $Id: SourceEventEtl.java,v 1.8 2006/02/27 14:57:57 szabolcs Exp $
+ * @version $Id: SourceEventEtl.java,v 1.9 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * 
  * Main Interface for the coordination of loading the events from the source and transforming
  * them into a warehouse like representation for further use.
@@ -140,4 +140,14 @@ public interface SourceEventEtl {
 	 */
 	public void setAdminPersistenceService(
 			AdminPersistenceService adminPersistenceService);
+	
+	/**
+	 * @return Returns the batchSizeForPaging.
+	 */
+	public int getBatchSizeForPaging();
+
+	/**
+	 * @param batchSizeForPaging The batchSizeForPaging to set.
+	 */
+	public void setBatchSizeForPaging(int batchSizeForPaging);
 }

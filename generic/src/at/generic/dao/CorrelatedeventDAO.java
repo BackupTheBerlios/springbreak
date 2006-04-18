@@ -6,15 +6,23 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAO.java,v 1.2 2005/12/14 22:15:14 szabolcs Exp $
+ * @version $Id: CorrelatedeventDAO.java,v 1.3 2006/04/18 22:39:02 szabolcs Exp $
  * $Author: szabolcs $  
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * DAO interface for Correlatedevent
  * 
  */
 public interface CorrelatedeventDAO extends DAO 
 { 
+	/**
+	 * Returns the size of the relation
+	 * see http://www.hibernate.org/hib_docs/reference/en/html/queryhql.html 11.13. Tips & Tricks
+	 * 
+	 * @return count
+	 */
+	public int getCount();
+	
 	/**
 	 * @return List with Correlated Events
 	 */
