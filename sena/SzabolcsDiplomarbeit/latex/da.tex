@@ -48,19 +48,19 @@ Event Cloud is a system that enables the historic view of collected event stream
 \newpage
 \section{Introduction}
 %**************************************************************************************
-\textit{Information processing systems have grown up around the globe at "Web speed", only slightly slower than "warp speed" in science fiction.} \cite{Luckham05}
+\textit{Information processing systems have grown up around the globe at ``Web speed'', only slightly slower than ``warp speed'' in science fiction.} \cite{Luckham05}
 \\\\
-The backbone of IT systems used in today's life are based on distributed systems that are wired together by the global spanning Internet. The Internet has become the foundation of the twenty-first-centurie's daily business, increased the volume of information passed beween enterprises and rose the demand for shorter decision-making cycles significantly. Based on this distributed computing architecture banks, insurance companies, governments, hospitals, military, airports and many more use these technologies as a result of growing needs to reduce costs, increase competitiveness and increase the time to market. Almost no enterprise can go around those technologies in daily life without a loss of competitiveness even if it is only the basic communication facility like the email service deployed.
+The backbone of IT systems used in today's life are based on distributed systems that are wired together by the global spanning Internet. The Internet has become the foundation of the twenty-first-centurie's daily business, increased the volume of information passed between enterprises and rose the demand for shorter decision-making cycles significantly. Based on this distributed computing architecture banks, insurance companies, governments, hospitals, military, airports and many more use these technologies as a result of growing needs to reduce costs, increase competitiveness and increase the time to market. Almost no enterprise can go around those technologies in daily life without a loss of competitiveness even if it is only the basic communication facility like the email service deployed.
 \\\\
 \textit{A distribute system is a collection of independent computers that appears to its users as a single coherent system.} \cite{Tanenbaum1}
 \\\\
-The world has become a global market and the Internet is the highway connecting each other on the globe. On a virtual global trade market a bunch of enterprises are connected together so that they can share resources or automate trading processes to fulfill the need for flexibility on a global market. E-Commerce processes became more and more complex and highly asynchronous. Enterprise systems are supporting a wide range of enterprise collaborations including management support tasks like supply chain management (SCM), business intelligence (BI) in general or enterprise resource planning systems (ERP). The typical application in this infrastructure is to automate the workflows of commercial enterprises like transaction processing in the financial sector or the general support of electronic collaborations. As business process have grown out of the traditional synchronous workflow to support electronic collaborations, especially in B2B markets, more sophisticated techniques have been developed to support them. E-business processes became complex, highly parallel and asynchronous with far less human involvement \cite{LuckhamManensPark}. 
+The world has become a global market and the Internet is the highway connecting each other on the globe. On a virtual global trade market a bunch of enterprises are connected together so that they can share resources or automate trading processes to fulfill the need for flexibility on a global market. E-Commerce processes became more and more complex and highly asynchronous. Enterprise systems are supporting a wide range of enterprise collaborations including management support tasks like Supply Chain Management (SCM), Business Intelligence (BI) in general or Enterprise Resource Planning (ERP) systems. The typical application in this infrastructure is to automate the workflows of commercial enterprises like transaction processing in the financial sector or in general the support of electronic collaborations. As business process have grown out of the traditional synchronous workflow to support electronic collaborations, especially in B2B markets, more sophisticated techniques have been developed to support them. E-business processes became complex, highly parallel and asynchronous with far less human involvement \cite{LuckhamManensPark}. 
 \\\\
 \textit{Today thousands of business-level events per second are being communicated across the IT layers of some enterprises. These numbers will increase with activity in the global eMarketplace.} \cite{Luckham06}
 \\\\
-For example an auto manufacturer can automatically place orders around the globe for specific parts and receive delivery offers so that the production can be done in a "just in time" manner without the time consuming and error prone work of humans while he is reducing the inventory costs. Furthermore this way of doing business is fast and unchallengeable cheap. These collaboration may manifest in either a horizontal or vertical way. The horizontal collaboration is restricted to a specific industry where business is centered around hubs. The vertical is opened to different clients that can purchase goods from a supplier. More typical applications are the well known Supply Chain Management or Enterprise Resource Planning. Almost every department can benefit from these systems like marketing with CRM applications, the manangment by business intelligence information and ERP systems, the sales and buying department using supply chain management systems and so on. As you can see not every application must go out of the enterprises bounds.
+For example an auto manufacturer can automatically place orders around the globe for specific parts and receive delivery offers so that the production can be done in a ``just in time'' manner without the time consuming and error prone work of humans while he is reducing the inventory costs. Furthermore this way of doing business is fast and unchallengeable cheap. These collaboration may manifest in either a horizontal or vertical way. The horizontal collaboration is restricted to a specific industry where business is centered around hubs. The vertical is opened to different clients that can purchase goods from a supplier. More typical applications are the well known Supply Chain Management or Enterprise Resource Planning. Almost every department can benefit from these systems like marketing with CRM applications, the management by business intelligence information and ERP systems, the sales and buying department using supply chain management systems and so on. As shown above not every application must go out of the enterprises bounds.
 \\\\
-The main benefit of this so called "enterprise systems" are:
+The main benefit of these so called ``enterprise systems'' are:
 \begin{itemize}
 	\item reduced costs
 	\item lower inventory levels
@@ -68,22 +68,22 @@ The main benefit of this so called "enterprise systems" are:
 	\item increase profitability
 	\item increate competitiveness
 \end{itemize}
-The main drawback of such systems is that they are "event driven" systems, where billions of events on different granularity levels fly across our networks. The point is that there is no technology that helps us to look at those events in a human understandable way and the requirement of looking at these information in almost real-time has risen. Another point is that the event exchange is based on heterogeneous systems, where every enterprise or even every department has it's own implementation. As Luckham says:
+The main drawback of such systems is that they are ``event driven'' systems, where billions of events on different granularity levels fly across our networks. The point is that there is hardly any technology around that helps us to look at those events in a human understandable way and the requirement of looking at these information in almost real-time has risen. Another point is that the event exchange is based on heterogeneous systems, where every enterprise or even every department has got their own implementation. As Luckham says:
 \\\\
 \textit{To be sure, given the primitive tools we have at the moment, we can see the events. But making sense of them is the problem!} \cite{Luckham05}
 \\\\
 With currently available tools we can monitor the information running across our networks and we can testify if a router for example is overloaded, but we can not make statements about events or activities in a business level manner. What people really need are answers like:
 \begin{itemize}
-	\item "Why is most of the time one third of my shipment damaged after delivery to London?" The answer would result in the analysis of the events generated by the logistic and accounting enterprise systems. So you could find, by analyzing those event streams that most of the shipments went out with a specific carrier that is responsible for these end results.
-	\item "Is my delivery in time?". The system can detect the current location based on events from a tracking service like the one offered by UPS for instance.
-	\item "Why has the customer rejected the delivery?". You would have to follow back all the process events to the start to find the root of his problems.
-	\item "What triggered my order?".
+	\item ``Why is most of the time one third of my shipment damaged after delivery to London?'' The answer would result in the analysis of the events generated by the logistic and accounting enterprise systems. So you could find, by analyzing those event streams that most of the shipments went out with a specific carrier that is responsible for these end results.
+	\item ``Is my delivery in time?''. The system can detect the current location based on events from a tracking service like the one offered by UPS for instance.
+	\item ``Why has the customer rejected the delivery?''. You would have to follow back all the process events to the start to find the root of his problems.
+	\item ``What triggered my order?''.
 \end{itemize}
-As you can see, it would be quite difficult to answer these questions based only on event monitoring on a low level. The real pain would be to track back problems because you don't have a causal tracking of events. You simply don't know what caused something to fire an event. The most logic approach would be to the root back is the temporal order of the events. No! That won't work out ... events can happen parallel and in a disordered way next to the most important problem that you have got just too many of them, a lot of the events are just not relevant by themselves and their source is distributed across multiple system! Especially the last point is very important in e-commerce systems where different systems perform multiple actions to achieve something. It is vital for business to understand what happens on the process level to analyze the behaviour in order to be able to extract knowledge for decision making. As business in general has accelerated the according processes have to be adapted continuously to keep on with the challenge of a global competition. This development cries for new real-time event-based technologies.
+As shown previously, it would be quite difficult to answer these questions based only on event monitoring on a low level. The real pain would be to track back problems because you don't have a causal tracking of events. You simply don't know what caused something to fire an event. The most logic approach would be to the root back is the temporal order of the events. This way won't work out as events can happen parallel and in a disordered way next to the most important problem that you have got just too many of them, a lot of the events are just not relevant by themselves and their source is distributed across multiple system! Especially the last point is very important in e-commerce systems where different systems perform multiple actions to achieve something. It is vital for business to understand what happens on the process level to analyze the behaviour in order to be able to extract knowledge for decision making. As business in general has accelerated the according processes have to be adapted continuously to keep on with the challenge of a global competition. This development cries for new real-time event-based technologies.
 \\\\
 \textit{A key to understanding events is knowing what caused them - and having that causal knowledge at the time the events happen. The ability to track event causality is an essential step toward managing communication} \cite{Luckham05}
 \\\\
-This means that we need to find ways to look at "high level events" in order to be able to answer strategic and business problems or to create decisions based on these data. The traditional assumption was that you can make analyses and decision based upon a load of historic data collected. But this has changed over time. Today we are facing a great demand by organizations requiring immediate access to information in a closed loop real-time manner. 
+This means that we need to find ways to look at ``high level events'' in order to be able to answer strategic and business problems or to create decisions based on these data. The traditional assumption was that you can make analyses and decision based upon a load of historic data collected. But this has changed over time. Today we are facing a great demand by organizations requiring immediate access to information in a closed loop real-time manner. 
 \\\\
 The system developed in this diploma thesis provides an infrastructure to organize and manage events in a way that a user can track down event causalities according to different standpoints. More on this topic later. First we need to understand what exactly an event is, where they come from, what makes them so important and how they fit into a common IT architecture.
 
@@ -92,13 +92,13 @@ The system developed in this diploma thesis provides an infrastructure to organi
 %**************************************************************************************
 
 %**************************************************************************************
-\subsection{Enterprise systems}
+\subsection{Enterprise Systems}
 %**************************************************************************************
 Enterprise systems can be layered to get an abstract view to handle the complexity under the hood. As we mentioned before the characteristics of enterprise systems are:
 \begin{itemize}
-	\item They are heterogeneouse systems.
-	\item They are connected by a network (usually the Internet).
-	\item The communication is event driven.
+	\item They are heterogeneous systems.
+	\item They are connected by a network.
+	\item The communication is event driven in means that it exchanges information in an asynchronous way using messages.
 	\item Each system provides a service or performs a task.
 \end{itemize}
 
@@ -120,18 +120,18 @@ According to \cite{Tanenbaum1} this layered view is organized in this way:
 	\label{fig:MiddlewareGeneral}
 \end{figure}  
 %**********************
-If you take a look from the top, from the users point of view, he will get a homogeneouse view of the system. Using the applications and developing them you won't have to take care about the underlying heterogeneity. It provides a single and coherent view to its users. The rise of client/server application architectures where system components access remote infrastructure and functionality to accomplish their own tasks has led to the need to decouple communication parties to assure the need for scalability in the current IT infrastructures.
+Taking a look from the top, from the users point of view, the user will get a homogeneous view of the system. Using the applications and developing them you won't have to take care about the underlying heterogeneity. It provides a single and coherent view to its users. 
 \\\\
-To get a better understanding take the example from \cite{Tanenbaum1}:
+A good example for better understanding is provided by \cite{Tanenbaum1}: 
 \\\\
 Orders are placed from different types of clients like notebooks connected to the network, from the telephone network or cell phones. Those incoming orders are processed by a workflow system and the result is a new internal shipping order from the planning department and a billing order from the accounting. The users are not aware of where those forwarded orders physically came from. It appears that they are from a single central authority.
 %**************************************************************************************
 \subsection{Middleware Layer}
 %**************************************************************************************
-What makes this possible is the additional middleware layer that helps to hide the heterogeneity of the underlying platforms and improves transparency. The DOS is not intended to handle a collection of independent computers and a NOS doesn't provide a  view of a single coherent system. There are several models/paradigms describing the middleware layer:
+The rise of client/server application architecture where system components access remote infrastructure and functionality to accomplish their own tasks has led to the need to decouple communication parties to assure the need for scalability in the current IT infrastructure. What makes this possible is the additional middleware layer that helps to hide the heterogeneity of the underlying platforms and improves transparency. The DOS\footnote{Disk Operating System} is not intended to handle a collection of independent computers and a NOS\footnote{Network OS services} does not provide a  view of a single coherent system. There are several models/paradigms describing the middleware layer:
 \begin{itemize}
 	\item Plan 9 was the first approach which treats everything as a file. The cause of this is because that it can be shared by several processes in the unix world and the communication is reduced to accessing files.
-	\item Remote Procedure Calls (RPCs) allows to call functions and pass parameters on a remote machine. The callee doesn't know anything about the location of the remote function which can be on a machine physically somewhere else on the world.
+	\item Remote Procedure Calls (RPCs) allows to call functions and pass parameters on a remote machine. The callee does not know necessarily anything about the location of the remote function which can be on a machine physically somewhere else on the world.
 	\item Distributed objects describes the method to invoke objects in a transparent way on remote machines by providing interfaces of those objects.
 	\item The message oriented paradigm takes care about providing the same communication facilities so that systems can talk to each other. The content of the information itself is ignored by these type of middleware models.
 \end{itemize}
@@ -148,15 +148,15 @@ There are different communication paradigms we have to be aware of, before conti
 	\item \textbf{Point to Point} communication is simply that one communication link has been established between sender and receiver.
 \end{itemize}
 
-Today the message oriented middleware paradigm has become one of the communication pillars of todays enterprise systems. It is the most common communication facility for exchanging information. There are different ways of organizing message oriented middlewares, but the most important is the message queing type. 
+Today the message oriented middleware paradigm has become one of the communication pillars of today's enterprise systems. It is the most common communication facility for exchanging information. There are different ways of organizing message oriented middlewares, but the most important is the message queuing type. 
 \\\\
-\textit{Message-queing systems provide extensive support for persistent asynchronous communication} \cite{Tanenbaum1}
+\textit{Message-queuing systems provide extensive support for persistent asynchronous communication} \cite{Tanenbaum1}
 \\\\
-In practice each application has got it's own message queue or several applications share one queue. This enables applications to communicate with eachother by inserting messages into specific queues using message-queing systems. This allows a loosely-coupled communication between systems. The inserted messages are pending in the queue as long as the receiver fetches it from the queue. So neither the sender or the receiver client has to be online if a message has been deployed in a queue. An important fact is that usually message-queueing systems don't guarantee the delivery of the sent messages. However there are mechanisms available in a variety of products to ensure the success of message transactions. This message based style communication bears the potential to integrate new autonomous, heterogeneous components into complex systems that are easy to evolve and scale \cite{LudgerFiege05}.
+In practice each application has got it's own message queue or several applications share one queue. This enables applications to communicate with eachother by inserting messages into specific queues using message-queuing systems. This allows a loosely-coupled communication between systems. The inserted messages are pending in the queue as long as the receiver fetches it from the queue. So neither the sender or the receiver client has to be online if a message has been deployed in a queue. An important fact is that usually message-queuing systems don't guarantee the delivery of the sent messages. However there are mechanisms available in a variety of products to ensure the success of message transactions. This message based style communication bears the potential to integrate new autonomous, heterogeneous components into complex systems that are easy to evolve and scale \cite{LudgerFiege05}.
 \\\\
-As messages can contain any form of data the integration into a distributed system can lead to problems as applications provide different data formats. Message Brokers are an important component to act as a gateway between message-queueing systems. It transforms messages into a format that can be read by the different communication partners.
+As messages can contain any form of data the integration into a distributed system can lead to problems as applications provide different data formats. Message Brokers are an important component to act as a gateway between message-queuing systems. It transforms messages into a format that can be read by the different communication partners.
 \\\\
-The layering according to \cite{Tanenbaum1} is a very simple point of view as he only wants to show how a middleware can enable a transparent and single coherent view of a system. David Luckham introduces a slightly deeper granularity of the high level overview of an distributed, event-driven system in order to be able to understand the importance of events for enterprises.
+The layering according to \cite{Tanenbaum1} is a very simple point of view as he only wants to show how a middleware can enable a transparent and single coherent view of a system. David Luckham introduces a slightly deeper granularity of the high level overview of a distributed, event-driven system in order to be able to understand the importance of events for enterprises.
 \\\\
 \textit{Layered IT systems present another dimension in the search for new ways to understand the events that happen in them.} \cite{Luckham05}
 %**********************
@@ -168,17 +168,17 @@ The layering according to \cite{Tanenbaum1} is a very simple point of view as he
 \end{figure}  
 %**********************
 \begin{itemize}
-	\item \textbf{Corporate Level:} At this layer enterprises plan and transact their business. Applications like accounting, inventory, spreadsheets, e-mail clients, calendars, webbrowsers and in general, interfaces to other services, belong in here.
+	\item \textbf{Corporate Level:} At this layer enterprises plan and transact their business. Applications like accounting, inventory, spreadsheets, e-mail clients, calendars, webbrowsers and in general, interfaces to other services, belong in here. It can be argued where services like email belong. Actually they would fit in the Application Layer as well.
 	\item \textbf{Application Layer:} At this layer, events are generated on a high level by the user where they signify activities like sending an e-mail. Actually many events generated at this layer are not simply one event rather they are aggregated to a high level event from the events generated by the layers underneath.
-	\item \textbf{Collaboration Layer:} This layer provides the basic infrastructure for applications like databases, e-mail servers, web servers and so on. The line between the application layer and the collaboration layer can be blury.
+	\item \textbf{Collaboration Layer:} This layer provides the basic infrastructure for applications like databases, e-mail servers, web servers and so on. The line between the application layer and the collaboration layer can be blurry.
 	\item \textbf{Middleware Layer:} As mentioned above this is a very important part because it lets enterprise systems talk to each other.
 	\item \textbf{Network Layer:} This layer is the basic layer where everything builds on top of it. At this layer only low level events are generated to transport information from A to B.
 \end{itemize}
 
 %**************************************************************************************
-\subsection{On events}
+\subsection{On Events}
 %**************************************************************************************
-As we talk quite a lot about passing messages back and forth in enterprise systems what meaning has an \textit{event} exactly? 
+As we talk quite a lot about passing messages back and forth in enterprise systems what is the definition of an \textit{event} exactly? 
 \\\\
 In context of computer science an event is used to control the flow of a program. A well known application are user interfaces where triggered user interface elements generate events to start processes.
 \\\\
@@ -190,7 +190,7 @@ Ludger Fiege describes an event in his thesis as:
 \\\\
 \textit{Any happening of interest that can be observed from within a computer is considered an event}\cite{LudgerFiege05}
 \\\\
-For better understanding we follow \cite{Lamport78} and assume that we have a distributed system holding processes for receiving and sending messages. The dot represents occured events and the dotted line represents a message. The vertical direction represents the time and the horizontal the space dimension.
+For better understanding we follow \cite{Lamport78} and assume that we have a distributed system holding processes for receiving and sending messages. The dot represents occurred events and the dotted line represents a message. The vertical direction represents the time and the horizontal the space dimension.
 \\\\
 %**********************
 \begin{figure}                         
@@ -225,26 +225,26 @@ An example for events used in our system as a simulation model would be an Order
 </OrderReceived>
 \end{lstlisting}
 
-Events are generated from different sources and different types. Normally they use some standard like the XML format. The received events must be transformed into a higher level form in order to be able to work with them. This transformation is provided by adapter compontents.
+Events are generated from different sources and different types. Normally they use some standard like the XML format. The received events must be transformed into a higher level form in order to be able to work with them. This transformation is provided by adapter components.
 %**************************************************************************************
 \subsubsection{Relationships}
 %**************************************************************************************
 According to \cite{Luckham05} there are three important relationships between events:
 \begin{itemize}
-	\item \textbf{Time:} Relates events according to their temporal occurence
+	\item \textbf{Time:} Relates events according to their temporal occurrence
 	\item \textbf{Cause:} Relates events according to their causal relationships. A causal relationship is given when an event A caused another event B in a direct or indirect way.
-	\item \textbf{Aggregation:} Aggregates event to high level events based upon different criterias like time, causality or content patterns.
+	\item \textbf{Aggregation:} Aggregates event to high level events based upon different criteria like time, causality or content patterns.
 \end{itemize}
-Following Luckham's \cite{Luckham05} proposal that a timestamp defines the time relationship between events is not as easy as he says that you can determine by the time dimension that \textit{event A happened before event B}. Leslie Lamport adresses this problem \cite{Lamport78}:
+Following Luckham's \cite{Luckham05} proposal that a timestamp defines the time relationship between events is not as easy as he says that you can determine by the time dimension that \textit{event A happened before event B}. Leslie Lamport addresses this problem \cite{Lamport78}:
 \\\\
-\textit{In a distributed system, it is sometimes impossible to say that one of two events occured first. The relationship "happened before" is therefore only a partial ordering of the events in the system.} \cite{Lamport78}
+\textit{In a distributed system, it is sometimes impossible to say that one of two events occurred first. The relationship ``happened before'' is therefore only a partial ordering of the events in the system.} \cite{Lamport78}
 \\\\
 The happens-before relation "$\rightarrow$" can be defined for following situations:
 \begin{itemize}
 	\item If a and b are events in the same process, and a comes before b, then a $\rightarrow$ b.
 	\item If a is an event sending a message from one process and b is an event receiving the message from another process then a $\rightarrow$ b.
 	\item The happens-before relation "$\rightarrow$" is transitive: a $\rightarrow$ b and b $\rightarrow$ c then a $\rightarrow$ c. 
-	\item If two events, a and b, are distinct, they are called concurrent which means that you can't say which event happend first. In other words it means that if the events a and b happen in different processess and they do not exchange messages, then a $\not\rightarrow$ b and b $\not\rightarrow$ a.
+	\item If two events, a and b, are distinct, they are called concurrent which means that you can't say which event happened first. In other words it means that if the events a and b happen in different processes and they do not exchange messages, then a $\not\rightarrow$ b and b $\not\rightarrow$ a.
 \end{itemize}
 %**********************
 \begin{figure} [!h]                
@@ -254,7 +254,7 @@ The happens-before relation "$\rightarrow$" can be defined for following situati
 	\label{fig:dag}
 \end{figure}  
 %**********************
-Martin Flower is addressing another important issue regarding timing \cite{MartinFowlerTime}. Date and Time information can come in different  precision formats. You could get a date on a daily precision and you could get it on msec precision level depending on your application. But as you work with events collected from different sources this could become a problem especially in distributed environments over the Internet where different time zones come in too. Furthermore the question arises which event occurence is counted? The one where the event happened physically on a machine or when it has been processed somewhere else? This kind of questions have to be considered when building a system to process or collect events from different distributed sources.
+Martin Fowler is addressing another important issue regarding timing \cite{MartinFowlerTime}. Date and Time information can come in different  precision formats. You could get a date on a daily precision and you could get it on msec precision level depending on your application. But as you work with events collected from different sources this could become a problem especially in distributed environments over the Internet where different time zones come in too. Furthermore the question arises which event processes is counted? The one where the event happened physically on a machine or when it has been processed somewhere else? This kind of questions have to be considered when building a system to process or collect events from different distributed sources.
 \\\\ 
 In general a \textbf{causal relationship} determines that an event A caused another event B. As we have seen in our layered enterprise according to \cite{Luckham05}, events flow through these layered environment triggered by the user or another system at the top level. They are consequently transformed into lower level events down to the bottom causing other events to fire. This event flow is called \textit{vertical causality} and tracks down how high level events beginning from the business level manifest in lower layers. This is important to understand how these events are decomposed the way down in order to be able to create meaningful aggregations out of the masses of low level events. On the other hand Luckham talks about \textit{horizontal causality} that tracks the causal relationships between events at the same level. Causal relationships are transitive and asymmetric and can be represented as directed acyclic graphs (Figure \ref{fig:dag}). 
 \\\\
@@ -263,7 +263,7 @@ In general a \textbf{causal relationship} determines that an event A caused anot
 Aggregating events is a difficult task as it needs a technology that can recognize patterns of events through different layers. But if such an aggregation facility is set up and running, it can be a powerful source of tracking down causalities between events.
 
 %**************************************************************************************
-\subsection{Eventbased systems}
+\subsection{Eventbased Systems}
 %**************************************************************************************
 The term of event-based systems is used in many fields in an ambiguous and varying way. As we have decribed several messaging architectures like the persistent, transient and asynchronous way to deliver messages to a client, there is a distinct line between simple message exchange and event-based systems. The exhaustive trend of using distributed system architecture to support highly automated data processing has led to the concept of client-server architectures that brought major drawbacks with it. A classic client-server architecture, where system components access remote functionality to acomplish their own tasks, is often a synchronous communication between the server and the client. That leads to tight coupling and affects the scalability of such architectures. Several middleware extensions addressed this problem by allowing to use asynchronous messaging, in an either persistent or transient way, using the mentioned message queing techniques. 
 \\\\
@@ -295,7 +295,7 @@ According to Hackathrone the business value of taking an action goes down after 
 \begin{figure} [ht]                
 	\centering                                           
 	\includegraphics[width=0.8\textwidth]{pics/businessValue.jpg}
-	\caption{Event business value \cite{Hackathorn02]}}             
+	\caption{Event business value \cite{Hackathorn02}}             
 	\label{fig:Eventbusinessvalue}
 \end{figure}  
 %**********************
@@ -329,7 +329,7 @@ The 5 phases in detail (see Figure \ref{fig:senseAndResponseSenactive}) \cite{Ng
 
 The processing, transformation and the relationship definition steps can be defined for every organisation using an event processing model for modeling these sense and response loops.
 \\\\
-The system is capable of detecting exceptional business situations and can react on them by generating warnings or take measures by itself to prevent damages like fraud. The InTime product is also capable of correlating events and aggregating events from it's various sources. This product would help customers to monitor their event-driven enterprise systems from a high level perspective to gather financial ratios, to trace down occured problems or to use it for decision making based on real time information. As this product can react proactivly on given business situations in its \textit{decide cycle} it can change business situations autonomously based on rules and provided information. The change of business situations can be performed in an event-based manner again. 
+The system is capable of detecting exceptional business situations and can react on them by generating warnings or take measures by itself to prevent damages like fraud. The InTime product is also capable of correlating events and aggregating events from it's various sources. This product would help customers to monitor their event-driven enterprise systems from a high level perspective to gather financial ratios, to trace down occurred problems or to use it for decision making based on real time information. As this product can react proactivly on given business situations in its \textit{decide cycle} it can change business situations autonomously based on rules and provided information. The change of business situations can be performed in an event-based manner again. 
 \\\\
 This \textit{Sense and Response Service Architecture} can be used to satisfy real-time business intelligence architecture requirements as it can be used as a real-time data cache that serves as a staging area for datawarehouse updates and analytical services. More on zero-latency data warehousing and real-time business intelligences has been addressed here \cite{TjoaNguyenKickinger04}, \cite{NguyenSchieferTjoa05} and \cite{ThoManhNguyen05}.
 \\\\
@@ -427,7 +427,7 @@ The look and feel of Google like finding and retrieving information has become a
 % Geeignete Architektur für so eine Anwendung finden
 % Fokus auf freie Technologien
 
-Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user to get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occured events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
+Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user to get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occurred events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
 \\\\
 Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweight IoC Spring framework to bind the components together. A special focus has been set on using only non-proprietary and open source technologies as this is an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
 \\\\
@@ -460,7 +460,7 @@ The Rank 1 search is a simple full text search over all searchable attributes of
 \\\\
 The Rank 1 search is pretty straight forward like you would search documents on the internet using any search engine available. 
 \\\\
-Take a look at the example (Figure \ref{fig:rank1searchExample}) where we have several events in our repository. The user queries for the terms "Paris London Szabolcs" and gets back the events TransportEnd and TransportStart as these terms occured in those events ordered by the most relevant hits. No boolean operators have been applied in this query example. If the user would have entered a query like "szabolcs AND Paris" he would have received events where the terms Paris and Szabolcs would have occured. For more details take a look at the query syntax as this is not in the scope of this chapter.
+Take a look at the example (Figure \ref{fig:rank1searchExample}) where we have several events in our repository. The user queries for the terms ``Paris London Szabolcs'' and gets back the events TransportEnd and TransportStart as these terms occurred in those events ordered by the most relevant hits. No boolean operators have been applied in this query example. If the user would have entered a query like ``szabolcs AND Paris'' he would have received events where the terms Paris and Szabolcs would have occurred. For more details take a look at the query syntax as this is not in the scope of this chapter.
 %***********************
 \begin{figure}[ht]                                  
 	\centering                                           
@@ -482,7 +482,7 @@ At the current point the heart of Event Cloud is the Rank 2 search which is an e
 	\label{fig:rank2searchExample}
 \end{figure}            
 %***********************   
-If a user puts down a search query consisting of terms like "Paris London Szabolcs" the search engine will retrieve correlations consisting of events that matched these terms (Figure \ref{fig:rank1searchExample}). That means that you will get back a correlation whose event attributes contain either Paris, London or Szabolcs. Correlationsets whose Events would not contain the terms "Paris London Szabolcs" would not be considered. If for instance a correlationset is consisting of eight events and only one event contains the search terms it would be still a hit but maybe a bad one depending on the other found hits.
+If a user puts down a search query consisting of terms like ``Paris London Szabolcs'' the search engine will retrieve correlations consisting of events that matched these terms (Figure \ref{fig:rank1searchExample}). That means that you will get back a correlation whose event attributes contain either Paris, London or Szabolcs. Correlationsets whose Events would not contain the terms ``Paris London Szabolcs'' would not be considered. If for instance a correlationset is consisting of eight events and only one event contains the search terms it would be still a hit but maybe a bad one depending on the other found hits.
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
@@ -544,7 +544,7 @@ There are two databases used by this system. The first one is the source databas
 	\label{fig:intimeschema}
 \end{figure}            
 %***********************
-The rwtime and txtime tables represent the realworld dates of events (rwtime) e.g. when they really occured in some system.  The timepoint when events have been recognized by the system are decomposed and stored in the txtime table. During the ETL process the event timestamps are decomposed to a day, month and year granularity. The rwtime and the txtime tables hold every possible combination of day, month and year as the event numbers grow and only the ids are assigned to the event. This allows an efficient indexing of the dates and thus a fast way to create constrained date queries.
+The rwtime and txtime tables represent the realworld dates of events (rwtime) e.g. when they really occurred in some system.  The timepoint when events have been recognized by the system are decomposed and stored in the txtime table. During the ETL process the event timestamps are decomposed to a day, month and year granularity. The rwtime and the txtime tables hold every possible combination of day, month and year as the event numbers grow and only the ids are assigned to the event. This allows an efficient indexing of the dates and thus a fast way to create constrained date queries.
 \\\\
 The events and eventattributes relations are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can contain a complex structure. The logical XML structure is flattened in the relational form to preserve the original substructures a URI is saved to the database. 
 \\\\
@@ -620,7 +620,7 @@ Event Clouds indexes are set on relation attributes according to Table \ref{tab:
 %**************************************************************************************
 We have seen in the previous chapter that the event sources and the transformed events are stored into relational databases. The whole data structure is based on a relational modeling paradigm which has proven itself over many years. The relational database technology has been originally introduces by E. Codd out of growing needs to structure data under specific standpoints and his works influence is still noticeable. Almost every application needs a way to make its data persistent after shut down, so a variety of products emerged over the years to provide a persistent and structured way to store application data.
 \\\\
-Codd firstly introduced the relational model in his paper "A Relational Model of Data for Large Shared Data Banks": 
+Codd firstly introduced the relational model in his paper ``A Relational Model of Data for Large Shared Data Banks'': 
 \\\\
 \textit{It provides a means of describing data with its natural structure only--that is, without superimposing any additional structure for machine representation purpose. Accordingly, it provides a basis for a high level data language which will yield maximal independence between programs on the one hand and machine representation on the other.} \cite{Codd70} 
 \\\\
@@ -654,7 +654,7 @@ The main features provided by ORM approach are:
 There are several ORM libraries available. For this project the decision has been made to use Hibernate, because it is wide spread and meanwhile a rock solid Java library with a big support community. It was important to keep the database technology out of scope in this project. Although the decision has been made to use Postgres for Event Cloud we wanted to keep the option to deploy other database technologies. Another important fact is that Hibernate has an outstanding performance as it creates almost no overhead and is able to make use of sophisticated caching mechanisms.
 
 %**************************************************************************************
-\subsubsection{Data access object}
+\subsubsection{Data Access Object}
 %**************************************************************************************
 
 Event Cloud uses the Spring Framework to manage the components of this application by applying the Factory Pattern, IoC and code injection. More on this topic later on. What's important is to be aware of, that the Spring Framework is taking over a lot of work handling Hibernate and data access. Spring supports declarative definition of the Factory pattern and a dependency injection.
@@ -801,7 +801,7 @@ The DAO, created by the user, references the previously defined SessionFactory a
 	\label{lst:TransactionmanagementDAO}
 \end{figure} 
 
-The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties define on which methods they should be applied. For example on methods starting with "save*" Propagation is required (Figure \ref{lst:TransactionmanagementDAO}).
+The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties define on which methods they should be applied. For example on methods starting with ``save*'' Propagation is required (Figure \ref{lst:TransactionmanagementDAO}).
 \\\\
 Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAGATION NEVER, PROPAGATION NOT SUPPORTED, PROPAGATION REQUIRED, PROPAGATION REQUIRES NEW and PROPAGATION SUPPORTS (detailed explanation is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimizations that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. These levels are ISOLATION DEFAULT, ISOLATION READ UNCOMMITTED, ISOLATION READ COMMITTED, ISOLATION REPEATABLE READ and ISOLATION SERIALIZABLE.
 
@@ -978,7 +978,7 @@ The Intime database provides the events with different information (Listing Figu
 \\\\
 The more tricky part is the extraction of each attribute and their validation against its definition. The datatypes of each attribute are extracted and stored into the database as well. A lot of work in this process is done by the EventPeristenceServices as it automatically takes care about saving eventtypes and timepoints. 
 \\\\
-This process is pretty straight forward as the user only has to provide event definitions and register the new events in Spring's context configuration. The user can control and supervise the loading process from the web user interface in the admin section. By clicking the button "Start Transformation" a thread is triggered that is collecting the events from it source and transforms them into the target database schema. During this process the full text index is created or update which is done by using the Indexer interface (Figure \ref{fig:etlProcess}).
+This process is pretty straight forward as the user only has to provide event definitions and register the new events in Spring's context configuration. The user can control and supervise the loading process from the web user interface in the admin section. By clicking the button ``Start Transformation'' a thread is triggered that is collecting the events from it source and transforms them into the target database schema. During this process the full text index is created or update which is done by using the Indexer interface (Figure \ref{fig:etlProcess}).
 
 % TODO: screenshot vom adminteil reingeben 
 
@@ -1026,7 +1026,7 @@ This process is pretty straight forward as the user only has to provide event de
 %***************************************
 
 %**************************************************************************************
-\subsection{Spring IoC container}
+\subsection{Spring IoC Container}
 %**************************************************************************************
 During the time when Java programming reached its critical mass of users Sun Microsystems published the Enterprise Java Beans 1.0 specifications (1998). EJB is a server side component settled in the middle layer of an enterprise application. Its major goal is to improve distribution transparency and reusability of components underlined by the statement that EJBs should make developing enterprise systems easier. EJB actually was the first technology that allowed decelrative transactions for instance. 
 \\\\
@@ -1044,7 +1044,7 @@ Rod Johnson propagets following major flaws of EJBs based on his experience \cit
 	\item EJBs promised to be plattform independent. In reality applications became EJB container vendor specific.
 \end{itemize}
 
-The quesion arises "Why use J2EE and EJBs at all then?". The answer is that J2EE provides a wide range of useful services and standards that can be integrated into applications without the use of EJBs. Spring's goal is to deliver those services to the user by simplifying the programming model using only simple POJOS (\cite{SpringInAction05}).
+The quesion arises ``Why use J2EE and EJBs at all then?''. The answer is that J2EE provides a wide range of useful services and standards that can be integrated into applications without the use of EJBs. Spring's goal is to deliver those services to the user by simplifying the programming model using only simple POJOS (\cite{SpringInAction05}).
 \\\\
 \textit{Spring is a lightweight inversion of control and aspect-oriented container framework.} \cite{SpringInAction05}
 \\\\
@@ -1122,7 +1122,7 @@ Spring Framework brings a full blown MVC framework with it to help to develop we
 	\item workflow coordination
 \end{itemize}
 
-Spring's MVC life cycle is presented in the Figure \ref{fig:SpringMVC}. The DispatcherServlet is receiving user requests and queries the according mapping for the specific request. The HandlerMapping is simply mapping URLs to controllers. The Dispatcher is delegating the request to the according controller once it resolved the mapping. The Controllers job is to perform some business operations in sense that it delegates the workload to business objects like the service API provided by Event Cloud. After work has been done the Controller populates so called "Command Models" that hold all information, that is needed to be shown to the user, and returns a ModelAndView object to the Dispatcher that contains the command model and a view name. The ViewResolver is then responsible to resolve the viewname and map it to the according view. In Event Clouds case this is a JSP page which only performs JSTL operations with display formatting routines to generate the desired HTML rendered information to its user. 
+Spring's MVC life cycle is presented in the Figure \ref{fig:SpringMVC}. The DispatcherServlet is receiving user requests and queries the according mapping for the specific request. The HandlerMapping is simply mapping URLs to controllers. The Dispatcher is delegating the request to the according controller once it resolved the mapping. The Controllers job is to perform some business operations in sense that it delegates the workload to business objects like the service API provided by Event Cloud. After work has been done the Controller populates so called ``Command Models'' that hold all information, that is needed to be shown to the user, and returns a ModelAndView object to the Dispatcher that contains the command model and a view name. The ViewResolver is then responsible to resolve the viewname and map it to the according view. In Event Clouds case this is a JSP page which only performs JSTL operations with display formatting routines to generate the desired HTML rendered information to its user. 
 \\\\
 An important feature that Spring MVC provides is that it is possible to create interceptors for specific mappings and controllers comparable to servlet filters. This allows to implement access control for instance in no time and without to touch any controller. This provides an extremely loosely coupled design as no code is touched when implementing such a thing.   
 \\\\
@@ -1305,12 +1305,12 @@ The correlation index is slightly different than the event index created. The do
 \end{itemize}
 
 %**************************************************************************************
-\subsubsection{Searching for events}
+\subsubsection{Searching for Events}
 %**************************************************************************************
 
 Now comes the main application of Event Cloud - the search for events and their applications. As we have seen previously there are two Rank types implemented. The first one, is a simple event search and the second one is the search over correlations. First I want to introduce the search capabilities from the users point of view and then get into implementation details. 
 \\\\
-The Figure \ref{fig:mainView} shows two options and an input field for the search query. The option "over correlation sets" equals the Rank 2 search and the option "only events" equals the Rank 1 search. 
+The Figure \ref{fig:mainView} shows two options and an input field for the search query. The option ``over correlation sets'' equals the Rank 2 search and the option ``only events'' equals the Rank 1 search. 
 \\\\
 %***********************
 \begin{figure}[!h]                                  
@@ -1321,7 +1321,7 @@ The Figure \ref{fig:mainView} shows two options and an input field for the searc
 \end{figure}    
 %*************************************** 
 
-The Figure \ref{fig:Rank2SearchScreenshot} shows how the correlation results are represented. The middle frame shows the correlation search results ordered by their hit relevance. The Hits have been calculated by Lucenes ranking algorithm and underneath there are several events presented that matched the search query. This is an important topic as there are actually two aggregation levels of results presented. The first level is the correlationset that best matched the search query and underneath the most relevant events are displayed that matched the query (Figure \ref{fig:Rank2SearchHits}). The other events belonging to that correlation are hidden as they did not matched the query. By pressing the "plus" button next to correlation's name all events can be displayed that belong to that correlationset. By clicking on an event the right handed panel is displayed with details about the event. The event details can be represented either as the raw event xml or in a more human readable way as styled tables. The panel on the left hand side can be faded in by clicking on the "more options" button. This is the filter bar where the user can consequently remove correlationtypes from the result set, apply a date range filter or a previously created profile in the admin section. 
+The Figure \ref{fig:Rank2SearchScreenshot} shows how the correlation results are represented. The middle frame shows the correlation search results ordered by their hit relevance. The Hits have been calculated by Lucenes ranking algorithm and underneath there are several events presented that matched the search query. This is an important topic as there are actually two aggregation levels of results presented. The first level is the correlationset that best matched the search query and underneath the most relevant events are displayed that matched the query (Figure \ref{fig:Rank2SearchHits}). The other events belonging to that correlation are hidden as they did not matched the query. By pressing the ``plus'' button next to correlation's name all events can be displayed that belong to that correlationset. By clicking on an event the right handed panel is displayed with details about the event. The event details can be represented either as the raw event xml or in a more human readable way as styled tables. The panel on the left hand side can be faded in by clicking on the ``more options'' button. This is the filter bar where the user can consequently remove correlationtypes from the result set, apply a date range filter or a previously created profile in the admin section. 
 \\\\
 %***********************
 \begin{figure}[!h]                                  
@@ -1414,28 +1414,28 @@ The formal query grammar definition \cite{LuceneQueryParserAPI}:
 Query  ::= ( Clause )*
 Clause ::= ["+", "-"] [<TERM> ":"] ( <TERM> | "(" Query ")" )
 \end{lstlisting}
-A clause can contain either a Term expression or another nested Query. There are two distinctions between terms. There can exist a \textit{single term} like "hello" or "test" or a term can be a \textit{phrase} like "hello world" enclosed by double quotes. It is possible to combine multiple terms with boolean operators \cite{LuceneQueryDescriptionPage}. The predefined Boolean connector configured in Event Cloud for Terms is the OR operator.
+A clause can contain either a Term expression or another nested Query. There are two distinctions between terms. There can exist a \textit{single term} like ``hello'' or ``test'' or a term can be a \textit{phrase} like ``hello world'' enclosed by double quotes. It is possible to combine multiple terms with boolean operators \cite{LuceneQueryDescriptionPage}. The predefined Boolean connector configured in Event Cloud for Terms is the OR operator.
 \\\\
 Some basic query examples are described in the table \ref{tab:LuceneQueryExamples} for getting started.
 \\\\
-However the QueryParser is capable of much richer functionality like Fuzzy Searches and Proximity Searches. They don't have a big importance in querying but it can be a powerful tool. For example it is possible to create a fuzzy search based on the Levenshtein distance using the tilde ~ symbol plus a proximity number. For example you can search for "\textit{java~}" and it will return documents that are similar to java like lava. You can adjust the proximity by adding a value next to the tilde symbol like java~0.8. The default proximity number is 0.5.
+However the QueryParser is capable of much richer functionality like Fuzzy Searches and Proximity Searches. They don't have a big importance in querying but it can be a powerful tool. For example it is possible to create a fuzzy search based on the Levenshtein distance using the tilde ~ symbol plus a proximity number. For example you can search for ``\textit{java~}'' and it will return documents that are similar to java like lava. You can adjust the proximity by adding a value next to the tilde symbol like java~0.8. The default proximity number is 0.5.
 \\\\
-Another noticeable, but minor feature, is the possibility to define the relevance of search terms in a query with the carrot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for "\textit{Paris$\wedge$4 London}" it will make Paris more relevant than London. The default relevance value is 1.
+Another noticeable, but minor feature, is the possibility to define the relevance of search terms in a query with the carrot operator $\wedge$ and a number that specifies the importance of the word. For instance if you search for ``\textit{Paris$\wedge$4 London}'' it will make Paris more relevant than London. The default relevance value is 1.
 \\\\
 Further details on this topic can be found here \cite{LuceneQueryDescriptionPage}, here \cite{LuceneQueryParserAPI} and here \cite{LuceneInAction05}.
 
 \begin{table}[!hp]
 	\begin{tabular}{|p{4cm}|p{8cm}|}
 		\hline \textbf{Example} & \textbf{Description} \\
-		\hline \textit{Paris} & Query will return events containing "Paris" in an Attribute. \\
-		\hline  \textit{Paris London} & Query will return events containing either "Paris" or "London" in an Attribute. \\
-		\hline  \textit{Paris OR London} & Query will return events containing either "Paris" or "London" in an Attribute. \\
-		\hline  \textit{Paris AND London} & Query will return events containing "Paris" and "London" in an Attribute.\\
-		\hline  \textit{(Paris OR London) AND Szabolcs} & Query will return events containing "Paris" or "London" but they must contain "Szabolcs".\\
-		\hline  \textit{+Paris +London} & Query will return events containing "Paris" and "London" in an Attribute.\\
-		\hline  \textit{+Paris -London} & Query will return events that must contain "Paris" and it is not allowed that this event contains "London" in an Attribute.\\
-		\hline  \textit{+Paris NOT London} & Query will return events that must contain "Paris" and it is not allowed that this event contains "London" in an Attribute.\\
-		\hline  \textit{Par*} & Query will return events containing words that start with "Par" - for instance Paris.\\
+		\hline \textit{Paris} & Query will return events containing ``Paris'' in an Attribute. \\
+		\hline  \textit{Paris London} & Query will return events containing either ``Paris'' or ``London'' in an Attribute. \\
+		\hline  \textit{Paris OR London} & Query will return events containing either ``Paris'' or ``London'' in an Attribute. \\
+		\hline  \textit{Paris AND London} & Query will return events containing ``Paris'' and ``London'' in an Attribute.\\
+		\hline  \textit{(Paris OR London) AND Szabolcs} & Query will return events containing ``Paris'' or ``London'' but they must contain ``Szabolcs''.\\
+		\hline  \textit{+Paris +London} & Query will return events containing ``Paris'' and ``London'' in an Attribute.\\
+		\hline  \textit{+Paris -London} & Query will return events that must contain ``Paris'' and it is not allowed that this event contains ``London'' in an Attribute.\\
+		\hline  \textit{+Paris NOT London} & Query will return events that must contain ``Paris'' and it is not allowed that this event contains ``London'' in an Attribute.\\
+		\hline  \textit{Par*} & Query will return events containing words that start with ``Par'' - for instance Paris.\\
 		\hline 
 	\end{tabular}
 	\caption{Query Examples}
@@ -1657,7 +1657,7 @@ The tests showed that PostgreSql and the database schema can perform in a fast w
 
 The main problem using this schema as the primary event search was the Rank 2 search that does not allow to search through the datasets in segments (by pages) like it would be possible with Rank 1. Executing a query with the Rank 1 search implementation would create a hits on 10.000 events for instance. These hits could be retrieved in a fast performing way using pagination apart from the carthesian product issue. This would not work out for the Rank 2 search as you would need every matching eventattributes to find and evaluate the causal relationships. This is because the search query is not restrained on one event. It has to consider every event that belongs to a correlation. 
 \\\\
-The Figure \ref{fig:Rank2problems} shows how the search would work using the database schema as the search infrastructure. The first step is to apply the query to eventattributes which results in a huge set of datasets that matched that query. The huge sets are common, as event attributes are less selective. The next step would be to retrieve the correlation sets for every found event and then recheck the occurences in the relating events. This way would perform very poor.
+The Figure \ref{fig:Rank2problems} shows how the search would work using the database schema as the search infrastructure. The first step is to apply the query to eventattributes which results in a huge set of datasets that matched that query. The huge sets are common, as event attributes are less selective. The next step would be to retrieve the correlation sets for every found event and then recheck the processess in the relating events. This way would perform very poor.
 \\\\
 The solution was to use a full text indexing technology for the search that resulted in Event Cloud's current architecture. This approach is a top down way as attributes of events are directly related to correlations.
 
