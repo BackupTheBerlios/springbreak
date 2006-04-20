@@ -32,6 +32,11 @@
 %**************************************************************************************
 \include{titelseite}
 
+%**************************************************************************************
+% Eidesstattliche Erklärung
+%**************************************************************************************
+%\newpage
+
 
 %**************************************************************************************
 % ABSTRACT
@@ -42,6 +47,14 @@
 \end{center}
 \vspace{1.5cm}
 Event Cloud is a system that enables the historic view of collected event streams that have been preprocessed by Senactives InTime Sense and Response Architecture. InTime is capable of correlating events according to predefined rules and delivers causal tracking of events. Event Cloud collects these events and creates a full text index over them to enable a Google like search experience. Furthermore it offers a toolset to discover different aspects of business processes based on event correlations for investigation purposes. Event Cloud has evolved over several stages to determine a good architecture in order to lay the foundation for further work in the area of event mining and correlation discovery.
+\\\\
+\begin{center}
+\huge{Eidesstattliche Erklärung}
+\end{center}
+\vspace{1.5cm}
+Ich erkläre an Eides statt, dass ich die vorliegende Arbeit selbständig und ohne fremde Hilfe verfasst, andere als die angegebenen Quellen nicht benützt und die den benutzten Quellen wörtlich oder inhaltlich entnommenen Stellen als solche kenntlich gemacht habe.
+\\\\
+\today
 \newpage
 %**************************************************************************************
 \tableofcontents
@@ -49,6 +62,12 @@ Event Cloud is a system that enables the historic view of collected event stream
 \newpage
 \section{Introduction}
 %**************************************************************************************
+The system developed in this diploma thesis provides an infrastructure to organize and manage events in a way that a user can track down event causalities according to different standpoints. Events have a great influence on today's decision making processes and on the value they create for process management, especially in large and global oriented enterprises. E-Business and E-Markets have created a global playground for automated workflow systems which result in a huge traffic flow of information between corporate networks and department systems. The lack of monitoring these events in a sense of correlating them, creating causal relationships or aggregate them to high level events is still a problem that is currently challenged by academic and commercial oriented institutions. Some of them, like Senactive's Sense and Response Architecture, provide the ability to monitor event flows and proactively react on them to change the business processes, based on real-time information, provided by the various enterprise systems. This is a major step towards real-time enabled enterprises that can challenge the requirements of today's highly dynamic business world. 
+\\\\
+The core of this diploma thesis does not go into event-based processing problems like creating sophisticated causal trackings or correlation algorithms in first place. This thesis is about a system that enables the historic view of collected event streams that have been preprocessed by Senactives InTime Sense and Response Architecture. As Intime can react proactively on given business situations based on event constellations and defined rules, it can rearrange business processes to stear the business environment and processes into a given direction. This will result in a chain of newly triggered event flows which join back to the control loop. InTime is capable of correlating events according to predefined rules and delivers causal tracking of events. 
+\\\\
+The system developed in this diploma thesis is collecting those \textit{catched} events and creates a full text index over them to enable a Google like search experience for investigation purposes. The major application of this system is to offer the user a toolset to discover different aspects of business processes based on event correlations. This system has evolved over several stages to clarify which architecture would be the best solution to provide this kind of search and discovery experience to a user and at the same time to lay the foundation for further work in the area of event mining and correlation discovery. 
+\\\\
 \textit{Information processing systems have grown up around the globe at ``Web speed'', only slightly slower than ``warp speed'' in science fiction.} \cite{Luckham05}
 \\\\
 The backbone of IT systems used in today's life are based on distributed systems that are wired together by the global spanning Internet. The Internet has become the foundation of the twenty-first-centurie's daily business, increased the volume of information passed between enterprises and rose the demand for shorter decision-making cycles significantly. Based on this distributed computing architecture banks, insurance companies, governments, hospitals, military, airports and many more use these technologies as a result of growing needs to reduce costs, increase competitiveness and increase the time to market. Almost no enterprise can go around those technologies in daily life without a loss of competitiveness even if it is only the basic communication facility like the email service deployed.
@@ -85,9 +104,6 @@ As shown previously, it would be quite difficult to answer these questions based
 \textit{A key to understanding events is knowing what caused them - and having that causal knowledge at the time the events happen. The ability to track event causality is an essential step toward managing communication} \cite{Luckham05}
 \\\\
 This means that we need to find ways to look at ``high level events'' in order to be able to answer strategic and business problems or to create decisions based on these data. The traditional assumption was that you can make analyses and decision based upon a load of historic data collected. But this has changed over time. Today we are facing a great demand by organizations requiring immediate access to information in a closed loop real-time manner. 
-\\\\
-The system developed in this diploma thesis provides an infrastructure to organize and manage events in a way that a user can track down event causalities according to different standpoints. More on this topic later. First we need to understand what exactly an event is, where they come from, what makes them so important and how they fit into a common IT architecture.
-
 %**************************************************************************************
 \section{Events, Correlations and their sources}
 %**************************************************************************************
@@ -394,21 +410,9 @@ HP-ECS has a major flaw because it is not usable for generic event correlation a
 
 %**************************************************************************************
 \newpage
-\section{Scope of this diploma thesis}
-%**************************************************************************************
-
-We have seen in the previous chapters the impact events have in today's decision making processes and what value they create for process management, especially in large and global oriented enterprises. E-Business and E-Markets have created a global playground for automated workflow systems which result in a huge traffic flow of information between corporate networks and department systems. The lack of monitoring these events in a sense of correlating them, creating causal relationships or aggregate them to high level events is still a problem that is currently challenged by academic and commercial oriented institutions. Some of them, like Senactive's Sense and Response Architecture, provide the ability to monitor event flows and proactively react on them to change the business processes, based on real-time information, provided by the various enterprise systems. This is a major step towards real-time enabled enterprises that can challenge the requirements of today's highly dynamic business world. 
-\\\\
-The core of this diploma thesis does not go into event-based processing problems like creating sophisticated causal trackings or correlation algorithms in first place. This thesis is about a system that enables the historic view of collected historic event streams that have been preprocessed by Senactives InTime Sense and Response Architecture. As Intime can react proactively on given business situations based on event constellations and defined rules, it can rearrange business processes to stear the business environment and processes into a given direction. This will result in a chain of newly triggered event flows which join back to the control loop. InTime is capable of correlating events according to predefined rules and delivers causal tracking of events. 
-\\\\
-The system developed in this diploma thesis is collecting those \textit{catched} events and creates a full text index over them to enable a Google like search experience for investigation purposes. The major application of this system is to offer the user a toolset to discover different aspects of business processes based on event correlations. This system has evolved over several stages to clarify which architecture would be the best solution to provide this kind of search and discovery experience to a user and at the same time to lay the foundation for further work in the area of event mining and correlation discovery. 
-
-%**************************************************************************************
-\newpage
 \section{Information Findability}
 %**************************************************************************************
-According to \cite{Morville05} findability is described by following aspects:
-
+Finding the right information is a key requirement of Event Cloud as the user wants to discover relevant information inside the given ``event cloud''. It is a complex task to create and provide a sophisticated search infrastructure in order to fulfill the needs of retrieving the desired information with a high precision. In terms of finding information \cite{Morville05} talks about ``findability'' that is described by following aspects:
 \begin{itemize}
 	\item \textit{The quality of being locatable or navigable.}
 	\item \textit{The degree to which a particular object is easy to discover or locate.}
@@ -538,8 +542,12 @@ Event Cloud is a webbased application based on the lightweight Spring Framework 
 %**************************************************************************************
 \subsection{Database and Schemas}
 %**************************************************************************************
-There are two databases used by this system. The first one is the source database provided by InTime which contains the raw source events and the found correlationsets for those events. This is a Ms SQL Server database that requires the sqljdbc drivers in order to establish a connection from hibernate. As the second database there is currently a Postgres 8.1 database in use as it is open source and a powerful technology that fits the needs for this project. However using Hibernate as the O/R mapping facility it is possible to change the database backend with only minor changes. Only sequence definition changes have to be done at the mapping level as Postgres is using sequence tables for id generation. The source schemas are pretty straight forward flat tables (Figure \ref{fig:intimeschema}) and the final target schema created out of the source events is bit more complex as Event Cloud decomposes the events and stores them into a relational form (Figure \ref{fig:eventCloudSchema}). 
+There are two databases used by Event Cloud. The first one is the source database provided by InTime which contains the raw source events and the found correlationsets for those events (\ref{fig:eventCloudHighLevel}). The events and their correlations are created by InTime and stored into it's own data structure. This is a MS SQL Server database that requires the sqljdbc drivers in order to establish a connection from hibernate. The source schemas are pretty straight forward flat tables (Figure \ref{fig:intimeschema}).
 \\\\
+As the second database there is currently a Postgres 8.1 database in use as it is Open Source and a powerful technology that fits the needs for this project. This is the main database for Event Cloud. This schema is more complex than the source database schema as Event Cloud decomposes the events and stores them into a relational form.
+\\\\
+However using Hibernate as the O/R mapping facility it is possible to change the database backend with only minor changes. Only sequence definition changes have to be done at the mapping level as Postgres is using sequence tables for id generation. 
+
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
@@ -617,6 +625,8 @@ Event Clouds indexes are set on relation attributes according to Table \ref{tab:
 %**************************************************************************************
 \subsection{Object Relational Mapping}
 %**************************************************************************************
+This section is an important note about the fact that it seems that we are facing a slight paradigm change in the way we organize our data for retrieval. When the object oriented paradigm arose we had a clash between the relational and the object oriented world and solved the problem by bridging the two different worlds with an object relational mapping tool. Today we are facing a comparable problem between organizing data in a relational way (e.g. normalized form) or storing the data redundant but highly efficient for full text indexing and so for finding. There is a lot of discussion going on if there is any need of a relational database at all if people tend to organize their data around an indexing architecture instead of a hierarchical structure. Usually people index a document and create a reference to the relational database in order to be able to locate additional information as today almost every persistent information is stored in databases. But if the main application is to search and find information with a text index a database is actually not needed as it would be possible to save all needed information, including whole object graphs for instance, into the index. This way would be highly redundant but in case of searching and retrieving information the fastest way! The subsequent text should introduce the evolution of relational databases and the problems with their object oriented counterpart to provide a feeling what kind of mismatch has been fabricated.
+\\\\
 We have seen in the previous chapter that the event sources and the transformed events are stored into relational databases. The whole data structure is based on a relational modeling paradigm which has proven itself over many years. The relational database technology has been originally introduces by E. Codd out of growing needs to structure data under specific standpoints and his works influence is still noticeable. Almost every application needs a way to make its data persistent after shut down, so a variety of products emerged over the years to provide a persistent and structured way to store application data.
 \\\\
 Codd firstly introduced the relational model in his paper ``A Relational Model of Data for Large Shared Data Banks'': 
@@ -673,7 +683,9 @@ The Spring Framework brings a Data Access Object (DAO) support with it that is a
 \subsubsection{Integrating Data Access}
 %**************************************************************************************
 
-The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the data access into the application. The centerpiece of the data access, in Spring Framework managed applications, is the SessionFactory. The SessionFactory serves as a factory for dependency injections on thread safe DAOs. Event Cloud uses the LocalSessionFactoryBean as a concrete implementation which is appropriate for most types of scenarios even to deploy distributed transaction support or JNDI support. It is all just a matter of configuration. For example if we would want to change the database connection to a JNDI resource we just change the LocalSessionFactoryBean implementation to JndiObjectFactoryBean and readjust the connection string. 
+The Figure \ref{fig:SessionFactory} shows the basic wiring to establish database connections and integrate the data access into the application. It is vital to understand the architecture behind the data access in order to extend or maintain Event Cloud. 
+\\\\
+The centerpiece of the data access, in Spring Framework managed applications, is the SessionFactory. The SessionFactory serves as a factory for dependency injections on thread safe DAOs. Event Cloud uses the LocalSessionFactoryBean as a concrete implementation which is appropriate for most types of scenarios even to deploy distributed transaction support or JNDI support. It is all just a matter of configuration. For example if we would want to change the database connection to a JNDI resource we just change the LocalSessionFactoryBean implementation to JndiObjectFactoryBean and readjust the connection string. 
 \\\\
 %***********************
 \begin{figure}[h]                                  
@@ -810,23 +822,8 @@ A detailed explanation of the propagation rules is available here \cite{SpringIn
 
 Event Cloud's data access is following the data access object (DAO) pattern, using Hibernate and Spring Frameworks support, described in the previous sections. For each database there are models generated using a top-down approach. The resource mappings between the relational database and the business objects or models are generated by middlegen and out of these mappings codegen generates the models according to their relational structure. 
 \\\\
-There are 8 model classes available that represent Event Cloud's target schema:
-\begin{itemize}
-	\item Dbinfo
-	\item Event
-	\item Eventattribute
-	\item Eventtype
-	\item Filter
-	\item Profile
-	\item Rwtime
-	\item Txtime
-\end{itemize}
+There are 8 model classes available that represent Event Cloud's target schema described in previous section: Dbinfo, Event, Eventattribute, Eventtype, Filter, Profile, Rwtime and Txtime. And there are two model classes that represent Event Cloud's source schema from InTime: Correlatedevent and Correlationset.
 
-And there are two model classes that represent Event Cloud's source schema from InTime:
-\begin{itemize}
-	\item Correlatedevent
-	\item Correlationset
-\end{itemize}
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
@@ -1678,7 +1675,13 @@ The test data for Event Cloud has been generated using Intime. The event definit
 \section{Conclusion}
 %**************************************************************************************
 
-Event Cloud has shown that it is possible to create an easy-to-use application to manage the access to the huge amounts of events in an efficient way. However there are some open issues that must be solved in further projects. The Rank 3 search type is undisputable one of the essential features that is missing in the current version of Event Cloud. The scaleability of Lucene's index is limited to the physical borders of one machine. As there would be billions of events stored in the indexes there is physical limit of one machine. There is already discussion going on that Lucene should support clustering to distribute its indexes over several machines in order to scale up to large requirements. This could be done by distributing the indexes over serveral machines and let one machine control the retrieval process. Currently there is no concrete plan to implement such a feature.
+Event Cloud has shown that it is possible to create an easy-to-use application to manage the access to the huge amounts of events in an efficient way. 
+\\\\
+However there are some open issues that must be solved in further projects. The Rank 3 search type is undisputable one of the essential features that is missing in the current version of Event Cloud. Currently there is work in progress to integrate the Rank 3 search type into Event Cloud in order to be able to discover indirect correlationsets and to search for them.
+\\\\
+The scaleability of Lucene's index is limited to the physical borders of one machine. As there would be billions of events stored in the indexes, there is a physical limit of one machine. There are discussion going on that Lucene should support clustering to distribute it's index over several machines in order to scale up to larger requirements. This could be done by distributing the index over serveral machines and let one machine control the retrieval process as a master mind. Currently there is no concrete plan to implement such a feature, but it can be considered as an open issue. 
+\\\\
+Another important point is the possible paradigm change regarding the organization of information for search applications whether in relational databases or everything in indexed and redundant structures. This is highly interesting as Event Cloud could completely run without a database which is the main bottleneck at the current point. This way of organizing data would bring some problems like maintaining data and ensuring consistency which are issues addressed by relational schemas. 
 
 %**************************************************************************************
 \newpage
