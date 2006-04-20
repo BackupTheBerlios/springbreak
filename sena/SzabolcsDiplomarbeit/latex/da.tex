@@ -6,6 +6,7 @@
 \usepackage{eurosym}
 \usepackage[pdftex]{graphicx}
 \usepackage{ae}
+\usepackage[american]{babel}
 %\usepackage{a4}	%for scrbook
 \usepackage{lscape}
 % \usepackage{url}
@@ -265,9 +266,9 @@ Aggregating events is a difficult task as it needs a technology that can recogni
 %**************************************************************************************
 \subsection{Eventbased Systems}
 %**************************************************************************************
-The term of event-based systems is used in many fields in an ambiguous and varying way. As we have decribed several messaging architectures like the persistent, transient and asynchronous way to deliver messages to a client, there is a distinct line between simple message exchange and event-based systems. The exhaustive trend of using distributed system architecture to support highly automated data processing has led to the concept of client-server architectures that brought major drawbacks with it. A classic client-server architecture, where system components access remote functionality to acomplish their own tasks, is often a synchronous communication between the server and the client. That leads to tight coupling and affects the scalability of such architectures. Several middleware extensions addressed this problem by allowing to use asynchronous messaging, in an either persistent or transient way, using the mentioned message queing techniques. 
+The term of event-based systems is used in many fields in an ambiguous and varying way. As we have described several messaging architecture types like the persistent, transient and asynchronous way to deliver messages to a client, there is a distinct line between simple message exchange and event-based systems. The exhaustive trend of using distributed system architecture to support highly automated data processing has led to the concept of client-server architecture that brought major drawbacks with it. A classic client-server architecture, where system components access remote functionality to accomplish their own tasks, is often a synchronous communication between the server and the client. That leads to tight coupling and affects the scalability of such architecture models. Several middleware extensions addressed this problem by allowing to use asynchronous messaging, in an either persistent or transient way, using the mentioned message queuing techniques. 
 \\\\
-In an event-based environment we have components communicating with eachother by sending and receiving event notifications. There are mainly two interacting components the \textit{consumer} and the \textit{producer}. The consumer is subscribing to certain notifications and the other component, the producer, is publishing notifications about various topics. A notification service dispatches the notifications from the producer to the subscribed consumer. This notification service makes it possible to create loosly coupled and scaleable infrastructures as none of the components have to know about eachother. The notifications itself is created by observing special occurrences that are a point of interest. The subscription of consumers is a list of certain notifications the consumers wants to receive by the notification services. The subscription mechanism could be just a filter function or a more sophisticated notification selection mechanism including metadata descriptions. A channel would represent such a bundle of notifications that a consumer could subscribe and a producer could select to distribute its notifications.
+In an event-based environment we have components communicating with eachother by sending and receiving event notifications. There are mainly two interacting components the \textit{consumer} and the \textit{producer}. The consumer is subscribing to certain notifications and the other component, the producer, is publishing notifications about various topics. A notification service dispatches the notifications from the producer to the subscribed consumer. This notification service makes it possible to create loosely coupled and scaleable infrastructure as none of the components have to know about eachother. The notification itself is created by observing special occurrences that are a point of interest. For instance this could be events triggered by various systems. The subscription of consumers is a list of certain notifications the consumers wants to receive by the notification services. The subscription mechanism could be just a filter function or a more sophisticated notification selection mechanism including metadata descriptions. A channel would represent such a bundle of notifications that a consumer could subscribe and a producer could select to distribute its notifications.
 \\\\
 %**********************
 \begin{figure} [ht]                
@@ -278,9 +279,12 @@ In an event-based environment we have components communicating with eachother by
 \end{figure}  
 %**********************
 \\\\
-As you can see there is the major drawback of missing filtering, aggregation and correlation services like mentioned in the introduction. Actually there is no big deal to set up a message queue for a component or a system to receive specific event notifications from a channel. Let assume that you have a component or a system subscribed to a shipment tracking channel that sends continuous notifications about the current status of a package and another subscription to a channel that notifies about shipment audits. The system would be able to handle those received events according to its assigned tasks in ways like the following: 
+%**************************************************************************************
+\subsection{Business Value}
+%**************************************************************************************
+As you can see there is the major drawback of missing filtering, aggregation and correlation services like mentioned in the introduction. Actually it is no big deal to set up a message queue for a component or a system to receive specific event notifications from a channel. Let's assume that you have a component or a system subscribed to a shipment tracking channel that sends continuous notifications about the current status of a package and another subscription to a channel that notifies about shipment audits. The system would be able to handle those received events according to its assigned tasks in ways like the following: 
 \begin{itemize}
-	\item \textit{The shipment xy has been audited and a damaged product has been indentified.} The system can book product xy from shipment xy as damaged.
+	\item \textit{The shipment xy has been audited and a damaged product has been identified.} The system can book product xy from shipment xy as damaged.
 	\item \textit{The shipment xy has been delivered.} The system can book the shipment xy as finished.
 	\item \textit{The shipment xy is currently on road between Vienna and Linz.} The system can react in sense that it updates some location tracking systems used.
 \end{itemize}
@@ -300,9 +304,9 @@ According to Hackathrone the business value of taking an action goes down after 
 \end{figure}  
 %**********************
 %**************************************************************************************
-\subsection{Related work to event-based systems}
+\subsection{Related Work to Eventbased Systems}
 %**************************************************************************************
-Currently there is quite a lot of work going on in the design and application of event-based system support and correlation systems. This chapter will introduce some of the most prevalent systems.
+Currently there is quite a lot of work going on in the design and application of event-based system support and correlation systems. This section will introduce some of the most prevalent systems to get a feeling what is going on in this field and what types of approaches exist to handle the events.. Senactive's InTime\footnote{www.senactive.com} is undoubted the most relevant system for this diploma thesis as it delivers the simulation data. 
 
 %**************************************************************************************
 \subsubsection{Senactive InTime - Sense and Response Architecture}
@@ -322,23 +326,23 @@ The 5 phases in detail (see Figure \ref{fig:senseAndResponseSenactive}) \cite{Ng
 \begin{itemize}
 	\item \textbf{Sense}: Continous capturing of events and unification by the sense and response architecture.
 	\item \textbf{Interpret}: The events will be transformed into business information like performance indicators, business situations and exceptions.
-	\item \textbf{Analyse}: Analysis of interpreted business information to preditct performance and risks if the business environment changes.
+	\item \textbf{Analyse}: Analysis of interpreted business information to predict performance and risks if the business environment changes.
 	\item \textbf{Decide}: Proposal for the best business situation and the according actions to be done either automated or by involving humans.
 	\item \textbf{Respond}: Communicating the decision made in the last step to change the business environment.
 \end{itemize}
 
-The processing, transformation and the relationship definition steps can be defined for every organisation using an event processing model for modeling these sense and response loops.
+The processing, transformation and the relationship definition steps can be defined for every organization using an event processing model for modeling these sense and response loops.
 \\\\
-The system is capable of detecting exceptional business situations and can react on them by generating warnings or take measures by itself to prevent damages like fraud. The InTime product is also capable of correlating events and aggregating events from it's various sources. This product would help customers to monitor their event-driven enterprise systems from a high level perspective to gather financial ratios, to trace down occurred problems or to use it for decision making based on real time information. As this product can react proactivly on given business situations in its \textit{decide cycle} it can change business situations autonomously based on rules and provided information. The change of business situations can be performed in an event-based manner again. 
+The system is capable of detecting exceptional business situations and can react on them by generating warnings or take measures by itself to prevent damages like fraud. The InTime product is also capable of correlating events and aggregating events from it's various sources. This product would help customers to monitor their event-driven enterprise systems from a high level perspective to gather financial ratios, to trace down occurred problems or to use it for decision making based on real time information. As this product can react proactively on given business situations in its \textit{decide cycle} it can change business situations autonomously based on rules and provided information. The change of business situations can be performed in an event-based manner again. 
 \\\\
 This \textit{Sense and Response Service Architecture} can be used to satisfy real-time business intelligence architecture requirements as it can be used as a real-time data cache that serves as a staging area for datawarehouse updates and analytical services. More on zero-latency data warehousing and real-time business intelligences has been addressed here \cite{TjoaNguyenKickinger04}, \cite{NguyenSchieferTjoa05} and \cite{ThoManhNguyen05}.
 \\\\
-A useful feature of Senactives InTime is an event simulator that can generate events to create simulations to test event workflows or to generate event-based data for other purposes. This feature has been used for this diploma thesis to simulate logistics service prodiver based upon some special exceptional stories created. 
+A useful feature of Senactives InTime is an event simulator that can generate events to create simulations to test event workflows or to generate event-based data for other purposes. This feature has been used for this diploma thesis to simulate logistics service provider based upon some special exceptional stories created. 
 
 %**************************************************************************************
 \subsubsection{RAPIDE}
 %**************************************************************************************
-RAPIDE is an event pattern language developed at Stanford University by the Program Analysis and Verification Group under the lead of David Luckham. RAPIDE is a declarative computer language that enables the specification of patterns of events. The syntax of of RAPIDE is basically like todays languages like Java or C\#. RAPIDE allows the specification of patterns that form relationships between events by causal, content or temporal constraints. This language has the feature to add pattern rules during runtime while events are collected according to the given pattern rules and processed by given action statements. Rapide is capable of aggregating high level events out of a collection of correlated events.
+RAPIDE is an event pattern language developed at Stanford University by the Program Analysis and Verification Group under the lead of David Luckham. RAPIDE is a declarative computer language that enables the specification of patterns of events. The syntax of of RAPIDE is basically like today's languages like Java or C\#. RAPIDE allows the specification of patterns that form relationships between events by causal, content or temporal constraints. This language has the feature to add pattern rules during runtime while events are collected according to the given pattern rules and processed by given action statements. Rapide is capable of aggregating high level events out of a collection of correlated events.
 \\\\
 It has a rich set of features \cite{Luckham05} like:
 
@@ -346,7 +350,7 @@ It has a rich set of features \cite{Luckham05} like:
 	\item Definition of Event types.
 	\item Event pattern definition
 	\item Pattern operators for modeling relationships between events.
-	\item Temoral operators to specify the timing of events.
+	\item Temporal operators to specify the timing of events.
 	\item Pattern macros for building more complex patterns.
 \end{itemize}
 
@@ -363,7 +367,7 @@ According to \cite{LuckhamManensPark} RAPIDE is a good approach to test and simu
 	\label{fig:gemEventMonitoringComponents}
 \end{figure}  
 %**********************
-The Generalized Event Monitor (GEM) is an interpreted declarative rule-based event monitoring language which allows to specify high-level events out of different nodes in a distributed system. The purpose of GEM is to monitor operations of distributed systems to support management decisions and control network behaviour. The monitor is capable of applying filters and to correlate events according to predefined rules. GEM's pecification contains the type of the events to be collected, a pattern that has to be matched and an action to be performed. GEMs specification is very powerful as it allows the definition of triples (format, composite event definition and actions to be defined). Moreover it is possible to modify the GEM monitors state. The main drawback is that it does not support the modelling of causal relationships between events which result in a lack of defining patterns based on causalities between events. For further details see \cite{GEM95}.
+The Generalized Event Monitor (GEM) is an interpreted declarative rule-based event monitoring language which allows to specify high-level events out of different nodes in a distributed system. The purpose of GEM is to monitor operations of distributed systems to support management decisions and control network behaviour. The monitor is capable of applying filters and to correlate events according to predefined rules. GEM's specification contains the type of the events to be collected, a pattern that has to be matched and an action to be performed. GEMs specification is very powerful as it allows the definition of triples (format, composite event definition and actions to be defined). Moreover it is possible to modify the GEM monitors state. The main drawback is that it does not support the modelling of causal relationships between events which result in a lack of defining patterns based on causalities between events. For further details see \cite{GEM95}.
 %**************************************************************************************
 \subsubsection{HP-ECS Event correlation service}
 %**************************************************************************************
@@ -383,17 +387,17 @@ Events can be passed through intermediate nodes in a circuit that provides diffe
 	\item causal filters
 	\item content filters
 	\item in general event monitoring
-	\item sequential event contructs 
+	\item sequential event constructs 
 \end{itemize}
 
-HP-ECS has a major flaw because it is not usable for generic event correlation as it only supports correlation for SNMP and CMIP events.
+HP-ECS has a major flaw because it is not usable for generic event correlation as it only supports correlation for SNMP\footnote{Simple Network Management Protocol} and CMIP\footnote{Common Management Information Protocol } events.
 
 %**************************************************************************************
 \newpage
 \section{Scope of this diploma thesis}
 %**************************************************************************************
 
-We have seen in the previous chapters the impact events have in today's decision making processes and what value they create for process management, especially in large and global oriented enterprises. E-Business and E-Markets have created a global playground for automated workflow systems which result in a huge traffic flow of information between corporate networks and department systems. The lack of monitoring these events in a sense of correlating them, creating causal relationships or aggregate them to high level events is still a problem that is currently challenged by academic and commerical oriented institutions. Some of them, like Senactive's Sense and Response Architecture, provide the ability to monitor event flows and proactively react on them to change the business processes, based on real-time information, provided by the various enterprise systems. This is a major step towards real-time enabled enterprises that can challenge the requirements of today's highly dynamic business world. 
+We have seen in the previous chapters the impact events have in today's decision making processes and what value they create for process management, especially in large and global oriented enterprises. E-Business and E-Markets have created a global playground for automated workflow systems which result in a huge traffic flow of information between corporate networks and department systems. The lack of monitoring these events in a sense of correlating them, creating causal relationships or aggregate them to high level events is still a problem that is currently challenged by academic and commercial oriented institutions. Some of them, like Senactive's Sense and Response Architecture, provide the ability to monitor event flows and proactively react on them to change the business processes, based on real-time information, provided by the various enterprise systems. This is a major step towards real-time enabled enterprises that can challenge the requirements of today's highly dynamic business world. 
 \\\\
 The core of this diploma thesis does not go into event-based processing problems like creating sophisticated causal trackings or correlation algorithms in first place. This thesis is about a system that enables the historic view of collected historic event streams that have been preprocessed by Senactives InTime Sense and Response Architecture. As Intime can react proactively on given business situations based on event constellations and defined rules, it can rearrange business processes to stear the business environment and processes into a given direction. This will result in a chain of newly triggered event flows which join back to the control loop. InTime is capable of correlating events according to predefined rules and delivers causal tracking of events. 
 \\\\
@@ -411,9 +415,9 @@ According to \cite{Morville05} findability is described by following aspects:
 	\item \textit{The degree to which a system or environment supports navigation and retrieval.}
 \end{itemize}
 
-Google has shown the world that searching the web does not have to be based on simple keyword matchings or word frequency countings. It introduced a completely new way of rating weppage contents and to calculate the best hits out of some search terms, provided by the user. Google's commercial success has proven the world that this way of finding information is the right one at least for the moment, as long as noone else comes with a better idea. 
+Google has shown the world that searching the web does not have to be based on simple keyword matchings or word frequency countings. It introduced a completely new way of rating webpage contents and to calculate the best hits out of some search terms, provided by the user. Google's commercial success has proven that this way of finding information is the right one, at least for the moment as long as noone else comes with a better idea. 
 \\\\
-The look and feel of Google like finding and retrieving information has become a defacto standard. Numerous applications integrate full text indexing algorithms and methods into their applications to provide a search based access to information and data. These applications don't necessarily concentrate on finding webpages it's applied on a variety of information like office documents, products, flight schedules or even free available source code. People tend to go away from the classic topologic of classifying information into tree like catalogues and let the user navigate through these structures to get his desired information. A good indexing and retrieval mechanism allows the user to find and access information by typing some terms into a textbox and a ranking algorithm calculates the best hits out of the found information to present the most relevant information. This way of organising the access to information has become a great success as numerous applications has proven like koders.com, Google Desktop Search and Apple's Spotlight for instance. 
+The look and feel of Google's way finding and retrieving information has become a defacto standard. Numerous applications integrate full text indexing algorithms and methods into their applications to provide a search based access to information and data. These applications don't necessarily concentrate on finding webpages. The search can be applied on a variety of information like office documents, products, flight schedules or even free available source code. People tend to move away from the classic topologic of classifying information into tree like catalogues and let the user navigate through these structures to get his desired information. A good indexing and retrieval mechanism allows the user to find and access information by typing some terms into a textbox and a ranking algorithm calculates the best hits out of the found information to present the most relevant information. This way of organizing the access to information has become a great success as numerous applications has proven like koders.com, Google Desktop Search and Apple's Spotlight for instance. 
 \\\\
 \textit{Of course, access doesn't simply require us to make decisions in more areas of our lives. It also changes the game by inviting us to make informed decisions more often.} \cite{Morville05}
 
@@ -427,9 +431,9 @@ The look and feel of Google like finding and retrieving information has become a
 % Geeignete Architektur für so eine Anwendung finden
 % Fokus auf freie Technologien
 
-Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user to get the most relevant hits according to the given search criterias. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occurred events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
+Event Cloud is the name of the developed application whose main purpose is to provide a search interface to its users to allow them to search for simple and correlated events in an efficient way.  The representation of the search results is a major feature that allows its user to get the most relevant hits according to the given search criteria. Furthermore it provides functions to exclude unwanted event and correlation types from the found result set and it allows to create filters over events and their correlations. As not every person is interested in all types of occurred events and correlationsets it is possible to create and edit roles for different user profiles that will reduce the information pool to a desired manageable pool of events and correlations. Event Cloud provides the user the option to dig down to event levels or to go up to correlation levels according to the selection from a found resultset. 
 \\\\
-Basically Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweight IoC Spring framework to bind the components together. A special focus has been set on using only non-proprietary and open source technologies as this is an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
+Basically, Event Cloud has implemented two Search types that allows a user to query for either events or to search through whole event correlations. Using the latest Java high-performance text search engine library Lucene and the powerful open source database Postgres allows to index and search the event repository in a fast and efficient way. The system is supported by the lightweight IoC\footnote{Inversion Of Control aka dependency injection} Spring framework to bind the components together. A special focus has been set on using only non-proprietary and Open Source technologies as this is an academic project and should lay the cornerstone for future work on this topic or at least provide useful information how to do or not to do future work in this field. 
 \\\\
 Event Cloud consists of three main functions: 
 
@@ -439,11 +443,11 @@ Event Cloud consists of three main functions:
 	\item Search functionality including a sophisticated query syntax and various filter functions.
 \end{itemize}
 
-These functionalities should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a Google like search experience. 
+These functionalities should provide a powerful toolset to facilitate the discovery of different aspects of business processes based on event correlations provided by a ``  ``Google-like'' search experience. 
 \\\\
 This diploma thesis was especially supported by Josef Schiefer and Senactive, by providing InTime for the basic infrastructure and support throughout the whole developing process. Especially the simulation of business processes to gather test data in form of generated events was done by the InTime product. Plenty of time has been invested to create interesting and meaningful simulations of business processes based on a logistics company. The event simulation has been broadened by according stories for showcases to display exceptional situations and to show how InTime can react on such situations. The simulation definition process has been co-developed by Roland Vecera and is available as an Appendix in the diploma thesis to get a comprehensive view of what happens beneath the fact that events exists for this project.
 \\\\
-As we talk about source systems or the source database throughout the next sections it is always the InTime database meant. This is a Ms Sql Server database that contains the raw event information from the InTime simulator. As InTime is settled in the .Net world, Event Cloud provides an import functionality to duplicate the database on a desired machine, because InTime has been deployed in a VMWare for developing purposes which is not a performance wonder.
+As we talk about source systems or the source database throughout the next sections it is always the InTime database meant. This is a MS SQL Server database that contains the raw event information from the InTime simulator. As InTime is settled in the .Net world, Event Cloud provides an import functionality to duplicate the database on a desired machine, because InTime has been deployed in a VMWare for developing purposes which is not a performance wonder.
 
 %**************************************************************************************
 \newpage
@@ -482,7 +486,7 @@ At the current point the heart of Event Cloud is the Rank 2 search which is an e
 	\label{fig:rank2searchExample}
 \end{figure}            
 %***********************   
-If a user puts down a search query consisting of terms like ``Paris London Szabolcs'' the search engine will retrieve correlations consisting of events that matched these terms (Figure \ref{fig:rank1searchExample}). That means that you will get back a correlation whose event attributes contain either Paris, London or Szabolcs. Correlationsets whose Events would not contain the terms ``Paris London Szabolcs'' would not be considered. If for instance a correlationset is consisting of eight events and only one event contains the search terms it would be still a hit but maybe a bad one depending on the other found hits.
+If a user puts down a search query consisting of terms like ``Paris London Szabolcs'' the search engine will retrieve correlations consisting of events that matched these terms (Figure \ref{fig:rank2searchExample}). That means that you will get back a correlation whose event attributes contain either Paris, London or Szabolcs. Correlationsets whose Events would not contain the terms ``Paris London Szabolcs'' would not be considered. If for instance a correlationset is consisting of eight events and only one event contains the search terms it would be still a hit but maybe a bad one depending on the other found hits.
 %***********************
 \begin{figure}[h]                                  
 	\centering                                           
@@ -546,7 +550,7 @@ There are two databases used by this system. The first one is the source databas
 %***********************
 The rwtime and txtime tables represent the realworld dates of events (rwtime) e.g. when they really occurred in some system.  The timepoint when events have been recognized by the system are decomposed and stored in the txtime table. During the ETL process the event timestamps are decomposed to a day, month and year granularity. The rwtime and the txtime tables hold every possible combination of day, month and year as the event numbers grow and only the ids are assigned to the event. This allows an efficient indexing of the dates and thus a fast way to create constrained date queries.
 \\\\
-The events and eventattributes relations are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can contain a complex structure. The logical XML structure is flattened in the relational form to preserve the original substructures a URI is saved to the database. 
+The events and eventattributes relations \ref{fig:eventCloudSchema}are the core tables in the target schema of Event Cloud. Basically the event relation holds the core event information provided by each event. The eventattributes relation holds every extracted attribute from an event, its value and its unique URI as events are constructed out of XMLs that can contain a complex structure. The logical XML structure is flattened in the relational form to preserve the original substructures a URI is saved to the database. 
 \\\\
 Consider for example the mentioned OrderReceived Event (Listing \ref{lst:OrderReceivedEvent}) where you have got basic information provided with a Productcollection containing a subtree of several products. 
 \\\\
@@ -562,12 +566,7 @@ A representation in the eventattributes relation would look like provided in Fig
 
 The relation dbinfo is used to save information about the loading process and profiles is needed to store profile information about filters for the search functionality.
 \\\\
-The Index functionality of Postgres is a vital function that has been applied to the Event Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. As Hibernate does not support the creation of indexes it has to be added manually if the system is set up. An index can be created by using the psql interface or antoher sql postgres access using the convention in listing \ref{lst:CreateIndexForGeneric}. 
-\begin{lstlisting}[caption=Create an index, label=lst:CreateIndexForGeneric]{Create an index}
-CREATE INDEX tablename_attributename_index 
-	ON tablename (attributename);
-\end{lstlisting}
-Once the index has been created it will be updated automatically, but VACUUM ANALYSE has to be executed in regular intervals to update statistical data for the query planner. This has to be done especially when big amounts of data have been inserted into the database. Regular analysis can be executed by creating cron jobs over night for instance. 
+The Index functionality of Postgres is a vital function that has been applied to the Event Cloud schema in Postgres to boost up performance. The standard index type of Postgres is a btree index which fits the needs as it can handle equality and range queries. Once the index has been created it will be updated automatically, but VACUUM ANALYSE has to be executed in regular intervals to update statistical data for the query planner. This has to be done especially when big amounts of data have been inserted into the database. Regular analysis can be executed by creating cron jobs over night for instance. 
 \\\\
 VACUUMing is important as rows are not physically deleted by Postgres, if they are removed, so this is necessary to reclaim storage space. VACUUming can be performed while reading and writing to tables as no lock is obtained but it will need some performance while running. 
 \\\\
@@ -633,7 +632,7 @@ A relational database is mainly characterized by of following terms \cite{Codd99
 
 This had a big impact and changed the way how data has been processed. Instead of manipulating record by record it was possible to describe the datasets for processing and to store data in an efficient way. Today a database management system is more than a formal description of how to organise and structure information. It provides a full blown information management system that allows applications to access large amounts of data in a fast manor. It supports transactions, user management, issues security topics and much more. Moreover the relational world has been and is still under academic discussions which helps to evolve the algorithms and technologies powering those technologies. A lot of work has been invested to mathematically formalize relational model and to develop a structured query language. Currently there is a wide range of commercial and open source database management systems available like DB2, Orcale, Ms SQL Server, MySQL or PostgreSQL.
 \\\\
-As time goes by people realized that procedural programing paradigms create too much overhead that makes systems difficult to maintain, components hard to reuse and the world could be described in better ways for problemsolving. As a result the object oriented paradigm has evolved and Smalltalk was the first noticeable programming language that introduced the object oriented programming paradigm together with cutting edge features (at least for that time). During the mid eighties C++ established the object oriented paradigm into eveybodies minds. Programming languages evolved over time and today's most widely spread languages are C++, Java and .Net derivates. Especially Java has proven itself for developing distributed applications. Today we have a sophisticated toolset available like modelling languages such as UML or a rich set of design patterns for different purposes we can use more or less out of the box (for more details take a look at \cite{DesignPatterns97} and \cite{Fowler97}).
+As time goes by people realized that procedural programing paradigms create too much overhead that makes systems difficult to maintain, components hard to reuse and the world could be described in better ways for problem solving. As a result the object oriented paradigm has evolved and Smalltalk was the first noticeable programming language that introduced the object oriented programming paradigm together with cutting edge features (at least for that time). During the mid eighties C++ established the object oriented paradigm into everybodies minds. Programming languages evolved over time and today's most widely spread languages are C++, Java and .Net derivates. Especially Java has proven itself for developing distributed applications. Today we have a sophisticated toolset available like modelling languages such as UML or a rich set of design patterns for different purposes we can use more or less out of the box (for more details take a look at \cite{DesignPatterns97} and \cite{Fowler97}).
 \\\\
 Today we are facing the problem of a \textit{paradigm mismatch}. We started to use object oriented techniques to model and develop our applications, but almost all of our  systems have the requirement that they need to persist their data. Following the object oriented paradigm we create domain models about the subjects we need to work with. Sometimes these models are named business models in a layered application context. This object oriented style of modeling our data clashes with the well known relational \textit{row and column world}. The problem is that object oriented domain models are simply the better choice as they help to improve code reuseability and the maintainability significantly. 
 \\\\
@@ -659,7 +658,7 @@ There are several ORM libraries available. For this project the decision has bee
 
 Event Cloud uses the Spring Framework to manage the components of this application by applying the Factory Pattern, IoC and code injection. More on this topic later on. What's important is to be aware of, that the Spring Framework is taking over a lot of work handling Hibernate and data access. Spring supports declarative definition of the Factory pattern and a dependency injection.
 \\\\
-The Spring Framework brings a Data Access Object (DAO) support with it that is applied in Event Cloud. The idea behind DAO is to follow object orieted principles and thus to programm against interfaces. You define a DAO interface and a concrete implementation of this DAO. The application now can access the DAO interface through higher level services (Figure \ref{fig:DAOconcept}). Spring binds the DAO implementation to the interface. This enables a loosly coupled design, improves maintainability and speeds up testing processes. Moreover the DAO pattern has the advantage that is easily possible to change the underlying data access even much faster.
+The Spring Framework brings a Data Access Object (DAO) support with it that is applied in Event Cloud. The idea behind DAO is to follow object oriented principles and thus to program against interfaces. You define a DAO interface and a concrete implementation of this DAO. The application now can access the DAO interface through higher level services (Figure \ref{fig:DAOconcept}). Spring binds the DAO implementation to the interface. This enables a loosely coupled design, improves maintainability and speeds up testing processes. Moreover the DAO pattern has the advantage that is easily possible to change the underlying data access even much faster.
 \\\\
 %***********************
 \begin{figure}[ht]                                  
@@ -719,7 +718,7 @@ The listing figure \ref{lst:SessionFactoryConfiguration} shows a bunch of config
 %***************************************
 An important property is the mappingResource as it defines the mapping resources for the application. The mapping resource files are ending with a *.hbm.xml by standard and they provide the mapping definitions between the relational and the object oriented world. Creating and parameterizing the mapping resources is far out of scope in this diploma thesis as there is an excellent documentation available on the Hibernate webpage. Important is that there are tools and techniques available that can generate these mapping configuration files for your application. In this project a top-down approach has been chosen to create data access. The idea is to create the relational database schema and define various constraints. The next step is to apply a tool name Middlegen which is capable of reading in the database schema and provide a user interface to create the object relational mapping resources. When this has been done a tiny program can be integrated using Jakarta's Ant to generate the object oriented models including object graphs for representing relationships. Afterwards all that have to be done is add the mapping resource names to the SessionFactory.
 \\\\
-The database connections are defined in the context defintions of the application. One for the target database, the Event Cloud, and one for the source database (see listing figure \ref{lst:DatabaseConnection}). As we have two databases another SessionFactory instance for the second database has to be created too. For means of simplicity there is only one example provided just to show how the basic concept works if changes have to applied and how this is all wired together. Event Cloud makes use of the commons pooling package to provide basic connection pooling for the application. If someone would like to use a more sophisticated implementation like C3PO it is again just a matter of changing the class. 
+The database connections are defined in the context definitions of the application. One for the target database, the Event Cloud, and one for the source database (see listing figure \ref{lst:DatabaseConnection}). As we have two databases another SessionFactory instance for the second database has to be created too. For means of simplicity there is only one example provided just to show how the basic concept works if changes have to applied and how this is all wired together. Event Cloud makes use of the commons pooling package to provide basic connection pooling for the application. If someone would like to use a more sophisticated implementation like C3PO it is again just a matter of changing the class. 
 
 %***************************************
 \begin{figure}[h]  
@@ -803,9 +802,7 @@ The DAO, created by the user, references the previously defined SessionFactory a
 
 The transaction attributes cover propagation rules and isolation levels that can be defined for each method. The key properties define on which methods they should be applied. For example on methods starting with ``save*'' Propagation is required (Figure \ref{lst:TransactionmanagementDAO}).
 \\\\
-Available propagation rules are PROPAGATION MANDATORY, ROPAGATION NESTED, PROPAGATION NEVER, PROPAGATION NOT SUPPORTED, PROPAGATION REQUIRED, PROPAGATION REQUIRES NEW and PROPAGATION SUPPORTS (detailed explanation is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimizations that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. These levels are ISOLATION DEFAULT, ISOLATION READ UNCOMMITTED, ISOLATION READ COMMITTED, ISOLATION REPEATABLE READ and ISOLATION SERIALIZABLE.
-
-%***************************************
+A detailed explanation of the propagation rules is available here \cite{SpringInAction05}). Event Cloud mostly uses the PROPAGATION REQUIRED which will create a transaction for the methods. The read-only option is important to apply for attributes that perform only read operations as this option activates certain optimizations that may boost up the performance during such transactions. There are also five isolation levels available to set that are also described in detail here \cite{SpringInAction05}. 
 
 %**************************************************************************************
 \subsubsection{Event Clouds Persistence Layer}
@@ -901,7 +898,7 @@ The EventPersistenceService is integrated by the Spring Framework using its cont
     </bean>
     \end{verbatim}
     \end{mytinylisting}
-	\caption{EventPersistenceService}             
+	\caption{EventPersistenceService Definition}             
 	\label{lst:EventPersistenceService}
 \end{figure} 
 
@@ -930,7 +927,7 @@ The main persistence service class for the event source database is provided by 
     </bean>
     \end{verbatim}
     \end{mytinylisting}
-	\caption{EventPersistenceService}             
+	\caption{CorrelatedEventsPersistenceService Definition}             
 	\label{lst:EventPersistenceService}
 \end{figure} 
 %***************************************
@@ -1028,11 +1025,11 @@ This process is pretty straight forward as the user only has to provide event de
 %**************************************************************************************
 \subsection{Spring IoC Container}
 %**************************************************************************************
-During the time when Java programming reached its critical mass of users Sun Microsystems published the Enterprise Java Beans 1.0 specifications (1998). EJB is a server side component settled in the middle layer of an enterprise application. Its major goal is to improve distribution transparency and reusability of components underlined by the statement that EJBs should make developing enterprise systems easier. EJB actually was the first technology that allowed decelrative transactions for instance. 
+During the time when Java programming reached its critical mass of users Sun Microsystems published the Enterprise Java Beans 1.0 specifications in 1998. EJB is a server side component settled in the middle layer of an enterprise application. Its major goal is to improve distribution transparency and reusability of components underlined by the statement that EJBs should make developing enterprise systems easier. EJB actually was the first technology that allowed decelrative transactions for instance. 
 \\\\
 As time went by the first enthusiasm had gone and experiences with EJB have shown that they don't necessarily hold what they promised. This problem has been addressed by Rod Johnson in first place (\cite{Johnson02}). EJB addresses just too many problems thus results in a high complexity. As most applications don't need the most addressed features EJBs create too much overhead. 
 \\\\
-Rod Johnson propagets following major flaws of EJBs based on his experience \cite{Johnson02}:
+Rod Johnson propagates following major flaws of EJBs based on his experience \cite{Johnson02}:
 \begin{itemize}
 	\item It brings too much unnecessary complexity with it.
 	\item Through EJB's complexity provided the productivity is low and the probability of erros grow.
@@ -1041,7 +1038,7 @@ Rod Johnson propagets following major flaws of EJBs based on his experience \cit
 	\item Entity Beans have failed.
 	\item EJB system have a relatively poor performance and don't scale up well.
 	\item Too much code has to be produced which resulted in various code generators that make maintainability problematic.
-	\item EJBs promised to be plattform independent. In reality applications became EJB container vendor specific.
+	\item EJBs promised to be platform independent. In reality applications became EJB container vendor specific.
 \end{itemize}
 
 The quesion arises ``Why use J2EE and EJBs at all then?''. The answer is that J2EE provides a wide range of useful services and standards that can be integrated into applications without the use of EJBs. Spring's goal is to deliver those services to the user by simplifying the programming model using only simple POJOS (\cite{SpringInAction05}).
@@ -1105,7 +1102,7 @@ The business logic should always be laid inside simple Java Beans with according
 %**************************************************************************************
 \subsection{Spring MVC}
 %**************************************************************************************
-The MVC pattern was originally introduced in Smalltalk developed in the 70s at the Xerox Palo Alto Research Center. Its main purpose was to manage the GUI and user interactions for the first graphic-window based applications. The MVC pattern is used to seperate the representation, processing and data components to achieve a loosly couple design which results in a clean reusable and maintainable code. 
+The MVC pattern was originally introduced in Smalltalk developed in the 70s at the Xerox Palo Alto Research Center. Its main purpose was to manage the GUI and user interactions for the first graphic-window based applications. The MVC pattern is used to seperate the representation, processing and data components to achieve a loosely couple design which results in a clean reusable and maintainable code. 
 \\\\
 The three main seperations are:
 \begin{itemize}
@@ -1199,7 +1196,7 @@ The openSessionInViewInterceptor used in this excerpt is a workaround to provide
 %**************************************************************************************
 \subsubsection{Indexing Events with Lucene }
 %**************************************************************************************
-Lucene is an open source high performance full text indexing and search library completle written in Java. Originally developed by Cutting 2001 it became a popular piece of software which is now maintained and extended by volunteers as a Jakarta project. During the development of Event Cloud, Lucene release its 1.9 version which was a major step in its development. The group is looking forward to introduce the 2.0 version of its software. Lucene provides a high performance indexing implementation and offers a sophistacted search algorithm. The main power of Lucene is actually its search implementation including its Ranking algorithm that yields excellent search results. Lucene is suitable for almost every application that needs some kind of text indexing. Originally it was used to index data and information provided for example on webpages or documents. It provides several libraries to parse different formats like pdf, doc or XMLs. However people started to use Lucene to index their databases as well to provide an efficient and fast full text search for their applications. Lucene provides the possibility to store metadata with the given documents that can be indexed by choice such as author, title or date of creation. This provides a powerfull alternative of managing and saving data for search centric applications. Lucene can create an index either on disk or it can build an extremely fast transient index in memory. 
+Lucene\footnote{http://lucene.apache.org/} is an open source high performance full text indexing and search library completle written in Java. Originally developed by Cutting 2001 it became a popular piece of software which is now maintained and extended by volunteers as a Jakarta project. During the development of Event Cloud, Lucene release its 1.9 version which was a major step in its development. The group is looking forward to introduce the 2.0 version of its software. Lucene provides a high performance indexing implementation and offers a sophistacted search algorithm. The main power of Lucene is actually its search implementation including its Ranking algorithm that yields excellent search results. Lucene is suitable for almost every application that needs some kind of text indexing. Originally it was used to index data and information provided for example on webpages or documents. It provides several libraries to parse different formats like pdf, doc or XMLs. However people started to use Lucene to index their databases as well to provide an efficient and fast full text search for their applications. Lucene provides the possibility to store metadata with the given documents that can be indexed by choice such as author, title or date of creation. This provides a powerfull alternative of managing and saving data for search centric applications. Lucene can create an index either on disk or it can build an extremely fast transient index in memory. 
 \\\\
 The real benefit developers can take from Lucene is its extremely well designed architecture. The developer has to be familiar with only a handful of classes in order to implement a rudimentary index and search application. 
 \\\\
@@ -1267,7 +1264,7 @@ In the provided Figure \ref{fig:IndexingService} the AdminController is inserted
 \\\\
 The index locations are provided by as parameters in the Event Clouds context configuration. 
 \\\\
-The index creation itself is performed during the loading and transformation process triggered by the user. While the etl process is transforming and storing the events to the database it creates the index for the events. When the event processing is finished a correlation index is built out of the correlation information provided by the Intime database (Figure \ref{fig:LoadingProcess})
+The index creation itself is performed during the loading and transformation process triggered by the user. While the ETL process is transforming and storing the events to the database it creates the index for the events. When the event processing is finished a correlation index is built out of the correlation information provided by the Intime database (Figure \ref{fig:LoadingProcess})
 \\\\
 %***********************
 \begin{figure}[!h]                                  
@@ -1277,7 +1274,7 @@ The index creation itself is performed during the loading and transformation pro
 	\label{fig:IndexingAnEvent}
 \end{figure}    
 %***************************************        
-The event lucene document that is added to the event index, is consisting of four attributes (Figure \ref{fig:IndexingAnEvent}):
+The event Lucene document that is added to the event index, is consisting of four attributes (Figure \ref{fig:IndexingAnEvent}):
 
 \begin{itemize}
 	\item \textbf{content:} While the event attributes are processed by the transformation service each value of the attributes are extracted and appended to a string variable. This string contains every value from the event's attributes and is comparable to a document's text. This string is indexed.
@@ -1513,7 +1510,7 @@ Event Cloud comes with a set of filters to shrink the size of the found results.
 \section{Evolution and Performance Issues}
 %**************************************************************************************
 
-EventCloud has evolved over several design implementation steps. The first search implementation was based completely on the relational schema without full text indexing using only the provided Postgresql database indexes (Figure \ref{fig:eventCloudSchema}). These database schema including the indexes has been tested with a script (Listing Figure \ref{lst:TestdataGenerator}) that generates test data (insert statements) with less selective event attributes . For testing 20.000.000 event attributes have been inserted with an event ratio of 1:20. 
+EventCloud has evolved over several design implementation steps. The first search implementation was based completely on the relational schema without full text indexing using only the provided Postgresql database indexes (Figure \ref{fig:eventCloudSchema}). These database schema including the indexes has been tested with a script (Listing Figure \ref{lst:TestdataGenerator}) that generates test data (insert statements) with less selective event attributes . For testing 20.000.000 event attributes have been inserted with an event ratio of 1:20 (One event has got 20 attributes).
 \\\\
 %********************
 \begin{figure}[!h]  
