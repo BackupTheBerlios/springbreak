@@ -1671,13 +1671,12 @@ The solution was to use a full text indexing technology for the search that resu
 The test data for Event Cloud has been generated using Intime. The event definitions are created either by hand writing XML files or by using Intime's graphical editor. The whole event data is based on a logistics scenario written in cooperation with Roland Vecera. Details about the simulation process and the story itself is provided in the Appendix.
 
 %**************************************************************************************
-\newpage
 \section{Conclusion}
 %**************************************************************************************
 
 Event Cloud has shown that it is possible to create an easy-to-use application to manage the access to the huge amounts of events in an efficient way. 
 \\\\
-However there are some open issues that must be solved in further projects. The Rank 3 search type is undisputable one of the essential features that is missing in the current version of Event Cloud. Currently there is work in progress to integrate the Rank 3 search type into Event Cloud in order to be able to discover indirect correlationsets and to search for them.
+However there are some open issues that must be solved in further projects. The Rank 3 search type is undisputable one of the essential features that is missing in the current version of Event Cloud. Currently there is work in progress to integrate the Rank 3 search type into Event Cloud in order to be able to discover indirect correlationsets and to search for them. Connected to the Rank 3 search an interactive aggregation for the user would provide a rich feature. At the current point Event Cloud allows its users to create profiles according to their interests, but there would be the need to allow the users to define specific aggregations out of event types or even whole correlationsets. 
 \\\\
 The scaleability of Lucene's index is limited to the physical borders of one machine. As there would be billions of events stored in the indexes, there is a physical limit of one machine. There are discussion going on that Lucene should support clustering to distribute it's index over several machines in order to scale up to larger requirements. This could be done by distributing the index over serveral machines and let one machine control the retrieval process as a master mind. Currently there is no concrete plan to implement such a feature, but it can be considered as an open issue. 
 \\\\
@@ -1693,6 +1692,7 @@ Another important point is the possible paradigm change regarding the organizati
 \newpage
 \section{Appendix}
 %**************************************************************************************
+This section provides the simulation stories create together with Roland Vecera. The first part introduces the ``virtual company'' that is the central point of the whole simulation. The stories provide detailed information about the event process chains, they describe exceptional situations and show in which ways InTime can react on them. These simulation stories are actually not a main part of this thesis, but as they have been create to test and develop Event Cloud and so they provide vital information to understand the domain in which Event Cloud is settled.
 %**************************************************************************************
 \newpage
 \begin{landscape}
