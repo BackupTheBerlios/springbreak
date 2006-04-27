@@ -6,9 +6,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAO.java,v 1.3 2006/04/18 22:39:02 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * @version $Id: CorrelatedeventDAO.java,v 1.4 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.4 $
  * 
  * DAO interface for Correlatedevent
  * 
@@ -28,6 +28,11 @@ public interface CorrelatedeventDAO extends DAO
 	 */
 	public List getCorrelatedevents(); 
 	
+	/**
+	 * 
+	 * @return number of events in Correlated Events
+	 */
+	public int getCountEvents();
 	/**
 	 * @return List with Correlated Events using pagination
 	 */

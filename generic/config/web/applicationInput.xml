@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   	<!-- ====================================================================================	-->
+	<!-- JMS Configuration																				-->
+	<!-- ====================================================================================	-->
+	
+	
+	<!-- a pooling based JMS provider -->
+  <bean id="jmsFactory" class="org.activemq.pool.PooledConnectionFactory">
+    <property name="connectionFactory">
+      <bean class="org.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+          <value>tcp://localhost:61616</value>
+        </property>
+      </bean>
+    </property>
+  </bean>
+  
+  <bean id="jmsMessageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+
+  <!-- Spring JMS Template -->
+  <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory">
+      <ref local="jmsFactory"/>
+    </property>
+    
+    <property name="messageConverter">
+     <ref local="jmsMessageConverter"/>
+    </property>
+    
+    <property name="defaultDestinationName">
+    	<value>MyDestination</value>
+    </property>
+  </bean>
+  
+  <bean id="eventTransformer" class="at.generic.jms.ToStringEventTransformerMock" />
+
+
+	<bean id="EventAdapter" class="at.generic.jms.SimpleEventAdapter">
+		<property name="jmsTemplate"> 
+    		<ref local="jmsTemplate"/> 
+    	</property>
+    	<property name="eventTransformer">
+    		<ref local="eventTransformer"/>
+    	</property>
+	</bean>
+	
+	
+</beans>
+

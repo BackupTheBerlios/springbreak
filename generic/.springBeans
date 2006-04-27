@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<configs>
+		<config>config/web/userDAOs.xml</config>
+		<config>config/web/applicationInput.xml</config>
+		<config>config/web/action-servlet.xml</config>
+		<config>config/web/applicationContext.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

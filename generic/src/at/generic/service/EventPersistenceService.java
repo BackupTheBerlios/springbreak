@@ -17,9 +17,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: EventPersistenceService.java,v 1.4 2006/04/18 22:39:02 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.4 $
+ * @version $Id: EventPersistenceService.java,v 1.5 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.5 $
  * 
  * Facade for event persitence operations
  */
@@ -33,6 +33,8 @@ public interface EventPersistenceService {
 	 * @return List with Events
 	 */
 	public List getEvents(); 
+	
+	
 	
 	/**
 	 * Retrieves Events by a list of event ids

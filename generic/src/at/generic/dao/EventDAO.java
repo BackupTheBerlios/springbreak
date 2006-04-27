@@ -7,9 +7,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: EventDAO.java,v 1.3 2006/04/18 22:39:27 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * @version $Id: EventDAO.java,v 1.4 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.4 $
  * 
  * DAO interface for Event
  * 
@@ -28,6 +28,13 @@ public interface EventDAO extends DAO
 	 * @return List with Events
 	 */
 	public List getEvents(); 
+	
+	
+	/**
+	 * 
+	 * @return number of Events
+	 */
+	public int getCountEvents();
 	
 	/**
 	 * Retrieves Events by a list of event ids

@@ -9,9 +9,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author szabolcs
- * @version $Id: EventDate.java,v 1.3 2006/03/16 13:48:44 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * @version $Id: EventDate.java,v 1.4 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.4 $
  * 
  * Creates usefull Date representation of an event date string and provides some services
  * Original Format looks like this: 2005-12-28T12:06:07.0305000+01:00
@@ -75,14 +75,14 @@ public class EventDate {
 		date.setHours(this.hour);
 		date.setMinutes(this.minute);
 		date.setSeconds(this.seconds);*/
-		 Calendar cal = Calendar.getInstance();
-		cal.set( cal.YEAR, this.year );
-	    cal.set( cal.MONTH, this.month - 1);
-	    cal.set( cal.DATE, this.day );
+		Calendar cal = Calendar.getInstance();
+		cal.set( Calendar.YEAR, this.year );
+	    cal.set( Calendar.MONTH, this.month - 1);
+	    cal.set( Calendar.DATE, this.day );
 	    
-	    cal.set( cal.HOUR_OF_DAY, this.hour + 1);
-	    cal.set( cal.MINUTE, this.minute );
-	    cal.set( cal.SECOND, this.seconds );
+	    cal.set( Calendar.HOUR_OF_DAY, this.hour + 1);
+	    cal.set( Calendar.MINUTE, this.minute );
+	    cal.set( Calendar.SECOND, this.seconds );
 	    
 	    java.util.Date date = 
 	       new java.sql.Date( cal.getTime().getTime() );

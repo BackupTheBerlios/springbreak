@@ -47,14 +47,14 @@
 		<property name="dataSource"><ref bean="postgresSource"/></property>
         <property name="mappingResources">
             <list>
-            	<value>Event.hbm.xml</value>
-				<value>Rwtime.hbm.xml</value>
-				<value>Txtime.hbm.xml</value>
-				<value>Eventattribute.hbm.xml</value>
-				<value>Eventtype.hbm.xml</value>
-				<value>Dbinfo.hbm.xml</value>				
-				<value>Filter.hbm.xml</value>	
-				<value>Profile.hbm.xml</value>	
+            	<value>../hibernate/Event.hbm.xml</value>
+				<value>../hibernate/Rwtime.hbm.xml</value>
+				<value>../hibernate/Txtime.hbm.xml</value>
+				<value>../hibernate/Eventattribute.hbm.xml</value>
+				<value>../hibernate/Eventtype.hbm.xml</value>
+				<value>../hibernate/Dbinfo.hbm.xml</value>				
+				<value>../hibernate/Filter.hbm.xml</value>	
+				<value>../hibernate/Profile.hbm.xml</value>	
             </list>
         </property>
         <property name="hibernateProperties">
@@ -74,8 +74,8 @@
 		</property>
         <property name="mappingResources">
             <list>
-                 <value>Correlatedevent.hbm.xml</value>
-                 <value>Correlationset.hbm.xml</value>
+                 <value>../hibernate/Correlatedevent.hbm.xml</value>
+                 <value>../hibernate/Correlationset.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -215,8 +215,8 @@
     	</property> 
     </bean>
     
-    <!-- bean id="sourceEventEtl" class="at.generic.etl.GranSourceEvent" init-method="getBasicInfos" --> 
-    <bean id="sourceEventEtl" class="at.generic.etl.impl.GranSourceEvent" > 
+    <!-- bean id="sourceEventEtl" class="OnlyLucenePowerSourceEvent" --> 
+    <bean id="sourceEventEtl" class="at.generic.etl.impl.OnlyLucenePowerSourceEvent" > 
     	<property name="eventPersistenceService">
     		<ref bean="eventPersistenceService"/>
     	</property> 
@@ -228,9 +228,6 @@
     	</property>
     	<property name="indexingServiceEvents">
     		<ref bean="indexingServiceEvents"/>
-    	</property>
-    	<property name="indexingServiceCorrEvents">
-    		<ref bean="indexingServiceCorrEvents"/>
     	</property>
     	<property name="batchSizeForPaging">
     		<value>100</value>

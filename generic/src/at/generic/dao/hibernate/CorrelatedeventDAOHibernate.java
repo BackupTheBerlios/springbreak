@@ -18,9 +18,9 @@ import at.generic.model.Correlatedevent;
 
 /**
  * @author szabolcs
- * @version $Id: CorrelatedeventDAOHibernate.java,v 1.6 2006/04/18 22:39:02 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.6 $
+ * @version $Id: CorrelatedeventDAOHibernate.java,v 1.7 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.7 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -59,6 +59,11 @@ public class CorrelatedeventDAOHibernate extends HibernateDaoSupport implements 
 		log.debug("### corrEvents.size(): " + corrEvents.size());
 		return  corrEvents;
 	}
+	
+	public int getCountEvents(){
+		return ((Integer)getHibernateTemplate().find("select count(*) from Correlatedevent").get(0)).intValue();
+	}
+	
 	
 	/**
 	 * Gets an Correlatedevent object by it's id

@@ -12,11 +12,11 @@
  
    
    <logger name="at.generic">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 	
 	<logger name="net.sf.ehcache">
-		<level value="DEBUG"/>
+		<level value="INFO"/>
 	</logger>
 
 
@@ -35,11 +35,11 @@
     </logger>
 
     <logger name="org.springframework">
-        <level value="INFO"/>
+        <level value="WRN"/>
     </logger>
 
     <logger name="org.appfuse">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
     <root>

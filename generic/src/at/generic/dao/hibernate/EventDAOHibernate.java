@@ -17,9 +17,9 @@ import at.generic.eventmodel.Event;
 
 /**
  * @author szabolcs
- * @version $Id: EventDAOHibernate.java,v 1.3 2006/04/18 22:39:02 szabolcs Exp $
- * $Author: szabolcs $  
- * $Revision: 1.3 $
+ * @version $Id: EventDAOHibernate.java,v 1.4 2006/04/27 15:56:15 vecego Exp $
+ * $Author: vecego $  
+ * $Revision: 1.4 $
  * 
  * DAO interface Hibernate implementation
  * 
@@ -130,5 +130,9 @@ public class EventDAOHibernate extends HibernateDaoSupport implements EventDAO {
 	public void removeEvent(Long id) {
 		Event event = (Event)getHibernateTemplate().get(Event.class, id); 
 		getHibernateTemplate().delete(event); 
+	}
+
+	public int getCountEvents() {
+		return ((Integer)(getHibernateTemplate().find("select count(*) from Event").get(0))).intValue();
 	}
 }
