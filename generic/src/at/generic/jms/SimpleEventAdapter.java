@@ -1,56 +1,67 @@
 package at.generic.jms;
 
+import java.util.concurrent.BlockingQueue;
+
 import org.springframework.jms.core.JmsTemplate;
 
-import at.generic.event.BaseEvent;
-
 public class SimpleEventAdapter implements IEventAdapter {
+
+	private JmsTemplate _jmsTemplate;	
+	private boolean _stopped = false;
+
+	private BlockingQueue<Object> _eventQueue;
 	
-	private JmsTemplate jmsTemplate;
-	private IEventTransformer eventTransformer;
+
 	
-	/* (non-Javadoc)
-	 * @see at.generic.jms.IEventAdapter#receiveAndConvertEvent()
+	
+	/**
+	 * Using Spring's JmsTemplate.receiveAndConvert() to receive an event from JMS.
 	 */
-	public BaseEvent receiveAndConvertEvent()
+	public void receiveAndQueueEvent() {
+			Object message = _jmsTemplate.receiveAndConvert(_jmsTemplate
+					.getDefaultDestinationName());
+			_eventQueue.add(message);
+	}
+	
+	public void run()
 	{
-		//receiveAndConverts blocks until message arrives
-		Object message = jmsTemplate.receiveAndConvert(jmsTemplate.getDefaultDestinationName());
-		
-		BaseEvent baseEvent = null;
-		try {
-			 
-			
-			baseEvent = eventTransformer.transform(message);
-			  
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return baseEvent;
-		
-		
-		
+		this.receiveAndQueueEvent();
 	}
 
-	/* (non-Javadoc)
+	
+	
+	//GETTER + SETTER
+	
+	public boolean isStopped() {
+		return _stopped;
+	}
+
+	public void setStopped(boolean stopped) {
+		this._stopped = stopped;
+	}
+	
+	
+	public void setEventQueue(BlockingQueue<Object> eventQueue) {
+		this._eventQueue = eventQueue;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.generic.jms.IEventAdapter#getJmsTemplate()
 	 */
 	public JmsTemplate getJmsTemplate() {
-		return jmsTemplate;
+		return _jmsTemplate;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.generic.jms.IEventAdapter#setJmsTemplate(org.springframework.jms.core.JmsTemplate)
 	 */
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
-		this.jmsTemplate = jmsTemplate;
+		this._jmsTemplate = jmsTemplate;
 	}
 
-	public void setEventTransformer(IEventTransformer eventTransformer) {
-		this.eventTransformer = eventTransformer;
-	}
-	
 
 }

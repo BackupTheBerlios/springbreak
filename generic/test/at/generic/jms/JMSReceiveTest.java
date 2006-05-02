@@ -1,6 +1,9 @@
 package at.generic.jms;
 
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import junit.framework.TestCase;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -28,15 +31,18 @@ public class JMSReceiveTest extends TestCase {
 	
 	public void testEventAdapter()
 	{
-
 		//Needs a running + filled JMS!
 		IEventAdapter eventAdapter = (IEventAdapter)ctx.getBean("EventAdapter");
 		
+		BlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
 		
-		BaseEvent s = eventAdapter.receiveAndConvertEvent();
-		System.out.println(s.getXmlEventString());
-		assertNotNull(s);
-		assertTrue(s.getXmlEventString().length()>0);
+		eventAdapter.setEventQueue(queue);
+		eventAdapter.receiveAndQueueEvent();
+		assertEquals(1,queue.size());
+		try {
+			assertNotNull((Object)queue.take());
+		} catch (InterruptedException e) {
+		}
 		
 	}
 
