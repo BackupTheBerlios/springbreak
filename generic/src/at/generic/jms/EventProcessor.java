@@ -6,41 +6,43 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import at.generic.indexing.IndexingWorker;
+import at.generic.indexing.SimpleIndexingWorker;
 
 public class EventProcessor {
 	
 	IEventAdapter _eventAdapter;
 	private BlockingQueue<Object> _eventQueue;
 	
-
 	private ExecutorService _executorServiceIndexing;
 	private ExecutorService _executorServiceAdapter;
+	
+
 	
 	private boolean _stopped = false;
 	
 	
-	
 
-	public EventProcessor ()
-	{
-		_eventAdapter = new SimpleEventAdapter();
-		
+	public void onInit()
+	{	
 		_eventQueue = new LinkedBlockingQueue<Object> ();
 		
 		_eventAdapter.setEventQueue(this._eventQueue);
-		
-		_executorServiceIndexing = Executors.newFixedThreadPool(10);
-		_executorServiceAdapter = Executors.newSingleThreadExecutor();
 	}
+	
 	
 	public void onStart()
 	{
+		onInit();
+		
+		
+		_executorServiceAdapter.execute(_eventAdapter);
 		
 		while (_stopped == false)
-		{
-			_executorServiceAdapter.execute(_eventAdapter);
-			_executorServiceIndexing.execute(new IndexingWorker(_eventQueue));
+		{	
+			
+			if (this._eventQueue.size() > 0) //TODO: is this condition correct?!
+//				TODO: factory for IndexingWorker
+			_executorServiceIndexing.execute(new SimpleIndexingWorker(_eventQueue));
 		}
 		
 		_executorServiceIndexing.shutdown();
@@ -51,6 +53,13 @@ public class EventProcessor {
 				_executorServiceAdapter.shutdownNow();
 		} catch (InterruptedException e) {
 		}
+		
+		onStop();
+	}
+	
+	public void onStop()
+	{
+		//Empty Hook
 	}
 	
 
@@ -63,12 +72,22 @@ public class EventProcessor {
 		this._stopped = _stopped;
 	}
 
-	protected void setEventAdapter(IEventAdapter adapter) {
+	public void setEventAdapter(IEventAdapter adapter) {
 		_eventAdapter = adapter;
 	}
 
 	protected void setEventQueue(BlockingQueue<Object> queue) {
 		_eventQueue = queue;
+	}
+
+
+	public void setExecutorServiceAdapter(ExecutorService serviceAdapter) {
+		_executorServiceAdapter = serviceAdapter;
+	}
+
+
+	public void setExecutorServiceIndexing(ExecutorService serviceIndexing) {
+		_executorServiceIndexing = serviceIndexing;
 	}
 	
 	

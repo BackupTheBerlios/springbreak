@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd" >
+<beans>
+
+
+<!--  EVENT PROCESSOR -->
+
+<bean id="EventProcessor" class="at.generic.jms.EventProcessor" init-method="onStart">
+	<property name="eventAdapter">
+	 <ref local="EventAdapter" />
+	</property>
+	<property name="executorServiceAdapter">
+		<bean class="java.util.concurrent.Executors" factory-method="newSingleThreadExecutor">
+		</bean>
+	</property> 
+	<property name="executorServiceIndexing">
+		<bean class="java.util.concurrent.Executors" factory-method="newFixedThreadPool">
+			<constructor-arg>
+				<value>10</value>
+			</constructor-arg>
+		</bean>
+	</property>
+</bean>
+
+
+
+
+<!--  EVENT ADAPTER -->
+<bean id="EventAdapter" class="at.generic.jms.SimpleEventAdapter">
+	<property name="jmsTemplate"> 
+    		<ref local="jmsTemplate"/> 
+    	</property>
+</bean>
+
+
+
+<!-- ====================================================================================	-->
+<!-- JMS Configuration	for EVENT ADAPTER													-->
+<!-- ====================================================================================	-->
+	
+	
+	<!-- a pooling based JMS provider -->
+  <bean id="jmsFactory" class="org.activemq.pool.PooledConnectionFactory">
+    <property name="connectionFactory">
+      <bean class="org.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+          <value>tcp://localhost:61616</value>
+        </property>
+      </bean>
+    </property>
+  </bean>
+  
+  <bean id="jmsMessageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+
+  <!-- Spring JMS Template -->
+  <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory">
+      <ref local="jmsFactory"/>
+    </property>
+    
+    <property name="messageConverter">
+     <ref local="jmsMessageConverter"/>
+    </property>
+    
+    <property name="defaultDestinationName">
+    	<value>MyDestination</value>
+    </property>
+  </bean>
+
+
+
+
+
+
+
+
+
+<!--  INDEXING WORKER TODO: ?? can this one be defined through Spring with singleton="false" -->
+
+
+
+<!-- EVENT TRANSFORMER -->
+
+<bean id="EventTransformer" class="at.generic.jms.XML2EventTransformer">
+	<property name="eventDefinitionResolver">
+		<bean class="at.generic.event.EventDefinitionResolver" />
+	</property>
+</bean>
+
+
+
+<!--  EVENT PERSISTENCE CONFIGURATION -->
+
+<bean id="EventPersistence" class="at.generic.indexing.EventPersistence">
+	<property name="event2DBPersistence">
+		<ref local="Event2DBPersistence"/>
+	</property> 
+	<property name="indexingPersistence">
+		<ref local="IndexingPersistence"/>
+	</property>
+</bean>
+
+
+<bean id="Event2DBPersistence" class="at.generic.indexing.Event2DBPersistence">
+</bean>
+
+<!--  LUCENE INDEXING CONFIGURATION -->
+<bean id="IndexingPersistence" class="at.generic.indexing.LuceneIndexingPersistence" init-method="init">
+	<property name="indexLocation"><value>c:/tmp/lucene</value></property>
+	<property name="analyzer">
+		<bean class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
+	</property>
+</bean> 
+
+
+
+
+
+</beans>

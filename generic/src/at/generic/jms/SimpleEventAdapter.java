@@ -18,9 +18,14 @@ public class SimpleEventAdapter implements IEventAdapter {
 	 * Using Spring's JmsTemplate.receiveAndConvert() to receive an event from JMS.
 	 */
 	public void receiveAndQueueEvent() {
+		
+		while (_stopped == false)
+		{	
+			//blocking call, until message arrives
 			Object message = _jmsTemplate.receiveAndConvert(_jmsTemplate
 					.getDefaultDestinationName());
 			_eventQueue.add(message);
+		}
 	}
 	
 	public void run()

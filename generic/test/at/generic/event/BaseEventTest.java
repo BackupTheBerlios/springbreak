@@ -64,5 +64,22 @@ public class BaseEventTest extends TestCase {
 		
 		
 	}
+	
+	public void testDateFormatBaseEvent()
+	{
+		BaseEvent b;
+		try {
+			b = new BaseEvent(new URI ("eventtype:///"));
+			b.addAttribute("localTimeCreated","2006-04-27T15:57:24.7708376+02:00");
+			assertEquals ("20060427",b.getDateTimeCreated());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
 
 }

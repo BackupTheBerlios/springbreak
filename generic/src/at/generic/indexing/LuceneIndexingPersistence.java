@@ -12,24 +12,17 @@ import org.apache.lucene.index.IndexWriter;
 
 import at.generic.event.BaseEvent;
 
-
 public class LuceneIndexingPersistence implements IIndexingPersistence {
 	private static Log log = LogFactory.getLog(LuceneIndexingPersistence.class);
 
 	private boolean init = false;
 
-	private String indexLocation ="C:/TMP/lucene";
+	private String indexLocation = System.getProperty("java.io.tmpdir");
 
 	private Analyzer analyzer = new StandardAnalyzer();
 
 	private IndexWriter writer;
 
-	public LuceneIndexingPersistence()
-	{
-		init();
-		
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -43,23 +36,32 @@ public class LuceneIndexingPersistence implements IIndexingPersistence {
 
 			Document document = new Document();
 
-			document.add(new Field("wid", event.getAttribute("guid"), Field.Store.YES, Field.Index.UN_TOKENIZED));
-			document.add(new Field("type", event.getEventype().toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
-			document.add(new Field("text", event.getXmlEventString(), Field.Store.YES, Field.Index.TOKENIZED));
-			
+			document.add(new Field("wid", event.getAttribute("guid"),
+					Field.Store.YES, Field.Index.UN_TOKENIZED));
+			document.add(new Field("type", event.getEventype().toString(),
+					Field.Store.YES, Field.Index.UN_TOKENIZED));
+			document.add(new Field("text", event.getXmlEventString(),
+					Field.Store.YES, Field.Index.TOKENIZED));
+			document.add(new Field("date", event.getDateTimeCreated(),
+					Field.Store.YES, Field.Index.UN_TOKENIZED));
 			writer.addDocument(document);
-			
+
 		} catch (IOException e) {
 			log.error("Error updating index");
-		} 
-		finally {
+		} finally {
 			closeWriter(writer);
 		}
-		
+
 		return event;
 	}
 
-	public void init() {
+	/**
+	 * Init Method to check if index exists or has to be created.
+	 * 
+	 * @throws IOException
+	 *             if Index does not exist and can't be created.
+	 */
+	public void init() throws IOException {
 		if (init == false) {
 			try {
 				writer = new IndexWriter(indexLocation, analyzer, false);
@@ -67,17 +69,14 @@ public class LuceneIndexingPersistence implements IIndexingPersistence {
 				init = true;
 			} catch (IOException e1) {
 				log.info("Error opening index location " + indexLocation);
-				try {
-					log.info("Trying to create an index at location "
-							+ indexLocation);
-					this.createIndexLocation();
-				} catch (IOException e2) {
-					log.error("Giving up creating lucene index at "
-							+ indexLocation, e2);
-				}
+
+				log.info("Trying to create a new index at location "
+						+ indexLocation);
+				this.createIndexLocation();
+				init = true;
+
 			} finally {
 				closeWriter(writer);
-
 			}
 
 		}
@@ -88,39 +87,40 @@ public class LuceneIndexingPersistence implements IIndexingPersistence {
 
 		writerCreateIndex = new IndexWriter(indexLocation, analyzer, true);
 		writerCreateIndex.close();
-		init = true;
 
 	}
-	
+
 	/**
-	  * Closes the given IndexWriter and calls optimize()
-	  * @param writer
-	  */
+	 * Closes the given IndexWriter and calls optimize()
+	 * 
+	 * @param writer
+	 */
 	private void closeWriter(IndexWriter writer) {
-	    if (null != writer) {
-	        try {
-	            writer.close();
-	            writer = null;
-	        } catch (IOException e) {
-	            log.warn("Error while closing index writer", e);
-	        }
-	    }
+		if (null != writer) {
+			try {
+				writer.close();
+				writer = null;
+			} catch (IOException e) {
+				log.warn("Error while closing index writer", e);
+			}
+		}
 	}
-	
+
 	/**
-	  * Closes the given IndexWriter and calls optimize()
-	  * @param writer
-	  */
+	 * Closes the given IndexWriter and calls optimize()
+	 * 
+	 * @param writer
+	 */
 	private void optimizeAndCloseWriter(IndexWriter writer) {
-	    if (null != writer) {
-	        try {
-	        	writer.optimize();
-	            writer.close();
-	            writer = null;
-	        } catch (IOException e) {
-	            log.warn("Error while closing index writer", e);
-	        }
-	    }
+		if (null != writer) {
+			try {
+				writer.optimize();
+				writer.close();
+				writer = null;
+			} catch (IOException e) {
+				log.warn("Error while closing index writer", e);
+			}
+		}
 	}
 
 	public String getIndexLocation() {
@@ -133,6 +133,10 @@ public class LuceneIndexingPersistence implements IIndexingPersistence {
 
 	public boolean isInit() {
 		return init;
+	}
+
+	public void setAnalyzer(Analyzer analyzer) {
+		this.analyzer = analyzer;
 	}
 
 }

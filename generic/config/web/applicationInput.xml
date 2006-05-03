@@ -42,9 +42,6 @@
 		<property name="jmsTemplate"> 
     		<ref local="jmsTemplate"/> 
     	</property>
-    	<property name="eventTransformer">
-    		<ref local="eventTransformer"/>
-    	</property>
 	</bean>
 	
 	

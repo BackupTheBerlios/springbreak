@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -27,68 +28,66 @@ import at.generic.event.correlation.CorrelationTuple;
 public class IndexingWorkerTest extends TestCase {
 
 	IndexingWorker _examinee;
-	LinkedBlockingQueue<Object> queue;
-	
-	private IEventDefinitionResolver mock;
-	
-	private String eventString="<TicketRequest type='Senactive.InTime.Core.Event.BaseEvent' "+
-	"typeUri='eventtype://www.testdomain.com/CRM/TicketRequest' "+
-	"guid='253806b6-8c27-4617-bb9f-1b4ed59a4f3d' "+
-	"originalGuid='253806b6-8c27-4617-bb9f-1b4ed59a4f3d' "+
-	"localTimeCreated='2006-04-27T15:57:24.7708376+02:00' utcTimeCreated='2006-04-27T15:57:24.7708376+02:00' localTimeCreatedRW='2006-04-27T15:57:24.7708376+02:00' utcTimeCreatedRW='2006-04-27T15:57:24.7708376+02:00' priority='Medium' persistence='false'> "+
-	"<RequestId type='System.Int32'>901</RequestId><CustomerId type='System.Int32'>900</CustomerId>"+
-	"<DateTime type='System.DateTime'>2006-01-01T11:00:00+01:00</DateTime><Channel type='System.String'><![CDATA[WEB]]></Channel>"+
-	"<Location type='System.String'><![CDATA[2051]]></Location><OrderType type='System.String'>TRAIN</OrderType></TicketRequest>";
 
-	
-	
-	public void setUp()
-	{
+	LinkedBlockingQueue<Object> queue;
+
+	private IEventDefinitionResolver mock;
+
+	private String eventString = "<TicketRequest type='Senactive.InTime.Core.Event.BaseEvent' "
+			+ "typeUri='eventtype://www.testdomain.com/CRM/TicketRequest' "
+			+ "guid='253806b6-8c27-4617-bb9f-1b4ed59a4f3d' "
+			+ "originalGuid='253806b6-8c27-4617-bb9f-1b4ed59a4f3d' "
+			+ "localTimeCreated='2006-04-27T15:57:24.7708376+02:00' utcTimeCreated='2006-04-27T15:57:24.7708376+02:00' localTimeCreatedRW='2006-04-27T15:57:24.7708376+02:00' utcTimeCreatedRW='2006-04-27T15:57:24.7708376+02:00' priority='Medium' persistence='false'> "
+			+ "<RequestId type='System.Int32'>901</RequestId><CustomerId type='System.Int32'>900</CustomerId>"
+			+ "<DateTime type='System.DateTime'>2006-01-01T11:00:00+01:00</DateTime><Channel type='System.String'><![CDATA[WEB]]></Channel>"
+			+ "<Location type='System.String'><![CDATA[2051]]></Location><OrderType type='System.String'>TRAIN</OrderType></TicketRequest>";
+
+	public void setUp() {
 		mock = createMock(IEventDefinitionResolver.class);
-		
-		
-		
+
 		queue = new LinkedBlockingQueue<Object>();
 		queue.add(eventString);
-		_examinee = new IndexingWorker(queue);
+		_examinee = new SimpleIndexingWorker(queue);
 		_examinee.getEventTransformer().setEventDefinitionResolver(mock);
-		
+
 	}
-	
-	public void testIndexingWorker()
-	{
+
+	public void testIndexingWorker() {
 		try {
-			initMock(new URI("eventtype://www.testdomain.com/CRM/TicketRequest"), "MYCORRELATION", "//RequestId");
-		} catch (URISyntaxException e) {
-		}
-		
-		_examinee.processEvent();
-		
-		try {
-			IndexSearcher searcher = new IndexSearcher("C:/tmp/lucene");
-			QueryParser q = new QueryParser("text",new StandardAnalyzer());
+			initMock(
+					new URI("eventtype://www.testdomain.com/CRM/TicketRequest"),
+					"MYCORRELATION", "//RequestId");
+
+			// TODO: make util Class to access private Members
+			Class c = _examinee._eventPersistence.getClass();
+			Field f = c.getDeclaredField("indexingPersistence");
+			f.setAccessible(true);
+			LuceneIndexingPersistence indexingPersist = (LuceneIndexingPersistence) f
+					.get(_examinee._eventPersistence);
+			indexingPersist.getClass().getMethod("init", null).invoke(
+					indexingPersist, null);
+
+			// Process single event
+			_examinee.processEvent();
+
+			// Search
+
+			IndexSearcher searcher = new IndexSearcher(System
+					.getProperty("java.io.tmpdir"));
+			QueryParser q = new QueryParser("text", new StandardAnalyzer());
 			Hits h = searcher.search(q.parse("train"));
-			
+
 			Document result = h.doc(0);
-			assertEquals("253806b6-8c27-4617-bb9f-1b4ed59a4f3d",result.getField("wid").stringValue());
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			assertEquals("253806b6-8c27-4617-bb9f-1b4ed59a4f3d", result
+					.getField("wid").stringValue());
+
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			assertFalse(true);
 		}
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
 	private void initMock(URI eventURI, String correlationName, String xPath) {
 		// Code for easyMock
 		reset(mock);
@@ -104,5 +103,5 @@ public class IndexingWorkerTest extends TestCase {
 		replay(mock);
 		// End code for easyMock
 	}
-	
+
 }

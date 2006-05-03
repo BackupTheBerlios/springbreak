@@ -18,13 +18,7 @@ public class LuceneIndexPerformanceTest extends TestCase {
 
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	protected void setUp() throws Exception {
